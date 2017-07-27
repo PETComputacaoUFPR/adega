@@ -1,0 +1,5 @@
+coverage
+ipython
+pydotplus
+jupyter
+django-silk
