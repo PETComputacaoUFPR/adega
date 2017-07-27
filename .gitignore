@@ -1,0 +1,19 @@
+# base de dados
+
+*.csv
+*.xls
+*.xlsx
+*.sqlite3
+src/cache
+*.json
+
+# lixo
+
+*~
+*.swp
+*.bkp
+*.pyc
+**/.~c9*
+.idea
+**/__pycache__
+
