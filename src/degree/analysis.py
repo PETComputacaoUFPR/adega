@@ -5,46 +5,34 @@ from klass.models import Klass, StudentKlass
 import numpy as np
 import math
 
-SITUATIONS_COURSE_COMPLETED = ( # Situacoes cursadas ate o fim
-    u'Reprovado por nota',
-    u'Aprovado',
-    u'Aprovado Adiantamento',
-    u'Reprovado por Frequência',
-    u'Reprovado sem note',
-)
 
-SITUATIONS_DISAPPROVALS = ( # Situacoes reprovacao
-    u'Reprovado por nota',
-    u'Reprovado por Frequência',
-    u'Reprovado sem nota',
-)
+def graph_period(degree):
+    admissions = Admission.objects.filter(degree = degree)
+    dict_amount = {}
+    dic = {}
+    evasion = 0
 
-SITUATION_COMPLETED = (
-    u'Aprovado',
-    u'Aprovado Adiantamento',
-    u'Aprov Conhecimento',
-    u'Dispensa de Disciplinas (com nota)',
-    u'Dispensa de Disciplinas (sem nota)',
-#    u'Equivalência de Disciplina'
-)
+    for admission in admissions:
+        year = admission.year
+        semester = admission.semester
+        index_semester_evasion = 0
 
+def student_retirement(degree):
+    year = degree.report_year
+    semester = degree.report_semester
+    curriculum = Curriculum.objects.filter(degree = degree)
+    retirement = ((Curriculum.get_amount_of_semesters(curriculum) + 1) / 2) * 1.5
+    year = int(year - retirement)
+    students = Student.objects.filter(admission__degree = degree,
+                   admission__year = year, admission__semester = semester,
+                   evasion_form = "Sem evasão").count()
 
-SITUATION_NO_EVASION = (
-    u'Sem evasão',
-    u'Formatura',
-    u'Reintegração',
-)
-
-SITUATION_LOCKING = (
-    u'Trancamento Total',
-    u'Trancamento Administrativo'
-)
-
+    return students
 
 def student_lock(degree):
     students = Student.objects.filter(admission__degree = degree, 
                    evasion_form = "Sem evasão")
-    lockings = StudeintKlass.objects.filter(student__in = students,
+    lockings = StudentKlass.objects.filter(student__in = students,
                    situation__in = SITUATION_LOCKING)
 
     previous_student = None
