@@ -6,7 +6,28 @@ import numpy as np
 import math
 
 
-def graph_period(degree):
+def average_graduation(degree): # media_formandos
+    pass
+
+def average_time_graduation_degree(degree): # tempo_medio_formatura_curso
+    pass
+
+def average_general_failure_standard_deviation(degree): # media_reprovacao_geral_desvio_padrao
+    pass
+
+def average_actives_failure_standard_deviation(degree): # media_reprovacao_alunos_cursando_desvio_padrao
+    pass
+
+def calculate_average_general_ira_standard_deviation(degree): # calcular_ira_medio_geral_desvio_padrao
+    pass
+
+def calculate_average_actives_ira_standard_deviation(degree): # calcular_ira_medio_atual_desvio_padrao
+    pass
+
+def calculate_general_evasion(degree): # calcular_evasao_geral
+   pass
+
+def graph_evasion(degree): # grafico_periodo
     admissions = Admission.objects.filter(degree = degree)
     dict_amount = {}
     dic = {}
@@ -17,7 +38,7 @@ def graph_period(degree):
         semester = admission.semester
         index_semester_evasion = 0
 
-def student_retirement(degree):
+def student_retirement(degree): # jubilamento_alunos
     year = degree.report_year
     semester = degree.report_semester
     curriculum = Curriculum.objects.filter(degree = degree)
@@ -29,7 +50,10 @@ def student_retirement(degree):
 
     return students
 
-def student_lock(degree):
+def amount_students_actives(degree): # quantidade_alunos_atual
+    pass
+
+def student_lock(degree): # trancamento_alunos
     students = Student.objects.filter(admission__degree = degree, 
                    evasion_form = "Sem evasão")
     lockings = StudentKlass.objects.filter(student__in = students,
@@ -67,3 +91,6 @@ def student_lock(degree):
         previous_semester = locking.klass.semester
 
     return amount_locking
+
+def student_gradueted(degree): # formando_alunos
+    pass

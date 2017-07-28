@@ -29,11 +29,42 @@ SITUATION_PASS = ( # Situacoes aprovacao
     u'Aprovado Conhecimento',
 )
 
+SITUATION_CANCELLATION = ( # Situacoes de cancelamento
+    u'Cancelado',
+)
+
+SITUATIONS_PASS_KNOWLEDGE = (
+    u'Aprovado Conhecimento',
+)
+
+SITUATIONS_FAIL_KNOWLEDGE = (
+    u'Reprovado Conhecimento',
+)
+
 
 SITUATION_NO_EVASION = ( # Situacoes nao evasao
     u'Sem evasão',
     u'Formatura',
     u'Reintegração',
+)
+
+SITUATION_EVASION_OTHERS = (
+    u'Cancelamento a Pedido do Calouro',
+    u'Cancelamento Pedido',
+    u'Descumprimento Edital',
+    u'Desistência',
+    u'Desistência Vestibular',
+    u'Falecimento',
+    u'Jubilamento',
+    u'Não Confirmação de Vaga',
+    u'Novo Vestibular',
+    u'Reopção',
+    u'Término de Registro Temporário',
+    u'Transferência Externa',
+    u'Cancelamento Convênio',
+    u'Cancelamento Judicial',
+    u'Desistência PROVAR',
+    u'Reintegração'
 )
 
 SITUATION_LOCKING = ( # Situacoes trancamento
