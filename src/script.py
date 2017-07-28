@@ -59,14 +59,16 @@ def generate_data():
         generate_student_data(degree, path)
         generate_student_list_data(degree, path)
         generate_admission_data(degree, path)
-        generate_list_admission_data(degree, path)    
+        generate_admission_list_data(degree, path)    
         generate_course_data(degree, path)
         generate_course_general_data(degree, path)
-        generate_cepe9615(degree, path)
+        generate_cepe9615_data(degree, path)
 
 def generate_degree_data(degree, path):
+    print("Fazendo analises do Curso - {}".format(degree.name))
     average_graduation = average_graduation(degree) # media_formandos
     dic = merge_dicts(graph_average_ira(degree), graph_average_ira_evasion_semester(degree), graph_average_ira_graduation(degree), ['average_ira', 'semester_evasion', 'graduation'])
+
     degree_data = {
         'time_graduation': average_time_graduation_degree(degree),
         'graduation_rate': average_graduation[0],
@@ -89,5 +91,31 @@ def generate_degree_data(degree, path):
         str_ = json.dumps(degree_data, indent = 4, sort_keys = True,
                    separators=(',',': '), ensure_ascii = False)
         output.write(to_unicode(str_))
+
+def generate_student_data(degree, path):
+    print("\t- Fazendo analises dos alunos")
+    pass
+
+def generate_student_list_data(degree, path):
+    print("\t- Criando lista de alunos"
+    pass
+
+def generate_admission_data(degree, path):
+    pass
+
+def generate_admission_list_data(degree, path):
+    pass
+
+def generate_course_data(degree, path):
+    print("\t - Fazendo analises das disciplinas")
+    pass
+
+def generate_course_general_data(degree, path):
+    print("\t- Fazendo analise geral das disciplinas")
+    pass
+
+def generate_cp9615_data(degree, path):
+    pass
+
 if __name__ == '__main__':
     main()
