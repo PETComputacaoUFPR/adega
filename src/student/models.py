@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from degree.models import Curriculum
 from admission.models import Admission
-from utils.data import difference_semesters
+from utils.data import difference_between_semesters
 
 # Create your models here.
 class Student(models.Model):
@@ -26,5 +26,5 @@ class Student(models.Model):
 
         year_start = self.admission.year
         semester_start = self.admission.semester
-        difference = difference_semester(year_start, semester_start, year_end, semester_end)
+        difference = difference_between_semesters(year_start, semester_start, year_end, semester_end)
         return difference 
