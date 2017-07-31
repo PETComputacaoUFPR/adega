@@ -93,7 +93,78 @@ def generate_degree_data(degree, path):
 
 def generate_student_data(degree, path):
     print("\t- Fazendo analises dos alunos")
-    return
+    students = Student.objects.filter(admission__degree = degree)
+    students_amount = students.count()
+    counter = 0
+    student_path = path + '/student'
+    if not os.path.exists(student_path):
+        os.mkdir(student_path)
+
+    for student in students:
+        student_klasses = StudentKlass.objects.filter(student=student)
+        amount_courses_semester = get_student_courses_completed(student_klasses)
+        failures_semester = semester_pass_rate(student)
+#        failures_amount_courses_semester = merge_dicts(failures_semester, amount_courses_semester)
+
+        ira_courses = sorted(ira_amount_courses(student).items())
+        pass_rate = pass_rate(student_klasses)
+        pass_rate_semester = sorted(failures_semester.items())
+        position = sorted(get_student_position(student).items())
+        real_period = get_real_period(student)
+        intended_period = get_intended_period(student)
+
+        dict_ira_semester = {}
+        dict_ira_amount_courses = {}
+        dict_position = {}
+        dict_pass = {}
+
+        for item, course_pass, pos in zip(ira_courses, pass_rate_semester, position):
+            ca = list(course_pass)
+            i = list(item)
+            p = list(pos)
+            d_pass, d_done = ap[1]
+            date = ap[0].split('/')
+
+            semester_data = {}
+            data = '{}/{}'.format(date[0], date[1])
+            
+            dict_ira_semester[data] = i[1][0]
+            dict_ira_amount_courses[data] = [i[1][0], d_done]
+            dict_position[data] = pos[1]
+            dict_pass[data] = [d_pass, d_done]
+        student_klasses = StudentKlass.objects.filter(student=student)
+        student_klass = []
+        for sk in student_klasses:
+            sk_dict = {
+                'grade': sk.grade,
+                'name': sk.klass.course.name,
+                'code': sk.klass.course.code,
+                'situation': sk.situation,
+                'year': sk.klass.year,
+                'semester': sk.klass.semester
+            }
+            student_klass.append(sk_dict)
+         
+        student_data = {
+            'ira_semester': dict_ira_semester,
+            'semester_pass_rate': dict_pass,
+            'position': dict_position,
+            'ira_amount_courses': dict_ira_amount_courses,
+            'pass_rate': pass_rate,
+            'intended_period': intended_period,
+            'real_period': real_period,
+            'student_klass': student_klass
+        }
+
+        counter += 1
+        with io.open(student_path + '/' + student.grr + '.json', 'w', encondig = 'utf8') as output:
+            str_ = json.dumps(student_data, indent = 3, sort_keys = True,
+                separators=(',', ': '), ensure_ascii = False)
+            output.write(to_unicode(str_))
+
+        if counter % 100 == 0:
+            print("\t\t- %d alunos processados de %d" % (counter, students_amount))
+    return 
 
 def generate_student_list_data(degree, path):
     print("\t- Criando lista de alunos")

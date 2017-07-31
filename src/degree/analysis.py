@@ -25,7 +25,6 @@ def average_time_graduation_degree(degree): # tempo_medio_formatura_curso
     average_time = 0
 
     for g in graduated:
-        print(g.get_time_in_degree())
         average_time += g.get_time_in_degree()
 
     average_time /= graduated_amount

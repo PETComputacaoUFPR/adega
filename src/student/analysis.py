@@ -11,7 +11,7 @@ def pass_amount(student_klasses): # calcular_indice_aprovacao
     amount_pass = 0
     amount_courses = 0
     for student_klass in student_klasses:
-        if student_klass.situation in SITUATION_COURSE_COMPLETED:
+        if student_klass.situation in SITUATIONS_COURSE_COMPLETED:
             amount_courses += 1
             if student_klass.situation in SITUATION_PASS:
                 amount_pass += 1
@@ -21,7 +21,13 @@ def pass_amount(student_klasses): # calcular_indice_aprovacao
 
 def pass_rate(student_klasses): # indice_aprovacao
     amount_pass = 0
-    pass
+    amout_courses = 0
+    for sk in student_klasses:
+        if sk.situation in SITUATIONS_COURSE_COMPLETED:
+            amount_courses += 1
+            if sk.situation in SITUATION_PASS:
+                amount_pass += 1
+    return -1 if amount_courses == 0 else amount_pass / amount_courses
 
 def semester_pass_rate(student): # calcular_indice_aprovacao_semestral
     index = {}
@@ -29,7 +35,7 @@ def semester_pass_rate(student): # calcular_indice_aprovacao_semestral
     year = student.admission.year
     semester = student.admission.semester 
 
-    for i in range(0, amoun_semesters):
+    for i in range(0, amount_semesters):
         #semester_student_klass = student.studentklass_set.filter(klass__year = year, klass__semester = semester
         #semester_index = pass_amount
         semester_index = student.studentklass_set.filter(klass__year = year, klass__semester = semester, situation__in = SITUATION_PASS).count()
@@ -47,7 +53,8 @@ def get_student_courses_completed(student_klasses):
     student_courses_completed = []
 
     for student_klass in student_klasses:
-        if student_klass.situation in SITUATION_COURSE_COMPLETED:
+        
+        if student_klass.situation in SITUATIONS_COURSE_COMPLETED:
             student_courses_completed.append(student_klass)
 
     return student_courses_completed
@@ -126,13 +133,13 @@ def get_student_position(student):
 
 def ira_amount_courses(student):
     ira_semesters = get_ira_semester(student)
-    amount_courses = get_student_courses_completed(student)
+    amount_courses = get_amount_courses_completed(student)
 
     ira_amount_course = {}
     ira_amount_course = ira_amount_course.fromkeys(ira_semesters.keys())
 
     for ira_semester in ira_semesters:
-        ira_amount_course[ira_semester] = [ira_semesters[ira_semester], amount_course[ira_semester]]
+        ira_amount_course[ira_semester] = [ira_semesters[ira_semester], amount_courses[ira_semester]]
 
     return ira_amount_course
 
