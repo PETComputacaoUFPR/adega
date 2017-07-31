@@ -20,12 +20,12 @@ def average_graduation(degree): # media_formandos
 
 def average_time_graduation_degree(degree): # tempo_medio_formatura_curso
     students = Student.objects.filter(admission__degree = degree)
-    student_amount = students.count()
     graduated = students.filter(evasion_form = "Formatura")
     graduated_amount = graduated.count()
     average_time = 0
 
     for g in graduated:
+        print(g.get_time_in_degree())
         average_time += g.get_time_in_degree()
 
     average_time /= graduated_amount
@@ -40,7 +40,7 @@ def average_general_failure(students):
         student_klasses = StudentKlass.objects.filter(student=student)
         for sk in student_klasses:
             courses += 1
-            if sk.situation in SITUATION_FAILURE:
+            if sk.situation in SITUATIONS_FAILURE:
                 failures += 1
     return failures / courses * 100
 
@@ -56,7 +56,7 @@ def average_general_failure_standard_deviation(degree): # media_reprovacao_geral
 
         for sk in student_klasses:
             courses += 1
-            if sk.situation in SITUATION_FAILURE:
+            if sk.situation in SITUATIONS_FAILURE:
                 failures += 1
 
         variance += math.pow((failures / courses) - average_failure, 2)
@@ -65,16 +65,55 @@ def average_general_failure_standard_deviation(degree): # media_reprovacao_geral
     standard_deviation = math.sqrt(variance)
 
     return [average_failure, standard_deviation]
-    pass
+
+def average_actives_failure(students):
+   courses = 0
+   failures = 0
+   for student in students:
+       student_klasses = StudentKlass.objects.filter(student=student)
+       for sk in student_klasses:
+           courses += 1
+           if sk.situation in SITUATIONS_FAILURE:
+               failures += 1
+   return failures / courses * 100
 
 def average_actives_failure_standard_deviation(degree): # media_reprovacao_alunos_cursando_desvio_padrao
-    pass
+    students = Student.objects.filter(admission__degree=degree, evasion_form = "Sem evasão")
+    average_failure = average_actives_failure(students)
+    variance = 0
+    for student in students:
+        courses = 0
+        failures = 0
+        student_klasses = StudentKlass.objects.filter(student=student)
+        for sk in student_klasses:
+             courses += 1
+             if sk.situation in SITUATIONS_FAILURE:
+                 failures += 1
+
+        variance += math.pow(failures / courses - average_failure, 2)
+
+    variance /= students.count()
+    standard_deviation = math.sqrt(variance)
+
+    return [average_failure, standard_deviation]
 
 def calculate_average_general_ira_standard_deviation(degree): # calcular_ira_medio_geral_desvio_padrao
-    pass
+    students = Student.objects.filter(admission__degree = degree, ira__isnull = False)
+    average = 0
+    amount = students.count()
+    for student in students:
+        average += student.ira
+        
+    return average / amount
 
 def calculate_average_actives_ira_standard_deviation(degree): # calcular_ira_medio_atual_desvio_padrao
-    pass
+    students = Student.objects.filter(admission__degree = degree, evasion_form = "Sem evasão", ira__isnull = False)
+    average = 0
+    amount = students.count()
+    for student in students:
+         average += student.ira
+
+    return average / amount
 
 def calculate_general_evasion(degree): # calcular_evasao_geral
    students = Student.objects.filter(admission__degree = degree)

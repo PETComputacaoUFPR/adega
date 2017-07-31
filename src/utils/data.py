@@ -88,7 +88,7 @@ SITUATION_FAILURE_COMPLETED = ( # Situacoes reprovacao cursada ate o fim
 )
 
 def difference_between_semesters(year_start, semester_start, year_end, semester_end):
-    return 2 * (year_end - year_start) + (semester_end - year_end) + 1
+    return 2 * (year_end - year_start) + (semester_end - semester_start) + 1
 
 def merge_dicts(dict1, dict2, dict3, keys):
     dict_out = {}
