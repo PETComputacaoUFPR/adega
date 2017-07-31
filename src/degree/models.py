@@ -15,7 +15,7 @@ class Curriculum(models.Model):
     current = models.BooleanField()
 
     def get_amount_of_semesters(self):
-        max_period = CourseCurriculum.objecs.filter(curriculum = self).aggregate(Max('period'))
+        max_period = CourseCurriculum.objects.filter(curriculum = self).aggregate(Max('period'))
         return max_period['period__max']
 
 class CourseCurriculum(models.Model):

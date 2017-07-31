@@ -5,7 +5,7 @@ from admission.models import Admission
 from degree.models import *
 from datetime import datetime
 from django.db.models import Max
-from adega.utils.data import *
+from utils.data import *
 
 def pass_amount(student_klasses): # calcular_indice_aprovacao
     amount_pass = 0
@@ -85,7 +85,7 @@ def calculate_ira(student_klasses):
 
     return ira / 100
 
-def get_ira_semester(student)
+def get_ira_semester(student):
     iras = {}
 
     amount_semesters = student.get_time_in_degree()
@@ -96,7 +96,7 @@ def get_ira_semester(student)
         student_klass_semester = student.studentklass_set.filter(klass__year = year, klass__semester = semester)
         semester_ira = calculate_ira(student_klass_semester)
 
-        if semester_ira >= 0
+        if semester_ira >= 0:
             key = "{}/{}".format(year, semester)
             iras[key] = semester_ira
 
@@ -109,7 +109,7 @@ def get_student_position(student):
     student_iras = get_ira_semester(student)
     positions = {}
     positions = positions.fromkeys(student_iras.keys())
-    positions = {semester: {'position': 1, 'amount_student': 1} for semester, value in student_iras.items())}
+    positions = {semester: {'position': 1, 'amount_student': 1} for semester, value in student_iras.items()}
 
     admission_students = Student.objects.filter(admission = student.admission).exclude(grr = student.grr)
 

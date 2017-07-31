@@ -46,7 +46,7 @@ def generate_data():
         os.mkdir(path)
 
     path = 'cache/curso'
-    if not os.path.ecists(path):
+    if not os.path.exists(path):
         os.mkdir(path)
 
     degrees = Degree.objects.all()
@@ -66,13 +66,13 @@ def generate_data():
 
 def generate_degree_data(degree, path):
     print("Fazendo analises do Curso - {}".format(degree.name))
-    average_graduation = average_graduation(degree) # media_formandos
+    average_grad = average_graduation(degree) # media_formandos
     dic = merge_dicts(graph_average_ira(degree), graph_average_ira_evasion_semester(degree), graph_average_ira_graduation(degree), ['average_ira', 'semester_evasion', 'graduation'])
 
     degree_data = {
         'time_graduation': average_time_graduation_degree(degree),
-        'graduation_rate': average_graduation[0],
-        'student_amount': average_graduation[1],
+        'graduation_rate': average_grad[0],
+        'student_amount': average_grad[1],
         'failure_rate': average_general_failure_standard_deviation(degree),
         'failure_actives': average_actives_failure_standard_deviation(degree),
         'ira_average': calculate_average_general_ira_standard_deviation(degree),
@@ -82,7 +82,6 @@ def generate_degree_data(degree, path):
         'evasion_graph': json.dumps(sorted(graph_evasion(degree).items())),
         'retirement': student_retirement(degree),
         'amount_student_actives': amount_student_actives(degree),
-        'total_students': Student.objects.filter(admission__degree = degree).count(),
         'amount_locking': student_lock(degree),
         'gradueted': student_gradueted(degree)
     }
@@ -94,28 +93,28 @@ def generate_degree_data(degree, path):
 
 def generate_student_data(degree, path):
     print("\t- Fazendo analises dos alunos")
-    pass
+    return
 
 def generate_student_list_data(degree, path):
-    print("\t- Criando lista de alunos"
-    pass
+    print("\t- Criando lista de alunos")
+    return
 
 def generate_admission_data(degree, path):
-    pass
+    return
 
 def generate_admission_list_data(degree, path):
-    pass
+    return
 
 def generate_course_data(degree, path):
     print("\t - Fazendo analises das disciplinas")
-    pass
+    return
 
 def generate_course_general_data(degree, path):
     print("\t- Fazendo analise geral das disciplinas")
-    pass
+    return
 
-def generate_cp9615_data(degree, path):
-    pass
+def generate_cepe9615_data(degree, path):
+    return
 
 if __name__ == '__main__':
     main()
