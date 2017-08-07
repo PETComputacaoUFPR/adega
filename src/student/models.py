@@ -17,6 +17,8 @@ class Student(models.Model):
     klasses = models.ManyToManyField('klass.Klass', through = 'klass.StudentKlass')
 
     def get_time_in_degree(self):
+        year_end = self.admission.degree.report_year
+        semester_end = self.admission.degree.report_semester
         if self.evasion_year is not None:
             year_end = self.evasion_year
             if self.evasion_semester is None:

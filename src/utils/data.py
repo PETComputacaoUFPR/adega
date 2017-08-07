@@ -87,6 +87,41 @@ SITUATION_FAILURE_COMPLETED = ( # Situacoes reprovacao cursada ate o fim
     u'Reprovado sem nota',
 )
 
+SITUATION_COURSES_VALID = (
+    u'Reprovado por nota',
+    u'Aprovado',
+    u'Reprovado por Frequência',
+    u'Reprovado sem nota',
+    u'Equivalência de Disciplina',
+    u'Aprovado Conhecimento',
+    u'Reprovado Conhecimento',
+    u'Aprovado Adiantamento',
+    u'Horas',
+    u'Dispensa de Disciplinas (com nota)',
+    u'Dispensa de Disciplinas (sem nota))',
+    u'Matrícula',
+)
+
+SITUATION_COURSES_LOCKED = (
+    u'Cancelado',
+    u'Trancamento Total',
+    u'Trancamento Administrativo',
+)
+
+SITUATION_COURSES_VALID_GRADE = (
+    u'Reprovado por nota',
+    u'Aprovado',
+    u'Reprovado por Frequência',
+    u'Reprovado sem nota',
+    u'Equivalência de Disciplina',
+    u'Aprovado Conhecimento',
+    u'Reprovado Conhecimento',
+    u'Aprovado Adiantamento',
+    u'Horas',
+    u'Dispensa de Disciplinas (com nota)',
+    u'Dispensa de Disciplinas (sem nota))',
+)
+
 def difference_between_semesters(year_start, semester_start, year_end, semester_end):
     return 2 * (year_end - year_start) + (semester_end - semester_start) + 1
 

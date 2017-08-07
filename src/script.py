@@ -108,7 +108,7 @@ def generate_student_data(degree, path):
 
     for student in students:
         student_klasses = StudentKlass.objects.filter(student=student)
-        amount_courses_semester = get_student_courses_completed(student_klasses)
+        amount_courses_semester = get_amount_courses_completed(student)
         failures_semester = semester_pass_rate(student)
         failures_amount_courses_semester = merge_dicts(
             ['reprovacoes', 'cursadas'],
