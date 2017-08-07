@@ -67,8 +67,14 @@ def generate_data():
 def generate_degree_data(degree, path):
     print("Fazendo analises do Curso - {}".format(degree.name))
     average_grad = average_graduation(degree) # media_formandos
-    dic = merge_dicts(graph_average_ira(degree), graph_average_ira_evasion_semester(degree), graph_average_ira_graduation(degree), ['average_ira', 'semester_evasion', 'graduation'])
 
+    dic = merge_dicts(
+         ['average_ira', 'semester_evasion', 'graduation'],
+         graph_average_ira(degree),
+         graph_average_ira_evasion_semester(degree),
+         graph_average_ira_graduation(degree)
+    )
+    
     degree_data = {
         'time_graduation': average_time_graduation_degree(degree),
         'graduation_rate': average_grad[0],
@@ -104,11 +110,15 @@ def generate_student_data(degree, path):
         student_klasses = StudentKlass.objects.filter(student=student)
         amount_courses_semester = get_student_courses_completed(student_klasses)
         failures_semester = semester_pass_rate(student)
-#        failures_amount_courses_semester = merge_dicts(failures_semester, amount_courses_semester)
+        failures_amount_courses_semester = merge_dicts(
+            ['reprovacoes', 'cursadas'],
+            failures_semester,
+            amount_courses_semester,
+        )
 
         ira_courses = sorted(ira_amount_courses(student).items())
-        pass_rate = pass_rate(student_klasses)
-        pass_rate_semester = sorted(failures_semester.items())
+        pass_rate = calculate_pass_rate(student_klasses)
+        pass_rate_semester = sorted(failures_amount_courses_semester.items())
         position = sorted(get_student_position(student).items())
         real_period = get_real_period(student)
         intended_period = get_intended_period(student)
@@ -118,12 +128,12 @@ def generate_student_data(degree, path):
         dict_position = {}
         dict_pass = {}
 
-        for item, course_pass, pos in zip(ira_courses, pass_rate_semester, position):
+        for item, course_pass, pos in zip(ira_courses,pass_rate_semester, position):
             ca = list(course_pass)
             i = list(item)
             p = list(pos)
-            d_pass, d_done = ap[1]
-            date = ap[0].split('/')
+            d_pass, d_done = ca[1]
+            date = ca[0].split('/')
 
             semester_data = {}
             data = '{}/{}'.format(date[0], date[1])
@@ -157,7 +167,7 @@ def generate_student_data(degree, path):
         }
 
         counter += 1
-        with io.open(student_path + '/' + student.grr + '.json', 'w', encondig = 'utf8') as output:
+        with io.open(student_path + '/' + student.grr + '.json', 'w', encoding = 'utf8') as output:
             str_ = json.dumps(student_data, indent = 3, sort_keys = True,
                 separators=(',', ': '), ensure_ascii = False)
             output.write(to_unicode(str_))
@@ -177,7 +187,7 @@ def generate_admission_list_data(degree, path):
     return
 
 def generate_course_data(degree, path):
-    print("\t - Fazendo analises das disciplinas")
+    print("\t- Fazendo analises das disciplinas")
     return
 
 def generate_course_general_data(degree, path):

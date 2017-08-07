@@ -23,7 +23,7 @@ SITUATION_CONCLUDED = ( # Situacoes concluidas
 )
 
 SITUATION_PASS = ( # Situacoes aprovacao
-    u'Aprovado'
+    u'Aprovado',
     u'Aprovado Adiantamento',
     u'Equivalência de Disciplinas',
     u'Aprovado Conhecimento',
@@ -90,11 +90,16 @@ SITUATION_FAILURE_COMPLETED = ( # Situacoes reprovacao cursada ate o fim
 def difference_between_semesters(year_start, semester_start, year_end, semester_end):
     return 2 * (year_end - year_start) + (semester_end - semester_start) + 1
 
-def merge_dicts(dict1, dict2, dict3, keys):
+def merge_dicts(keys, *args):
     dict_out = {}
-    for key, value in dict1.items():
-        v2 = dict2[key] if key in dict2 else None
-        v3 = dict3[key] if key in dict3 else None
-        dict_out[key] = {keys[0]: value, keys[1]: v2, keys[2]: v3}
+    size = len(args)
+
+    for key, value in args[0].items():
+        values = []
+        values.append(value)
+        for i in range(1, size):
+            values.append(args[i][key] if key in args[i] else None)
+
+        dict_out[key] = {keys[i]: values[i] for i in range(0, size)}
 
     return dict_out

@@ -16,12 +16,11 @@ def pass_amount(student_klasses): # calcular_indice_aprovacao
             if student_klass.situation in SITUATION_PASS:
                 amount_pass += 1
 
-
     return -1 if amount_courses == 0 else amount_pass
 
-def pass_rate(student_klasses): # indice_aprovacao
+def calculate_pass_rate(student_klasses): # indice_aprovacao
     amount_pass = 0
-    amout_courses = 0
+    amount_courses = 0
     for sk in student_klasses:
         if sk.situation in SITUATIONS_COURSE_COMPLETED:
             amount_courses += 1
@@ -31,22 +30,19 @@ def pass_rate(student_klasses): # indice_aprovacao
 
 def semester_pass_rate(student): # calcular_indice_aprovacao_semestral
     index = {}
+
     amount_semesters = student.get_time_in_degree()
     year = student.admission.year
     semester = student.admission.semester 
 
     for i in range(0, amount_semesters):
-        #semester_student_klass = student.studentklass_set.filter(klass__year = year, klass__semester = semester
-        #semester_index = pass_amount
         semester_index = student.studentklass_set.filter(klass__year = year, klass__semester = semester, situation__in = SITUATION_PASS).count()
-
         if semester_index > 0:
             key = "{}/{}".format(year, semester)
             index[key] = semester_index
 
         semester = (semester % 2) + 1
         semester += semester % 2
-
     return index
 
 def get_student_courses_completed(student_klasses):
@@ -129,7 +125,7 @@ def get_student_position(student):
 
     positions = {semester: value['position'] / value['amount_student'] for semester, value in positions.items()}
 
-    return position
+    return positions
 
 def ira_amount_courses(student):
     ira_semesters = get_ira_semester(student)
@@ -145,15 +141,15 @@ def ira_amount_courses(student):
 
 def get_real_period(student, last_period = None):
     if last_period is None:
-        last_period = student.curriculum.get_amount_of_semesters()
+        last_period = student.current_curriculum.get_amount_of_semesters()
 
     real_period = 0
     period_completed = True
     while period_completed and real_period <= last_period:
         real_period += 1
+        courses_period = student.current_curriculum.courses.filter(coursecurriculum__period = real_period)
+        courses_passed_period = StudentKlass.objects.filter(klass__course__in = courses_period, student = student, situation__in = SITUATION_CONCLUDED)
 
-        courses_period = student.current_grade.courses.filter(coursecurriculum__period = real_period)
-        courses_passed_period = courses_period.filter(klass__studentklass__student = student, klass__studentkass__situation__in = SITUATION_CONCLUDED)
         period_completed = len(courses_passed_period) == len(courses_period)
 
     if real_period > last_period:
