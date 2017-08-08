@@ -1,4 +1,6 @@
 
+
+
 html {
     min-height: 100%;
     position: relative;
@@ -12,11 +14,13 @@ body {
     right: 0;
 
     padding-bottom: 170px;
-    padding-top: 70px;
+    padding-top: 60px;
 }
 
 #wrap-page {
     min-height: 95%;
+    margin: 0;
+    padding: 0;
 }
 
 /* ============================================ TOP */
@@ -33,11 +37,11 @@ h1#title {
     font-size: 44px;
 }
 
-/* ============================================ NAVBAR */
-
-select#change_course {
-    margin-top: 8px;
+.navbar-text {
+    color: #afb0c5 !important;
 }
+
+
 
 /* ============================================ MESSAGES */
 
@@ -45,6 +49,7 @@ select#change_course {
 
 #content {
     min-height: 100px;
+    padding: 2em 2em;
 }
 
 /* ============================================ FOOTER */
@@ -53,103 +58,101 @@ select#change_course {
     background-color: #263646;
     border-top: 4px solid #31c2e4;
     margin-top: 40px;
-    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 80px;
     color: #FFF;
 }
 
-#footer ul {
-    font-size: 0;
-}
-
-#footer li {
-    font-size: 16px;
-}
 
 #footer a {
     color: #FFF;
+    font-size: 1.1em;
 }
 
 #footer a:hover {
     color: #18BC9C;
 }
 
-#footer div.person {
-    padding: 15px 5px 14px 62px;
-
-    background-color: #EEE;
-    border: 1px solid #777;
-    border-radius: 8px;
-    box-shadow: 1px 2px 5px #9B9B9B;
-
-    font-size: larger;
-    font-weight: bolder;
-
-    z-index: 80;
-    position: relative;
-    top: 0;
-    left: 0;
+#footer h3 {
+    padding-bottom: 4px;
+    border-bottom: 2px solid #FFF;
 }
 
-#footer div.person a {
-    color: #333;
-}
-
-#footer div.person img {
-    width: 60px;
-    height: 60px;
-
-    position: absolute;
-    top: -3px;
-    left: -4px;
-
-    background-color: white;
-    border: 1px solid #555;
-    border-radius: 30px;
-    /* box-shadow: 1px 1px 3px #888; */
-}
-
-#footer div.plus {
-    font-size: x-large;
-    font-weight: light;
-
-    padding: 4px 8px;
-
-    background-color: #C8C8C8;
-    border: 1px solid #777;
-
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    box-shadow: 1px 1px 2px #888;
-
-    z-index: 100;
-    position: relative;
-    left: calc(50% - 25px);
-
-    margin-top: -10px;
-    margin-bottom: -10px;
-}
 
 /* ============================================= REPORTS */
 
-#sidebar {
-    background-color: #eee;
+
+
+.sidebar{
+    transition: all 0.5s  ease-in-out;
+    padding: 0;
+    height: 100%;
+    background-color: #2f4861;
 }
 
-#sidebar ul {
-    list-style: none;
+.sidebar ul{ list-style:none; margin:0px; padding:0px; }
+
+.sidebar li,
+.sidebar li div {
+    display: flex;
 }
 
-#sidebar ul a {
+
+
+.sidebar li a {
+    flex-grow: 1;
+}
+
+.sidebar .drop {
     display: inline-block;
-    line-height: 48px;
-    font-size: large;
+    padding: 14px 18px;
+    flex-grow: 0;
 }
 
-img.report-chart {
-    width: 90%;
-    margin: auto;
+.sidebar li a,
+.sidebar li a.collapsed.active{
+    padding: 14px 0px 14px 20px;
+    color: #d3d5d8;
+    border-left: 0px solid #159e83;
+    text-decoration: none
+ }
+
+ .sidebar li li a {
+    padding: 8px auto;
+ }
+.sidebar li a.active{background-color:#2c3e50;border-left:5px solid #159e83; transition: all 0.5s  ease-in-out}
+.sidebar li a:hover{color:#FFF !important; background-color: #132940}
+.sidebar li a i{ padding-right:5px;}
+.sidebar ul li .sub-menu li a{ position:relative}
+.sidebar ul li .sub-menu li a:hover:after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 5px;
+    background-color: #111;
+    height: 100%;
 }
+.sidebar ul li .sub-menu li a:hover{ background-color:#222; padding-left:20px; transition: all 0.5s  ease-in-out}
+.sub-menu{ border-left:5px solid #4a7d73;}
+.sidebar li a .nav-label,.sidebar li a .nav-label+span{ transition: all 0.5s  ease-in-out}
+
+
+.sidebar.fliph li a .nav-label,.sidebar.fliph li a .nav-label+span{ display:none;transition: all 0.5s  ease-in-out}
+.sidebar.fliph {
+    width: 42px;transition: all 0.5s  ease-in-out;
+}
+
+.sidebar.fliph li{ position:relative}
+.sidebar.fliph .sub-menu {
+    position: absolute;
+    left: 39px;
+    top: 0;
+    background-color: #222;
+    width: 150px;
+    z-index: 100;
+}
+
 
 /* ========================== DEFINICOES ESPECIAIS DE CADA AREA */
 
@@ -173,15 +176,10 @@ img.report-chart {
     flex: 1;
 
     box-shadow: 0 0 1px #DDD;
-
-h3 {
-    margin-top: 0.1em;
 }
 
 span.data {
     margin: 0 1.5em;
-}
-
 }
 
 .panel-line {
@@ -193,242 +191,4 @@ span.data {
     font-size: 1em;
     border-bottom: 1px solid #3c3c3c;
     box-shadow: none;
-
-h3 {
-    font-size: 14px;
 }
-
-}
-
-/*  =====================================  PLUGIN UPLOAD FILE   */
-
-/*!
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @package bootstrap-fileinput
- * @version 4.1.8
- *
- * File input styling for Bootstrap 3.0
- * Built for Yii Framework 2.0
- * Author: Kartik Visweswaran
- * Year: 2015
- * For more Yii related demos visit http://demos.krajee.com
- */
-.file-input {
-    overflow-x: auto
-}
-
-.file-loading {
-    top: 0;
-    right: 0;
-    width: 25px;
-    height: 25px;
-    font-size: 999px;
-    text-align: right;
-    color: #fff;
-    background: transparent url(../img/loading.gif) top left no-repeat;
-    border: none
-}
-
-.btn-file {
-    position: relative;
-    overflow: hidden
-}
-
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    background: none repeat scroll 0 0 transparent;
-    cursor: inherit;
-    display: block
-}
-
-.file-caption .glyphicon {
-    display: inline-block;
-    min-width: 18px;
-    float: left;
-    margin-top: 2px
-}
-
-.file-caption-name {
-    display: inline-block;
-    overflow: hidden;
-    max-height: 20px;
-    padding-right: 10px;
-    word-break: break-all
-}
-
-.file-caption-ellipsis {
-    position: absolute;
-    right: 10px;
-    margin-top: -6px;
-    font-size: 1.2em;
-    display: none;
-    font-weight: 700;
-    cursor: default
-}
-
-.kv-has-ellipsis .file-caption-ellipsis {
-    display: inline
-}
-
-.kv-has-ellipsis {
-    padding-right: 17px
-}
-
-.kv-search-container .kv-search-clear {
-    position: absolute;
-    padding: 10px;
-    right: 0
-}
-
-.file-error-message {
-    background-color: #f2dede;
-    color: #a94442;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px
-}
-
-.file-error-message pre, .file-error-message ul {
-    text-align: left;
-    margin: 5px 0
-}
-
-.file-caption-disabled {
-    background-color: #EEE;
-    cursor: not-allowed;
-    opacity: 1
-}
-
-.file-input .btn .disabled, .file-input .btn[disabled] {
-    cursor: not-allowed
-}
-
-.file-preview {
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    padding: 5px;
-    width: 100%;
-    margin-bottom: 5px
-}
-
-.file-preview-frame {
-    display: table;
-    margin: 8px;
-    height: 160px;
-    border: 1px solid #ddd;
-    box-shadow: 1px 1px 5px 0 #a2958a;
-    padding: 6px;
-    float: left;
-    text-align: center;
-    vertical-align: middle
-}
-
-.file-preview-frame:hover {
-    box-shadow: 3px 3px 5px 0 #333
-}
-
-.file-preview-image {
-    height: 160px;
-    vertical-align: text-center
-}
-
-.file-preview-text {
-    width: 160px;
-    color: #428bca;
-    font-size: 11px;
-    text-align: center
-}
-
-.file-preview-other {
-    padding-top: 48px;
-    text-align: center
-}
-
-.file-preview-other i {
-    font-size: 2.4em
-}
-
-.file-other-error {
-    width: 100%;
-    padding-top: 30px;
-    text-align: right
-}
-
-.file-input-ajax-new .fileinput-remove-button, .file-input-ajax-new .fileinput-upload-button, .file-input-new .close, .file-input-new .file-preview, .file-input-new .fileinput-remove-button, .file-input-new .fileinput-upload-button, .file-input-new .glyphicon-file {
-    display: none
-}
-
-.loading {
-    background: transparent url(../img/loading.gif) no-repeat scroll center center content-box !important
-}
-
-.wrap-indicator {
-    font-weight: 700;
-    color: #245269;
-    cursor: pointer
-}
-
-.file-actions {
-    text-align: left
-}
-
-.file-footer-buttons {
-    float: right
-}
-
-.file-thumbnail-footer .file-caption-name {
-    padding-top: 4px;
-    font-size: 11px;
-    color: #777
-}
-
-.file-upload-indicator {
-    padding-top: 2px;
-    cursor: default
-}
-
-.file-upload-indicator:hover {
-    font-size: 1.2em;
-    font-weight: 700;
-    padding-top: 0
-}
-
-.file-drop-zone {
-    border: 1px dashed #aaa;
-    border-radius: 4px;
-    height: 100%;
-    text-align: center;
-    vertical-align: middle;
-    margin: 12px 15px 12px 12px;
-    padding: 5px
-}
-
-.file-drop-zone-title {
-    color: #aaa;
-    font-size: 40px;
-    padding: 85px 10px
-}
-
-.highlighted {
-    border: 2px dashed #999 !important;
-    background-color: #f0f0f0
-}
-
-.file-uploading {
-    background-image: url(../img/loading-sm.gif);
-    background-position: center bottom 10px;
-    background-repeat: no-repeat;
-    opacity: .6
-}
-
-.file-icon-large {
-    font-size: 1.2em
-}
-

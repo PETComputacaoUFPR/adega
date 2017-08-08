@@ -97,6 +97,9 @@ function chartConfig(type, data, scales, fill_line) {
             tooltips: {
                 mode: 'label',
             },
+            /*tooltips: {
+                mode: 'label',
+            },*/
             elements: {
                 line: {
                     fill: fill_line,
@@ -153,7 +156,7 @@ function calculate_max(values, error=false) {
     return max;
 }
 
-function setDataset(type, textLabel, color) {
+function new_setDataset(type, textLabel, color) {
     var dataset = {
         type: type,
         label: textLabel,
@@ -211,7 +214,7 @@ function define_datasets(data, type, label, chosen_colors, error=false) {
     };
     if (error) {
         for (i = 0, j = 0; i < data.values.length; i += 2, j++) {
-            obj.datasets.push(setDataset(type[i], label[j], chosen_colors[i]));
+            obj.datasets.push(new_setDataset(type[i], label[j], chosen_colors[i]));
             obj.datasets[j].data = data.values[i];
             obj.datasets[j].error = data.values[i+1];
             obj.datasets[j].errorColor = colors[chosen_colors[i+1]].border;
@@ -219,7 +222,7 @@ function define_datasets(data, type, label, chosen_colors, error=false) {
     }
     else {
         for (d in data.values) {
-            obj.datasets.push(setDataset(type[d], label[d], chosen_colors[d]));
+            obj.datasets.push(new_setDataset(type[d], label[d], chosen_colors[d]));
             obj.datasets[d].data = data.values[d];
         }
     }
@@ -262,6 +265,10 @@ function personalized_config(options, config) {
                 config.options.elements.line.fill = options['fill'];
                 break;
             case 'stacked':
+                /*yAxes = config.options.scales.yAxes
+                for (y in yAxes) {
+                    yAxes[y].stacked = options['stacked'];
+                }*/
                 nok = Object.keys(options[object_key[key]]);
                 stacked = options['stacked'];
                 for (nk in nok) {

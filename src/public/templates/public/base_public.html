@@ -1,0 +1,51 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Adega - PET Computação UFPR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'public/style.css' %}">
+
+    <script src="{% static 'jquery-2.2.4/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<div id="top" class="col-md-12 col-xs-12">
+    <h1 id="title">A.D.E.G.A.</h1>
+
+</div>
+<div id="content" class="container container-fluid">
+    {% if messages %}
+        <ul id="messages" class="list-unstyled">
+            {% for message in messages %}
+                <li class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}"
+                    role="alert">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock content %}
+</div>
+
+<div id="footer" class="col-md-12 col-xs-12">
+    <div class="container container-fluid">
+        <div class="col-md-9 col-sm-6">
+            <h3>Links</h3>
+            <ul>
+                <li><a href="http://pet.inf.ufpr.br/projetos/adega.html">Página oficial do projeto</a></li>
+                <li><a href="http://gitlab.c3sl.ufpr.br/pet/adega">Código fonte</a></li>
+                <li><a href="{% url 'developers' %}">Desenvolvedores</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <h3>Mantido por</h3>
+            <a href="http://pet.inf.ufpr.br">
+                <img src="{% static 'pet/logo_preto.png' %}" width="50%" height="50%">
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,127 @@
+{% extends 'adega/base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+/* Style all font awesome icons */
+.fa {
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+    width: 50px;
+    text-align: center;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+    text-decoration: none;
+    color: white;
+    opacity: 0.7;
+}
+
+.fa-linkedin {
+    background: #007bb5;
+    text-decoration: none;
+    color: white;
+}
+
+.fa-envelope {
+    background: #fb5632;
+    color: white;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Orientadores</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Contato</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bruno Müller Júnior</td>
+                        <td ><a class="fa fa-envelope" href="#"></a></td>
+                    </tr>
+                    <tr>
+                        <td>Carlos Alberto Maziero</td>
+                        <td><a class="fa fa-envelope" href="#"></a></td>
+                    </tr>
+                    <tr>
+                        <td>Luis Allan Kunzle</td>
+                        <td><a class="fa fa-envelope" href="#"></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h1>Desenvolvedores</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Contato</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Daniel Dutra Rufasto</td>
+                        <td >
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="#"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Davisson Henrique Paulino</td>
+                        <td >
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="#"></a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Felipe Lopes Pereira</td>
+                        <td >
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="#"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Henrique Colodetti Escanferla</td>
+                        <td >
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="https://www.linkedin.com/in/hencolesc"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>João Denis Rodrigues Cabral</td>
+                        <td>
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="#"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jomaro Corrêa Rodrigues</td>
+                        <td>
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="https://br.linkedin.com/pub/jomaro-rodrigues/55/3b6/744"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mariana Carmin</td>
+                        <td >
+                            <a class="fa fa-envelope" href="#"></a>
+                            <a class="fa fa-linkedin" href="#"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+{% endblock content %}
+

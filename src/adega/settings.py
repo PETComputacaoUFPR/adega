@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'admission.apps.AdmissionConfig',
+    'adega',
     'course.apps.CourseConfig',
     'degree.apps.DegreeConfig',
     'klass.apps.KlassConfig',
     'student.apps.StudentConfig',
     'teacher.apps.TeacherConfig',
+    'public.apps.PublicConfig',
 ]
 
 MIDDLEWARE = [
