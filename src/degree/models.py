@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Max
 from course.models import Course
+from mongoengine import Document, EmbeddedDocument, fields
+
 # Create your models here.
 class Degree(models.Model):
     name = models.CharField(max_length = 50)
@@ -23,3 +25,14 @@ class CourseCurriculum(models.Model):
     course = models.ForeignKey(Course)
     period = models.PositiveIntegerField(null = True)
     type_course = models.CharField(max_length = 255)
+
+class CourseCurriculumMongo(Document):
+    start_year = fields.IntField()
+
+class CurriculumMongo(Document):
+    courses = fields.ListField(fields.EmbeddedDocumentField('CourseCurriculumMongo'))
+
+
+class DegreeMongo(Document):
+    name = fields.StringField(max_length=50)
+    curriculum = fields.ListField(fields.EmbeddedDocumentField('CurriculumMongo'))

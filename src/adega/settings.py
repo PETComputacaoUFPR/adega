@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+from mongoengine import connect
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -88,7 +88,14 @@ DATABASES = {
     }
 }
 
-
+#DATABASES = {
+#    'default': {
+#        'NAME': 'teste',
+#        'ENGINE': 'django_mongodb_engine',
+#    },
+#}
+MONGO_DATABASE_NAME = 'teste'
+connect(MONGO_DATABASE_NAME)
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
