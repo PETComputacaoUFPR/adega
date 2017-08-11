@@ -14,6 +14,7 @@ class Student(models.Model):
     evasion_semester = models.PositiveIntegerField(null = True, blank = True)
     current_curriculum = models.ForeignKey(Curriculum)
     admission = models.ForeignKey(Admission)
+    admission_form = models.CharField(max_length=255)
     klasses = models.ManyToManyField('klass.Klass', through = 'klass.StudentKlass')
 
     def get_time_in_degree(self):

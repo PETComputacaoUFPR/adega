@@ -26,6 +26,19 @@ class CourseCurriculum(models.Model):
     period = models.PositiveIntegerField(null = True)
     type_course = models.CharField(max_length = 255)
 
+class HistoryData(models.Model):
+    degree = models.ForeignKey(Degree)
+    student = models.ForeignKey(Student)
+    year = models.PositiveIntegerField(null = True, blank = True)
+    semester = models.PositiveIntegerField(null = True, blank = True)
+    situation = models.CharField(max_length=255)
+    letter = models.CharField(max_length=2)
+    course_code = models.CharField(max_length=5)
+    credits = models.PositiveIntegerField()
+    course_type = models.CharField(max_length=255)
+    frequency = models.FloatField()
+    #course = models.ForeignKey(Course)
+
 class CourseCurriculumMongo(Document):
     start_year = fields.IntField()
 
