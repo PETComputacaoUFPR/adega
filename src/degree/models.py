@@ -32,6 +32,7 @@ class HistoryData(models.Model):
     year = models.PositiveIntegerField(null = True, blank = True)
     semester = models.PositiveIntegerField(null = True, blank = True)
     situation = models.CharField(max_length=255)
+    grade = models.FloatField()
     letter = models.CharField(max_length=2)
     course_code = models.CharField(max_length=5)
     credits = models.PositiveIntegerField()
