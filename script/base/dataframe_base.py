@@ -22,44 +22,67 @@ def load_dataframes(cwd='.'):
             if dh['dataframe'] is not None:
                 dataframes.append(dh)
 
-    return dataframes
+    dataframe = fix_dataframes(dataframes)
+    return dataframe
+
 
 def read_excel(path, planilha='Planilha1'):
     return pd.read_excel(path)
 
+
 def read_csv(path):
     return pd.read_csv(path)
 
+
 def fix_dataframes(dataframes):
     for df in dataframes:
-        fix_situation(df['dataframe'])
-        fix_admission(df['dataframe'])
-        fix_evasion(df['dataframe'])
         if df['name'] == 'historico.xls':
-            hist = df['dataframe']
+            history = df['dataframe']
         if df['name'] == 'matricula.xls':
-            mat = df['dataframe']
-    merged = pd.merge(hist, mat, on=['MATR_ALUNO'])
-    merged.drop(['ID_PESSOA', 'ID_CURRIC_ALUNO', 'CONCEITO', 'NOME_UNIDADE',
-                 'ID_NOTA', 'ID_VERSAO_CURSO', 'NOME_PESSOA', 'SIGLA',
-                 'NUM_VERSAO_y', 'COD_CURSO_y', 'DT_NASCIMENTO'
-                ], axis=1, inplace=True)
-    merged.rename(columns={'NUM_VERSAO_x':'NUM_VERSAO',
-                           'COD_CURSO_x':'COD_CURSO'}, inplace=True)
-    print(list(merged))
+            register = df['dataframe']
+
+    clean_history(history)
+    clean_register(register)
+
+    merged = pd.merge(history, register, how='right', on=['MATR_ALUNO'])
+
+    fix_situation(merged)
+#    fix_admission(merged)
+    fix_evasion(merged)
+
+    return merged
+
+
+def clean_history(df):
+    df.drop(['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
+             'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
+             'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
+            ], axis=1, inplace=True)
+    df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
+
+def clean_register(df):
+    df_split = df['PERIODO_INGRESSO'].str.split('/')
+    df['ANO_INGRESSO'] = df_split.str[0]
+    df['SEMESTRE_INGRESSO'] = df_split.str[1].str.split('o').str[0]
+    df_split = df['PERIODO_EVASAO'].str.split('/')
+    df['ANO_EVASAO'] = df_split.str[0]
+    df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
+
+    df.drop(['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE',
+             'COD_CURSO', 'NUM_VERSAO', 'PERIODO_INGRESSO', 'PERIODO_EVASAO',
+            ],axis=1, inplace=True)
+
 
 def fix_situation(df):
-    if hasattr(df, 'SITUACAO'):
-        for situation in Situation.SITUATIONS:
-            df.loc[df.SITUACAO == situation[1], 'SITUACAO'] = situation[0]
-            if situation[1] == 'Outro':
-                temp = df[~df['SITUACAO'].astype(str).str.isdigit()]
-                df.loc[~df.SITUACAO.astype(str).str.isdigit()] = situation[0]
+    for situation in Situation.SITUATIONS:
+        df.loc[df.SITUACAO == situation[1], 'SITUACAO'] = situation[0]
+
 
 def fix_admission(df):
-    pass
+    for adm in AdmissionType.ADMISSION_FORM:
+        df.loc[df.FORMA_INGRESSO == adm[1], 'FORMA_INGRESSO'] = adm[0]
+
 
 def fix_evasion(df):
-    pass
-
-
+    for evasion in EvasionForm.EVASION_FORM:
+        df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(False), 'FORMA_EVASAO'] = evasion[0]

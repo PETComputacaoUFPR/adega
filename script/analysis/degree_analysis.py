@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
 import math
-from utils.situations import Situation
+from utils.situations import Situation, EvasionForm
+
 
 def average_graduation(df):
-    not_nan = df.dropna(axis=0)
-    total_student = not_nan.shape[0]
-    list_graduation = not_nan[not_nan.FORMA_EVASAO == 'Formatura']
-    total_graduate = list_graduation.shape[0]
+    total_student = df['MATR_ALUNO'].drop_duplicates().shape[0]
+    total_graduate = df[df.FORMA_EVASAO == EvasionForm.EF_FORMATURA].shape[0]
+
     return total_graduate / total_student
+
 
 def general_failure(df):
     not_nan = df.dropna(axis=0)
@@ -27,6 +28,7 @@ def general_failure(df):
                                       .pow(2).sum() / merged.shape[0]
     standard_deviation = math.sqrt(variance)
     return (average, standard_deviation)
+
 
 def general_ira(df):
     fixed = df.dropna(axis=0)[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]

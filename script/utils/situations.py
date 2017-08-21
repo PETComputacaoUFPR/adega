@@ -38,22 +38,30 @@ class EvasionForm:
     EF_REOPCAO = 9
     EF_DESISTENCIA = 10
     EF_JUBILAMENTO = 11
+    EF_DESCUMPRIMENTO_EDITAL = 12
+    EF_FALECIMENTO = 13
+    EF_TERMINO_REG_TEMP = 14
+    EF_REINTEGRACAO = 15
     EF_OUTROS = 100
 
     EVASION_FORM = (
         (EF_DESCONHECIDO, 'Desconhecido'),
-        (EF_ATIVO, 'Ativo'),
-        (EF_FORMATURA, 'Formado'),
+        (EF_ATIVO, 'Sem evasão'),
+        (EF_FORMATURA, 'Formatura'),
         (EF_ABANDONO, 'Abandono'),
-        (EF_DESISTENCIA_VESTIBULAR, 'Desistencia vestibular'),
+        (EF_DESISTENCIA_VESTIBULAR, 'Desistência Vestibular'),
         (EF_CANCELAMENTO, 'Cancelamento'),
-        (EF_NAO_CONFIRMACAO_VAGA, 'Não confirmação de vaga'),
-        (EF_NOVO_VESTIBULAR, 'Novo vestibular'),
-        (EF_TRANSFERENCIA_EXTERNA, 'Transferência externa'),
-        (EF_REOPCAO, 'Reopção de curso'),
+        (EF_NAO_CONFIRMACAO_VAGA, 'Não Confirmação de Vaga'),
+        (EF_NOVO_VESTIBULAR, 'Novo Vestibular'),
+        (EF_TRANSFERENCIA_EXTERNA, 'Transferência Externa'),
+        (EF_REOPCAO, 'Reopção'),
         (EF_DESISTENCIA, 'Desistência'),
-        (EF_JUBILAMENTO, 'Jubilado'),
-        (EF_OUTROS, 'Outros'),
+        (EF_JUBILAMENTO, 'Jubilamento'),
+        (EF_DESCUMPRIMENTO_EDITAL, 'Descumprimento Edital'),
+        (EF_FALECIMENTO, 'Falecimento'),
+        (EF_TERMINO_REG_TEMP, 'Término de Registro Temporário'),
+        (EF_REINTEGRACAO, 'Reintegração'),
+        (EF_OUTROS, 'Outro'),
     )
 
 # == Situation Courses == #
@@ -77,7 +85,10 @@ class Situation:
     SIT_TRANCAMENTO_TOTAL = 11
     SIT_TRANCAMENTO_ADMINISTRATIVO = 12
     SIT_REPROVADO_SEM_NOTA = 13
-    SIT_HORAS = 13
+    SIT_HORAS = 14
+
+    SIT_APROV_ADIANTAMENTO = 15
+    SIT_INCOMPLETO = 16
 
     SIT_OUTROS = 100
 
@@ -101,6 +112,8 @@ class Situation:
 
         (SIT_HORAS, 'Horas'),
 
+        (SIT_APROV_ADIANTAMENTO, 'Aprov Adiantamento'),
+        (SIT_INCOMPLETO, 'Incompleto'),
         (SIT_OUTROS, 'Outro'),
     )
 
