@@ -30,8 +30,8 @@ def build_cache(dataframe):
 
 def generate_degree_data(path, dataframe):
     average_graduation(dataframe)
-#    general_failure(dataframe)
-  #  general_ira(dataframe)
+    general_failure(dataframe)
+    general_ira(dataframe)
     pass
 
 def generate_student_data(path):
