@@ -7,6 +7,7 @@ from datetime import timedelta
 from pathlib import Path
 from utils.utils import build_path
 from analysis.degree_analysis import *
+from analysis.student_analysis import *
 
 try:
     to_unicode = unicode
@@ -21,7 +22,7 @@ def build_cache(dataframe):
     build_path(path)
 
     generate_degree_data(path, dataframe)
-    generate_student_data(path)
+    generate_student_data(path,dataframe)
     generate_student_list(path)
     generate_admission_data(path)
     generate_admission_list(path)
@@ -34,7 +35,8 @@ def generate_degree_data(path, dataframe):
     general_ira(dataframe)
     pass
 
-def generate_student_data(path):
+def generate_student_data(path,dataframe):
+    ira_student(dataframe)
     pass
 
 def generate_student_list(path):
