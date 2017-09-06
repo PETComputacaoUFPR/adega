@@ -13,6 +13,7 @@ try:
 except NameError:
     to_unicode = str
 
+
 def build_cache(dataframe):
 #    os.chdir("../src")
     path = "cache"
@@ -20,13 +21,13 @@ def build_cache(dataframe):
     path += "/curso"
     build_path(path)
 
-    generate_degree_data(path, dataframe)
-    generate_student_data(path)
-    generate_student_list(path)
-    generate_admission_data(path)
-    generate_admission_list(path)
-    generate_course_data(path)
-    generate_course_general_data(path)
+#    generate_degree_data(path, dataframe)
+#    generate_student_data(path)
+#    generate_student_list(path)
+#    generate_admission_data(path)
+#    generate_admission_list(path)
+#    generate_course_data(path)
+#    generate_course_general_data(path)
 
 def generate_degree_data(path, dataframe):
     average_graduation(dataframe)

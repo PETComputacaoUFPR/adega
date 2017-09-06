@@ -2,10 +2,26 @@ import re
 import os
 import sys
 import pandas as pd
-
+import numpy as np
 from glob import glob
 from json import load as json_load
 from utils.situations import *
+
+
+def teste(d):
+    temp = d.dropna(subset=['MEDIA_FINAL'])
+    temp = temp[temp['MEDIA_FINAL'] <= 100]
+    if not temp.empty:
+        #print(temp[['MEDIA_FINAL', 'CH_TOTAL']])
+        aux = np.sum(temp['MEDIA_FINAL']*temp['CH_TOTAL'])
+        ch_total = np.sum(temp['CH_TOTAL']) * 100
+        print(aux/ch_total)
+
+class DataframeHolder:
+    def __init__(self, dataframe):
+        self.students = dataframe.groupby('MATR_ALUNO')
+        self.courses = dataframe.groupby('COD_ATIV_CURRIC')
+        self.admission = dataframe.groupby(['ANO_INGRESSO', 'SEMESTRE_INGRESSO'])
 
 
 def load_dataframes(cwd='.'):
@@ -23,6 +39,9 @@ def load_dataframes(cwd='.'):
                 dataframes.append(dh)
 
     dataframe = fix_dataframes(dataframes)
+    dh = DataframeHolder(dataframe)
+    dh.students.aggregate(teste)
+#    print(dh.students['MEDIA_FINAL'].aggregate(teste))
     return dataframe
 
 
