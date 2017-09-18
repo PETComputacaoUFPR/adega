@@ -34,3 +34,9 @@ def general_ira(df):
     fixed = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
     return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
+
+def total_evasion_rate(df):
+    total_student = df['MATR_ALUNO'].shape[0]
+    total_evasion = df.loc[(df['FORMA_EVASAO']!=('Sem evasão')) & (df['FORMA_EVASAO']!=('Formatura')) & (df['FORMA_EVASAO']!=('Reintegração'))].shape[0]
+
+    return total_evasion / total_student
