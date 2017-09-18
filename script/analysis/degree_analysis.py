@@ -40,3 +40,25 @@ def total_evasion_rate(df):
     total_evasion = df.loc[(df['FORMA_EVASAO']!=('Sem evasão')) & (df['FORMA_EVASAO']!=('Formatura')) & (df['FORMA_EVASAO']!=('Reintegração'))].shape[0]
 
     return total_evasion / total_student
+
+def average_graduation_time(df):
+    graduates = df.loc[(df.FORMA_EVASAO == ('Formatura'))]
+    total_graduate = graduates.shape[0]
+    average_time = 0
+    for index, row in graduates.iterrows():
+        year_end = 2016
+        semester_end = 2
+        if pd.notnull(row['PERIODO_EVASAO']):
+            year_end = int(row['PERIODO_EVASAO'][:4])
+            try: 
+                semester_end = int(row['PERIODO_EVASAO'][5])
+            except ValueError:
+                semester_end = 2
+        year = int(row['PERIODO_INGRESSO'][:4])
+        semester = int(row['PERIODO_INGRESSO'][5])
+        difference = 2 * (year_end - year) + (semester_end - semester) + 1
+        average_time += difference
+    average_time /= total_graduate
+    average_time /= 2
+    
+    return average_time
