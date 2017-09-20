@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-df = pd.read_excel("../base/historico.xls")
+df = pd.read_excel("../base/base-2016-1/historico.xls")
 
 # imprime completamente um dataframe
 def print_analise(d):
@@ -15,18 +15,20 @@ def func(x,matr):
 	return (x['counts'] / c)
 
 #quantidade de matriculas
-def qnt_matr(df):
+def counts_matr(df):
 	return df.groupby(['COD_ATIV_CURRIC']).size()
 
 
-def analise(df):
-	c = df.groupby(['COD_ATIV_CURRIC']).size()
-	diciplinas = df.groupby(['COD_ATIV_CURRIC','SIGLA']).size().reset_index(name='counts')
-	i=diciplinas.groupby(['COD_ATIV_CURRIC','SIGLA','counts']).apply(lambda x: func(x,matr)).reset_index(name='taxas gerais')
-	print_analise(i)
+def analysis(df):
+	qnt_matr = counts_matr(df) #quantidade de matriculas disciplina
+	#conta quantas vezes os valores de 'SIGLA' se repete para cada disciplina
+	disciplinas = df.groupby(['COD_ATIV_CURRIC','SIGLA']).size().reset_index(name='counts')
+	#adiciona mais uma coluna ao df disciplina com as taxas de cada valor de 'SIGLA'
+	disciplina=disciplinas.groupby(['COD_ATIV_CURRIC','SIGLA','counts']).apply(lambda x: func(x,matr)).reset_index(name='taxas gerais')
+	return disciplina
 
-matr = qnt_matr(df)
-analise(df)
+matr = counts_matr(df)
+analysis(df)
 
 
 
