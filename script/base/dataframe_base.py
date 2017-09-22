@@ -2,10 +2,17 @@ import re
 import os
 import sys
 import pandas as pd
-
+import numpy as np
 from glob import glob
 from json import load as json_load
 from utils.situations import *
+
+
+class DataframeHolder:
+    def __init__(self, dataframe):
+        self.students = dataframe.groupby('MATR_ALUNO')
+        self.courses = dataframe.groupby('COD_ATIV_CURRIC')
+        self.admission = dataframe.groupby(['ANO_INGRESSO', 'SEMESTRE_INGRESSO'])
 
 
 def load_dataframes(cwd='.'):
@@ -23,7 +30,11 @@ def load_dataframes(cwd='.'):
                 dataframes.append(dh)
 
     dataframe = fix_dataframes(dataframes)
-    return dataframe
+
+    dh = DataframeHolder(dataframe)
+
+
+    return dh
 
 
 def read_excel(path, planilha='Planilha1'):
