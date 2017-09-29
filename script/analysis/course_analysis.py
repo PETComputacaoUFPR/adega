@@ -26,38 +26,3 @@ def analysis(df):
 	#adiciona mais uma coluna ao df disciplina com as taxas de cada valor de 'SIGLA'
 	disciplina=disciplinas.groupby(['COD_ATIV_CURRIC','SIGLA','counts']).apply(lambda x: func(x,matr)).reset_index(name='taxas gerais')
 	return disciplina
-
-matr = counts_matr(df)
-analysis(df)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
-##f = lambda x: x / c[x]
-## p = df.groupby(['COD_ATIV_CURRIC','SIGLA']).size().apply(lambda x: (x /c['CI055'])*100)
-#k = (df.sort(['ANO','PERIODO']))
-##(p.apply(lambda x: print(p['COD_ATIV_CURRIC'])))
-#
-## # .size().reset_index(name = "count");
-## # c = p.groupby(['count','SIGLA']).size()
-## ''' percorre mais uma vez a serie para aplicar a funcao lambida, se a '''
-##  c = lambda x: x+1
-## curses = df['COD_ATIV_CURRIC'].drop_duplicates()
-## 'MATR_ALUNO','
