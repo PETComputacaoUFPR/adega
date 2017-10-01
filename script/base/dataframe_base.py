@@ -8,15 +8,6 @@ from json import load as json_load
 from utils.situations import *
 
 
-def teste(d):
-    temp = d.dropna(subset=['MEDIA_FINAL'])
-    temp = temp[temp['MEDIA_FINAL'] <= 100]
-    if not temp.empty:
-        #print(temp[['MEDIA_FINAL', 'CH_TOTAL']])
-        aux = np.sum(temp['MEDIA_FINAL']*temp['CH_TOTAL'])
-        ch_total = np.sum(temp['CH_TOTAL']) * 100
-        print(aux/ch_total)
-
 class DataframeHolder:
     def __init__(self, dataframe):
         self.students = dataframe.groupby('MATR_ALUNO')
@@ -111,4 +102,4 @@ def fix_evasion(df):
                 #~ if(x != 0.0):
                     #~ print(x)
     #~ print(df.FORMA_EVASAO.str.contains(evasion[1]).fillna(5))
-    print(df[['MATR_ALUNO','FORMA_EVASAO']])
+    #~ print(df[['MATR_ALUNO','FORMA_EVASAO']])
