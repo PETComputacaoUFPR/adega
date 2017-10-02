@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import utils.situations
 df = pd.read_excel("../base/base-2016-1/historico.xls")
 
 # imprime completamente um dataframe
