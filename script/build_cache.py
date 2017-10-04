@@ -38,7 +38,8 @@ def generate_degree_data(path, dataframe):
 
 def generate_student_data(path,dataframe):
     #~ aluno_turmas(dataframe)
-    indice_aprovacao_semestral(dataframe)
+    #~ indice_aprovacao_semestral(dataframe)
+    ira_por_quantidade_disciplinas(dataframe)
     pass
 
 def generate_student_list(path):

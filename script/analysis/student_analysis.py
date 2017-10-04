@@ -10,6 +10,36 @@ def average_ira(d):
         ch_total = np.sum(temp['CH_TOTAL']) * 100
         print(aux/ch_total)
 
+def ira_por_quantidade_disciplinas(df):
+	students = {}
+	df = df.dropna(subset=['MEDIA_FINAL'])
+	total_students = len(df["MATR_ALUNO"])
+	for i in range(total_students):
+		matr = (df["MATR_ALUNO"][i])
+		if(not (matr in students)):
+			students[matr] = {}
+		
+		
+		ano = str(df["ANO"][i])
+		semestre = str(df["PERIODO"][i])
+		situacao = int(df["SITUACAO"][i])
+		nota = float(df["MEDIA_FINAL"][i])
+		
+		
+		
+		
+		if(situacao in Situation.SITUATION_AFFECT_IRA):
+			if not(ano+"/"+semestre in students[matr]):
+				students[matr][ano+"/"+semestre] = [0,0]
+			students[matr][ano+"/"+semestre][0]+=nota
+			students[matr][ano+"/"+semestre][1]+=1
+	
+	for matr in students:
+		for periodo in students[matr]:
+			if(students[matr][periodo][1] != 0):
+				students[matr][periodo][0]/=students[matr][periodo][1]*100
+	print(students)
+
 def indice_aprovacao_semestral(df):
 	students = {}
 	df = df.dropna(subset=['MEDIA_FINAL'])
