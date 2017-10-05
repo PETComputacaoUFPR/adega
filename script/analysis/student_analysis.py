@@ -8,7 +8,14 @@ def average_ira(d):
         #print(temp[['MEDIA_FINAL', 'CH_TOTAL']])
         aux = np.sum(temp['MEDIA_FINAL']*temp['CH_TOTAL'])
         ch_total = np.sum(temp['CH_TOTAL']) * 100
-        print(aux/ch_total)
+        return(aux/ch_total)
+
+def ira_semestra(df):
+	aux = ira_por_quantidade_disciplinas(df)
+	for matr in aux:
+		for periodo in aux[matr]:
+			aux[matr][periodo] = aux[matr][periodo][0]
+	return aux
 
 def ira_por_quantidade_disciplinas(df):
 	students = {}
@@ -20,7 +27,7 @@ def ira_por_quantidade_disciplinas(df):
 			students[matr] = {}
 		
 		
-		ano = str(df["ANO"][i])
+		ano = str(int(df["ANO"][i]))
 		semestre = str(df["PERIODO"][i])
 		situacao = int(df["SITUACAO"][i])
 		nota = float(df["MEDIA_FINAL"][i])
@@ -38,7 +45,7 @@ def ira_por_quantidade_disciplinas(df):
 		for periodo in students[matr]:
 			if(students[matr][periodo][1] != 0):
 				students[matr][periodo][0]/=students[matr][periodo][1]*100
-	print(students)
+	return(students)
 
 def indice_aprovacao_semestral(df):
 	students = {}
@@ -50,7 +57,7 @@ def indice_aprovacao_semestral(df):
 			students[matr] = {}
 		
 		
-		ano = str(df["ANO"][i])
+		ano = str(int(df["ANO"][i]))
 		semestre = str(df["PERIODO"][i])
 		situacao = int(df["SITUACAO"][i])
 		
@@ -63,7 +70,7 @@ def indice_aprovacao_semestral(df):
 			students[matr][ano+"/"+semestre][1]+=1
 		if(situacao in Situation.SITUATION_FAIL):
 			students[matr][ano+"/"+semestre][1]+=1
-	print(students)
+	return(students)
 		
 
 def aluno_turmas(df):
@@ -79,7 +86,7 @@ def aluno_turmas(df):
 			if(s[0] == df["SITUACAO"][i]):
 				situacao = s[1]
 				break
-		ano = (df["ANO"][i])
+		ano = str(int(df["ANO"][i]))
 		codigo = (df["COD_ATIV_CURRIC"][i])
 		nome = (df["NOME_ATIV_CURRIC"][i])
 		nota = (df["MEDIA_FINAL"][i])
@@ -93,4 +100,4 @@ def aluno_turmas(df):
 			"semestre": semestre,
 			"situacao": situacao
 		})
-	print(students)
+	return(students)
