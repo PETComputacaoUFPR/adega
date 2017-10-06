@@ -23,7 +23,7 @@ def build_cache(dataframe):
     build_path(path)
 
     generate_student_data(path, dataframe)
-#    generate_degree_data(path, dataframe)
+    generate_degree_data(path, dataframe)
     generate_student_data(path,dataframe)
 #    generate_student_list(path)
 #    generate_admission_data(path)
@@ -32,9 +32,11 @@ def build_cache(dataframe):
 #    generate_course_general_data(path)
 
 def generate_degree_data(path, dataframe):
-    de_an.average_graduation(dataframe)
-    de_an.general_failure(dataframe)
-    de_an.general_ira(dataframe)
+    average_graduation(dataframe)
+    general_failure(dataframe)
+    general_ira(dataframe)
+    total_evasion_rate(dataframe)
+    average_graduation_time(dataframe)
     pass
 
 def generate_student_data(path,dataframe):
