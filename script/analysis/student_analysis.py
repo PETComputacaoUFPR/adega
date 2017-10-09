@@ -1,6 +1,10 @@
 import pandas as pd
 from utils.situations import *
 
+
+ANO_ATUAL = 2018
+SEMESTRE_ATUAL = 1
+
 def average_ira(d):
     temp = d.dropna(subset=['MEDIA_FINAL'])
     temp = temp[temp['MEDIA_FINAL'] <= 100]
@@ -9,6 +13,14 @@ def average_ira(d):
         aux = np.sum(temp['MEDIA_FINAL']*temp['CH_TOTAL'])
         ch_total = np.sum(temp['CH_TOTAL']) * 100
         return(aux/ch_total)
+
+def periodo_pretendido(df):
+	aux = df.groupby(["MATR_ALUNO","ANO_INGRESSO","SEMESTRE_INGRESSO"])
+	students = {}
+	for x in aux:
+		print(x[0][0] + " : "+x[0][1]+" "+x[0][2]) 
+		students[x[0][0]] = (ANO_ATUAL - int(x[0][1]))*2 + SEMESTRE_ATUAL - int(x[0][2]) + 1
+	return students
 
 def ira_semestra(df):
 	aux = ira_por_quantidade_disciplinas(df)

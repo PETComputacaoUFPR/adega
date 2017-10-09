@@ -55,7 +55,7 @@ def fix_dataframes(dataframes):
     clean_register(register)
 
     merged = pd.merge(history, register, how='right', on=['MATR_ALUNO'])
-
+    #~ print(merged)
     fix_situation(merged)
 #    fix_admission(merged)
     fix_evasion(merged)
