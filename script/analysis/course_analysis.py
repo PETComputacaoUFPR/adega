@@ -81,6 +81,7 @@ def Main(df):
     matr = counts_matr(df)
     matr_semes = matr_semestre(df)
     print_analise(merged)
+    
 # main()
 # matr = counts_matr(df)
 # analysis(df)
