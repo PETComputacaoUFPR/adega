@@ -39,7 +39,6 @@ def total_evasion_rate(df):
     students = df['MATR_ALUNO'].drop_duplicates()
     total_student = students.shape[0]
     total_evasion = students.loc[(df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)].shape[0]
-    #voltando um aluno com evasao a mais do que deveria, devido a mudanca na tabela tem um ATIVO a menos
 
     return total_evasion / total_student
 
@@ -47,15 +46,15 @@ def average_graduation_time(df):
     graduates = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
     total_graduate = graduates.shape[0]
     average_time = 0
+    year_end = int(df['ANO'].max())
+    semester_end = graduates['PERIODO'].max()
     for index, row in graduates.iterrows():
-        year_end = 2016
-        semester_end = 2
         if pd.notnull(row['ANO_EVASAO']):
             year_end = int(row['ANO_EVASAO'])
             try: 
                 semester_end = int(row['SEMESTRE_EVASAO'])
             except ValueError:
-                semester_end = 2
+                semester_end = graduates['PERIODO'].max()
         year = int(row['ANO_INGRESSO'])
         semester = int(row['SEMESTRE_INGRESSO'])
         difference = 2 * (year_end - year) + (semester_end - semester) + 1
