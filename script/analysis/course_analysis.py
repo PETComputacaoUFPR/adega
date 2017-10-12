@@ -7,6 +7,7 @@ df = pd.read_excel("../base/historico.xls")
 
 # imprime completamente um dataframe
 
+
 def print_analise(d):
     with pd.option_context('display.max_rows', None, 'display.max_columns', 27):
         print(d)
@@ -20,8 +21,10 @@ def func(x, matr):
 
 # quantidade de matriculas
 
+
 def counts_matr(df):
     return df.groupby(['COD_ATIV_CURRIC']).size()
+
 
 def analysis(df):
     qnt_matr = counts_matr(df)  # quantidade de matriculas disciplina
@@ -36,9 +39,9 @@ def analysis(df):
 
 
 def qnt_aprov(df):
-    qnt = df.groupby(['MATR_ALUNO','COD_ATIV_CURRIC']).size().reset_index(name='quantida aprov')
+    qnt = df.groupby(['COD_ATIV_CURRIC', 'MATR_ALUNO']).size()
+    print_analise(qnt)
     return qnt
-    # print(qnt)
 
 
 matr = counts_matr(df)
