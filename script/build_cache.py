@@ -39,13 +39,15 @@ def generate_degree_data(path, dataframe):
 def generate_student_data(path,dataframe):
     #~ print(aluno_turmas(dataframe))
     #~ print(indice_aprovacao_semestral(dataframe))
-    #~ print(ira_por_quantidade_disciplinas(dataframe))
-    #~ print(ira_semestra(dataframe))
+    #~ print("2007/1" in ira_por_quantidade_disciplinas(dataframe)["GRR20066955"])
+    #~ print(ira_semestra(dataframe)["GRR20079775"])
     #~ aluno_turmas(dataframe)
     #~ indice_aprovacao_semestral(dataframe)
     #~ ira_por_quantidade_disciplinas(dataframe)
     #~ ira_semestra(dataframe)
-    periodo_pretendido(dataframe)
+    #~ periodo_pretendido(dataframe)
+    #~ print(periodo_real(dataframe))
+    print(posicao_turmaIngresso_semestral(dataframe))
     pass
 
 def generate_student_list(path):
