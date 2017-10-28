@@ -24,11 +24,11 @@ def counts_matr(df):
 # taxas e quantidades semetrais
 def analysis(df):
     qnt_matr = counts_matr(df)  # quantidade de matriculas disciplina
-    # conta quantas vezes os valores de 'SIGLA' se repete para cada disciplina
-    disciplinas = df.groupby(['COD_ATIV_CURRIC', 'SIGLA']
+    # conta quantas vezes os valores de 'SITUACAO' se repete para cada disciplina
+    disciplinas = df.groupby(['COD_ATIV_CURRIC', 'SITUACAO']
                              ).size().reset_index(name='Quantidade')
-    # adiciona mais uma coluna ao df disciplina com as taxas de cada valor de 'SIGLA'
-    disciplina = disciplinas.groupby(['COD_ATIV_CURRIC', 'SIGLA', 'Quantidade']).apply(
+    # adiciona mais uma coluna ao df disciplina com as taxas de cada valor de 'SITUACAO'
+    disciplina = disciplinas.groupby(['COD_ATIV_CURRIC', 'SITUACAO', 'Quantidade']).apply(
         lambda x: func(x, qnt_matr)).reset_index(name='Taxas gerais')
     disciplina = disciplina.drop('level_3',1) # retira coluna duplicada do index
     return disciplina
@@ -41,8 +41,8 @@ def qnt_aprov(df):
 def df_to_json(disciplina,qnt_matr):
     for dis in qnt_matr.keys():
         disc = disciplina.loc[disciplina['COD_ATIV_CURRIC']==dis].drop('COD_ATIV_CURRIC',1) # separa o dataframe em disciplina e elimina a coluna codigo
-        # seta a coluna sigla como index
-        disc = disc.set_index('SIGLA').to_dict()
+        # seta a coluna SITUACAO como index
+        disc = disc.set_index('SITUACAO').to_dict()
         # cria o json
         with open(dis+'.json','w') as f:
             json.dump(disc,f,indent=4)
@@ -63,9 +63,9 @@ def func_semestre(x, matr):
 
 def analysis_semestre(df):
     qnt_matr_semestre = matr_semestre(df)
-    discipline_semestre = df.groupby(['COD_ATIV_CURRIC', 'PERIODO', 'ANO', 'SIGLA']).size(
+    discipline_semestre = df.groupby(['COD_ATIV_CURRIC', 'PERIODO', 'ANO', 'SITUACAO']).size(
     ).reset_index(name='counts_semestre')
-    discipline_semestre = discipline_semestre.groupby(['COD_ATIV_CURRIC', 'PERIODO', 'ANO', 'SIGLA']).apply(lambda x: func_semestre(x,
+    discipline_semestre = discipline_semestre.groupby(['COD_ATIV_CURRIC', 'PERIODO', 'ANO', 'SITUACAO']).apply(lambda x: func_semestre(x,
                                                                                                         qnt_matr_semestre)).reset_index(name='taxas_semetrais')
 
     return discipline_semestre
