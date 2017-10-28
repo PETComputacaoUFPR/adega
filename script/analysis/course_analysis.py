@@ -3,6 +3,8 @@ import pandas as pd
 import json
 import numpy as np
 import utils.situations
+from collections import OrderedDict, defaultdict
+
 
 # df = pd.read_excel("../base/base-2016-1/historico.xls")
 # imprime completamente um dataframe
@@ -17,7 +19,7 @@ def print_analise(d):
 
 def func(x, matr):
     c = matr[x['COD_ATIV_CURRIC']].values[0]
-    return (x['counts'] / c)
+    return (x['Quantidade'] / c)
 
 # quantidade de matriculas
 
@@ -30,15 +32,18 @@ def analysis(df):
     qnt_matr = counts_matr(df)  # quantidade de matriculas disciplina
     # conta quantas vezes os valores de 'SIGLA' se repete para cada disciplina
     disciplinas = df.groupby(['COD_ATIV_CURRIC', 'SIGLA']
-                             ).size().reset_index(name='counts')
+                             ).size().reset_index(name='Quantidade')
     # adiciona mais uma coluna ao df disciplina com as taxas de cada valor de 'SIGLA'
-    disciplina = disciplinas.groupby(['COD_ATIV_CURRIC', 'SIGLA', 'counts']).apply(
-        lambda x: func(x, qnt_matr)).reset_index(name='taxas gerais')
-    # print(disciplina)
-    return disciplina
+    disciplina = disciplinas.groupby(['COD_ATIV_CURRIC', 'SIGLA', 'Quantidade']).apply(
+        lambda x: func(x, qnt_matr)).reset_index(name='Taxas gerais')
+    disciplina = disciplina.drop('level_3',1)
+    for dis in qnt_matr.keys():
+        disc = disciplina.loc[disciplina['COD_ATIV_CURRIC']==dis].drop('COD_ATIV_CURRIC',1)
+        disc = disc.set_index('SIGLA').to_dict(into=OrderedDict)
+        with open(dis+'.json','w') as f:
+            json.dump(disc,f,indent=4)
+    return disciplina.set_index('COD_ATIV_CURRIC')
 # quantidade de vezes cursadas ate obter a aprovacao
-
-
 def qnt_aprov(df):
     qnt = df.groupby(['MATR_ALUNO', 'COD_ATIV_CURRIC']
                      ).size().reset_index(name='qnt_aprov')
@@ -77,9 +82,10 @@ def analysis_semestre(df):
 def Main(df):
     Analysis = analysis(df)
     Analysis_semestre = analysis_semestre(df)
+    # print_analise(Analysis)
     matr = counts_matr(df)
     matr_semes = matr_semestre(df)
-    print_analise(merged)
+    # print_analise(merged)
 
 # main()
 # matr = counts_matr(df)

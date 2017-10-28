@@ -10,7 +10,7 @@ from utils.situations import *
 
 def load_dataframes(cwd='.'):
     dataframes = []
-    for path, dirs, files in os.walk(cwd):       
+    for path, dirs, files in os.walk(cwd):
         for f in files:
             file_path = path + '/' + f
             dh = {'name': f, 'dataframe': None}
@@ -84,5 +84,6 @@ def fix_admission(df):
 
 
 def fix_evasion(df):
-    for evasion in EvasionForm.EVASION_FORM:
-        df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(False), 'FORMA_EVASAO'] = evasion[0]
+    # for evasion in EvasionForm.EVASION_FORM:
+        # df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(False), 'FORMA_EVASAO'] = evasion[0]
+        pass
