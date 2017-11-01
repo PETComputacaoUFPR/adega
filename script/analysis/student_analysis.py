@@ -5,6 +5,19 @@ from utils.situations import *
 ANO_ATUAL = 2017
 SEMESTRE_ATUAL = 2
 
+def listagem_evasao(df):
+	#~ print(df["FORMA_EVASAO"].drop_duplicates())
+	#~ print(df)
+	#~ print(Situation.SITUATION_AFFECT_IRA)
+	#~ print(df)
+	aux = df[df.FORMA_EVASAO != 1]
+	print(aux)
+	#~ print(aux.where(aux.SITUACAO != 1)["SITUACAO"])
+	#~ print(df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)])
+	#~ print(df.where(df["SITUACAO"] in Situation.SITUATION_AFFECT_IRA))
+	#~ aux = df.drop_duplicates(['MATR_ALUNO'], keep='last')
+	#~ print(aux["FORMA_EVASAO"].drop_duplicates())
+
 def average_ira(d):
     temp = d.dropna(subset=['MEDIA_FINAL'])
     temp = temp[temp['MEDIA_FINAL'] <= 100]

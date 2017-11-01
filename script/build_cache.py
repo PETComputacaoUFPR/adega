@@ -22,8 +22,7 @@ def build_cache(dataframe):
     path += "/curso"
     build_path(path)
 
-    generate_student_data(path, dataframe)
-    generate_degree_data(path, dataframe)
+#    generate_degree_data(path, dataframe)
     generate_student_data(path,dataframe)
 #    generate_student_list(path)
 #    generate_admission_data(path)
@@ -35,8 +34,6 @@ def generate_degree_data(path, dataframe):
     average_graduation(dataframe)
     general_failure(dataframe)
     general_ira(dataframe)
-    total_evasion_rate(dataframe)
-    average_graduation_time(dataframe)
     pass
 
 def generate_student_data(path,dataframe):
@@ -50,7 +47,8 @@ def generate_student_data(path,dataframe):
     #~ ira_semestra(dataframe)
     #~ periodo_pretendido(dataframe)
     #~ print(periodo_real(dataframe))
-    print(posicao_turmaIngresso_semestral(dataframe))
+    #~ print(posicao_turmaIngresso_semestral(dataframe))
+    print(listagem_evasao(dataframe))
     pass
 
 def generate_student_list(path):
