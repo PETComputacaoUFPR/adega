@@ -2,10 +2,17 @@ import re
 import os
 import sys
 import pandas as pd
-
+import numpy as np
 from glob import glob
 from json import load as json_load
 from utils.situations import *
+
+
+class DataframeHolder:
+    def __init__(self, dataframe):
+        self.students = dataframe.groupby('MATR_ALUNO')
+        self.courses = dataframe.groupby('COD_ATIV_CURRIC')
+        self.admission = dataframe.groupby(['ANO_INGRESSO', 'SEMESTRE_INGRESSO'])
 
 
 def load_dataframes(cwd='.'):
@@ -23,6 +30,10 @@ def load_dataframes(cwd='.'):
                 dataframes.append(dh)
 
     dataframe = fix_dataframes(dataframes)
+
+    dh = DataframeHolder(dataframe)
+    #~ dh.students.aggregate(teste)
+#    print(dh.students['MEDIA_FINAL'].aggregate(teste))
     return dataframe
 
 
@@ -84,5 +95,15 @@ def fix_admission(df):
 
 
 def fix_evasion(df):
+    evasionForms = [x[1] for x in EvasionForm.EVASION_FORM]
+    df.loc[~df.FORMA_EVASAO.isin(evasionForms), 'FORMA_EVASAO'] = 100
     for evasion in EvasionForm.EVASION_FORM:
-        df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(False), 'FORMA_EVASAO'] = evasion[0]
+        #~ df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(1.0), 'FORMA_EVASAO'] = evasion[0]
+        df.loc[df.FORMA_EVASAO == evasion[1], 'FORMA_EVASAO'] = evasion[0]
+
+        #~ if(evasion[0] == 100):
+            #~ for x in df.FORMA_EVASAO.str.contains(evasion[1]).fillna(False):
+                #~ if(x != 0.0):
+                    #~ print(x)
+    #~ print(df.FORMA_EVASAO.str.contains(evasion[1]).fillna(5))
+    #~ print(df[['MATR_ALUNO','FORMA_EVASAO']])
