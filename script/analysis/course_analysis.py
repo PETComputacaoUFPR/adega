@@ -45,10 +45,10 @@ def df_to_json(disciplina,qnt_matr):
         disc = disciplina.loc[disciplina['COD_ATIV_CURRIC']==dis].drop('COD_ATIV_CURRIC',1) # separa o dataframe em disciplina e elimina a coluna codigo
         # seta a coluna SITUACAO como index
         disc = disc.set_index('SITUACAO').to_dict()
-        for i in range(16):
-            if not(i in disc['Quantidade'].keys()):
-                disc['Quantidade'][i] = 0
-                disc['Taxas gerais'][i] = 0
+        for i in Situation.SITUATIONS:
+            if not(i[0] in disc['Quantidade'].keys()):
+                disc['Quantidade'][i[0]] = 0
+                disc['Taxas gerais'][i[0]] = 0
         # cria o json
         with open(dis+'.json','w') as f:
             json.dump(disc,f,indent=4)
@@ -76,6 +76,7 @@ def analysis_semestre(df):
 
     return discipline_semestre
 def Main(df):
+
     Analysis = analysis(df)
     Analysis_semestre = analysis_semestre(df)
     matr = counts_matr(df)
