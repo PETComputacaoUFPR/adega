@@ -137,3 +137,22 @@ class Situation:
         SIT_REPROVADO_FREQ,
         SIT_CONHECIMENTO_REPROVADO
     )
+
+    """
+    isso deve ser pra filtrar fora coisas que não são disciplinas cumpridas
+    
+    como "trancamento administrativo" e "horas"
+    
+    importante pra saber quantas matérias um aluno REALMENTE fez em um semestre
+    """
+    SITUATION_COURSED = (
+        SIT_APROVADO,
+        SIT_REPROVADO,
+        SIT_REPROVADO_FREQ,
+        SIT_DISPENSA_COM_NOTA,
+        SIT_CONHECIMENTO_APROVADO,
+        SIT_CONHECIMENTO_REPROVADO,
+        SIT_REPROVADO_SEM_NOTA,
+        SIT_INCOMPLETO,
+        SIT_CANCELADO,
+    )

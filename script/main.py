@@ -5,6 +5,8 @@ from build_cache import build_cache
 from datetime import timedelta
 from analysis.degree_analysis import *
 
+
+
 def main():
     start_time = time.clock()
     start_time_exec = time.time()
