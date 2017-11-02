@@ -2,7 +2,7 @@
 import pandas as pd
 import json
 import numpy as np
-import utils.situations
+from utils.situations import *
 def print_analise(d):
     '''imprime todo o dataframe, por default o pandas so imprime as
     10 linhas inicias a 10 finais, com essa funcao o pandas imprime
@@ -24,10 +24,12 @@ def counts_matr(df):
 # taxas e quantidades semetrais
 def analysis(df):
     qnt_matr = counts_matr(df)  # quantidade de matriculas disciplina
-    # conta quantas vezes os valores de 'SITUACAO' se repete para cada disciplina
+    ''' conta quantas vezes os valores de 'SITUACAO' se repete para
+    cada disciplina'''
     disciplinas = df.groupby(['COD_ATIV_CURRIC', 'SITUACAO']
                              ).size().reset_index(name='Quantidade')
-    # adiciona mais uma coluna ao df disciplina com as taxas de cada valor de 'SITUACAO'
+    ''' adiciona mais uma coluna ao df disciplina com as taxas de cada valor
+     de 'SITUACAO' '''
     disciplina = disciplinas.groupby(['COD_ATIV_CURRIC', 'SITUACAO', 'Quantidade']).apply(
         lambda x: func(x, qnt_matr)).reset_index(name='Taxas gerais')
     disciplina = disciplina.drop('level_3',1) # retira coluna duplicada do index
@@ -43,6 +45,10 @@ def df_to_json(disciplina,qnt_matr):
         disc = disciplina.loc[disciplina['COD_ATIV_CURRIC']==dis].drop('COD_ATIV_CURRIC',1) # separa o dataframe em disciplina e elimina a coluna codigo
         # seta a coluna SITUACAO como index
         disc = disc.set_index('SITUACAO').to_dict()
+        for i in range(16):
+            if not(i in disc['Quantidade'].keys()):
+                disc['Quantidade'][i] = 0
+                disc['Taxas gerais'][i] = 0
         # cria o json
         with open(dis+'.json','w') as f:
             json.dump(disc,f,indent=4)
