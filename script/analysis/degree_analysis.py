@@ -34,6 +34,12 @@ def general_ira(df):
     fixed = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
     return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
+    
+def current_ira(df):
+    fixed = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
+    fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
+    fixed = fixed[fixed.MEDIA_FINAL <= 100]
+    return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
 
 def total_evasion_rate(df):
     students = df['MATR_ALUNO'].drop_duplicates()
