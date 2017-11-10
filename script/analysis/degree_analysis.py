@@ -85,3 +85,6 @@ def average_graduation_time(df):
     average_time /= 2
 
     return average_time
+
+def total_students(df):
+    return df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)].drop_duplicates('MATR_ALUNO').shape[0]
