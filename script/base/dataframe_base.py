@@ -67,7 +67,7 @@ def fix_dataframes(dataframes):
 def clean_history(df):
     df.drop(['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
              'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
-             'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
+             'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR', 'NUM_VERSAO'
             ], axis=1, inplace=True)
     df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
 
@@ -80,7 +80,7 @@ def clean_register(df):
     df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
 
     df.drop(['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE',
-             'COD_CURSO', 'NUM_VERSAO', 'PERIODO_INGRESSO', 'PERIODO_EVASAO',
+             'COD_CURSO', 'PERIODO_INGRESSO', 'PERIODO_EVASAO',
             ],axis=1, inplace=True)
 
 

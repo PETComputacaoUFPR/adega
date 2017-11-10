@@ -48,6 +48,15 @@ def total_evasion_rate(df):
 
     return total_evasion / total_student
 
+def current_evasion_rate(df):
+    ano_grade = int(df.loc[df['NUM_VERSAO'].idxmax()]['NUM_VERSAO'])
+    students = df.loc[(df['NUM_VERSAO'] == ano_grade)]
+    students = students['MATR_ALUNO'].drop_duplicates()
+    total_student = students.shape[0]
+    total_evasion = students.loc[(df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)].shape[0]
+
+    return total_evasion / total_student
+
 def average_graduation_time(df):
     graduates = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
     total_graduate = graduates.shape[0]
