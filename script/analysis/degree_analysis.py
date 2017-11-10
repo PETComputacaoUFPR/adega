@@ -36,6 +36,13 @@ def general_ira(df):
     return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
     
 def current_ira(df):
+    ano_grade = int(df.loc[df['NUM_VERSAO'].idxmax()]['NUM_VERSAO'])
+    fixed = df.loc[(df['NUM_VERSAO'] == ano_grade)]
+    fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
+    fixed = fixed[fixed.MEDIA_FINAL <= 100]
+    return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
+    
+def current_students_ira(df):
     fixed = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
     fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
