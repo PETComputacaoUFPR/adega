@@ -1,1 +1,226 @@
-{}
+[
+    {
+        "nota": 94.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI055",
+        "ano": "2013",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 52.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM201",
+        "ano": "2013",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 99.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI068",
+        "ano": "2013",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 44.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM045",
+        "ano": "2013",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 62.5,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM046",
+        "ano": "2013",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 78.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI056",
+        "ano": "2013",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 86.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM202",
+        "ano": "2013",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 30.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI067",
+        "ano": "2013",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 97.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI210",
+        "ano": "2013",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 44.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI057",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 32.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI237",
+        "ano": "2014",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 75.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI067",
+        "ano": "2014",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 17.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI212",
+        "ano": "2014",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 18.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2014",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 74.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI057",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 35.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI237",
+        "ano": "2014",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Cancelado",
+        "codigo": "CI212",
+        "ano": "2014",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI064",
+        "ano": "2014",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 23.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM045",
+        "ano": "2015",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 41.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI237",
+        "ano": "2015",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 14.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI212",
+        "ano": "2015",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 93.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI237",
+        "ano": "2015",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI212",
+        "ano": "2015",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI065",
+        "ano": "2016",
+        "nome": "ALGORITMOS E TEORIA DOS GRAFOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI221",
+        "ano": "2016",
+        "nome": "ENGENHARIA DE SOFTWARE"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM045",
+        "ano": "2016",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI215",
+        "ano": "2016",
+        "nome": "SISTEMAS OPERACIONAIS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI062",
+        "ano": "2016",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    }
+]

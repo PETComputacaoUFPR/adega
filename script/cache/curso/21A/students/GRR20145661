@@ -1,1 +1,154 @@
-{}
+[
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 27.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM201",
+        "ano": "2014",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 5.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2014",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CM045",
+        "ano": "2014",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CM046",
+        "ano": "2014",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 10.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Cancelado",
+        "codigo": "CM201",
+        "ano": "2014",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 34.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2014",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 1.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2015",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 10.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM201",
+        "ano": "2015",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 27.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2015",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 20.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2015",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 14.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2015",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 96.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI166",
+        "ano": "2015",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI055",
+        "ano": "2016",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM201",
+        "ano": "2016",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI068",
+        "ano": "2016",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM045",
+        "ano": "2016",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM046",
+        "ano": "2016",
+        "nome": "INTRODUCAO A ALGEBRA"
+    }
+]

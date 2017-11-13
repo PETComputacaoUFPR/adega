@@ -1,1 +1,330 @@
-{}
+[
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI055",
+        "ano": "2012",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM201",
+        "ano": "2012",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI068",
+        "ano": "2012",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM045",
+        "ano": "2012",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM046",
+        "ano": "2012",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 31.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2012",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 9.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM201",
+        "ano": "2012",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 36.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2012",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 35.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM045",
+        "ano": "2012",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 30.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2012",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 59.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI055",
+        "ano": "2013",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 53.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM201",
+        "ano": "2013",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 82.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI068",
+        "ano": "2013",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 39.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM045",
+        "ano": "2013",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2013",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 87.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI056",
+        "ano": "2013",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM202",
+        "ano": "2013",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM046",
+        "ano": "2013",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 17.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI067",
+        "ano": "2013",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 57.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI210",
+        "ano": "2013",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 8.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI057",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 27.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM045",
+        "ano": "2014",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 7.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI237",
+        "ano": "2014",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI067",
+        "ano": "2014",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CI212",
+        "ano": "2014",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 5.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2014",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 55.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI057",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 25.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI237",
+        "ano": "2014",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 82.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI166",
+        "ano": "2014",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 20.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI212",
+        "ano": "2014",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI064",
+        "ano": "2014",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 37.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM005",
+        "ano": "2015",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 53.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM045",
+        "ano": "2015",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 33.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI237",
+        "ano": "2015",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 55.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI212",
+        "ano": "2015",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI237",
+        "ano": "2015",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CE003",
+        "ano": "2016",
+        "nome": "Estat\u00edstica II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM045",
+        "ano": "2016",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI215",
+        "ano": "2016",
+        "nome": "SISTEMAS OPERACIONAIS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI062",
+        "ano": "2016",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI320",
+        "ano": "2016",
+        "nome": "T\u00f3picos em Programa\u00e7\u00e3o de Computadores"
+    }
+]

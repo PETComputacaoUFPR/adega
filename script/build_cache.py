@@ -81,6 +81,7 @@ def generate_student_data(path, dataframe):
 	for x in all_grrs:
 		student_data[x] = dict()
 	
+	
 	analises = [
 		# tupla que contem no primeiro elemento a funcao que retorna um dicionario com {"GRR": valor}
 		# e na segunda posicao o nome que esta analise tera no json
@@ -108,10 +109,10 @@ def generate_student_data(path, dataframe):
 	]
 	
 	for x in student_data:
-		#~ for a in analises:											# Usar para fazer a verificacao de 
-			#~ student_data[x][a[1]] = a[0][x]							# analises nulas para um GRR
+		for a in analises:											# Usar para fazer a verificacao de 
+			student_data[x][a[1]] = a[0][x]							# analises nulas para um GRR
 			
-		save_json(path+x, student_data[x])
+		save_json(path+x, student_data[x][a[1]])
 	
 	#Falta verificar se alguem nao recebeu algumas analises
 	

@@ -1,1 +1,482 @@
-{}
+[
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI205",
+        "ano": "2010",
+        "nome": "ADMINISTRACAO DA PRODUCAO P/ INFORMATICA"
+    },
+    {
+        "nota": 90.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI069",
+        "ano": "2010",
+        "nome": "ADMINISTRACAO DE EMPRESAS DE INFORMATICA"
+    },
+    {
+        "nota": 59.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI204",
+        "ano": "2010",
+        "nome": "ADMINISTRACAO DE INFORMATICA"
+    },
+    {
+        "nota": 96.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CM005",
+        "ano": "2010",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 94.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI055",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 82.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI056",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 74.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI057",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 78.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI065",
+        "ano": "2010",
+        "nome": "ALGORITMOS E TEORIA DOS GRAFOS"
+    },
+    {
+        "nota": 81.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI219",
+        "ano": "2010",
+        "nome": "ANALISE E PROJETOS DE SISTEMAS"
+    },
+    {
+        "nota": 85.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CM201",
+        "ano": "2010",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 53.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CM202",
+        "ano": "2010",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 85.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI068",
+        "ano": "2010",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 100.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "HL077",
+        "ano": "2010",
+        "nome": "COMUNICACAO E LINGUISTICA"
+    },
+    {
+        "nota": 73.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI211",
+        "ano": "2010",
+        "nome": "CONSTRUCAO DE COMPILADORES"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "SC202",
+        "ano": "2010",
+        "nome": "CONTABILIDADE DE CUSTOS PARA INFORMATICA"
+    },
+    {
+        "nota": 78.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "SC003",
+        "ano": "2010",
+        "nome": "CONTABILIDADE GERAL I"
+    },
+    {
+        "nota": 75.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "SE045",
+        "ano": "2010",
+        "nome": "ECONOMIA II"
+    },
+    {
+        "nota": 54.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI221",
+        "ano": "2010",
+        "nome": "ENGENHARIA DE SOFTWARE"
+    },
+    {
+        "nota": 78.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI235",
+        "ano": "2010",
+        "nome": "ESTAGIO SUPERVISIONADO I"
+    },
+    {
+        "nota": 83.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI236",
+        "ano": "2010",
+        "nome": "ESTAGIO SUPERVISIONADO II"
+    },
+    {
+        "nota": 66.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CE003",
+        "ano": "2010",
+        "nome": "Estat\u00edstica II"
+    },
+    {
+        "nota": 52.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI214",
+        "ano": "2010",
+        "nome": "ESTRUTURAS DE LINGUAGENS DE PROGRAMACAO"
+    },
+    {
+        "nota": 100.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CM045",
+        "ano": "2010",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CM046",
+        "ano": "2010",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI059",
+        "ano": "2010",
+        "nome": "INTRODUCAO A TEORIA DA COMPUTACAO"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "SA214",
+        "ano": "2010",
+        "nome": "INTRODUCAO A TEORIA GERAL DA ADMINISTRACAO"
+    },
+    {
+        "nota": 89.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI063",
+        "ano": "2010",
+        "nome": "MAQUINAS PROGRAMAVEIS"
+    },
+    {
+        "nota": 100.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI237",
+        "ano": "2010",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 72.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "SC203",
+        "ano": "2010",
+        "nome": "MATEMATICA FINANCEIRA PARA INFORMATICA"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI202",
+        "ano": "2010",
+        "nome": "M\u00e9todos Num\u00e9ricos"
+    },
+    {
+        "nota": 89.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI067",
+        "ano": "2010",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI066",
+        "ano": "2010",
+        "nome": "OFICINA DE PROGRAMACAO"
+    },
+    {
+        "nota": 52.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI212",
+        "ano": "2010",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 62.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "SIN070",
+        "ano": "2010",
+        "nome": "ORIENTACAO BIBLIOGRAFICA B"
+    },
+    {
+        "nota": 76.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "TP052",
+        "ano": "2010",
+        "nome": "Pesquisa Operacional I"
+    },
+    {
+        "nota": 98.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI210",
+        "ano": "2010",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 56.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI058",
+        "ano": "2010",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI061",
+        "ano": "2010",
+        "nome": "REDE DE COMPUTADORES II"
+    },
+    {
+        "nota": 75.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI060",
+        "ano": "2010",
+        "nome": "SEMINARIOS DE INFORMATICA I"
+    },
+    {
+        "nota": 85.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI218",
+        "ano": "2010",
+        "nome": "SISTEMAS DE BANCOS DE DADOS"
+    },
+    {
+        "nota": 62.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI215",
+        "ano": "2010",
+        "nome": "SISTEMAS OPERACIONAIS"
+    },
+    {
+        "nota": 100.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI064",
+        "ano": "2010",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 68.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI062",
+        "ano": "2010",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 72.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI220",
+        "ano": "2010",
+        "nome": "TEORIA DE SISTEMAS"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI088",
+        "ano": "2010",
+        "nome": "TOPICOS EM SISTEMAS DISTRIBUIDOS"
+    },
+    {
+        "nota": 61.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI084",
+        "ano": "2010",
+        "nome": "TOPICOS EM TEORIA DOS GRAFOS"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI081",
+        "ano": "2010",
+        "nome": "TRAB DE GRADUACAO EM INTELIGENCIA ARTIFICIAL II"
+    },
+    {
+        "nota": 85.0,
+        "semestre": "1",
+        "situacao": "Dispensa de Disciplinas (com nota)",
+        "codigo": "CI070",
+        "ano": "2010",
+        "nome": "TRABALHO DE GRADUACAO EM EMGENHARIA DE SOFTWARE I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI081",
+        "ano": "2010",
+        "nome": "TRAB DE GRADUACAO EM INTELIGENCIA ARTIFICIAL II"
+    },
+    {
+        "nota": 40.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI071",
+        "ano": "2011",
+        "nome": "TRABALHO DE GRADUACAO EM ENGENHARIA DE SOFTWARE II"
+    },
+    {
+        "nota": 40.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI071",
+        "ano": "2011",
+        "nome": "TRABALHO DE GRADUACAO EM ENGENHARIA DE SOFTWARE II"
+    },
+    {
+        "nota": 40.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI071",
+        "ano": "2012",
+        "nome": "TRABALHO DE GRADUACAO EM ENGENHARIA DE SOFTWARE II"
+    },
+    {
+        "nota": 10.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI071",
+        "ano": "2012",
+        "nome": "TRABALHO DE GRADUACAO EM ENGENHARIA DE SOFTWARE II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI077",
+        "ano": "2013",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI077",
+        "ano": "2013",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI077",
+        "ano": "2014",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI077",
+        "ano": "2014",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI077",
+        "ano": "2015",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI077",
+        "ano": "2015",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI077",
+        "ano": "2016",
+        "nome": "TRAB DE GRADUACAO EM ADM DE INFORMATICA II"
+    }
+]

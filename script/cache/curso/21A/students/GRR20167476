@@ -1,1 +1,74 @@
-{}
+[
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CM005",
+        "ano": "2016",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI055",
+        "ano": "2016",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CM201",
+        "ano": "2016",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CM202",
+        "ano": "2016",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CM043",
+        "ano": "2016",
+        "nome": "CALCULO III"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI068",
+        "ano": "2016",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CE003",
+        "ano": "2016",
+        "nome": "Estat\u00edstica II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CM045",
+        "ano": "2016",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM046",
+        "ano": "2016",
+        "nome": "INTRODUCAO A ALGEBRA"
+    }
+]
