@@ -1,0 +1,122 @@
+[
+    {
+        "nota": 8.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2015",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 61.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM201",
+        "ano": "2015",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 3.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI068",
+        "ano": "2015",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CM045",
+        "ano": "2015",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM046",
+        "ano": "2015",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM005",
+        "ano": "2015",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 58.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI055",
+        "ano": "2015",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM202",
+        "ano": "2015",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI068",
+        "ano": "2015",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM005",
+        "ano": "2016",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI056",
+        "ano": "2016",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI068",
+        "ano": "2016",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CM046",
+        "ano": "2016",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI067",
+        "ano": "2016",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CI064",
+        "ano": "2016",
+        "nome": "SOFTWARE BASICO I"
+    }
+]

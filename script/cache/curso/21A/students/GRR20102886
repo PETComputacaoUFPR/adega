@@ -1,0 +1,458 @@
+[
+    {
+        "nota": 10.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 12.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM201",
+        "ano": "2010",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 42.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2010",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 69.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM045",
+        "ano": "2010",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 24.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2010",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 1.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI066",
+        "ano": "2010",
+        "nome": "OFICINA DE PROGRAMACAO"
+    },
+    {
+        "nota": 8.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM005",
+        "ano": "2011",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 30.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI055",
+        "ano": "2011",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM201",
+        "ano": "2011",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 26.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2011",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 31.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2011",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 23.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM005",
+        "ano": "2011",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 51.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI055",
+        "ano": "2011",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 76.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI068",
+        "ano": "2011",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 20.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM046",
+        "ano": "2011",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 72.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "SA214",
+        "ano": "2011",
+        "nome": "INTRODUCAO A TEORIA GERAL DA ADMINISTRACAO"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CM005",
+        "ano": "2012",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI056",
+        "ano": "2012",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CM202",
+        "ano": "2012",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 20.0,
+        "semestre": "1",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CM046",
+        "ano": "2012",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI067",
+        "ano": "2012",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 6.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI210",
+        "ano": "2012",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 61.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI062",
+        "ano": "2012",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 4.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM005",
+        "ano": "2012",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 18.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI057",
+        "ano": "2012",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM202",
+        "ano": "2012",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI166",
+        "ano": "2012",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 38.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2012",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI057",
+        "ano": "2013",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2013",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2013",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2013",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM005",
+        "ano": "2013",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2013",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2013",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2013",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI057",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM046",
+        "ano": "2014",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI166",
+        "ano": "2014",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2014",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2014",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 38.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM005",
+        "ano": "2014",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI057",
+        "ano": "2014",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI235",
+        "ano": "2014",
+        "nome": "ESTAGIO SUPERVISIONADO I"
+    },
+    {
+        "nota": 17.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI166",
+        "ano": "2014",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2014",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 22.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM005",
+        "ano": "2015",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 17.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI057",
+        "ano": "2015",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI166",
+        "ano": "2015",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2015",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2015",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI057",
+        "ano": "2015",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI210",
+        "ano": "2015",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI064",
+        "ano": "2015",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM005",
+        "ano": "2016",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI057",
+        "ano": "2016",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CM046",
+        "ano": "2016",
+        "nome": "INTRODUCAO A ALGEBRA"
+    }
+]

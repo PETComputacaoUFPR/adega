@@ -1,0 +1,562 @@
+[
+    {
+        "nota": 84.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI055",
+        "ano": "2009",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 68.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM201",
+        "ano": "2009",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM045",
+        "ano": "2009",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 40.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM046",
+        "ano": "2009",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 67.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI063",
+        "ano": "2009",
+        "nome": "MAQUINAS PROGRAMAVEIS"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI066",
+        "ano": "2009",
+        "nome": "OFICINA DE PROGRAMACAO"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM005",
+        "ano": "2010",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI056",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 25.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM202",
+        "ano": "2010",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 69.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI068",
+        "ano": "2010",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM046",
+        "ano": "2010",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 28.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI067",
+        "ano": "2010",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 27.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI057",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM202",
+        "ano": "2010",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 76.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI237",
+        "ano": "2010",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 73.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI067",
+        "ano": "2010",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 74.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI057",
+        "ano": "2011",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 40.83,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM043",
+        "ano": "2011",
+        "nome": "CALCULO III"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI166",
+        "ano": "2011",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 27.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI210",
+        "ano": "2011",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 74.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI064",
+        "ano": "2011",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI065",
+        "ano": "2011",
+        "nome": "ALGORITMOS E TEORIA DOS GRAFOS"
+    },
+    {
+        "nota": 21.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CE003",
+        "ano": "2011",
+        "nome": "Estat\u00edstica II"
+    },
+    {
+        "nota": 61.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI210",
+        "ano": "2011",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 37.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI058",
+        "ano": "2011",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 10.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI062",
+        "ano": "2011",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 63.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI162",
+        "ano": "2012",
+        "nome": "Engenharia de Requisitos"
+    },
+    {
+        "nota": 38.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI059",
+        "ano": "2012",
+        "nome": "INTRODUCAO A TEORIA DA COMPUTACAO"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CI058",
+        "ano": "2012",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 8.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM043",
+        "ano": "2012",
+        "nome": "CALCULO III"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI236",
+        "ano": "2012",
+        "nome": "ESTAGIO SUPERVISIONADO II"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CE003",
+        "ano": "2012",
+        "nome": "Estat\u00edstica II"
+    },
+    {
+        "nota": 86.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI212",
+        "ano": "2012",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 38.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI215",
+        "ano": "2012",
+        "nome": "SISTEMAS OPERACIONAIS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "Semestral",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI302",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Ci\u00eancia da Computa\u00e7\u00e3o II"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI312",
+        "ano": "2013",
+        "nome": "Arquiteturas Avan\u00e7adas de Computadores"
+    },
+    {
+        "nota": 14.0,
+        "semestre": "1",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CI059",
+        "ano": "2013",
+        "nome": "INTRODUCAO A TEORIA DA COMPUTACAO"
+    },
+    {
+        "nota": 17.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI163",
+        "ano": "2013",
+        "nome": "Projeto de Software"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CI058",
+        "ano": "2013",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI301",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Ci\u00eancia da Computa\u00e7\u00e3o I"
+    },
+    {
+        "nota": 35.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI088",
+        "ano": "2013",
+        "nome": "TOPICOS EM SISTEMAS DISTRIBUIDOS"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI396",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Vis\u00e3o Computacional"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI082",
+        "ano": "2013",
+        "nome": "TRAB DE GRAD EM ORGA. E ARQU DE COMPUTADORES I"
+    },
+    {
+        "nota": 66.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "SA214",
+        "ano": "2013",
+        "nome": "INTRODUCAO A TEORIA GERAL DA ADMINISTRACAO"
+    },
+    {
+        "nota": 19.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI062",
+        "ano": "2013",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 63.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI351",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Intera\u00e7\u00e3o Humano-Computador"
+    },
+    {
+        "nota": 14.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI164",
+        "ano": "2014",
+        "nome": "Introdu\u00e7\u00e3o \u00e0 Computa\u00e7\u00e3o Cient\u00edfica"
+    },
+    {
+        "nota": 31.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI058",
+        "ano": "2014",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI083",
+        "ano": "2014",
+        "nome": "TRAB DE GRAD EM ORGA. E ARQU DE COMPUTADORES II"
+    },
+    {
+        "nota": 62.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI165",
+        "ano": "2014",
+        "nome": "An\u00e1lise de Algoritmos"
+    },
+    {
+        "nota": 76.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI059",
+        "ano": "2014",
+        "nome": "INTRODUCAO A TEORIA DA COMPUTACAO"
+    },
+    {
+        "nota": 83.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI215",
+        "ano": "2014",
+        "nome": "SISTEMAS OPERACIONAIS"
+    },
+    {
+        "nota": 75.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI062",
+        "ano": "2014",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 35.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI211",
+        "ano": "2015",
+        "nome": "CONSTRUCAO DE COMPILADORES"
+    },
+    {
+        "nota": 29.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI164",
+        "ano": "2015",
+        "nome": "Introdu\u00e7\u00e3o \u00e0 Computa\u00e7\u00e3o Cient\u00edfica"
+    },
+    {
+        "nota": 59.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI058",
+        "ano": "2015",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 63.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI218",
+        "ano": "2015",
+        "nome": "SISTEMAS DE BANCOS DE DADOS"
+    },
+    {
+        "nota": 86.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI220",
+        "ano": "2015",
+        "nome": "TEORIA DE SISTEMAS"
+    },
+    {
+        "nota": 5.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI083",
+        "ano": "2015",
+        "nome": "TRAB DE GRAD EM ORGA. E ARQU DE COMPUTADORES II"
+    },
+    {
+        "nota": 35.0,
+        "semestre": "2",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CI211",
+        "ano": "2015",
+        "nome": "CONSTRUCAO DE COMPILADORES"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI221",
+        "ano": "2015",
+        "nome": "ENGENHARIA DE SOFTWARE"
+    },
+    {
+        "nota": 11.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI209",
+        "ano": "2015",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CI164",
+        "ano": "2015",
+        "nome": "Introdu\u00e7\u00e3o \u00e0 Computa\u00e7\u00e3o Cient\u00edfica"
+    },
+    {
+        "nota": 53.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI163",
+        "ano": "2015",
+        "nome": "Projeto de Software"
+    },
+    {
+        "nota": 66.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI061",
+        "ano": "2015",
+        "nome": "REDE DE COMPUTADORES II"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI092",
+        "ano": "2015",
+        "nome": "TOPICOS EM TECNOLOGIAS E APLICACOES"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI083",
+        "ano": "2015",
+        "nome": "TRAB DE GRAD EM ORGA. E ARQU DE COMPUTADORES II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI211",
+        "ano": "2016",
+        "nome": "CONSTRUCAO DE COMPILADORES"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI221",
+        "ano": "2016",
+        "nome": "ENGENHARIA DE SOFTWARE"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI209",
+        "ano": "2016",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    }
+]

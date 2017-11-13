@@ -1,63 +1,131 @@
-import pandas as pd
+import numpy as np
+
 from utils.situations import *
 
-def average_ira(d):
-    temp = d.dropna(subset=['MEDIA_FINAL'])
-    temp = temp[temp['MEDIA_FINAL'] <= 100]
-    if not temp.empty:
-        #print(temp[['MEDIA_FINAL', 'CH_TOTAL']])
-        aux = np.sum(temp['MEDIA_FINAL']*temp['CH_TOTAL'])
-        ch_total = np.sum(temp['CH_TOTAL']) * 100
-        print(aux/ch_total)
+ANO_ATUAL = 2017
+SEMESTRE_ATUAL = 2
 
-def aluno_turmas(df):
+
+def listagem_alunos_ativos(df):
+	return list(df["MATR_ALUNO"][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates())
+	
+
+
+
+def posicao_turmaIngresso_semestral(df):
+	iras = ira_semestral(df)
+	iraMax = {}
+	for matr in iras:
+		for semestreAno in iras[matr]:
+			if not (semestreAno in iraMax):
+				iraMax[semestreAno] = iras[matr][semestreAno]
+			else:
+				if (iras[matr][semestreAno] > iraMax[semestreAno]):
+					iraMax[semestreAno] = iras[matr][semestreAno]
+	for matr in iras:
+		for semestreAno in iras[matr]:
+			iras[matr][semestreAno] /= iraMax[semestreAno]
+
+	return iras
+
+
+def periodo_real(df):
+	aux = df.groupby(["MATR_ALUNO"])
+	students = {}
+	for x in aux:
+		students[x[0]] = None
+	return students
+
+
+def periodo_pretendido(df):
+	aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO"])
+	students = {}
+	for x in aux:
+		students[x[0][0]] = (ANO_ATUAL - int(x[0][1])) * 2 + SEMESTRE_ATUAL - int(x[0][2]) + 1
+	return students
+
+
+def ira_semestral(df):
+	aux = ira_por_quantidade_disciplinas(df)
+	for matr in aux:
+		for periodo in aux[matr]:
+			aux[matr][periodo] = aux[matr][periodo][0]
+	return aux
+
+
+def ira_por_quantidade_disciplinas(df):
+	students = {}
+	df = df.dropna(subset=["MEDIA_FINAL"])
+
+	total_students = len(df["MATR_ALUNO"])
+	for i in range(total_students):
+		matr = (df["MATR_ALUNO"][i])
+		if (not (matr in students)):
+			students[matr] = {}
+
+		ano = str(int(df["ANO"][i]))
+		semestre = str(df["PERIODO"][i])
+		situacao = int(df["SITUACAO"][i])
+		nota = float(df["MEDIA_FINAL"][i])
+		media_credito = int(df["MEDIA_CREDITO"][i])
+
+		if (situacao in Situation.SITUATION_AFFECT_IRA and media_credito != 0):
+
+			if not (ano + "/" + semestre in students[matr]):
+				students[matr][ano + "/" + semestre] = [0, 0]
+			students[matr][ano + "/" + semestre][0] += nota
+			students[matr][ano + "/" + semestre][1] += 1
+
+	for matr in students:
+		for periodo in students[matr]:
+			if (students[matr][periodo][1] != 0):
+				students[matr][periodo][0] /= students[matr][periodo][1] * 100
+	return (students)
+
+
+def indice_aprovacao_semestral(df):
 	students = {}
 	df = df.dropna(subset=['MEDIA_FINAL'])
 	total_students = len(df["MATR_ALUNO"])
 	for i in range(total_students):
 		matr = (df["MATR_ALUNO"][i])
-		if(not (matr in students)):
-			students[matr] = []
-		
-		for s in Situation.SITUATIONS:
-			if(s[0] == df["SITUACAO"][i]):
-				situacao = s[1]
-				break
-		ano = (df["ANO"][i])
-		codigo = (df["COD_ATIV_CURRIC"][i])
-		nome = (df["NOME_ATIV_CURRIC"][i])
-		nota = (df["MEDIA_FINAL"][i])
-		semestre = (df["PERIODO"][i])
-		
-		students[matr].append({
-			"ano": ano,
-			"codigo": codigo,
-			"nome": nome,
-			"nota": nota,
-			"semestre": semestre,
-			"situacao": situacao
-		})
-	print(students)
-	#~ lines = (df[["MATR_ALUNO","ANO","COD_ATIV_CURRIC","NOME_ATIV_CURRIC","MEDIA_FINAL","PERIODO","SITUACAO"]])
-	#~ for st in (df.groupby("MATR_ALUNO")):
-		#~ print(st[1]["MATR_ALUNO"])
-		#~ print(st[1]["ANO"])
-		#~ print(st[1]["COD_ATIV_CURRIC"])
-		#~ print(st[1]["NOME_ATIV_CURRIC"])
-		#~ print(st[1]["MEDIA_FINAL"])
-		#~ print(st[1]["PERIODO"])
-		#~ print(st[1]["SITUACAO"])
-		#~ print("")
-	#~ total_student = df['MATR_ALUNO'].drop_duplicates()
-	#~ for st in total_student:
-		#~ students[st] = []
-		#~ hist = df[df["MATR_ALUNO"]==st]
-		#~ for matr in hist:
-			#~ print(hist["ANO"])
-			#~ print(hist[matr]["COD_ATIV_CURRIC"])
-			#~ print(hist[matr]["NOME_ATIV_CURRIC"])
-			#~ print(hist[matr]["MEDIA_FINAL"])
-			#~ print(hist[matr]["PERIODO"])
-			#~ print(hist[matr]["SITUACAO"])
-			#~ print(hist[matr])
-			#~ print("")
+		if (not (matr in students)):
+			students[matr] = {}
+
+		ano = str(int(df["ANO"][i]))
+		semestre = str(df["PERIODO"][i])
+		situacao = int(df["SITUACAO"][i])
+
+		if not (ano + "/" + semestre in students[matr]):
+			students[matr][ano + "/" + semestre] = [0, 0]
+
+		if situacao in Situation.SITUATION_PASS:
+			students[matr][ano + "/" + semestre][0] += 1
+			students[matr][ano + "/" + semestre][1] += 1
+		if situacao in Situation.SITUATION_FAIL:
+			students[matr][ano + "/" + semestre][1] += 1
+	return (students)
+
+
+def aluno_turmas(df):
+	students = {}
+	df = df.dropna(subset=['MEDIA_FINAL'])
+
+	situations = dict(Situation.SITUATIONS)
+
+	for matr, hist in df.groupby('MATR_ALUNO'):
+		students[matr] = []
+
+		for _, row in hist.iterrows():
+			data = {
+				'ano': str(int(row["ANO"])),
+				'codigo': row["COD_ATIV_CURRIC"],
+				'nome': row["NOME_ATIV_CURRIC"],
+				'nota': row["MEDIA_FINAL"],
+				'semestre': row["PERIODO"],
+				'situacao': situations.get(row["SITUACAO"], Situation.SIT_OUTROS)
+			}
+
+			students[matr].append(data)
+
+	return students

@@ -1,0 +1,522 @@
+[
+    {
+        "nota": 69.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI055",
+        "ano": "2009",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS I"
+    },
+    {
+        "nota": 89.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM201",
+        "ano": "2009",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CM045",
+        "ano": "2009",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM046",
+        "ano": "2009",
+        "nome": "INTRODUCAO A ALGEBRA"
+    },
+    {
+        "nota": 74.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI063",
+        "ano": "2009",
+        "nome": "MAQUINAS PROGRAMAVEIS"
+    },
+    {
+        "nota": 100.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI066",
+        "ano": "2009",
+        "nome": "OFICINA DE PROGRAMACAO"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Cancelado",
+        "codigo": "CM005",
+        "ano": "2009",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 25.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI056",
+        "ano": "2009",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 20.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CM202",
+        "ano": "2009",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 21.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI068",
+        "ano": "2009",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CM045",
+        "ano": "2009",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 84.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI202",
+        "ano": "2009",
+        "nome": "M\u00e9todos Num\u00e9ricos"
+    },
+    {
+        "nota": 57.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI067",
+        "ano": "2009",
+        "nome": "OFICINA DE COMPUTACAO"
+    },
+    {
+        "nota": 81.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI056",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS II"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM202",
+        "ano": "2010",
+        "nome": "CALCULO DIFERENCIAL E INTEGRAL II"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI068",
+        "ano": "2010",
+        "nome": "CIRCUITOS LOGICOS"
+    },
+    {
+        "nota": 82.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CM045",
+        "ano": "2010",
+        "nome": "Geometria Anal\u00edtica"
+    },
+    {
+        "nota": 83.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CM005",
+        "ano": "2010",
+        "nome": "\u00c1lgebra Linear"
+    },
+    {
+        "nota": 65.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI057",
+        "ano": "2010",
+        "nome": "ALGORITMOS E ESTRUTURAS DE DADOS III"
+    },
+    {
+        "nota": 92.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CE003",
+        "ano": "2010",
+        "nome": "Estat\u00edstica II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Cancelado",
+        "codigo": "CI237",
+        "ano": "2010",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 81.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI210",
+        "ano": "2010",
+        "nome": "PROJETOS DIGITAIS E MICROPROCESSADORES"
+    },
+    {
+        "nota": 94.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI064",
+        "ano": "2010",
+        "nome": "SOFTWARE BASICO I"
+    },
+    {
+        "nota": 84.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI164",
+        "ano": "2011",
+        "nome": "Introdu\u00e7\u00e3o \u00e0 Computa\u00e7\u00e3o Cient\u00edfica"
+    },
+    {
+        "nota": 71.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI212",
+        "ano": "2011",
+        "nome": "ORGANIZACAO E ARQUIT DE COMPUTADORES"
+    },
+    {
+        "nota": 59.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI058",
+        "ano": "2011",
+        "nome": "REDE DE COMPUTADORES I"
+    },
+    {
+        "nota": 65.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI215",
+        "ano": "2011",
+        "nome": "SISTEMAS OPERACIONAIS"
+    },
+    {
+        "nota": 72.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI062",
+        "ano": "2011",
+        "nome": "TECNICAS ALTERNATIVAS DE PROGRAMACAO"
+    },
+    {
+        "nota": 86.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI059",
+        "ano": "2011",
+        "nome": "INTRODUCAO A TEORIA DA COMPUTACAO"
+    },
+    {
+        "nota": 72.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "SA214",
+        "ano": "2011",
+        "nome": "INTRODUCAO A TEORIA GERAL DA ADMINISTRACAO"
+    },
+    {
+        "nota": 64.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI237",
+        "ano": "2011",
+        "nome": "MATEMATICA DISCRETA"
+    },
+    {
+        "nota": 37.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI065",
+        "ano": "2012",
+        "nome": "ALGORITMOS E TEORIA DOS GRAFOS"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI162",
+        "ano": "2012",
+        "nome": "Engenharia de Requisitos"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI209",
+        "ano": "2012",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI166",
+        "ano": "2012",
+        "nome": "Metodologia Cient\u00edfica"
+    },
+    {
+        "nota": 59.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI061",
+        "ano": "2012",
+        "nome": "REDE DE COMPUTADORES II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Cancelado",
+        "codigo": "CI361",
+        "ano": "2012",
+        "nome": "Sistemas Distribu\u00eddos"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI065",
+        "ano": "2012",
+        "nome": "ALGORITMOS E TEORIA DOS GRAFOS"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Cancelado",
+        "codigo": "CI209",
+        "ano": "2012",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI218",
+        "ano": "2012",
+        "nome": "SISTEMAS DE BANCOS DE DADOS"
+    },
+    {
+        "nota": 95.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI220",
+        "ano": "2012",
+        "nome": "TEORIA DE SISTEMAS"
+    },
+    {
+        "nota": 55.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI092",
+        "ano": "2012",
+        "nome": "TOPICOS EM TECNOLOGIAS E APLICACOES"
+    },
+    {
+        "nota": 64.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI211",
+        "ano": "2013",
+        "nome": "CONSTRUCAO DE COMPILADORES"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI221",
+        "ano": "2013",
+        "nome": "ENGENHARIA DE SOFTWARE"
+    },
+    {
+        "nota": 90.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI235",
+        "ano": "2013",
+        "nome": "ESTAGIO SUPERVISIONADO I"
+    },
+    {
+        "nota": 69.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI163",
+        "ano": "2013",
+        "nome": "Projeto de Software"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI301",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Ci\u00eancia da Computa\u00e7\u00e3o I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Equival\u00eancia de Disciplina",
+        "codigo": "CI302",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Ci\u00eancia da Computa\u00e7\u00e3o II"
+    },
+    {
+        "nota": 50.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI396",
+        "ano": "2013",
+        "nome": "T\u00f3picos em Vis\u00e3o Computacional"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI070",
+        "ano": "2013",
+        "nome": "TRABALHO DE GRADUACAO EM EMGENHARIA DE SOFTWARE I"
+    },
+    {
+        "nota": 77.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI204",
+        "ano": "2013",
+        "nome": "ADMINISTRACAO DE INFORMATICA"
+    },
+    {
+        "nota": 13.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI165",
+        "ano": "2013",
+        "nome": "An\u00e1lise de Algoritmos"
+    },
+    {
+        "nota": 100.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI236",
+        "ano": "2013",
+        "nome": "ESTAGIO SUPERVISIONADO II"
+    },
+    {
+        "nota": 21.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI209",
+        "ano": "2013",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "2",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI070",
+        "ano": "2013",
+        "nome": "TRABALHO DE GRADUACAO EM EMGENHARIA DE SOFTWARE I"
+    },
+    {
+        "nota": 70.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI205",
+        "ano": "2014",
+        "nome": "ADMINISTRACAO DA PRODUCAO P/ INFORMATICA"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CI165",
+        "ano": "2014",
+        "nome": "An\u00e1lise de Algoritmos"
+    },
+    {
+        "nota": 0.0,
+        "semestre": "1",
+        "situacao": "Reprov Conhecimento",
+        "codigo": "CI209",
+        "ano": "2014",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Reprovado por nota",
+        "codigo": "CI070",
+        "ano": "2014",
+        "nome": "TRABALHO DE GRADUACAO EM EMGENHARIA DE SOFTWARE I"
+    },
+    {
+        "nota": 53.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI165",
+        "ano": "2014",
+        "nome": "An\u00e1lise de Algoritmos"
+    },
+    {
+        "nota": 67.0,
+        "semestre": "2",
+        "situacao": "Aprovado",
+        "codigo": "CI209",
+        "ano": "2014",
+        "nome": "INTELIGENCIA ARTIFICIAL"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI070",
+        "ano": "2014",
+        "nome": "TRABALHO DE GRADUACAO EM EMGENHARIA DE SOFTWARE I"
+    },
+    {
+        "nota": 80.0,
+        "semestre": "1",
+        "situacao": "Aprovado",
+        "codigo": "CI070",
+        "ano": "2015",
+        "nome": "TRABALHO DE GRADUACAO EM EMGENHARIA DE SOFTWARE I"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "2",
+        "situacao": "Reprovado por Frequ\u00eancia",
+        "codigo": "CI071",
+        "ano": "2015",
+        "nome": "TRABALHO DE GRADUACAO EM ENGENHARIA DE SOFTWARE II"
+    },
+    {
+        "nota": 9999.0,
+        "semestre": "1",
+        "situacao": "Matr\u00edcula",
+        "codigo": "CI071",
+        "ano": "2016",
+        "nome": "TRABALHO DE GRADUACAO EM ENGENHARIA DE SOFTWARE II"
+    }
+]

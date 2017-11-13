@@ -30,6 +30,7 @@ def load_dataframes(cwd='.'):
                 dataframes.append(dh)
 
     dataframe = fix_dataframes(dataframes)
+
     dh = DataframeHolder(dataframe)
     #~ dh.students.aggregate(teste)
 #    print(dh.students['MEDIA_FINAL'].aggregate(teste))
@@ -55,7 +56,7 @@ def fix_dataframes(dataframes):
     clean_register(register)
 
     merged = pd.merge(history, register, how='right', on=['MATR_ALUNO'])
-
+    #~ print(merged)
     fix_situation(merged)
 #    fix_admission(merged)
     fix_evasion(merged)
@@ -94,9 +95,12 @@ def fix_admission(df):
 
 
 def fix_evasion(df):
+    evasionForms = [x[1] for x in EvasionForm.EVASION_FORM]
+    df.loc[~df.FORMA_EVASAO.isin(evasionForms), 'FORMA_EVASAO'] = 100
     for evasion in EvasionForm.EVASION_FORM:
         #~ df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(1.0), 'FORMA_EVASAO'] = evasion[0]
         df.loc[df.FORMA_EVASAO == evasion[1], 'FORMA_EVASAO'] = evasion[0]
+
         #~ if(evasion[0] == 100):
             #~ for x in df.FORMA_EVASAO.str.contains(evasion[1]).fillna(False):
                 #~ if(x != 0.0):
