@@ -1,5 +1,5 @@
 # ADEGA
-
+# ------------------ NAO FAÇAM git add * ou git add -A --------------------------
 Este software faz parte de um projeto do PET Computação UFPR para 
 análise de dados dos cursos de graduação da UFPR. Veja a [wiki](http://gitlab.c3sl.ufpr.br/pet/adega/wikis/home).
 
