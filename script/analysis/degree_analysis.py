@@ -30,6 +30,25 @@ def general_failure(df):
     return (average, standard_deviation)
 
 
+def current_students_failure(df):
+    fixed = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
+    affect_ira = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
+    failures = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_FAIL)]
+
+    average = failures.shape[0] / affect_ira.shape[0]
+
+    student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
+                                .aggregate({'SITUACAO': 'count'})
+    student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
+                               .aggregate({'SITUACAO': 'count'})
+
+    merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
+    merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
+    variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
+                                      .pow(2).sum() / merged.shape[0]
+    standard_deviation = math.sqrt(variance)
+    return (average, standard_deviation)
+
 def general_ira(df):
     fixed = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
@@ -48,7 +67,7 @@ def current_students_ira(df):
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
     return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
 
-def total_evasion_rate(df):
+def general_evasion_rate(df):
     students = df['MATR_ALUNO'].drop_duplicates()
     total_student = students.shape[0]
     total_evasion = students.loc[(df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)].shape[0]
