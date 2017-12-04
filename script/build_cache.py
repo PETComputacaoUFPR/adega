@@ -2,6 +2,7 @@ from utils.utils import *
 from utils.situations import *
 from analysis.degree_analysis import *
 from analysis.student_analysis import *
+from analysis.admission_analysis import *
 
 
 try:
@@ -13,13 +14,13 @@ except NameError:
 def build_cache(dataframe):
 #	os.chdir("../src")
 	path = 'cache/curso'
-
+	
 	ensure_path_exists(path)
 
 	for cod, df in dataframe.groupby('COD_CURSO'):
 		generate_degree_data(path+'/'+cod+'/', df)
 		generate_student_data(path+'/'+cod+'/students/',df)
-	
+		#~ generate_admission_data(path+'/'+cod+'/admission/',df)
 	#generate_degree_data(path, dataframe)
 	#generate_student_data(path, dataframe)
 	#generate_student_list(path)
@@ -112,14 +113,15 @@ def generate_student_data(path, dataframe):
 		for a in analises:											# Usar para fazer a verificacao de 
 			student_data[x][a[1]] = a[0][x]							# analises nulas para um GRR
 			
-		save_json(path+x, student_data[x][a[1]])
+		save_json(path+x+".json", student_data[x])
 	
 	#Falta verificar se alguem nao recebeu algumas analises
 	
 def generate_student_list(path):
 	pass
 
-def generate_admission_data(path):
+def generate_admission_data(path,df):
+	listagem_turma_ingresso(df)
 	pass
 
 def generate_admission_list(path):
