@@ -1,0 +1,6 @@
+cache/*
+*.json
+*.xls
+*.csv
+script/base/*.xls
+script/base/*.csv
