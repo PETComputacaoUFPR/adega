@@ -261,9 +261,36 @@ def analises_semestrais(df,lista_disciplinas):
     geral_df = \
     df.groupby(['COD_ATIV_CURRIC','ANO','PERIODO']).size().reset_index(name
             = 'matr' ) 
-    geral_nota_df = \
-    df.groupby(['COD_ATIV_CURRIC','ANO','PERIODO','SITUACAO','MEDIA_FINAL']).size()  
-    print(geral_nota_df.loc[geral_nota_df.SITUACAO == sit.SIT_APROVADO]) 
+    for disciplina in lista_disciplinas.keys():
+        disciplina_dict = {} 
+        disciplina_df = df.loc[df.COD_ATIV_CURRIC == disciplina] 
+        print(disciplina) 
+        print(disciplina_df.ANO) 
+        for ano in disciplina_df.ANO:
+            disciplina_ano = disciplina_df.loc[disciplina_df.ANO == ano] 
+            for periodo in disciplina_ano.PERIODO:
+                disciplina_periodo = disciplina_ano.loc[disciplina_ano.PERIODO
+                        == periodo] 
+                soma_df = disciplina_periodo.loc[
+                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[0]) |
+                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[1]) |
+                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[2]) |
+                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[3]) |
+                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[4]) |
+                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[5]) ] 
+                soma_np = soma_df.MEDIA_FINAL.sum() 
+                soma = 0 if np.isnan(soma_np) else soma_np 
+                qtd = soma_df.shape[0]  
+            #    for situacao in sit.SITUATION_AFFECT_IRA:
+            #        soma_df = disciplina_periodo.loc[disciplina_periodo.SITUACAO
+            #                == situacao] 
+            #        soma_np = soma_df.MEDIA_FINAL.sum() 
+            #        soma += 0 if np.isnan(soma_np) else soma_np
+            #        qtd +=soma_df.shape[0] 
+             #   media = 0.0 if qtd == 0 else soma/qtd
+             #   index = str(ano)+"/"+str(periodo)   
+             #   disciplina_dict[index] = [media,qtd]  
+
 #    *taxa aprovacao semestral
 #    *quantidade de matricula por semestre
 def analises_disciplinas(df):
