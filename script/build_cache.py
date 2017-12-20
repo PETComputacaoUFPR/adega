@@ -7,11 +7,13 @@ from datetime import timedelta
 from pathlib import Path
 from utils.utils import build_path
 from analysis.degree_analysis import *
+from analysis.student_analysis import *
 
 try:
     to_unicode = unicode
 except NameError:
     to_unicode = str
+
 
 def build_cache(dataframe):
 #    os.chdir("../src")
@@ -20,13 +22,13 @@ def build_cache(dataframe):
     path += "/curso"
     build_path(path)
 
-    generate_degree_data(path, dataframe)
-    generate_student_data(path)
-    generate_student_list(path)
-    generate_admission_data(path)
-    generate_admission_list(path)
-    generate_course_data(path)
-    generate_course_general_data(path)
+#    generate_degree_data(path, dataframe)
+    generate_student_data(path,dataframe)
+#    generate_student_list(path)
+#    generate_admission_data(path)
+#    generate_admission_list(path)
+#    generate_course_data(path)
+#    generate_course_general_data(path)
 
 def generate_degree_data(path, dataframe):
     average_graduation(dataframe)
@@ -34,7 +36,8 @@ def generate_degree_data(path, dataframe):
     general_ira(dataframe)
     pass
 
-def generate_student_data(path):
+def generate_student_data(path,dataframe):
+    aluno_turmas(dataframe)
     pass
 
 def generate_student_list(path):
