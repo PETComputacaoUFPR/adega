@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pprint
 import pandas as pd
 import json
 import numpy as np
@@ -189,13 +190,11 @@ def trancamento(qtd,disciplina_dict,qtd_matr):
 
  
 def reprovacao(qtd,disciplina,qtd_matr,taxa_reprov_absoluta,taxa_reprov_freq): 
-    '''existe as analises reprovacao absoluta, reprovacao por frequencia e 
+    '''existem as analises reprovacao absoluta, reprovacao por frequencia,  
     reprovacao absoluta, reprovacao por frequencia da ultima vez que a
-    disciplina foi ofertada, a logica da analise eh a mesma so muda os valores
-    do dataframe qtd e o nomes das chaves do dicionario.Eh possivel reaproveitar
-    o mesmo codigo para fazer analise geral e da ultima vez que foi ofertado,
-    para isso so eh preciso enviar outro dataframe qtd e enviar como string o
-    indice do dicionario para ser atribuido de forma correta''' 
+    disciplina foi ofertada, a logica das analise sao a mesma so muda os valores
+    do dataframe qtd e o nomes das chaves do dicionario,logo é possível reaproveitar
+    o mesmo codigo para fazer analise geral e da ultima vez que foi ofertado.''' 
     sit_reprov = sit.SITUATION_FAIL + (sit.SIT_REPROVADO_SEM_NOTA,)
     reprov_df = qtd.loc[(qtd.SITUACAO == sit_reprov[0]) |
                         (qtd.SITUACAO == sit_reprov[1]) |
@@ -212,41 +211,89 @@ def reprovacao(qtd,disciplina,qtd_matr,taxa_reprov_absoluta,taxa_reprov_freq):
         disciplina[taxa_reprov_absoluta] = 0.0
         disciplina[taxa_reprov_freq] = 0.0 
 
+def nota(notas,disciplina,index):
+    notas_l = [] 
+    for i in notas.iterrows():
+        if i[1].SITUACAO in sit.SITUATION_AFFECT_IRA:
+            if not(np.isnan(i[1].MEDIA_FINAL)):
+                notas_l.append(i[1].MEDIA_FINAL) 
+    notas_np = np.array(notas_l) 
+    media = notas_np.mean() 
+    desvio_padrao = notas_np.std() 
+    disciplina[index] = [media,desvio_padrao]  
+
+
+
 def analises_gerais(df,lista_disciplinas):
+    ''' Os dataframes qtd_geral e qtd_ultimo_geral são dataframes que possuem
+        as colunas em comun COD_ATIV_CURRIC e SITUACAO, o qtd_ultimo_geral
+        possuem as colunas ano e periodo.Ambos os dataframes possui a coluna qtd
+        que é a quantidade de vezes que cada situacao se repete por disciplina''' 
     qtd_geral= df.groupby(['COD_ATIV_CURRIC','SITUACAO']).size().reset_index(name='qtd' ) 
     qtd_ultimo_geral = \
     df.groupby(['COD_ATIV_CURRIC','SITUACAO','ANO','PERIODO']).size().reset_index(name='qtd')  
     matr_por_semestre = \
     df.groupby(['COD_ATIV_CURRIC','ANO','PERIODO']).size().reset_index(name='matr') 
+    ''' dataframe com a quantidade de matriculas por periodo e ano, por exemplo
+    disciplina ci055 2010/1 teve x matriculas''' 
+    '''Dataframes relacionado a notas.O campo qtd é inutil, o groupby pede se
+    que se use um apply sobre o groupby, pois se não o grouby é tratado como
+    objeto e não como um dataframe  ''' 
+    nota_geral_df = df.groupby(['COD_ATIV_CURRIC','MEDIA_FINAL', 'SITUACAO',
+            ]).size().reset_index(name = 'qtd' )  
+    nota_semestral_df = df.groupby(['COD_ATIV_CURRIC','ANO','PERIODO', 'MEDIA_FINAL', 'SITUACAO',
+            ]).size().reset_index(name = 'qtd' )  
     for disciplina in lista_disciplinas.keys():
-        disciplina_dict = {}
+        disciplina_dict = {} #facilitar os calculos 
+
         qtd  = qtd_geral.loc[qtd_geral.COD_ATIV_CURRIC == disciplina] 
+
         disciplina_semestral = qtd_ultimo_geral.loc[qtd_ultimo_geral.COD_ATIV_CURRIC == \
                 disciplina] 
+
         ano = np.amax(disciplina_semestral.ANO) 
+
         disciplina_ano = disciplina_semestral.loc[disciplina_semestral.ANO \
                 == ano] 
+
         periodo = np.amax(disciplina_ano.PERIODO) 
         qtd_ultimo = disciplina_ano.loc[disciplina_ano.PERIODO == periodo] 
+
         #quantidade de alunos
         qtd_matriculas = lista_disciplinas[disciplina]['qtd_alunos']  
+
         qtd_matr_ultimo = \
         matr_por_semestre.loc[(matr_por_semestre.COD_ATIV_CURRIC == disciplina) &
                             (matr_por_semestre.ANO == ano) &
                             (matr_por_semestre.PERIODO == periodo)].matr.values[0] 
-        #qtd eh um dataframe que contem a ocorrencia de cada situacao
+
+        #qtd é um dataframe que contem a ocorrencia de cada situacao
         qtd  = qtd_geral.loc[qtd_geral.COD_ATIV_CURRIC == disciplina] 
+
         #faz analises relacionada ao conhecimento
         conhecimento(qtd,disciplina_dict) 
+
         # faz analises relacionada ao trancamento
         trancamento(qtd,disciplina_dict,qtd_matriculas) 
+
         # faz analises relacionada a reprovacoes
         reprovacao(qtd,disciplina_dict,qtd_matriculas,'taxa_reprovacao_absoluta','taxa_reprovacao_frequencia') 
         reprovacao(qtd_ultimo,disciplina_dict,qtd_matriculas,'taxa_reprovacao_ultimo_absoluta',
                 'taxa_reprovacao_ultimo_frequencia') 
-        lista_disciplinas[disciplina].update(disciplina_dict)
-        #print(disciplina_dict) 
 
+        #faz as analises relacionada a nota
+        nota_df = nota_geral_df.loc[nota_geral_df.COD_ATIV_CURRIC == disciplina] 
+        nota_por_semestre_df = nota_semestral_df.loc[nota_semestral_df.COD_ATIV_CURRIC == disciplina] 
+        nota_ultimo_df = nota_por_semestre_df.loc[nota_por_semestre_df.ANO ==
+                ano] 
+        periodo_nota = np.amax(nota_ultimo_df.PERIODO) 
+        nota_ultimo = nota_ultimo_df.loc[nota_ultimo_df.PERIODO == periodo_nota] 
+
+        nota(nota_df,disciplina_dict,'nota') 
+        nota(nota_ultimo,disciplina_dict,'nota_ultimo_ano') 
+
+
+        lista_disciplinas[disciplina].update(disciplina_dict)
 #   -qtd_conhecimento
 #   -qtd_trancamento
 #   -taxa_conhecimento
@@ -255,47 +302,44 @@ def analises_gerais(df,lista_disciplinas):
 #   -taxa_reprovacao_ultimo_absoluto
 #   -taxa_reprovacao_ultimo_frequencia
 #   -taxa_trancamento
-#   *nota geral desvio padrao geral
-#   *nota ultima vez ofertado e desvio padrao
+#   -nota geral desvio padrao geral
+#   -nota ultima vez ofertado e desvio padrao
 def analises_semestrais(df,lista_disciplinas):
     geral_df = \
     df.groupby(['COD_ATIV_CURRIC','ANO','PERIODO']).size().reset_index(name
             = 'matr' ) 
-    for disciplina in lista_disciplinas.keys():
-        disciplina_dict = {} 
-        disciplina_df = df.loc[df.COD_ATIV_CURRIC == disciplina] 
-        print(disciplina) 
-        print(disciplina_df.ANO) 
-        for ano in disciplina_df.ANO:
-            disciplina_ano = disciplina_df.loc[disciplina_df.ANO == ano] 
-            for periodo in disciplina_ano.PERIODO:
-                disciplina_periodo = disciplina_ano.loc[disciplina_ano.PERIODO
-                        == periodo] 
-                soma_df = disciplina_periodo.loc[
-                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[0]) |
-                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[1]) |
-                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[2]) |
-                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[3]) |
-                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[4]) |
-                    (disciplina_periodo.SITUACAO == sit.SITUATION_AFFECT_IRA[5]) ] 
-                soma_np = soma_df.MEDIA_FINAL.sum() 
-                soma = 0 if np.isnan(soma_np) else soma_np 
-                qtd = soma_df.shape[0]  
-            #    for situacao in sit.SITUATION_AFFECT_IRA:
-            #        soma_df = disciplina_periodo.loc[disciplina_periodo.SITUACAO
-            #                == situacao] 
-            #        soma_np = soma_df.MEDIA_FINAL.sum() 
-            #        soma += 0 if np.isnan(soma_np) else soma_np
-            #        qtd +=soma_df.shape[0] 
-             #   media = 0.0 if qtd == 0 else soma/qtd
-             #   index = str(ano)+"/"+str(periodo)   
-             #   disciplina_dict[index] = [media,qtd]  
+    df_semestral = df.groupby(['COD_ATIV_CURRIC', 'ANO', 'PERIODO' ,
+        'MEDIA_FINAL','SITUACAO']).size().reset_index(name = 'qtds' ) 
+    disciplinas = {} 
+    for count,i in enumerate(df_semestral.iterrows()): 
+        disciplina = i[1].COD_ATIV_CURRIC
+        if not(disciplina in disciplinas):
+            disciplinas[disciplina] = {} 
+        ano = str(int(i[1].ANO)) 
+        periodo = str(i[1].PERIODO)   
+        situacao = i[1].SITUACAO 
+        media = i[1].MEDIA_FINAL 
+        periodo_curso = ano+"/"+periodo 
+        disciplinas[disciplina][periodo_curso]  = [0.0,0]  
+        if situacao in sit.SITUATION_AFFECT_IRA:
+            disciplinas[disciplina][periodo_curso][0] += media
+            disciplinas[disciplina][periodo_curso][1] +=1
+    for disciplina in disciplinas.keys(): 
+        for ano_periodo in disciplinas[disciplina].keys():  
+            qtd = disciplinas[disciplina][ano_periodo][1]
+            disciplinas[disciplina][ano_periodo][0] = 0.0 if qtd == 0 else qtd
 
-#    *taxa aprovacao semestral
-#    *quantidade de matricula por semestre
+        aprovacao_semestral = disciplinas[disciplina] 
+        lista_disciplinas[disciplina]['aprovacao_semestral'] = \
+            aprovacao_semestral
+#    -taxa aprovacao semestral
+#    -quantidade de matricula por semestre
 def analises_disciplinas(df):
     lista_disciplinas = {}
     informacoes_gerais(df,lista_disciplinas) 
     analises_gerais(df,lista_disciplinas) 
     analises_semestrais(df,lista_disciplinas) 
+    for disciplina in lista_disciplinas.keys(): 
+        pprint.pprint(lista_disciplinas[disciplina] ) 
+        print("---------------------------------------" ) 
 #    """tranformar para json """ 
