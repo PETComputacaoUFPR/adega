@@ -219,11 +219,29 @@ def reprovacao(qtd,disciplina,qtd_matr,taxa_reprov_absoluta,taxa_reprov_freq):
         disciplina[taxa_reprov_absoluta] = 0.0
         disciplina[taxa_reprov_freq] = 0.0 
 
-def nota(notas_df,disciplina,index):
+"analises que envolvem nota e disciplina, como nota media geral, nota media
+ultima vez que foi ofertado, grafico de comparacao de intervalo/nota.
+as diferença entre as analises nota media geral, desvio padrao geral para nota
+media ultimo, desvio padrao ultimo é apenas a quandidade de linhas do nota_df e
+o nome da chave no dicionario disciplina, logo eu passo o nome da chave como
+parametro e mudo o notas_df, assim posso reutilizar o codigo.
+O grafico compara_nota precisa de um notas_df geral, um laço que itera cada
+lunha do dataframe e verifica em qual intervalo está a nota, logo se eu fizer um
+if para verificar se o notas_df é geral ou ultimo, posso aproveitar fazer as
+analises gerais e o grafico percorrendo uma unica vez o dataframe. A desvantagem
+é de a função fugir de seu escopo." 
+def nota(notas_df,disciplina,index,grafico,seme_geral):
     notas = [] 
+    dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0, "25-29.9":0, "30-34.9":0,
+           "35-39.9":0, "40-44.9":0, "45-49.9":0, "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0,
+           "70-74.9":0, "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
     for i in notas_df.iterrows():
         if i[1].SITUACAO in sit.SITUATION_AFFECT_IRA:
-            nota = 0 if np.isnan(i[1].MEDIA_FINAL) else i[1].MEDIA_FINAL  
+            if seme_geral: #True para quando nota_df é geral e False para quando é ultimo
+                pass
+            nota = 0 if np.isnan(i[1].MEDIA_FINAL) else i[1].MEDIA_FINAL     
+            #alguns valores de media_final não são confiaveis na tabela .33
+            nota = 0 if nota > 100 else nota 
             notas.append(nota) 
 
     if len(notas) != 0: 
@@ -381,25 +399,68 @@ def listagem_disciplina(lista_disciplinas):
     compara_aprov = {} 
     disciplinas = {} 
     # nota media de todas as disciplinas
-    #n 
+    taxa_trancamento = 0.0
+    taxa_reprovacao = 0.0
+    taxa_conhecimento = 0.0
+    nota_media = [] # lista que contem todas as notas medias de todas as disciplinas
+    nota_desvio = [] # lista que contem todos os desvio padrao de todas as disciplinas 
+
     for disciplina in lista_disciplinas.keys(): 
         disciplina_dict = lista_disciplinas[disciplina] 
+
         cache[disciplina] = {"nota":disciplina_dict["nota"],
                 "taxa_reprovacao_absoluta":disciplina_dict["taxa_reprovacao_absoluta"],
                 "taxa_reprovacao_frequencia": disciplina_dict["taxa_reprovacao_frequencia" ],
                 "taxa_trancamento":disciplina_dict["taxa_trancamento"]}  
         compara_disciplina = [] 
+        
+        #calcula aprovacao semestral
         for ano in disciplina_dict["aprovacao_semestral"].keys():  
             aprov_por_ano = [ano,disciplina_dict["aprovacao_semestral"][ano][0]] 
             compara_disciplina.append(aprov_por_ano) 
+
         compara_aprov[disciplina] = compara_disciplina 
         disciplinas[disciplina] = disciplina_dict["disciplina_nome"]  
+
+        taxa_conhecimento += disciplina_dict["taxa_conhecimento"] 
+        taxa_trancamento += disciplina_dict["taxa_trancamento" ] 
+        taxa_reprovacao += disciplina_dict["taxa_reprovacao_absoluta" ] 
+        nota_media.append(disciplina_dict["nota"][0])  
+        nota_desvio.append(disciplina_dict["nota"][1])  
+        #print(disciplina_dict["nota"][0])  
+        #print(disciplina_dict["nota"][1])  
+
+    #transformando as listas nota_media e nota_desvio para numpy array, para
+    #poder utilizar os metodos np.mean()  e np.std() por questão de desepenho. 
+    nota_media_np = np.array(nota_media) 
+    nota_desvio_np = np.array(nota_desvio) 
+    media= np.mean(nota_media_np) 
+    desvio= np.std(nota_desvio_np) 
+    #verifica se o resultado final não é nan
+    if np.isnan(media):
+        media = 0.0
+    if np.isnan(desvio):
+        desvio = 0.0
+
+    #calcula os valores medios das taxas de todas as disciplinas
+    qtd_disciplina = len(lista_disciplinas.keys()) 
+    if qtd_disciplina != 0:
+        taxa_conhecimento /= qtd_disciplina 
+        taxa_trancamento /= qtd_disciplina
+        taxa_reprovacao /= qtd_disciplina
+
     listagem = { "cache" : cache,
             "compara_aprov":  compara_aprov,
-            "disciplinas": disciplinas} 
+            "disciplinas": disciplinas,
+            "taxa_conhecimento":taxa_conhecimento,
+            "taxa_trancamento":taxa_trancamento,
+            "taxa_reprovacao": taxa_reprovacao, 
+            "nota": [float(media),float(desvio) ] 
+            } 
     with open("cache/disciplinas.json",'w') as f:
         f.write(json.dumps(listagem,indent=4)) 
-        
+ # [ ] ->media_disc
+ # [ ] compara_aprov 
 
 def analises_disciplinas(df):
     lista_disciplinas = {}
