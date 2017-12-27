@@ -319,34 +319,49 @@ def analises_gerais(df,lista_disciplinas):
 #   -nota ultima vez ofertado e desvio padrao
 #   *cursada ate a aprovacao
 def analises_semestrais(df,lista_disciplinas):
+    # [X] -> taxa de aprovacao semestral 
+    # [ ] -> nota media de aprovaçao 
     geral_df = \
     df.groupby(["COD_ATIV_CURRIC","ANO","PERIODO"]).size().reset_index(name
             = "matr" ) 
     df_semestral = df.groupby(["COD_ATIV_CURRIC", "ANO", "PERIODO" ,
-        "MEDIA_FINAL","SITUACAO"]).size().reset_index(name = "qtds" ) 
+       "SITUACAO"]).size().reset_index(name = "qtds" ) 
+    # df_semestral = df.groupby(["COD_ATIV_CURRIC", "ANO", "PERIODO" ,
+    #     "MEDIA_FINAL","SITUACAO"]).size().reset_index(name = "qtds" ) 
     disciplinas = {} 
-    for count,i in enumerate(df_semestral.iterrows()): 
-        disciplina = i[1].COD_ATIV_CURRIC
+    for i in df_semestral.iterrows(): # percorre o dataframe
+        disciplina = i[1].COD_ATIV_CURRIC #nome da disciplina
         if not(disciplina in disciplinas):
             disciplinas[disciplina] = {} 
+
+        # para chave do dicionario ser do formato ano/periodo
         ano = str(int(i[1].ANO)) 
         periodo = str(i[1].PERIODO)   
+        periodo_curso = ano+"/"+periodo # chave do dicionario
+
         situacao = i[1].SITUACAO 
-        media = i[1].MEDIA_FINAL 
-        periodo_curso = ano+"/"+periodo 
+        #verifica se a chave ano/periodo exitste no dicionario
         if not(periodo_curso in disciplinas[disciplina] ): 
-            disciplinas[disciplina][periodo_curso]  = [0.0,0]  
-        if situacao in sit.SITUATION_AFFECT_IRA:
-            disciplinas[disciplina][periodo_curso][0] += media
-            disciplinas[disciplina][periodo_curso][1] +=1
+            disciplinas[disciplina][periodo_curso]  = [0,0] #qtd aprovado,total
+                
+        # se a situacao for igual a aprovado entao qtd de aprovados em
+        # ano/periodo +1
+        if situacao in sit.SITUATION_PASS:
+            disciplinas[disciplina][periodo_curso][0] += 1 # qtd de aprovados
+        
+        #quantidade total de matriculas no periodo ano/periodo
+        disciplinas[disciplina][periodo_curso][1] += 1
+
     for disciplina in disciplinas.keys(): 
         for ano_periodo in disciplinas[disciplina].keys():  
-            media = disciplinas[disciplina][ano_periodo][0]
-            qtd = disciplinas[disciplina][ano_periodo][1]
-            if qtd != 0:
-                disciplinas[disciplina][ano_periodo][0] = media / qtd   
+            qtd_total = disciplinas[disciplina][ano_periodo][1]
+            qtd_aprovados = disciplinas[disciplina][ano_periodo][0]
+            #calcula a taxa de aprovacao por semestre, qtd_aprov/qtd_total 
+            if qtd_total != 0:
+                disciplinas[disciplina][ano_periodo][0] = qtd_aprovados / qtd_total
             else:
                 disciplinas[disciplina][ano_periodo][0] = 0.0
+                
         aprovacao_semestral = disciplinas[disciplina]   
         lista_disciplinas[disciplina]["aprovacao_semestral"] = aprovacao_semestral
 #    -taxa aprovacao semestral
@@ -379,10 +394,11 @@ def listagem_disciplina(lista_disciplinas):
             compara_disciplina.append(aprov_por_ano) 
         compara_aprov[disciplina] = compara_disciplina 
         disciplinas[disciplina] = disciplina_dict["disciplina_nome"]  
-        listagem = {cache:cache,compara_aprov:
-                compara_aprov,disciplinas:disciplinas} 
-        with open("cache/disciplinas.json",'w') as f:
-            f.write(json.dumps(listagem,indent=4)) 
+    listagem = { "cache" : cache,
+            "compara_aprov":  compara_aprov,
+            "disciplinas": disciplinas} 
+    with open("cache/disciplinas.json",'w') as f:
+        f.write(json.dumps(listagem,indent=4)) 
         
 
 def analises_disciplinas(df):
