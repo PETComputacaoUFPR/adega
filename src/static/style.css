@@ -1,0 +1,196 @@
+
+
+
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    padding-bottom: 170px;
+    padding-top: 60px;
+}
+
+#wrap-page {
+    min-height: 95%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top:0;
+    left: 0;
+}
+
+/* ============================================ TOP */
+
+#top {
+    height: 200px;
+    background-color: #aaa;
+    border-bottom: 5px solid #666;
+    text-align: center;
+}
+
+h1#title {
+    color: #33d333;
+    font-size: 44px;
+}
+
+.navbar-text {
+    color: #afb0c5 !important;
+}
+
+
+
+/* ============================================ MESSAGES */
+
+/* ============================================ CONTENT */
+
+#content {
+    min-height: 100px;
+    padding: 2em 2em;
+}
+
+/* ============================================ FOOTER */
+
+#footer {
+    background-color: #263646;
+    border-top: 4px solid #31c2e4;
+    margin-top: 40px;
+    padding-top: 20px;
+    padding-bottom: 80px;
+    color: #FFF;
+}
+
+
+#footer a {
+    color: #FFF;
+    font-size: 1.1em;
+}
+
+#footer a:hover {
+    color: #18BC9C;
+}
+
+#footer h3 {
+    padding-bottom: 4px;
+    border-bottom: 2px solid #FFF;
+}
+
+
+/* ============================================= REPORTS */
+
+
+
+.sidebar{
+    transition: all 0.5s  ease-in-out;
+    padding: 0;
+    background-color: #2f4861;
+}
+
+.sidebar ul{ list-style:none; margin:0px; padding:0px; }
+
+.sidebar li,
+.sidebar li div {
+    display: flex;
+}
+
+
+
+.sidebar li a {
+    flex-grow: 1;
+}
+
+.sidebar .drop {
+    display: inline-block;
+    padding: 14px 18px;
+    flex-grow: 0;
+}
+
+.sidebar li a,
+.sidebar li a.collapsed.active{
+    padding: 14px 0px 14px 20px;
+    color: #d3d5d8;
+    border-left: 0px solid #159e83;
+    text-decoration: none
+ }
+
+ .sidebar li li a {
+    padding: 8px auto;
+ }
+.sidebar li a.active{background-color:#2c3e50;border-left:5px solid #159e83; transition: all 0.5s  ease-in-out}
+.sidebar li a:hover{color:#FFF !important; background-color: #132940}
+.sidebar li a i{ padding-right:5px;}
+.sidebar ul li .sub-menu li a{ position:relative}
+.sidebar ul li .sub-menu li a:hover:after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 5px;
+    background-color: #111;
+    height: 100%;
+}
+.sidebar ul li .sub-menu li a:hover{ background-color:#222; padding-left:20px; transition: all 0.5s  ease-in-out}
+.sub-menu{ border-left:5px solid #4a7d73;}
+.sidebar li a .nav-label,.sidebar li a .nav-label+span{ transition: all 0.5s  ease-in-out}
+
+
+.sidebar.fliph li a .nav-label,.sidebar.fliph li a .nav-label+span{ display:none;transition: all 0.5s  ease-in-out}
+.sidebar.fliph {
+    width: 42px;transition: all 0.5s  ease-in-out;
+}
+
+.sidebar.fliph li{ position:relative}
+.sidebar.fliph .sub-menu {
+    position: absolute;
+    left: 39px;
+    top: 0;
+    background-color: #222;
+    width: 150px;
+    z-index: 100;
+}
+
+
+/* ========================== DEFINICOES ESPECIAIS DE CADA AREA */
+
+
+
+/* =========================== PAINEIS ============= */
+
+/* ===============================================   PANEL  */
+
+.panel-container {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+}
+
+.data-panel {
+    padding: 10px 10px 20px;
+    margin: 10px;
+    border-bottom: 2px solid #3c3c3c;
+    font-size: 1.3em;
+    flex: 1;
+
+    box-shadow: 0 0 1px #DDD;
+}
+
+span.data {
+    margin: 0 1.5em;
+}
+
+.panel-line {
+    display: flex;
+}
+
+.data-panel .data-panel {
+    margin: 2px;
+    font-size: 1em;
+    border-bottom: 1px solid #3c3c3c;
+    box-shadow: none;
+}

@@ -1,0 +1,62 @@
+<html>
+<head>
+	<meta charset=UTF-8>
+	<script src="jquery.min.js"></script>
+	<script src="Chart.min.js"></script>
+	<script src="ChartType.js"></script>
+	
+	<script src="chartGenerator.js"></script>
+	<script src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	
+	<script src="fileinput.min.js"></script>
+	
+	<style>
+		.grafico{
+			width:500px;
+			height:200px;
+			max-height:200px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="grafico">
+		<canvas id="canvas"></canvas>
+	</div>
+</body>
+
+<script>
+	var grupos = [
+		['2010', {A: 12.7, B: 6.1}],
+		['2011', {A: 13.5746, B: 4.35}],
+		['2012', {A: 7.6598, B: 3.12}],
+		['2013', {A: 7.516, B: 1.158}],
+		['2014', {A: 12.5899, B: 5.1598}],
+		['2015', {A: 5.1568, B: 3.6998}],
+		['2016', {A: 3.14995, B: 4.698}],
+		['2017', {A: 7.2695, B: 2.158}],
+	];
+
+	var config = {
+		data:grupos,
+		labels: ['A', 'B'],
+		options:{
+			tooltipCallbackLabl: {
+				error: true,
+				text: '%B1',
+				fixed: true,
+			}
+		}
+	}
+
+	var ctx = document.getElementById('canvas').getContext('2d');
+
+	build_line_chart(ctx, config, ['cyan', 'yellow']);
+
+
+
+	
+</script>
+
+</html>
