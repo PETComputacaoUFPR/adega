@@ -30,6 +30,6 @@ def save_json(path, data):
     params = {} if not DEBUG else {'indent': 4}
 
     with open(path, 'w') as f:
-        json.dump(data, f, **params,ensure_ascii=False)
+        json.dump(data, f, **params)
 
 

@@ -59,7 +59,7 @@ def ira_por_quantidade_disciplinas(df):
 
 	total_students = len(df["MATR_ALUNO"])
 	for i in range(total_students):
-		matr = (df["MATR_ALUNO"][i])
+		matr = df["MATR_ALUNO"][i]
 		if (not (matr in students)):
 			students[matr] = {}
 
@@ -67,19 +67,22 @@ def ira_por_quantidade_disciplinas(df):
 		semestre = str(df["PERIODO"][i])
 		situacao = int(df["SITUACAO"][i])
 		nota = float(df["MEDIA_FINAL"][i])
+		carga = float(df["CH_TOTAL"][i])
 		media_credito = int(df["MEDIA_CREDITO"][i])
-
+		
+		
 		if (situacao in Situation.SITUATION_AFFECT_IRA and media_credito != 0):
-
 			if not (ano + "/" + semestre in students[matr]):
-				students[matr][ano + "/" + semestre] = [0, 0]
-			students[matr][ano + "/" + semestre][0] += nota
+				students[matr][ano + "/" + semestre] = [0, 0, 0]
+			
+			students[matr][ano + "/" + semestre][0] += nota*carga
 			students[matr][ano + "/" + semestre][1] += 1
+			students[matr][ano + "/" + semestre][2] += carga
 
 	for matr in students:
 		for periodo in students[matr]:
-			if (students[matr][periodo][1] != 0):
-				students[matr][periodo][0] /= students[matr][periodo][1] * 100
+			if (students[matr][periodo][2] != 0):
+				students[matr][periodo][0] /= students[matr][periodo][2] * 100
 	return (students)
 
 
