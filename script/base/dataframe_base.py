@@ -31,7 +31,6 @@ def load_dataframes(cwd='.'):
 				dataframes.append(dh)
 
 	dataframe = fix_dataframes(dataframes)
-	print(list(dataframe))
 	dh = DataframeHolder(dataframe)
 	#~ dh.students.aggregate(teste)
 #	print(dh.students['MEDIA_FINAL'].aggregate(teste))

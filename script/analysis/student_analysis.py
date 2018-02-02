@@ -1,5 +1,9 @@
 import numpy as np
 
+#~ TODO:
+#~ FAZER CACHE DE TUDO
+#~ AO CHAMAR A FUNCAO VERIFICAR SE TEM ALGO NA CACHE
+
 from utils.situations import *
 
 ANO_ATUAL = 2017
@@ -9,8 +13,25 @@ SEMESTRE_ATUAL = 2
 def listagem_alunos_ativos(df):
 	return list(df["MATR_ALUNO"][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates())
 	
-
-
+def taxa_aprovacao(df):
+	aprovacoes_semestres = indice_aprovacao_semestral(df)
+	
+	for aluno in aprovacoes_semestres:
+		total = sum([aprovacoes_semestres[aluno][s][1] for s in aprovacoes_semestres[aluno]])
+		aprovacoes = sum([aprovacoes_semestres[aluno][s][0] for s in aprovacoes_semestres[aluno]])
+		total = float(total)
+		aprovacoes = float(aprovacoes)
+		if(total != 0):
+			aprovacoes_semestres[aluno] = aprovacoes/total
+		else:
+			aprovacoes_semestres[aluno] = None
+		#~ for semestre in aprovacoes_semestres[aluno]:
+			#~ aprovacoes+=aprovacoes_semestres[aluno][semestre][0]
+			#~ total+=aprovacoes_semestres[semestre][1]
+			
+	return aprovacoes_semestres
+	
+	
 
 def posicao_turmaIngresso_semestral(df):
 	iras = ira_semestral(df)
@@ -108,6 +129,7 @@ def indice_aprovacao_semestral(df):
 			students[matr][ano + "/" + semestre][1] += 1
 		if situacao in Situation.SITUATION_FAIL:
 			students[matr][ano + "/" + semestre][1] += 1
+		
 	return (students)
 
 

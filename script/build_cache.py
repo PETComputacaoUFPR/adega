@@ -107,6 +107,9 @@ def generate_student_data(path, dataframe):
 		
 		(aluno_turmas(dataframe),
 		"aluno_turmas"),
+		
+		(taxa_aprovacao(dataframe),
+		"taxa_aprovacao"),
 	]
 	
 	for x in student_data:
