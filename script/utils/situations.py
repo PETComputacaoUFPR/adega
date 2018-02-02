@@ -89,6 +89,8 @@ class Situation:
 
     SIT_APROV_ADIANTAMENTO = 15
     SIT_INCOMPLETO = 16
+    
+    SIT_REPROVADO_ADIAN = 17
 
     SIT_OUTROS = 100
 
@@ -98,6 +100,7 @@ class Situation:
         (SIT_REPROVADO, 'Reprovado por nota'),
         (SIT_MATRICULA, 'Matrícula'),
         (SIT_REPROVADO_FREQ, 'Reprovado por Frequência'),
+        (SIT_REPROVADO_ADIAN, 'Reprov Adiantamento'),
         (SIT_EQUIVALENCIA, 'Equivalência de Disciplina'),
         (SIT_CANCELADO, 'Cancelado'),
 
@@ -123,6 +126,7 @@ class Situation:
         SIT_REPROVADO_FREQ,
         SIT_DISPENSA_COM_NOTA,
         SIT_CONHECIMENTO_APROVADO,
+        SIT_REPROVADO_ADIAN,
         SIT_CONHECIMENTO_REPROVADO
     )
 
@@ -135,6 +139,7 @@ class Situation:
     SITUATION_FAIL = (
         SIT_REPROVADO,
         SIT_REPROVADO_FREQ,
+        SIT_REPROVADO_ADIAN,
         SIT_CONHECIMENTO_REPROVADO
     )
 

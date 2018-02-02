@@ -68,10 +68,11 @@ def ira_por_quantidade_disciplinas(df):
 		situacao = int(df["SITUACAO"][i])
 		nota = float(df["MEDIA_FINAL"][i])
 		carga = float(df["CH_TOTAL"][i])
-		media_credito = int(df["MEDIA_CREDITO"][i])
+		#media_credito = int(df["MEDIA_CREDITO"][i])
 		
 		
-		if (situacao in Situation.SITUATION_AFFECT_IRA and media_credito != 0):
+		#if (situacao in Situation.SITUATION_AFFECT_IRA and media_credito != 0):
+		if (situacao in Situation.SITUATION_AFFECT_IRA):
 			if not (ano + "/" + semestre in students[matr]):
 				students[matr][ano + "/" + semestre] = [0, 0, 0]
 			
