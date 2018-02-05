@@ -5,13 +5,46 @@ import numpy as np
 #~ AO CHAMAR A FUNCAO VERIFICAR SE TEM ALGO NA CACHE
 
 from utils.situations import *
+import pandas as pd
 
 ANO_ATUAL = 2017
 SEMESTRE_ATUAL = 2
 
 
-def listagem_alunos_ativos(df):
-	return list(df["MATR_ALUNO"][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates())
+def listagem_alunos(df):
+	#~ ativos = df[["MATR_ALUNO", "NOME_PESSOA",]][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates()
+	situacoes = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
+	situacoes = list(pd.DataFrame({'count' : situacoes.size()}).reset_index().groupby(["FORMA_EVASAO"]))
+	
+	#~ Cria lista de nome de listagens
+	
+	#~ Percorre o situacoes, verifica se o grupo esta em algumas das listagens e insere na correta (ou se não achar insere na listagem de outros)
+	
+	#~ Retorna dicionario com as listagens
+	
+	#~ print(list(situacoes.indices))
+	#~ print(list(situacoes))
+
+	#~ iras = ira_alunos(df)
+	
+				
+	
+	return list()
+
+def ira_alunos(df):
+	iras = ira_por_quantidade_disciplinas(df)
+	for i in iras:
+		ira_total = 0
+		carga_total = 0
+		for semestre in iras[i]:
+			ira_total += iras[i][semestre][0]*iras[i][semestre][2]
+			carga_total+=iras[i][semestre][2]
+		
+		if(carga_total != 0):
+			iras[i] = ira_total/carga_total
+		else:
+			iras[i] = 0
+	return iras
 	
 def taxa_aprovacao(df):
 	aprovacoes_semestres = indice_aprovacao_semestral(df)
@@ -105,6 +138,7 @@ def ira_por_quantidade_disciplinas(df):
 		for periodo in students[matr]:
 			if (students[matr][periodo][2] != 0):
 				students[matr][periodo][0] /= students[matr][periodo][2] * 100
+	
 	return (students)
 
 
