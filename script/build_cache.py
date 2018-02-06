@@ -118,6 +118,21 @@ def generate_student_data(path, dataframe):
 			
 		save_json(path+x+".json", student_data[x])
 	
+	listagens_arquivos = [
+		EvasionForm.EF_ABANDONO,
+		EvasionForm.EF_DESISTENCIA,
+		EvasionForm.EF_FORMATURA,
+		EvasionForm.EF_ATIVO
+	]
+	
+	listagens = listagem_alunos(dataframe)
+	for l in listagens:
+		if(l in listagens_arquivos):
+			save_json(path+"listagem/"+str(l)+".json", listagens[l])
+	
+	
+	
+	
 	#Falta verificar se alguem nao recebeu algumas analises
 	
 def generate_student_list(path):

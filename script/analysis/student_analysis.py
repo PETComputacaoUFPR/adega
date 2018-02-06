@@ -15,21 +15,13 @@ def listagem_alunos(df):
 	#~ ativos = df[["MATR_ALUNO", "NOME_PESSOA",]][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates()
 	situacoes = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
 	situacoes = list(pd.DataFrame({'count' : situacoes.size()}).reset_index().groupby(["FORMA_EVASAO"]))
-	
 	#~ Cria lista de nome de listagens
-	
-	#~ Percorre o situacoes, verifica se o grupo esta em algumas das listagens e insere na correta (ou se não achar insere na listagem de outros)
-	
-	#~ Retorna dicionario com as listagens
-	
-	#~ print(list(situacoes.indices))
-	#~ print(list(situacoes))
+	retorno = {}
+	for s in situacoes:
+		#Busca a lista de alunos relacionados a um codigo
+		retorno[s[0]] = list(s[1]["MATR_ALUNO"])
 
-	#~ iras = ira_alunos(df)
-	
-				
-	
-	return list()
+	return retorno
 
 def ira_alunos(df):
 	iras = ira_por_quantidade_disciplinas(df)

@@ -49,6 +49,7 @@ def fix_dataframes(dataframes):
 	for df in dataframes:
 		if df['name'] == 'historico.xls' or df['name'] == 'historico.csv':
 			history = df['dataframe']
+			history.rename(columns={'DESCR_SITUACAO': 'SITUACAO'}, inplace=True)
 		if df['name'] == 'matricula.xls'  or df['name'] == 'matricula.csv':
 			register = df['dataframe']
 
