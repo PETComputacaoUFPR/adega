@@ -53,14 +53,14 @@ def general_ira(df):
     fixed = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
     return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
-    
+
 def current_ira(df):
     ano_grade = int(df.loc[df['NUM_VERSAO'].idxmax()]['NUM_VERSAO'])
     fixed = df.loc[(df['NUM_VERSAO'] == ano_grade)]
     fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     fixed = fixed[fixed.MEDIA_FINAL <= 100]
     return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
-    
+
 def current_students_ira(df):
     fixed = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
     fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
@@ -107,3 +107,73 @@ def average_graduation_time(df):
 
 def total_students(df):
     return df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)].drop_duplicates('MATR_ALUNO').shape[0]
+
+def taxa_abandono(df):
+    students = df['MATR_ALUNO'].drop_duplicates()
+    total_student = students.shape[0]
+    total_abandono = students.loc[(df.FORMA_EVASAO == EvasionForm.EF_ABANDONO)].shape[0]
+
+    return total_abandono / total_student
+
+def average_ira_graph(df):
+    alunos = df.drop_duplicates('MATR_ALUNO')
+
+    dic = build_dict_ira_medio(alunos)
+
+    return dic
+
+def current_students_average_ira_graph(df):
+    alunos_se = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
+    alunos_se = alunos_se.drop_duplicates('MATR_ALUNO')
+
+    dic_se = build_dict_ira_medio(alunos_se)
+
+    return dic_se
+
+def graduates_average_ira_graph(df):
+    alunos_for = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
+    alunos_for = alunos_for.drop_duplicates('MATR_ALUNO')
+
+    dic_for = build_dict_ira_medio(alunos_for)
+
+    return dic_for
+
+def period_evasion_graph(df):
+    di_qtd = {}
+    dic = {}
+    evasions_total = 0
+    year_start = int(df['ANO'].min())
+    year_end = int(df['ANO'].max()) + 1
+    students = df.drop_duplicates()
+    for year in range(year_start, year_end):
+        for semester in range(1, 3):
+            evasions = students.loc[(df['ANO_EVASAO'] == str(year)) & (df['SEMESTRE_EVASAO'] == str(semester))].shape[0]
+            date = str(year) + ' {}º Período'.format(semester)
+            di_qtd[date] = evasions
+            evasions_total += evasions
+    if evasions_total:
+        for di in di_qtd:
+            qtd = di_qtd[di]
+            dic[di] = {'qtd': qtd, 'taxa': (qtd/evasions_total)*100}
+
+    return dic
+
+def build_dict_ira_medio(alunos):
+    dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0, "25-29.9":0, "30-34.9":0,
+           "35-39.9":0, "40-44.9":0, "45-49.9":0, "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0,
+           "70-74.9":0, "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
+
+    iras = []
+    for index, row in alunos.iterrows():
+        if(row['MEDIA_FINAL'] is not None):
+            iras.append(row['MEDIA_FINAL'])
+
+    for d in dic:
+        aux = d.split('-')
+        v1 = float(aux[0])
+        if (v1 == 0.0):
+            v1 += 0.01
+        v2 = float(aux[1])
+        dic[d] = sum((float(num) >= v1) and (float(num) < v2) for num in iras)
+
+    return dic
