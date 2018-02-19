@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
+import json
 from utils.situations import Situation, EvasionForm
 
 
@@ -106,6 +107,9 @@ def average_graduation_time(df):
     return average_time
 
 def total_students(df):
+    return df.drop_duplicates('MATR_ALUNO').shape[0]
+
+def current_total_students(df):
     return df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)].drop_duplicates('MATR_ALUNO').shape[0]
 
 def taxa_abandono(df):
@@ -177,3 +181,28 @@ def build_dict_ira_medio(alunos):
         dic[d] = sum((float(num) >= v1) and (float(num) < v2) for num in iras)
 
     return dic
+
+def build_degree_json(df):
+    def merge_dicts(dict1, dict2, dict3):
+        dict_out = {}
+        for key, value in dict1.items():
+            v2 = dict2[key] if key in dict2 else None
+            v3 = dict3[key] if key in dict3 else None
+            dict_out[key] = {'ira_medio': value, 'sem_evasao': v2, 'formatura': v3}
+        return dict_out
+    dic = merge_dicts(average_ira_graph(df),current_students_average_ira_graph(df),graduates_average_ira_graph(df))
+    degree_json = {
+        "ira_medio_grafico": json.dumps(sorted(dic.items())),
+        "evasao_grafico": json.dumps(sorted(period_evasion_graph(df).items())),
+        "ira_atual": current_students_ira(df),
+        "ira_medio": general_ira(df),
+        "qtd_alunos": total_students(df),
+        "qtd_alunos_atuais": current_total_students(df),
+        "taxa_evasao": general_evasion_rate(df),
+        "taxa_formatura": average_graduation(df),
+        "taxa_reprovacao": general_failure(df),
+        "taxa_reprovacao_atual": current_students_failure(df),
+        "tempo_formatura": average_graduation_time(df),
+    }
+    with open("cache/curso/curso.json",'w') as f:
+        f.write(json.dumps(degree_json,indent=4))
