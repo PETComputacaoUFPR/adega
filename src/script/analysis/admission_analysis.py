@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils.situations import *
+from script.utils.situations import *
 ANO_ATUAL = 2017
 SEMESTRE_ATUAL = 2
 

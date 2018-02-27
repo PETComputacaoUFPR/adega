@@ -1,8 +1,8 @@
-from utils.utils import *
-from utils.situations import *
-from analysis.degree_analysis import *
-from analysis.student_analysis import *
-from analysis.admission_analysis import *
+from script.utils.utils import *
+from script.utils.situations import *
+from script.analysis.degree_analysis import *
+from script.analysis.student_analysis import *
+from script.analysis.admission_analysis import *
 
 
 try:
@@ -12,6 +12,7 @@ except NameError:
 
 
 def build_cache(dataframe):
+	
 #	os.chdir("../src")
 	path = 'cache/curso'
 	
@@ -107,9 +108,6 @@ def generate_student_data(path, dataframe):
 		
 		(aluno_turmas(dataframe),
 		"aluno_turmas"),
-		
-		(taxa_aprovacao(dataframe),
-		"taxa_aprovacao"),
 	]
 	
 	for x in student_data:
@@ -117,21 +115,6 @@ def generate_student_data(path, dataframe):
 			student_data[x][a[1]] = a[0][x]							# analises nulas para um GRR
 			
 		save_json(path+x+".json", student_data[x])
-	
-	listagens_arquivos = [
-		EvasionForm.EF_ABANDONO,
-		EvasionForm.EF_DESISTENCIA,
-		EvasionForm.EF_FORMATURA,
-		EvasionForm.EF_ATIVO
-	]
-	
-	listagens = listagem_alunos(dataframe)
-	for l in listagens:
-		if(l in listagens_arquivos):
-			save_json(path+"listagem/"+str(l)+".json", listagens[l])
-	
-	
-	
 	
 	#Falta verificar se alguem nao recebeu algumas analises
 	
