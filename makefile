@@ -34,13 +34,9 @@ install:
 	apt-get install -y python3-pip
 	apt-get install -y libpq-dev
 	apt-get install -y postgresql postgresql-contrib
-	pip3 install -U pip setuptools
-	pip3 install -r requirements.txt
+	pip3 install --user -U pip setuptools pipenv
+	pipenv install
 
 install-dev: install
-	pip3 install -r requirements-dev.txt
+	pipenv install --dev
 
-create-db:
-	mysql -u root < configure-db.sql
-	python3 manage.py migrate
-	
