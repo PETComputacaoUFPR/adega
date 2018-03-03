@@ -9,6 +9,9 @@ src/cache
 
 # lixo
 
+
+src/static
+**/migrations/**
 *~
 *.swp
 *.bkp
