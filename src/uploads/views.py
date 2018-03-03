@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect
-from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from uploads.core.models import Document
-from uploads.core.forms import DocumentForm
+from uploads.models import Document
+from uploads.forms import DocumentForm
 from script.main import main as analysis
 import os
 
 def home(request):
 	documents = Document.objects.all()
-	return render(request, 'core/home.html', { 'documents': documents })
+	return render(request, 'uploads/home.html', { 'documents': documents })
 
 
 def simple_upload(request):
@@ -20,9 +19,6 @@ def simple_upload(request):
 		filename = fs.save(myfile.name, myfile)
 		uploaded_file_url = fs.url(filename)
 		
-		
-		
-		
 		myfile = request.FILES['matricula']
 		fs = FileSystemStorage()
 		filename = fs.save(myfile.name, myfile)
@@ -30,10 +26,10 @@ def simple_upload(request):
 		
 		analysis()
 		os.system("rm script/base/*.csv; rm script/base/*.xls;")
-		return render(request, 'core/simple_upload.html', {
+		return render(request, 'uploads/simple_upload.html', {
 			'uploaded_file_url': uploaded_file_url
 		})
-	return render(request, 'core/simple_upload.html')
+	return render(request, 'uploads/simple_upload.html')
 
 
 def model_form_upload(request):
@@ -41,9 +37,9 @@ def model_form_upload(request):
 		form = DocumentForm(request.POST, request.FILES)
 		if form.is_valid():
 			form.save()
-			return redirect('home')
+			return redirect('uploads:home')
 	else:
 		form = DocumentForm()
-	return render(request, 'core/model_form_upload.html', {
+	return render(request, 'uploads/model_form_upload.html', {
 		'form': form
 	})
