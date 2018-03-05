@@ -1,6 +1,6 @@
 import os
 
-import json
+import ujson as json
 
 try:
     from django.conf import settings
