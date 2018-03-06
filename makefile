@@ -11,9 +11,8 @@ clean-deploy: clean
 	@rm -rf static db.sqlite3
 
 coverage:
-	coverage run --source='.' manage.py test
-	coverage html
-	xdg-open htmlcov/index.html
+	(cd src; coverage run --source='.' manage.py test; coverage html)
+	mv src/htmlcov .
 
 
 docs:
