@@ -33,9 +33,10 @@ install:
 	apt-get install -y python3-pip
 	apt-get install -y libpq-dev
 	apt-get install -y postgresql postgresql-contrib
+	bash <<< '(which pip || ln -s /usr/bin/pip3 /usr/bin/pip)'
+
+install-user:
 	pip3 install --user -U pip setuptools pipenv==9.0.3
 	pipenv install
 
-install-dev: install
-	pipenv install --dev
 
