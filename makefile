@@ -11,9 +11,8 @@ clean-deploy: clean
 	@rm -rf static db.sqlite3
 
 coverage:
-	coverage run --source='.' manage.py test
-	coverage html
-	xdg-open htmlcov/index.html
+	(cd src; coverage run --source='.' manage.py test; coverage html)
+	mv src/htmlcov .
 
 
 docs:
@@ -34,9 +33,10 @@ install:
 	apt-get install -y python3-pip
 	apt-get install -y libpq-dev
 	apt-get install -y postgresql postgresql-contrib
-	pip3 install --user -U pip setuptools pipenv
+	bash <<< '(which pip || ln -s /usr/bin/pip3 /usr/bin/pip)'
+
+install-user:
+	pip3 install --user -U pip setuptools pipenv==9.0.3
 	pipenv install
 
-install-dev: install
-	pipenv install --dev
 

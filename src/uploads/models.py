@@ -1,9 +1,33 @@
-from __future__ import unicode_literals
-
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
+
+from os import path
+from django.conf import settings
 
 
-class Document(models.Model):
-    description = models.CharField(max_length=255, blank=True)
-    document = models.FileField(upload_to='documents/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+def get_path(instance, filename):
+    return '{}/{}/{}'.format(instance.course, instance.id, filename)
+
+
+class Submission(models.Model):
+    author = models.ForeignKey(User)
+
+    historico = models.FileField(upload_to=get_path)
+    matricula = models.FileField(upload_to=get_path)
+
+    course = models.CharField(max_length=10, default='21A')
+
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    last = models.BooleanField(default=True)
+
+    processed = models.BooleanField(default=False)
+
+    def path(self):
+        return path.join(settings.MEDIA_ROOT, self.course, str(self.id))
+
+    def __str__(self):
+        return 'Submission (from: {}, to: {}, on: {})'.format(self.author.first_name,
+                                                              self.course,
+                                                              self.timestamp)
