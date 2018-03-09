@@ -7,8 +7,13 @@
 src/cache
 *.json
 
+src/.coverage
+
 # lixo
 
+
+src/static
+**/migrations/**
 *~
 *.swp
 *.bkp
