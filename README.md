@@ -27,7 +27,9 @@ $ git clone git@gitlab.c3sl.ufpr.br:pet/A.D.E.G.A.git
 
 
 ```bash
-sudo make install-dev
+sudo make install
+make install-user
+pipenv install --dev
 ```
 
 se você possui o arquivo do banco de dados compartilhado internamente pelos 

@@ -27,9 +27,6 @@ def load_dataframes(cwd='.'):
 
     dataframe = fix_dataframes(dataframes)
 
-    dh = DataframeHolder(dataframe)
-    # ~ dh.students.aggregate(teste)
-    #	print(dh.students['MEDIA_FINAL'].aggregate(teste))
     return dataframe
 
 
