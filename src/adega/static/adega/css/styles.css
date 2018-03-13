@@ -35,6 +35,24 @@ h1#title {
 }
 
 
+/* =========================================  MESSAGES */
+
+.alert {
+    border-radius: 0;
+}
+
+#messages {
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 1.7em;
+}
+
+#messages div[role=alert] {
+    margin: 0;
+}
+
+
+/* =========================================  FOOTER */
 
 footer {
     background-color: #263646;
@@ -82,6 +100,7 @@ footer h3 {
 
 .sidebar li a {
     flex-grow: 1;
+    outline: none;
 }
 
 .sidebar .drop {
@@ -142,4 +161,9 @@ footer h3 {
 
 .sub-menu {
     border-left:5px solid #4a7d73;
+}
+
+
+.content {
+    padding: 2em;
 }

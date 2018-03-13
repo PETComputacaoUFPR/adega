@@ -8,7 +8,9 @@ urlpatterns = [
 
     url(r'^uploads/', include('uploads.urls', namespace='uploads')),
 
-    url(r'^login/', views.login, name='login'),
+    url(r'^public/', include('public.urls', namespace='public')),
+
+    url(r'^logout/$', views.logout, name='logout'),
 
     url(r'^admin/', admin.site.urls),
 ]
