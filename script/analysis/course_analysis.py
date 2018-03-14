@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-import pprint
-import pandas as pd
-import json
+
+import ujson as json
 import numpy as np
 from utils.situations import Situation as sit
+
 def grafico(df,lista_disciplinas): 
             for disciplina in lista_disciplinas.keys() :
                 qtd_aluno = lista_disciplinas[disciplina]["qtd_alunos"] 
@@ -40,7 +40,8 @@ def informacoes_gerais(df,lista_disciplinas):
         disciplina_dict["disciplina_codigo"] = disciplina 
         disciplina_dict["disciplina_nome"] = \
         disciplina_df.NOME_ATIV_CURRIC.values[0]    
-        lista_disciplinas[disciplina] = disciplina_dict 
+        lista_disciplinas[disciplina] = disciplina_dict
+
 def conhecimento(qtd,disciplina_dict):
     conheci_df = qtd.loc[(qtd.SITUACAO == sit.SIT_CONHECIMENTO_APROVADO) |
             (qtd.SITUACAO == sit.SIT_CONHECIMENTO_REPROVADO)] 

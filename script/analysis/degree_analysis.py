@@ -1,6 +1,6 @@
 import pandas as pd
 import math
-import json
+import ujson as json
 from utils.situations import Situation, EvasionForm
 
 

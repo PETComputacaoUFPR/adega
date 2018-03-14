@@ -1,11 +1,7 @@
-import re
+
 import os
-import sys
 import pandas as pd
 import pathlib
-from pathlib import Path
-from glob import glob
-from json import load as json_load
 
 #import django
 
