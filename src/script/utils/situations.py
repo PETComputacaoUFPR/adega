@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Admission Form == #
 class AdmissionType:
     AT_DESCONHECIDO = 0
@@ -65,6 +66,14 @@ class EvasionForm:
     )
 
 # == Situation Courses == #
+#note:  os valores da coluna media_final não são confiavel, situation como
+# reprovacao,reprovacao_freq,dispensa_com_nota aparecem em algumas linha como
+# 9999, o valor 9999 é o valor definido pelo sie para ser o 'null' na tabela
+# .33, na tabela .18 o 'null' é o zero e não ocorre problema de calculo de
+# nota/ira  
+# orientaçao: verificar se media_final é maior que 100 se sim atribua 0 se nao
+# atribua media_final
+
 class Situation:
     SIT_DESCONHECIDA = 0
 
@@ -89,6 +98,8 @@ class Situation:
 
     SIT_APROV_ADIANTAMENTO = 15
     SIT_INCOMPLETO = 16
+    
+    SIT_REPROVADO_ADIAN = 17
 
     SIT_OUTROS = 100
 
@@ -98,6 +109,7 @@ class Situation:
         (SIT_REPROVADO, 'Reprovado por nota'),
         (SIT_MATRICULA, 'Matrícula'),
         (SIT_REPROVADO_FREQ, 'Reprovado por Frequência'),
+        (SIT_REPROVADO_ADIAN, 'Reprov Adiantamento'),
         (SIT_EQUIVALENCIA, 'Equivalência de Disciplina'),
         (SIT_CANCELADO, 'Cancelado'),
 
@@ -123,6 +135,7 @@ class Situation:
         SIT_REPROVADO_FREQ,
         SIT_DISPENSA_COM_NOTA,
         SIT_CONHECIMENTO_APROVADO,
+        SIT_REPROVADO_ADIAN,
         SIT_CONHECIMENTO_REPROVADO
     )
 
@@ -135,6 +148,7 @@ class Situation:
     SITUATION_FAIL = (
         SIT_REPROVADO,
         SIT_REPROVADO_FREQ,
+        SIT_REPROVADO_ADIAN,
         SIT_CONHECIMENTO_REPROVADO
     )
 
