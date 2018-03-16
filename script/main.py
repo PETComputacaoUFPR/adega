@@ -6,15 +6,20 @@ from datetime import timedelta
 from analysis.degree_analysis import *
 from utils.situations import *
 from analysis.course_analysis import *
+from analysis.admission_analysis import *
 def main():
     start_time = time.clock()
     start_time_exec = time.time()
 
     dataframe = load_dataframes(os.getcwd() + '/' + 'base')
-    build_cache(dataframe)
+    #build_cache(dataframe)
     cpu_time = timedelta(seconds=round(time.clock() - start_time))
-    analises_disciplinas(dataframe)
-    run_time = timedelta(seconds=round(time.time() - start_time_exec))
+    
+    #calcular_ira_medio(dataframe)
+    #calcular_ira_medio_desvio_padrao(dataframe)
+    calcular_ira_semestre(dataframe, 2017, 2)
+
+    run_time = timedelta(seconds=round(time.time() - start_time_exec))    
     print("--- Tempo de CPU: {} ---".format(cpu_time))
     print("--- Tempo total: {} ---".format(run_time))
 
