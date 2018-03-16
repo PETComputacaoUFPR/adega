@@ -1,4 +1,5 @@
 before_script:
+  - whoami
   - apt-get update -qq
   - apt-get install -y make
   - make install
