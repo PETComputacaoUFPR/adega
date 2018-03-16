@@ -2,7 +2,7 @@ before_script:
   - apt-get update -qq
   - apt-get install -y make
   - make install
-  - pip3 install -U pip setuptools pipenv==9.0.3
+  - pip install -U pip setuptools pipenv==9.0.3
   - pipenv install
   - pipenv shell
   - python --version
