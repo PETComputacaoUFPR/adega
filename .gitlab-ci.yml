@@ -1,7 +1,6 @@
 before_script:
-  - whoami
-  - ls /home/
-  - cat /etc/passwd
+  - export LC_ALL=C.UTF-8
+  - export LANG=C.UTF-8
   - apt-get update -qq
   - apt-get install -y make
   - make install
