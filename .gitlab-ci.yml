@@ -7,7 +7,7 @@ before_script:
   - pip3 install -U pip setuptools pipenv==9.0.3
   - pip3 --version
   - pipenv install
-  - pipenv shell
+  - source $(pipenv --venv)/bin/activate
   - python --version
   - pip3 show django | grep Version
 
