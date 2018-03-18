@@ -1,0 +1,37 @@
+{% load static %}<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ title|default:"A.D.E.G.A"}}</title>
+
+    <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}"/>
+
+  </head>
+  <body>
+    <header>
+
+    </header>
+    <main class="container-fluid">
+      <div class="row">
+        <aside class="col-md-3">
+            <ul>
+               <li><a href="{% url 'uploads:home' %}">Upload new</a></li>
+            </ul>
+        </aside>
+        <section id="main" class="col-md-9">
+          {% block content %}
+
+          {% endblock %}
+        </section>
+      </div>
+    </main>
+    <footer>
+        @ Copyright 2018 PET Computação UFPR
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="{% static 'bootstrap4/js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>

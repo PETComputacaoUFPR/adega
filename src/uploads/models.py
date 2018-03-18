@@ -1,10 +1,10 @@
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
 from os import path
 from django.conf import settings
+
 
 def get_path(instance, filename):
     return '{}/{}/{}'.format(instance.course, instance.id, filename)
@@ -33,5 +33,3 @@ class Submission(models.Model):
         return 'Submission (from: {}, to: {}, on: {})'.format(self.author.first_name,
                                                               self.course,
                                                               self.timestamp)
-
-

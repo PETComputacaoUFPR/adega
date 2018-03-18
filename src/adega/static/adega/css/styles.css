@@ -1,0 +1,23 @@
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    display: flex;
+
+}
+
+header {
+
+}
+
+main {
+    flex-grown: 1;
+}
+
+footer {
+
+}
+
