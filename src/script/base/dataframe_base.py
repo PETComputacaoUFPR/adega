@@ -1,12 +1,8 @@
-import re
+
 import os
-import sys
 import pandas as pd
 import numpy as np
-from glob import glob
-from json import load as json_load
 from script.utils.situations import *
-
 
 
 class DataframeHolder:
@@ -68,7 +64,6 @@ def fix_dataframes(dataframes):
         fix_evasion(merged)
         fix_carga(merged)
 
-
         return merged
 
 
@@ -79,6 +74,7 @@ def clean_history(df):
             ], axis=1, inplace=True)
     df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
 
+
 def clean_register(df):
         df_split = df['PERIODO_INGRESSO'].str.split('/')
         df['ANO_INGRESSO'] = df_split.str[0]
@@ -86,7 +82,6 @@ def clean_register(df):
         df_split = df['PERIODO_EVASAO'].str.split('/')
         df['ANO_EVASAO'] = df_split.str[0]
         df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
-
 
         df.drop(['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE','COD_CURSO', 'PERIODO_INGRESSO', 'PERIODO_EVASAO'],axis=1, inplace=True)
 
