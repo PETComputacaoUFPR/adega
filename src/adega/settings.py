@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from django.contrib import messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'widget_tweaks',
 
     'adega',
+    'public',
     'uploads'
 ]
 
@@ -87,6 +90,11 @@ DATABASES = {
 }
 
 
+AUTHENTICATION_BACKENDS = ['public.auth.EmailBackend']
+
+
+LOGIN_URL = 'public:index'
+
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -118,6 +126,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
 
 
 # Static files (CSS, JavaScript, Images)

@@ -6,9 +6,7 @@ from uploads import views
 
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
-    url(r'^simple/$', views.simple_upload, name='simple'),
-    url(r'^form/$', views.model_form_upload, name='model_form'),
+    url(r'^$', views.upload, name='upload'),
 ]
 
 if settings.DEBUG:
