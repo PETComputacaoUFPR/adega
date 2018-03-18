@@ -51,6 +51,7 @@ def fix_dataframes(dataframes):
     history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
     history = history[np.isfinite(history['MEDIA_FINAL'])]
 
+    # FIXME: how='inner' só aceita caras que estejam nos dois relatórios
     merged = pd.merge(history, register, how='right', on=['MATR_ALUNO'])
     # ~ print(merged)
     fix_situation(merged)
@@ -61,10 +62,16 @@ def fix_dataframes(dataframes):
 
 
 def clean_history(df):
-    df.drop(['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
-             'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
-             'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
-             ], axis=1, inplace=True)
+    print(df.columns)
+
+    drop_columns = ['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
+        'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
+        'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
+    ]
+
+    drop_columns = [x for x in drop_columns if x in df.columns]
+
+    df.drop(drop_columns, axis=1, inplace=True)
     df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
 
 
