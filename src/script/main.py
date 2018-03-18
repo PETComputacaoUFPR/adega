@@ -15,6 +15,8 @@ def analyze(submission):
 
     build_cache(dataframe)
 
+    submission.processed = True
+
     submission.process_time = round(time.clock() - start_time)
     submission.save()
 
@@ -35,6 +37,7 @@ def main():
     run_time = timedelta(seconds=round(time.time() - start_time_exec))
     print("--- Tempo de CPU: {} ---".format(cpu_time))
     print("--- Tempo total: {} ---".format(run_time))
+
 
 if __name__ == "__main__":
     main()
