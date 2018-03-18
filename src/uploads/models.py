@@ -24,6 +24,8 @@ class Submission(models.Model):
 
     processed = models.BooleanField(default=False)
 
+    process_time = models.IntegerField(null=True)
+
     def path(self):
         return path.join(settings.MEDIA_ROOT, self.course, str(self.id))
 
