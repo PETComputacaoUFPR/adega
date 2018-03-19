@@ -1,20 +1,12 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 
+from django.contrib import messages
+
 from uploads.models import Submission
 
-from uploads.core.models import Document
-from uploads.core.forms import DocumentForm
 
-
-
-def home(request):
-    documents = Document.objects.all()
-    return render(request, 'uploads/home.html', {'documents': documents})
-
-
-
-def simple_upload(request):
+def upload(request):
     if request.method == 'POST' and request.FILES['historico'] and request.FILES['matricula']:
 
         submission = Submission.objects.create(author=request.user)
@@ -30,17 +22,8 @@ def simple_upload(request):
 
         submission.save()
 
-    return render(request, 'core/simple_upload.html')
+        messages.success(request, 'Sua submissão foi realizada com sucesso, por favor aguarde o processamento')
 
+        return redirect('dashboard')
 
-def model_form_upload(request):
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('uploads:home')
-    else:
-        form = DocumentForm()
-    return render(request, 'uploads/model_form_upload.html', {
-        'form': form
-    })
+    return render(request, 'uploads/upload.html')
