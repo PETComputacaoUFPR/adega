@@ -28,11 +28,8 @@ clean-docs:
 	@rm -rf docs
 
 install:
-	apt-get update
-	apt-get install -y python3-dev
-	apt-get install -y python3-pip
-	apt-get install -y libpq-dev
-	apt-get install -y postgresql postgresql-contrib
+	apt-get update -qq
+	apt-get install -y python3-dev python3-pip libpq-dev postgresql postgresql-contrib
 
 install-user:
 	pip3 install --user -U pip setuptools pipenv==9.0.3
