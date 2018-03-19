@@ -10,6 +10,10 @@ except:
     DEBUG = True
 
 
+def invert_dict(d):
+    return {v: k for k, v in d}
+
+
 def build_path(path):
     if not os.path.exists(path):
         os.mkdir(path)
