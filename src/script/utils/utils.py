@@ -11,7 +11,7 @@ except:
 
 
 def invert_dict(d):
-    return {v: k for k, v in d.items()}
+    return {v: k for k, v in d}
 
 
 def build_path(path):

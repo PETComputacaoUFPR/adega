@@ -74,6 +74,7 @@ class EvasionForm:
 # orientaçao: verificar se media_final é maior que 100 se sim atribua 0 se nao
 # atribua media_final
 
+
 class Situation:
     SIT_DESCONHECIDA = 0
 

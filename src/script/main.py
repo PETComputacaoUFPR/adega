@@ -31,6 +31,7 @@ def main():
     start_time_exec = time.time()
 
     dataframe = load_dataframes(os.getcwd() + '/script/' + 'base')
+
     build_cache(dataframe)
     cpu_time = timedelta(seconds=round(time.clock() - start_time))
     analises_disciplinas(dataframe)

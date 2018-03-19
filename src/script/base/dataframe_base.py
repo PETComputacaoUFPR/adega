@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 from script.utils.situations import *
+from script.utils.utils import invert_dict
 
 
 class DataframeHolder:
@@ -55,7 +56,9 @@ def fix_dataframes(dataframes):
     history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
     history = history[np.isfinite(history['MEDIA_FINAL'])]
 
-    merged = pd.merge(history, register, how='outer', on=['MATR_ALUNO'])
+    # inner = exste nos dois relatórios, é o que a gente quer
+    # o que fazer com quem não está em um dos dois é um questão em aberto
+    merged = pd.merge(history, register, how='inner', on=['MATR_ALUNO'])
     merged = merged.rename(index=str, columns={"ANO_INGRESSO_x": "ANO_INGRESSO", "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO", "FORMA_INGRESSO_x": "FORMA_INGRESSO"})
 
     fix_situation(merged)
@@ -97,14 +100,27 @@ def clean_register(df):
     df.drop(drop_columns, axis=1, inplace=True)
 
 
+def get_situation(d, default):
+    def getter(x):
+        return invert_dict(d).get(x, default)
+    return getter
+
+
 def fix_situation(df):
-    for situation in Situation.SITUATIONS:
-        df.loc[df.SITUACAO == situation[1], 'SITUACAO'] = situation[0]
+    df.rename(columns={"SITUACAO": "SITUACAO2"}, inplace=True)
+
+    df['SITUACAO'] = df.SITUACAO2.apply(get_situation(Situation.SITUATIONS, Situation.SIT_OUTROS))
+
+    df.drop(['SITUACAO2'], axis=1, inplace=True)
 
 
 def fix_admission(df):
-    for adm in AdmissionType.ADMISSION_FORM:
-        df.loc[df.FORMA_INGRESSO == adm[1], 'FORMA_INGRESSO'] = adm[0]
+    df.rename(columns={'FORMA_INGRESSO': 'FORMA_INGRESSO2'}, inplace=True)
+
+    df['FORMA_INGRESSO'] = df.FORMA_INGRESSO2.apply(get_situation(AdmissionType.ADMISSION_FORM,
+                                                                  AdmissionType.AT_OUTROS))
+
+    df.drop(['FORMA_INGRESSO2'], axis=1, inplace=True)
 
 
 def fix_carga(df):
@@ -112,7 +128,9 @@ def fix_carga(df):
 
 
 def fix_evasion(df):
-    evasionForms = [x[1] for x in EvasionForm.EVASION_FORM]
-    df.loc[~df.FORMA_EVASAO.isin(evasionForms), 'FORMA_EVASAO'] = 100
-    for evasion in EvasionForm.EVASION_FORM:
-        df.loc[df.FORMA_EVASAO == evasion[1], 'FORMA_EVASAO'] = evasion[0]
+    df.rename(columns={'FORMA_EVASAO': 'FORMA_EVASAO2'}, inplace=True)
+
+    df['FORMA_EVASAO'] = df.FORMA_EVASAO2.apply(get_situation(EvasionForm.EVASION_FORM,
+                                                              EvasionForm.EF_OUTROS))
+
+    df.drop(['FORMA_EVASAO2'], axis=1, inplace=True)
