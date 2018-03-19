@@ -13,11 +13,6 @@ def make_analysis(modeladmin, request, queryset):
             print('analisando: '+str(submission))
             analyze(submission)
 
-            submission.processed = True
-
-            print('salvando')
-            submission.save()
-
             print('OK')
         except:
             print('Análise falhou')
