@@ -1,7 +1,4 @@
 
-tags:
-  - ubuntu
-  - regular
 
 
 before_script:
@@ -18,6 +15,9 @@ before_script:
   - pip3 show django | grep Version
 
 django-tests:
+  tags:
+    - ubuntu
+    - regular
   script:
     - cd src
     - python manage.py test
