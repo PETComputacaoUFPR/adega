@@ -1,29 +1,76 @@
-{% extends 'public/base_public.html' %}
+{% extends 'public/base.html' %}
+{% load widget_tweaks %}
+
 {% block content %}
 <div class="row">
-    <div id="public-data" class="col-md-8">
-        <h1></h1>
-    </div>
-    <div id="login" class="col-md-4">
-        <h1>Login</h1>
+  <section class="col-md-8 content">
+    <h2>O projeto adega</h2>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Integer auctor pellentesque lacus eget tincidunt.
+        Nam eu blandit est, sed vestibulum arcu. Phasellus ut tempus sapien.
+        Nunc vitae justo quis elit mattis ullamcorper eu ut lorem.
+        Sed ut interdum enim. Maecenas orci lectus, euismod sed
+        gravida fermentum, pretium non dui. Mauris vehicula nisl in
+        suscipit lacinia.</p>
+
+    <p>Sed a risus eu sapien dictum faucibus a sed massa.
+        Curabitur non sapien non ipsum tincidunt sodales sed eu libero.
+        Vestibulum ac libero laoreet, fermentum dui id, maximus ex.
+        Ut sit amet turpis nulla. Sed ac sapien tortor.
+        Donec vel sollicitudin risus. Lorem ipsum dolor sit amet,
+        consectetur adipiscing elit.</p>
+
+    <p>Mauris consequat justo sit amet turpis lacinia congue vel at sapien.
+        In orci orci, tincidunt sed velit quis, posuere feugiat eros.
+        Morbi volutpat eros a sagittis dictum. Integer nec leo eget felis
+        mattis venenatis. Pellentesque sed ligula commodo augue lobortis
+        accumsan ac tempor velit. Duis pharetra mattis orci, commodo
+        bibendum ex luctus at. Nullam nisl est, mattis id augue dignissim,
+        varius maximus quam.</p>
+
+  </section>
+  <section id="content" class="col-md-4 content">
+    <h2>Login</h2>
+    <form method="POST">
+      {% csrf_token %}
         {% if form.errors %}
-            <div class="alert alert-danger" role="alert">
-                O seu usário e senha não batem. Tente novamente
-            </div>
+        <ul>
+            {% for error in form.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
         {% endif %}
 
-        <form method="post" class="form" action="">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="{{ form.username.id_for_label }}">Email</label>
-                {{ form.username }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.password.id_for_label }}">Senha</label>
-                {{ form.password }}
-            </div>
-            <button type="submit" class="btn btn-default">Entrar</button>
-        </form>
-    <div>
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {% if form.email.errors %}
+        <ul>
+            {% for error in form.email.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {{ form.email|add_class:"form-control" }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+        {% if form.password.errors %}
+        <ul>
+            {% for error in form.password.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {{ form.password|add_class:"form-control" }}
+      </div>
+
+      <input type="submit" class="btn btn-primary" value="Entrar"/>
+    </form>
+  </section>
 </div>
+
 {% endblock content %}

@@ -1,5 +1,0 @@
-django==1.8
-django-widget-tweaks
-pandas==0.18.1
-django-extension
-psycopg2

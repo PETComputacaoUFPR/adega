@@ -11,9 +11,8 @@ clean-deploy: clean
 	@rm -rf static db.sqlite3
 
 coverage:
-	coverage run --source='.' manage.py test
-	coverage html
-	xdg-open htmlcov/index.html
+	(cd src; coverage run --source='.' manage.py test; coverage html)
+	mv src/htmlcov .
 
 
 docs:
@@ -29,18 +28,11 @@ clean-docs:
 	@rm -rf docs
 
 install:
-	apt-get update
-	apt-get install -y python3-dev
-	apt-get install -y python3-pip
-	apt-get install -y libpq-dev
-	apt-get install -y postgresql postgresql-contrib
-	pip3 install -U pip setuptools
-	pip3 install -r requirements.txt
+	apt-get update -qq
+	apt-get install -y python3-dev python3-pip libpq-dev postgresql postgresql-contrib
 
-install-dev: install
-	pip3 install -r requirements-dev.txt
+install-user:
+	pip3 install --user -U pip setuptools pipenv==9.0.3
+	pipenv install
 
-create-db:
-	mysql -u root < configure-db.sql
-	python3 manage.py migrate
-	
+

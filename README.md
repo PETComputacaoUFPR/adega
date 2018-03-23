@@ -1,5 +1,6 @@
 # ADEGA
 
+
 Este software faz parte de um projeto do PET Computação UFPR para 
 análise de dados dos cursos de graduação da UFPR. Veja a [wiki](http://gitlab.c3sl.ufpr.br/pet/adega/wikis/home).
 
@@ -18,7 +19,7 @@ Os códigos fonte do projeto estão disponíveis publicamente no [gitlab]
 E podem ser clonado com o comando
 
 ```bash
-$ git clone git@gitlab.c3sl.ufpr.br:pet/adega.git
+$ git clone git@gitlab.c3sl.ufpr.br:pet/A.D.E.G.A.git
 ```
 
 
@@ -26,7 +27,9 @@ $ git clone git@gitlab.c3sl.ufpr.br:pet/adega.git
 
 
 ```bash
-sudo make install-dev
+sudo make install
+make install-user
+pipenv install --dev
 ```
 
 se você possui o arquivo do banco de dados compartilhado internamente pelos 
@@ -44,16 +47,21 @@ python manage.py createsuperuser
 
 ## Executando o projeto
 
-Por padrão ele irá rodar no 127.0.0.1:8000
+Por padrão ele irá rodar no 127.0.0.1:8000, ative o virtualenv antes
 ```bash
+pipenv shell
 python manage.py runserver
 ```
 
 Se estiver usando o cloud9 use o ip e a porta que ele libera, assim:
 ```bash
+pipenv shell
 python manage.py runserver $IP:$PORT
 ```
+
 Então acesse pela url fornecida
+
+Ao sair do projeto execute `exit` para sair do virtualenv e evitar polui-lo
 
 ## Transformando o seu usuário em um professor
 
@@ -75,12 +83,6 @@ python manage.py graph_models -a -o diagrama.png
 * [Charts.js](http://www.chartjs.org/) - Biblioteca javascript para desenhar gráficos.
 * [Pandas](http://pandas.pydata.org/) - usada para importação dos dados
 * [django-extensions](https://django-extensions.readthedocs.io/en/latest/) - Várias extensões para o django. Estamos usando para gerar o diagrama do projeto.
-
-Dependências antigas 
-* [Pyyaml](http://pyyaml.org/)
-* [Scipy](https://www.scipy.org/)
-* [Matplotlib](http://matplotlib.org/)
-* [IPython](https://ipython.org/)
 
 
 ## Contato

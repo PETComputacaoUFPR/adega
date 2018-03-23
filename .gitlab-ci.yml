@@ -1,0 +1,26 @@
+
+
+
+before_script:
+  - export LC_ALL=C.UTF-8
+  - export LANG=C.UTF-8
+  - apt-get update -qq
+  - apt-get install -y make
+  - make install
+  - pip3 install -U pip setuptools pipenv==9.0.3
+  - pip3 --version
+  - pipenv install
+  - source $(pipenv --venv)/bin/activate
+  - python --version
+  - pip3 show django | grep Version
+
+django-tests:
+  tags:
+    - ubuntu
+    - regular
+  script:
+    - cd src
+    - python manage.py test
+
+
+

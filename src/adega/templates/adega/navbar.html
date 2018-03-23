@@ -1,68 +1,86 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="col-md-2">
+    <a class="navbar-brand" href="{% url 'dashboard' %}">ADEGA</a>
+  </div>
+  <div class="collapse navbar-collapse" id="navbartoggle">
+    <span class="navbar-brand mr-auto">
+      Ciência da Computação
+    </span>
+
+
+    <span class="navbar-text">
+      Relatório 2016/1
+    </span>
+    &nbsp;&nbsp;&nbsp;
+    {% comment %}
+    <form class="form-inline my-2 my-lg-0" id="navbarsearch">
+      <input class="form-control mr-sm-2" placeholder="Buscar" type="text">
+      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+    &nbsp;&nbsp;&nbsp;
+    {% endcomment %}
+    <div class="col-md-1">
+    <span class="navbar-text"><a href="{% url 'logout' %}">Sair</a></span>
+</div>
+  </div>
+</nav>
+{% comment %}
+<nav class="navbar navbar-expand-md navbar-dark flex-column flex-lg-row bg-dark">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header col-md-2">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse"
+        <div class="navbar-header mr-0 mr-md-2">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'degree:index' degree.code %}">ADEGA</a>
+            <a class="navbar-brand" href="#">ADEGA</a>
         </div>
-        <div class="col-md-10">
-            <a class="navbar-brand" href="{% url 'degree:index' degree.code %}">{{ degree.name }}</a>
+
+        <div class="mr-1 mr-md-8">
+            <a class="navbar-brand" href="#">Ciência da Computação</a>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                {% if degree %}
+
+
                 <ul class="nav navbar-nav hidden-md hidden-lg">
-                    <li><a href="{% url 'student:index' degree_id=degree.code %}">Alunos</a></li>
-                    <li><a href="{% url 'admission:index' degree_id=degree.code %}">Turmas de Ingresso</a></li>
+                    <li><a href="#">Alunos</a></li>
+                    <li><a href="#">Turmas de Ingresso</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            Disciplinas <span class="caret"></span>
-                        </a>
+                            Disciplinas <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'course:index' degree_id=degree.code %}">Lista Disciplinas</a></li>
-                            <li><a href="{% url 'course:compare' degree_id=degree.code %}">Compare Disciplinas</a></li>
+                            <li><a href="#">Lista Disciplinas</a></li>
+                            <li><a href="#">Compare Disciplinas</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             Outros <span class="caret"></span>
                         </a>
-                        {% comment %}
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'outros:cepe9615' curso_id=curso.codigo %}">Cepe 96/15</a></li>
-                        </ul>
-                        {% endcomment %}
-                    </li>
-                </ul>
-                {% endif %}
-                <ul class="nav navbar-nav navbar-right">
-                    <span class="navbar-text">Relatório {{degree.report_year}}/{{degree.report_semester}}</span>
-                    {%comment%}
-                    {% if degree and request.user.professor.cursos.all|length > 1 %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            Cursos <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            {% for curso in request.user.professor.cursos.all %}
-                                <li><a href="{% url 'degree:index' degree_id=degree.code %}" >{{curso.nome}}</a></li>
-                            {% endfor %}
+                            <li><a href="#">Cepe 96/15</a></li>
                         </ul>
                     </li>
-                    {% endif %}
-                    {%endcomment%}
-                    {%comment%}<li><a href="{% url 'logout' %}">Sair</a></li>{%endcomment%}
                 </ul>
             </div>
-        </div>
+
+            <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+                <span class="navbar-text">Relatório 2016/1</span>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Cursos <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Ciência da Computação</a></li>
+                        <li><a href="#">Informática Biomédica</a></li>
+                    </ul>
+                </li>
+                <li></li>
+            </ul>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container-fluid -->
 </nav>
-
+{% endcomment %}

@@ -1,0 +1,169 @@
+
+html {
+    height: 100%;
+}
+
+
+
+
+body {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+}
+
+#wrap-page {
+    flex-grow: 1;
+}
+
+#content {
+    min-height: 100px;
+    padding: 2em 2em 48px;
+}
+
+
+h1#title {
+    color: #33d333;
+    font-size: 44px;
+}
+
+.navbar-text {
+    color: #afb0c5 !important;
+}
+
+
+/* =========================================  MESSAGES */
+
+.alert {
+    border-radius: 0;
+}
+
+#messages {
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 1.7em;
+}
+
+#messages div[role=alert] {
+    margin: 0;
+}
+
+
+/* =========================================  FOOTER */
+
+footer {
+    background-color: #263646;
+    border-top: 4px solid #31c2e4;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #FFF;
+}
+
+
+footer a {
+    color: #FFF;
+    font-size: 1.1em;
+}
+
+footer a:hover {
+    color: #18BC9C;
+}
+
+footer h3 {
+    padding-bottom: 4px;
+    border-bottom: 2px solid #FFF;
+}
+
+
+/*    ===================    SIDEBAR    ========================    */
+
+.sidebar {
+    transition: all 0.5s ease-in-out;
+    padding: 0;
+    background-color: #2f4861;
+    min-height: 100%;
+}
+
+.sidebar ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.sidebar li,
+.sidebar li div {
+    display: flex;
+}
+
+.sidebar li a {
+    flex-grow: 1;
+    outline: none;
+}
+
+.sidebar .drop {
+    display: inline-block;
+    padding: 14px 18px 12px 20px;
+    flex-grow: 0;
+}
+
+.rotate {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  transition: all .25s ease-in;
+}
+
+.collapsed .rotate {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+    transition: all .25s ease-out;
+}
+
+.sidebar li a {
+    padding: 14px 0px 12px 20px;
+    color: #d3d5d8;
+    border-left: 0px solid #159e83;
+    text-decoration: none
+}
+
+.sidebar li li a {
+    padding: 8px auto;
+}
+
+
+.sidebar li a:hover {
+    color: #FFF !important;
+    background-color: #132940;
+}
+
+.sidebar li .sub-menu li a {
+    position:relative;
+}
+
+.sidebar li .sub-menu li a:hover:after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 5px;
+    background-color: #111;
+    height: 100%;
+}
+.sidebar .sub-menu li a:hover{
+    background-color:#222;
+    padding-left:20px;
+    transition: all 0.5s ease-in-out
+}
+
+.sub-menu {
+    border-left:5px solid #4a7d73;
+}
+
+
+.content {
+    padding: 2em;
+}
