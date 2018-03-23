@@ -49,15 +49,19 @@ def fix_dataframes(dataframes):
                         history.rename(columns={'DESCR_SITUACAO': 'SITUACAO'}, inplace=True)
                 if df['name'] == 'matricula.xls'  or df['name'] == 'matricula.csv':
                         register = df['dataframe']
+                if df['name'] == 'disciplinas.xls' or df['name'] == 'disciplinas.csv':
+                    disciplina = df['dataframe'] 
 
         #~ clean_history(history)
         clean_register(register)
+        clean_disciplina(disciplina) 
         #~ df.dropna(axis=0, how='all')
         history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
         history = history[np.isfinite(history['MEDIA_FINAL'])]
 
 
         merged = pd.merge(history, register, how='outer', on=['MATR_ALUNO'])
+        merged = pd.merge(history, disciplina, how='outer', on=['COD_DISCIPLINA'])
         merged = merged.rename(index=str, columns={"ANO_INGRESSO_x": "ANO_INGRESSO", "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO", "FORMA_INGRESSO_x": "FORMA_INGRESSO"})
 
         fix_situation(merged)
@@ -69,6 +73,10 @@ def fix_dataframes(dataframes):
         return merged
 
 
+def clean__disciplina(df):
+    df.drop(['COD_CURSO' 'NOME_UNIDADE', 'NUM_VERSAO', 'NOME_DISCIPLINA',
+        'COD_PRE_REQ', 'NOME_PRE_REQ', 'TIPO_REQUISITO', 'NUM_REFERENCIA',
+        'ITEM_TABELA', 'ID_ESTRUTURA_CUR'] ) 
 def clean_history(df):
     df.drop(['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
              'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
