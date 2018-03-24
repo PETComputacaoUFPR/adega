@@ -14,6 +14,9 @@ def main():
     build_cache(dataframe)
     cpu_time = timedelta(seconds=round(time.clock() - start_time))
     analises_disciplinas(dataframe)
+    #novas analises:
+    novas_analises_json(dataframe)
+    #end
     run_time = timedelta(seconds=round(time.time() - start_time_exec))
     print("--- Tempo de CPU: {} ---".format(cpu_time))
     print("--- Tempo total: {} ---".format(run_time))
