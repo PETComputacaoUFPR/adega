@@ -5,7 +5,7 @@ from utils.situations import Situation, EvasionForm
 
 def alunos_por_periodo(df):
     alunos_periodo = {}
-    max_periodo = int(df['PERIODO_IDEAL'].max()) + 1
+    limite = int(df['PERIODO_IDEAL'].max()) + 1
     alunos_p = df.loc[(df.PERIODO != 'Anual') & (df.PERIODO != 'Semestral') & (df.PERIODO != 'Perí')]
     ano = int(alunos_p['ANO'].max()) - 1
     periodo = int(alunos_p['PERIODO'].max())
@@ -15,27 +15,28 @@ def alunos_por_periodo(df):
     alunos_p = alunos_p.dropna(subset=['PERIODO_IDEAL'])
     alunos_p = alunos_p.drop_duplicates('MATR_ALUNO', keep='last')
     alunos_p = alunos_p.loc[(alunos_p.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
-    for i in range(1,max_periodo):
-        alunos_periodo[i] = (alunos_p.loc[alunos_p['PERIODO_IDEAL'] == i]).shape[0]
+    for i in range(1,limite):
+        alunos_periodo[i] = (alunos_p.loc[(alunos_p['PERIODO_IDEAL'] == i) | (alunos_p['PERIODO_IDEAL'] == i%(limite-1))]).shape[0]
+        print(alunos_periodo[i])
     return alunos_periodo
 
 def taxa_aprovacao_periodo(df):
     aprovacao_periodo = {}
-    max_periodo = int(df['PERIODO_IDEAL'].max()) + 1
+    limite = int(df['PERIODO_IDEAL'].max()) + 1
     alunos_p = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     aprovacao_p = alunos_p[alunos_p.SITUACAO.isin(Situation.SITUATION_PASS)]
-    for i in range(1,max_periodo):
-        al_p = alunos_p.loc[alunos_p['PERIODO_IDEAL'] == i].shape[0]
+    for i in range(1,limite):
+        al_p = alunos_p.loc[(alunos_p['PERIODO_IDEAL'] == i)].shape[0]
         ap_p = aprovacao_p.loc[aprovacao_p['PERIODO_IDEAL'] == i].shape[0]
         aprovacao_periodo[i] = ap_p / al_p
     return aprovacao_periodo
 
 def nota_media_periodo(df):
     ira_periodo = {}
-    max_periodo = int(df['PERIODO_IDEAL'].max()) + 1
+    limite = int(df['PERIODO_IDEAL'].max()) + 1
     ira_p = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     ira_p = ira_p[ira_p.MEDIA_FINAL <= 100]
-    for i in range(1,max_periodo):
+    for i in range(1,limite):
         i_p = ira_p.loc[ira_p['PERIODO_IDEAL'] == i]
         ira_periodo[i] = i_p.MEDIA_FINAL.mean()
     return ira_periodo
