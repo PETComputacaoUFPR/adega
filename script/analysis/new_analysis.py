@@ -17,7 +17,6 @@ def alunos_por_periodo(df):
     alunos_p = alunos_p.loc[(alunos_p.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
     for i in range(1,limite):
         alunos_periodo[i] = (alunos_p.loc[(alunos_p['PERIODO_IDEAL'] == i) | (alunos_p['PERIODO_IDEAL'] == i%(limite-1))]).shape[0]
-        print(alunos_periodo[i])
     return alunos_periodo
 
 def taxa_aprovacao_periodo(df):
