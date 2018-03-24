@@ -6,6 +6,7 @@ from datetime import timedelta
 from analysis.degree_analysis import *
 from utils.situations import *
 from analysis.course_analysis import *
+from analysis.new_analysis import *
 def main():
     start_time = time.clock()
     start_time_exec = time.time()
