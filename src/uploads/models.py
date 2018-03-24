@@ -5,18 +5,28 @@ from django.utils import timezone
 from os import path
 from django.conf import settings
 
+from adega.models import Course
+
 
 def get_path(instance, filename):
     return '{}/{}/{}'.format(instance.course, instance.id, filename)
 
 
 class Submission(models.Model):
+    STATUS_ONGOING = 0
+    STATUS_FINISHED = 1
+
+    STATUS = (
+        (STATUS_ONGOING, 'Em andamento'),
+        (STATUS_FINISHED, 'Terminado'),
+    )
+
     author = models.ForeignKey(User)
 
     historico = models.FileField(upload_to=get_path)
     matricula = models.FileField(upload_to=get_path)
 
-    course = models.CharField(max_length=10, default='21A')
+    course = models.ForeignKey(Course)
 
     timestamp = models.DateTimeField(default=timezone.now)
 
@@ -26,10 +36,25 @@ class Submission(models.Model):
 
     process_time = models.IntegerField(null=True)
 
+    relative_year = models.IntegerField(null=True)
+
+    relative_semester = models.IntegerField(null=True)
+
+    semester_status = models.IntegerField(null=True, choices=STATUS)
+
+    done_in = models.DateTimeField(null=True)
+
     def path(self):
-        return path.join(settings.MEDIA_ROOT, self.course, str(self.id))
+        return path.join(settings.MEDIA_ROOT, self.course.code, str(self.id))
 
     def __str__(self):
         return 'Submission (from: {}, to: {}, on: {})'.format(self.author.first_name,
-                                                              self.course,
+                                                              self.course.name,
                                                               self.timestamp)
+
+    def set_done(self, time):
+        self.processed = True
+        self.process_time = time
+        self.done_in = timezone.now()
+
+        self.save()

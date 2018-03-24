@@ -62,7 +62,7 @@ ROOT_URLCONF = 'adega.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], #[os.path.join(BASE_DIR, 'uploads/templates'),],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,6 +88,18 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'adega',
+            'USER': 'adega',
+            'PASSWORD': 'adega',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 
 
 AUTHENTICATION_BACKENDS = ['public.auth.EmailBackend']
@@ -136,7 +148,14 @@ MESSAGE_TAGS = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+
+if not DEBUG:
+    FORCE_SCRIPT_NAME = '/adega/'
+
+    STATIC_URL = '/adega/static/'
+else:
+    STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/script/base/'
