@@ -66,6 +66,7 @@ def fix_dataframes(dataframes):
         #~ df.dropna(axis=0, how='all')
         history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
         history = history[np.isfinite(history['MEDIA_FINAL'])]
+        fix_register(register) 
 
         merged = pd.merge(history, register, how='outer', on=['MATR_ALUNO'], suffixes=('', '_y'))
         merged = pd.merge(merged, disciplinas, how='left', on=['COD_ATIV_CURRIC'])
@@ -97,21 +98,31 @@ def clean_history(df):
     #          'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR', 'NUM_VERSAO'
     #         ], axis=1, inplace=True) comentei porque clean_history estava comentado por algum motivo(perguntar)
     df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
-
+def normaliza_semestre(x):
+    if pd.isnull(x):
+        return 0
+    return 2 if (int(x) > 6 ) else 1  
+def fix_register(df):
+    df.rename(columns={'MATRICULA': 'MATR_ALUNO'}, inplace=True)
 def clean_register(df):
-        df_split = df['PERIODO_INGRESSO'].str.split('/')
-        df['ANO_INGRESSO'] = df_split.str[0]
-        df['SEMESTRE_INGRESSO'] = df_split.str[1].str.split('o').str[0]
-        df_split = df['PERIODO_EVASAO'].str.split('/')
+        df_split = df['DT_INGRESSO'].str.split('/')  
+        #df_split = df['PERIODO_INGRESSO'].str.split('/')
+        df['ANO_INGRESSO'] = df_split.str[2]
+        df['SEMESTRE_INGRESSO'] = df_split.str[1].apply(lambda x: normaliza_semestre(x) )  
+
+        df_split = df['PERIODO_EVASAO'].str.split(' ')
         df['ANO_EVASAO'] = df_split.str[0]
         df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
 
 
-        df.drop(['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE','COD_CURSO', 'PERIODO_INGRESSO', 'PERIODO_EVASAO'],axis=1, inplace=True)
+        df.drop(['COD_CURSO','PERIODO_EVASAO'],axis=1, inplace=True)
 
 
 def fix_situation(df):
         for situation in Situation.SITUATIONS:
+               # print(situation) 
+               # print(df.loc[df.SITUACAO==situation[1]] ) 
+               # print("----------------------------------------------" ) 
                 df.loc[df.SITUACAO == situation[1], 'SITUACAO'] = situation[0]
 
 

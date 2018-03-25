@@ -100,7 +100,7 @@ class Situation:
     SIT_INCOMPLETO = 16
     
     SIT_REPROVADO_ADIAN = 17
-
+    SIT_TRANCAMENTO_OUTRA_IES = 18
     SIT_OUTROS = 100
 
     SITUATIONS = (
@@ -123,7 +123,7 @@ class Situation:
         (SIT_REPROVADO_SEM_NOTA, 'Reprovado sem nota'),
 
         (SIT_HORAS, 'Horas'),
-
+        (SIT_TRANCAMENTO_OUTRA_IES, 'Trancamento Outra IES' ), 
         (SIT_APROV_ADIANTAMENTO, 'Aprov Adiantamento'),
         (SIT_INCOMPLETO, 'Incompleto'),
         (SIT_OUTROS, 'Outro'),
