@@ -41,12 +41,6 @@ def read_excel(path, planilha='Planilha1'):
 def read_csv(path):
         return pd.read_csv(path)
 
-def printdf(df):
-    for index, row in df.iterrows():
-        print(index)
-        print(row)
-    print('end')
-
 def fix_dataframes(dataframes):
         for df in dataframes:
                 if df['name'] == 'historico.xls' or df['name'] == 'historico.csv':
@@ -55,37 +49,26 @@ def fix_dataframes(dataframes):
                 if df['name'] == 'matricula.xls'  or df['name'] == 'matricula.csv':
                         register = df['dataframe']
                 if df['name'] == 'disciplinas.xls' or df['name'] == 'disciplinas.csv':
-                    disciplina = df['dataframe'] 
-                    disciplina.rename(columns={'COD_DISCIPLINA': 'COD_ATIV_CURRIC'}, inplace=True)
+                    disciplinas = df['dataframe'] 
+                    disciplinas.rename(columns={'COD_DISCIPLINA': 'COD_ATIV_CURRIC'}, inplace=True)
 
         clean_history(history)
         clean_register(register)
 
         #adiciona disciplinas do primeiro periodo de BCC
-        disc_b = disciplina.copy()
-        disciplina_pp = disciplina.copy()
-        disciplina_pp = disciplina_pp[(disciplina_pp.PERIODO_IDEAL == 2) | (disciplina_pp.PERIODO_IDEAL == 3)]
-        disciplina_pp = fix_disciplina_pp(disciplina_pp)
-        disciplina_pp = disciplina_pp.drop_duplicates('COD_ATIV_CURRIC')
-        disciplina_pp = pd.merge(disciplina_pp, disciplina, on=['COD_ATIV_CURRIC'], how='left', suffixes=('_y', ''))
-        drop_y(disciplina_pp)
-        disciplina = pd.merge(disciplina, disciplina_pp, how='outer', on=['COD_ATIV_CURRIC'], suffixes=('', '_y'))
-        drop_y(disciplina)
-        disciplina['PERIODO_IDEAL'] = disciplina['PERIODO_IDEAL'].fillna(1)
-        disciplina['DESCR_ESTRUTURA'] = disciplina['DESCR_ESTRUTURA'].fillna("Obrigatórias")
+        disciplinas = pd.merge(disciplinas, disciplinas_pp(disciplinas), how='outer', on=['COD_ATIV_CURRIC'], suffixes=('', '_y'))
+        fix_disciplinas(disciplinas)
         #end
-
-        disciplina = disciplina.drop_duplicates('COD_ATIV_CURRIC')
-        clean_disciplina(disciplina)
-        
-        disciplina = disciplina.sort_values(by=['COD_ATIV_CURRIC'])
+        disciplinas = disciplinas.drop_duplicates('COD_ATIV_CURRIC')
+        clean_disciplinas(disciplinas)
+        disciplinas = disciplinas.sort_values(by=['COD_ATIV_CURRIC'])
 
         #~ df.dropna(axis=0, how='all')
         history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
         history = history[np.isfinite(history['MEDIA_FINAL'])]
 
         merged = pd.merge(history, register, how='outer', on=['MATR_ALUNO'], suffixes=('', '_y'))
-        merged = pd.merge(merged, disciplina, how='left', on=['COD_ATIV_CURRIC'])
+        merged = pd.merge(merged, disciplinas, how='left', on=['COD_ATIV_CURRIC'])
 
         drop_y(merged)
 
@@ -94,11 +77,16 @@ def fix_dataframes(dataframes):
         fix_evasion(merged)
         fix_carga(merged)
 
+        #adiciona disciplinas optativas desse ano, coloca -1 em "nao materias"
+        grade_atual = int(merged['NUM_VERSAO'].max())
+        merged.ix[merged['CREDITOS'] == 0, 'PERIODO_IDEAL'] = merged.ix[merged['CREDITOS'] == 0, 'PERIODO_IDEAL'].fillna(-1)
+        merged.ix[merged['NUM_VERSAO'] == (grade_atual), 'PERIODO_IDEAL'] = merged.ix[merged['NUM_VERSAO'] == (grade_atual), 'PERIODO_IDEAL'].fillna(0)
+        #end
 
         return merged
 
 
-def clean_disciplina(df):
+def clean_disciplinas(df):
     df.drop(['COD_CURSO', 'NOME_UNIDADE', 'NUM_VERSAO', 'NOME_DISCIPLINA',
         'COD_PRE_REQ', 'NOME_PRE_REQ', 'TIPO_REQUISITO', 'NUM_REFERENCIA',
         'ITEM_TABELA', 'ID_ESTRUTURA_CUR'], axis=1, inplace=True)
@@ -148,13 +136,26 @@ def fix_evasion(df):
                                         #~ print(x)
         #~ print(df.FORMA_EVASAO.str.contains(evasion[1]).fillna(5))
         #~ print(df[['MATR_ALUNO','FORMA_EVASAO']])
-        
-def fix_disciplina_pp(df):
-    copy = df
-    copy.rename(columns={'COD_ATIV_CURRIC': 'COD_DISCIPLINA'}, inplace=True)
-    copy.rename(columns={'COD_PRE_REQ': 'COD_ATIV_CURRIC'}, inplace=True)
-    copy.rename(columns={'COD_DISCIPLINA': 'COD_PRE_REQ'}, inplace=True)
-    return copy
+
+def fix_disciplinas(df):
+    drop_y(df)
+    df['PERIODO_IDEAL'] = df['PERIODO_IDEAL'].fillna(1)
+    df['DESCR_ESTRUTURA'] = df['DESCR_ESTRUTURA'].fillna("Obrigatórias")
+
+def disciplinas_pp(df):
+    disc_pp = df.copy()
+    disc_pp = disc_pp[(disc_pp.PERIODO_IDEAL == 2) | (disc_pp.PERIODO_IDEAL == 3)]
+    disc_pp = fix_disc_pp(disc_pp)
+    disc_pp = disc_pp.drop_duplicates('COD_ATIV_CURRIC')
+    disc_pp = pd.merge(disc_pp, df, on=['COD_ATIV_CURRIC'], how='left', suffixes=('_y', ''))
+    drop_y(disc_pp)
+    return disc_pp
+
+def fix_disc_pp(df):
+    df.rename(columns={'COD_ATIV_CURRIC': 'COD_DISCIPLINA'}, inplace=True)
+    df.rename(columns={'COD_PRE_REQ': 'COD_ATIV_CURRIC'}, inplace=True)
+    df.rename(columns={'COD_DISCIPLINA': 'COD_PRE_REQ'}, inplace=True)
+    return df
 
 def drop_y(df):
     to_drop = [y for y in df if y.endswith('_y')]
