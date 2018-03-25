@@ -7,14 +7,16 @@ def alunos_por_periodo(df):
     alunos_periodo = {}
     limite = int(df['PERIODO_IDEAL'].max()) + 1
     alunos_p = df.loc[(df.PERIODO != 'Anual') & (df.PERIODO != 'Semestral') & (df.PERIODO != 'Perí')]
-    ano = int(alunos_p['ANO'].max()) - 1
-    periodo = int(alunos_p['PERIODO'].max())
-    alunos_p = alunos_p.loc[alunos_p['ANO'] == (ano)]
-    alunos_p = alunos_p.loc[alunos_p['PERIODO'] == str(periodo)]
-    alunos_p = alunos_p.sort_values(by=['PERIODO_IDEAL'])
-    alunos_p = alunos_p.dropna(subset=['PERIODO_IDEAL'])
-    alunos_p = alunos_p.drop_duplicates('MATR_ALUNO', keep='last')
+    alunos_p = alunos_p.loc[df.PERIODO_IDEAL >= 0]
     alunos_p = alunos_p.loc[(alunos_p.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
+    ano = int(alunos_p['ANO'].max())
+    alunos_p = alunos_p.loc[alunos_p['ANO'] == (ano)]
+    periodo = int(alunos_p['PERIODO'].max())
+    alunos_p = alunos_p.loc[alunos_p['PERIODO'] == str(periodo)]
+    al_num = alunos_p.drop_duplicates('MATR_ALUNO', keep='last').shape[0]
+    alunos_p = alunos_p.dropna(subset=['PERIODO_IDEAL'])
+    alunos_p = alunos_p.sort_values(by=['PERIODO_IDEAL'])
+    alunos_p = alunos_p.drop_duplicates('MATR_ALUNO', keep='last')
     for i in range(1,limite):
         alunos_periodo[i] = (alunos_p.loc[(alunos_p['PERIODO_IDEAL'] == i) | (alunos_p['PERIODO_IDEAL'] == i%(limite-1))]).shape[0]
     return alunos_periodo
