@@ -17,6 +17,7 @@ def load_dataframes(cwd='.'):
         dataframes = []
         for path, dirs, files in os.walk(cwd):
                 for f in files:
+                        print(f) 
                         file_path = path + '/' + f
                         dh = {'name': f, 'dataframe': None}
                         if 'csv' in f:
@@ -48,7 +49,7 @@ def fix_dataframes(dataframes):
                         history.rename(columns={'DESCR_SITUACAO': 'SITUACAO'}, inplace=True)
                 if df['name'] == 'matricula.xls'  or df['name'] == 'matricula.csv':
                         register = df['dataframe']
-                if df['name'] == 'disciplinas.xls' or df['name'] == 'disciplinas.csv':
+                if df['name'] == 'disciplina.xls' or df['name'] == 'disciplina.csv':
                     disciplinas = df['dataframe'] 
                     disciplinas.rename(columns={'COD_DISCIPLINA': 'COD_ATIV_CURRIC'}, inplace=True)
 
@@ -151,6 +152,7 @@ def fix_evasion(df):
 def fix_disciplinas(df):
     drop_y(df)
     df['PERIODO_IDEAL'] = df['PERIODO_IDEAL'].fillna(1)
+    print(df.PERIODO_IDEAL.drop_duplicates() ) 
     df['DESCR_ESTRUTURA'] = df['DESCR_ESTRUTURA'].fillna("Obrigatórias")
 
 def disciplinas_pp(df):
