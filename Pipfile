@@ -13,12 +13,12 @@ ipython = "*"
 
 [packages]
 
-django = "==1.11.10"
+Django = "==1.11.10"
 django-widget-tweaks = "*"
 pandas = "==0.22"
-"psycopg2" = "*"
 xlrd = "*"
 django-extensions = "*"
 ujson = "*"
 eventlet = "*"
 gunicorn = "*"
+"psycopg2" = "*"
