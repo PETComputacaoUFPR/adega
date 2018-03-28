@@ -17,7 +17,7 @@ def load_dataframes(cwd='.'):
         dataframes = []
         for path, dirs, files in os.walk(cwd):
                 for f in files:
-                        print(f) 
+                        #print(f) 
                         file_path = path + '/' + f
                         dh = {'name': f, 'dataframe': None}
                         if 'csv' in f:
@@ -36,7 +36,7 @@ def load_dataframes(cwd='.'):
 
 
 def read_excel(path, planilha='Planilha1'):
-        return pd.read_excel(path)
+        return pd.read_excel(path, decoding='utf-8' )
 
 
 def read_csv(path):
@@ -89,9 +89,8 @@ def fix_dataframes(dataframes):
 
 
 def clean_disciplinas(df):
-    df.drop(['COD_CURSO', 'NOME_UNIDADE', 'NUM_VERSAO', 'NOME_DISCIPLINA',
-        'COD_PRE_REQ', 'NOME_PRE_REQ', 'TIPO_REQUISITO', 'NUM_REFERENCIA',
-        'ITEM_TABELA', 'ID_ESTRUTURA_CUR'], axis=1, inplace=True)
+    df.drop(['COD_CURSO', 'NOME_UNIDADE', 'NUM_VERSAO',
+        'NOME_DISCIPLINA','CREDITOS','EMENTA', 'ID_ESTRUTURA_CUR'], axis=1, inplace=True)
 
 def clean_history(df):
     # df.drop(['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
@@ -137,6 +136,8 @@ def fix_carga(df):
 
 def fix_evasion(df):
         evasionForms = [x[1] for x in EvasionForm.EVASION_FORM]
+        print(df.FORMA_EVASAO.drop_duplicates() ) 
+        exit() 
         df.loc[~df.FORMA_EVASAO.isin(evasionForms), 'FORMA_EVASAO'] = 100
         for evasion in EvasionForm.EVASION_FORM:
                 #~ df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(1.0), 'FORMA_EVASAO'] = evasion[0]
@@ -152,22 +153,23 @@ def fix_evasion(df):
 def fix_disciplinas(df):
     drop_y(df)
     df['PERIODO_IDEAL'] = df['PERIODO_IDEAL'].fillna(1)
-    print(df.PERIODO_IDEAL.drop_duplicates() ) 
+    #print(df.PERIODO_IDEAL.drop_duplicates() ) 
     df['DESCR_ESTRUTURA'] = df['DESCR_ESTRUTURA'].fillna("Obrigatórias")
 
 def disciplinas_pp(df):
     disc_pp = df.copy()
     disc_pp = disc_pp[(disc_pp.PERIODO_IDEAL == 2) | (disc_pp.PERIODO_IDEAL == 3)]
     disc_pp = fix_disc_pp(disc_pp)
-    disc_pp = disc_pp.drop_duplicates('COD_ATIV_CURRIC')
+    disc_pp = disc_pp.drop_duplicates() #removi o 'COD_ATIV_CURRIC', drop
+    #duplicate não vai nome de coluna acho 
     disc_pp = pd.merge(disc_pp, df, on=['COD_ATIV_CURRIC'], how='left', suffixes=('_y', ''))
     drop_y(disc_pp)
     return disc_pp
 
 def fix_disc_pp(df):
     df.rename(columns={'COD_ATIV_CURRIC': 'COD_DISCIPLINA'}, inplace=True)
-    df.rename(columns={'COD_PRE_REQ': 'COD_ATIV_CURRIC'}, inplace=True)
-    df.rename(columns={'COD_DISCIPLINA': 'COD_PRE_REQ'}, inplace=True)
+    df.rename(columns={'COD_PRE_REQ': 'COD_ATIV_CURRIC1 '}, inplace=True)
+    df.rename(columns={'COD_DISCIPLINA': 'COD_ATIV_CURRIC'}, inplace=True)
     return df
 
 def drop_y(df):
