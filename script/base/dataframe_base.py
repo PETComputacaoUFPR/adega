@@ -136,8 +136,6 @@ def fix_carga(df):
 
 def fix_evasion(df):
         evasionForms = [x[1] for x in EvasionForm.EVASION_FORM]
-        print(df.FORMA_EVASAO.drop_duplicates() ) 
-        exit() 
         df.loc[~df.FORMA_EVASAO.isin(evasionForms), 'FORMA_EVASAO'] = 100
         for evasion in EvasionForm.EVASION_FORM:
                 #~ df.loc[df.FORMA_EVASAO.str.contains(evasion[1]).fillna(1.0), 'FORMA_EVASAO'] = evasion[0]
