@@ -2,7 +2,7 @@
 
 
 Este software faz parte de um projeto do PET Computação UFPR para 
-análise de dados dos cursos de graduação da UFPR. Veja a [wiki](http://gitlab.c3sl.ufpr.br/pet/adega/wikis/home).
+análise de dados dos cursos de graduação da UFPR. Veja a [wiki](http://gitlab.c3sl.ufpr.br/adega/adega/wikis/home).
 
 
 ## Versão
@@ -19,7 +19,7 @@ Os códigos fonte do projeto estão disponíveis publicamente no [gitlab]
 E podem ser clonado com o comando
 
 ```bash
-$ git clone git@gitlab.c3sl.ufpr.br:pet/A.D.E.G.A.git
+$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git
 ```
 
 
