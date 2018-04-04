@@ -156,10 +156,10 @@ if not DEBUG:
 else:
     STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/script/base/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'script/base')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'uploads')
 
 # MEDIA_URL = None # a gente não quer ninguem fazendo download disso
 # MEDIA_ROOT = os.path.join(PROJECT_DIR, 'uploads')

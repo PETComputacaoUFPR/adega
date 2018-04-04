@@ -3,8 +3,6 @@
 
 (cd src; python manage.py collectstatic)
 
-mv src/static .
-
 
 if ! sudo -u postgres psql adega
 then
@@ -14,7 +12,6 @@ fi
 
 python manage.py migrate
 
-sudo -u postgres psql < postgres/harden.sql
 
 
 
