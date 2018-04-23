@@ -285,7 +285,7 @@ def listagem_disciplina(df,lista_disciplinas):
     reprovacao_media = np.mean(trancamento_np) 
     reprovacao_desvio = np.std(trancamento_np) 
 
-    #verifica se o resultado final não é nan
+    #verificar se o resultado final não é nan
 
     listagem = { "cache" : cache,
             "compara_aprov":  compara_aprov,
@@ -296,15 +296,5 @@ def listagem_disciplina(df,lista_disciplinas):
             "taxa_reprovacao":[float(reprovacao_media),float(reprovacao_desvio)] ,
             "nota": [float(nota_media),float(nota_desvio)] 
             } 
-    with open("cache/disciplinas.json",'w') as f:
-        f.write(json.dumps(listagem,indent=4)) 
- # [ ] ->media_disc
- # [ ] compara_aprov 
+	return listagem
 
-def analises_disciplinas(df):
-    lista_disciplinas = {}
-    informacoes_gerais(df,lista_disciplinas) 
-    analises_gerais(df,lista_disciplinas) 
-    analises_semestrais(df,lista_disciplinas) 
-    transforma_json(lista_disciplinas) 
-    listagem_disciplina(df,lista_disciplinas) 

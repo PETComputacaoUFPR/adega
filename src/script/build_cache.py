@@ -2,6 +2,7 @@ from script.utils.utils import *
 from script.utils.situations import *
 from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
+from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
 
 
@@ -18,16 +19,16 @@ def build_cache(dataframe):
 	ensure_path_exists(path)
 
 	for cod, df in dataframe.groupby('COD_CURSO'):
-		generate_degree_data(path+'/'+cod+'/', df)
-		generate_student_data(path+'/'+cod+'/students/',df)
+		path = path + '/' + cod + '/'  
+		generate_degree_data(path, df)
+		generate_student_data(path+'students/',df)
 		#~ generate_admission_data(path+'/'+cod+'/admission/',df)
 	#generate_degree_data(path, dataframe)
 	#generate_student_data(path, dataframe)
 	#generate_student_list(path)
 	#generate_admission_data(path)
 	#generate_admission_list(path)
-	#generate_course_data(path)
-	#generate_course_general_data(path)
+		generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
 	ensure_path_exists(path)
@@ -145,8 +146,13 @@ def generate_admission_data(path,df):
 def generate_admission_list(path):
 	pass
 
-def generate_course_data(path):
-	pass
-
-def generate_course_general_data(path):
-	pass
+def generate_course_data(path,df):
+	lista_disciplinas = {} 
+	informacoes_gerais(df,lista_disciplinas) 
+	analises_gerais(df,lista_disciplinas) 
+	analises_semestrais(df,lista_disciplinas) 
+	for disciplina in lista_disciplinas.keys():
+		save_json(path+disciplina+'.json' ,lista_disciplinas[disciplina]) 
+	disciplinas = listagem_disciplina(df,lista_disciplinas) 
+	save_json(path+'disciplinas.json',disciplinas) 
+	

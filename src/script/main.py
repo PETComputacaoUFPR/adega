@@ -27,11 +27,10 @@ def main():
     start_time = time.clock()
     start_time_exec = time.time()
 
-    dataframe = load_dataframes(os.getcwd() + '/script/' + 'base')
+    dataframe = load_dataframes(os.getcwd() + '/script/' + 'base/21A/1/')
 
     build_cache(dataframe)
     cpu_time = timedelta(seconds=round(time.clock() - start_time))
-    analises_disciplinas(dataframe)
     run_time = timedelta(seconds=round(time.time() - start_time_exec))
     print("--- Tempo de CPU: {} ---".format(cpu_time))
     print("--- Tempo total: {} ---".format(run_time))
