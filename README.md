@@ -32,6 +32,13 @@ make install-user
 pipenv install --dev
 ```
 
+Criar o banco de dados postgres
+
+```
+sudo -u postgres psql < postgres/create.sql
+```
+
+
 se você possui o arquivo do banco de dados compartilhado internamente pelos 
 desenvolvedores do projeto coloque-o na home do projeto, ele vem com um usuário 
 `pet` com senha `pet` pré-configurado para testes.

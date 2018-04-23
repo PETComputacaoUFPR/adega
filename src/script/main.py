@@ -15,10 +15,7 @@ def analyze(submission):
 
     build_cache(dataframe)
 
-    submission.processed = True
-
-    submission.process_time = round(time.clock() - start_time)
-    submission.save()
+    submission.set_done(round(time.clock() - start_time))
 
     cpu_time = timedelta(seconds=round(time.clock() - start_time))
     run_time = timedelta(seconds=round(time.time() - start_time_exec))
