@@ -6,11 +6,12 @@ from django.contrib import messages
 from uploads.models import Submission
 
 
+@login_required 
 def upload(request):
     if request.method == 'POST' and request.FILES['historico'] and request.FILES['matricula']:
 
         submission = Submission.objects.create(author=request.user)
-        submission.course = '21A'
+        submission.degree = request.user.degree
 
         fs = FileSystemStorage(location=submission.path())
 
