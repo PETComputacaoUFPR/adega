@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'adega',
     'public',
+    'degree', 
     'uploads'
 ]
 
