@@ -5,11 +5,11 @@ from django.utils import timezone
 from os import path
 from django.conf import settings
 
-from adega.models import Course
+from degree.models import Degree 
 
 
 def get_path(instance, filename):
-    return '{}/{}/{}'.format(instance.course, instance.id, filename)
+    return '{}/{}/{}'.format(instance.degree, instance.id, filename)
 
 
 class Submission(models.Model):
@@ -26,7 +26,7 @@ class Submission(models.Model):
     historico = models.FileField(upload_to=get_path)
     matricula = models.FileField(upload_to=get_path)
 
-    course = models.ForeignKey(Course)
+    degree = models.ForeignKey(Degree)
 
     timestamp = models.DateTimeField(default=timezone.now)
 
@@ -45,11 +45,11 @@ class Submission(models.Model):
     done_in = models.DateTimeField(null=True)
 
     def path(self):
-        return path.join(settings.MEDIA_ROOT, self.course.code, str(self.id))
+        return path.join(settings.MEDIA_ROOT, self.degree.code, str(self.id))
 
     def __str__(self):
         return 'Submission (from: {}, to: {}, on: {})'.format(self.author.first_name,
-                                                              self.course.name,
+                                                              self.degree.name,
                                                               self.timestamp)
 
     def set_done(self, time):

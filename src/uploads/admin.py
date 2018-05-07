@@ -23,7 +23,7 @@ def make_analysis(modeladmin, request, queryset):
 class SubmissionAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
 
-    list_display = ('author', 'course', 'processed', 'last', 'timestamp')
+    list_display = ('author', 'degree', 'processed', 'last', 'timestamp')
 
     actions = [make_analysis]
 
