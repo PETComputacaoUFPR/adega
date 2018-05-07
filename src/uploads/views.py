@@ -6,7 +6,6 @@ from django.contrib import messages
 from uploads.models import Submission
 
 
-@login_required 
 def upload(request):
     if request.method == 'POST' and request.FILES['historico'] and request.FILES['matricula']:
 
