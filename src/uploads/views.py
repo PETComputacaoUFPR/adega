@@ -10,7 +10,7 @@ def upload(request):
     if request.method == 'POST' and request.FILES['historico'] and request.FILES['matricula']:
 
         submission = Submission.objects.create(author=request.user)
-        submission.degree = request.user.degree
+        submission.degree = request.user.educator.degree
 
         fs = FileSystemStorage(location=submission.path())
 

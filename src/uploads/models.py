@@ -9,7 +9,7 @@ from degree.models import Degree
 
 
 def get_path(instance, filename):
-    return '{}/{}/{}'.format(instance.course, instance.id, filename)
+    return '{}/{}/{}'.format(instance.degree, instance.id, filename)
 
 
 class Submission(models.Model):
