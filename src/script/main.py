@@ -1,4 +1,4 @@
-import os
+
 import time
 from script.base.dataframe_base import load_dataframes
 from script.build_cache import build_cache
@@ -24,16 +24,7 @@ def analyze(submission):
 
 
 def main():
-    start_time = time.clock()
-    start_time_exec = time.time()
-
-    dataframe = load_dataframes(os.getcwd() + '/script/' + 'base/21A/1/')
-
-    build_cache(dataframe)
-    cpu_time = timedelta(seconds=round(time.clock() - start_time))
-    run_time = timedelta(seconds=round(time.time() - start_time_exec))
-    print("--- Tempo de CPU: {} ---".format(cpu_time))
-    print("--- Tempo total: {} ---".format(run_time))
+    print("Não pra você estar fazendo isso")
 
 
 if __name__ == "__main__":

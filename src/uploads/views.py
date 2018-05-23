@@ -9,8 +9,8 @@ from uploads.models import Submission
 def upload(request):
     if request.method == 'POST' and request.FILES['historico'] and request.FILES['matricula']:
 
-        submission = Submission.objects.create(author=request.user)
-        submission.degree = request.user.educator.degree
+        submission = Submission.objects.create(author=request.user,
+                                               degree=request.user.educator.degree.first())
 
         fs = FileSystemStorage(location=submission.path())
 
