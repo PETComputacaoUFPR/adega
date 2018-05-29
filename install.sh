@@ -14,25 +14,42 @@ configure() {
 }
 
 
-install() {
-	
+function install() {
+	PACKAGES="git docker docker-compose"
+	declare -A osInfo;
+	osInfo[/etc/arch-release]="pacman -S --noconfirm "
+	osInfo[/etc/debian_version]="apt-get install -y"
+	for f in ${!osInfo[@]}; do
+		#verifica se o arquivo $f existe
+		if [[ -f $f ]]; then 
+			DISTRO=${osInfo[$f]}
+		fi
+	done	
 	if [ ! -d "base_dados" ]; then
 		git clone git@gitlab.c3sl.ufpr.br:adega/base_dados.git
 	fi
-	docker build  -t adega .
+	docker build  --tag adega .
 }
-usase() {
-	echo -e "Options:\n
-	\t-h, --help\t print this menu\n"
-
-
-
+function usase() {
+	echo -ne "
+	Options: 
+	-h, --help			imprime ajuda
+	-v, --verbose		ativa o verbose
+	-i, --install 		instala todas as depedências
+	-c, --configure 	realiza a configuração
+	
+	" 
 }
 # -------------- main ------------------
-while [[ $1 = -?* ]]; do
-		case $1 in
-			-i | --install) install ;;
-			-c | --configure) configure ;;
-			-v | --verbose) verbose=1 ;;
-			-h | --help) usase ;;
+if [ $# -gt 0 ]; then
+	for argument in $*; do
+		case $argument in
+			-h |--help) usase ;;
+			-i |--install) install ;;
+			-c |--configure) configure ;;
+			-v |--verbose) verbose=1 ;;
+			-d |--deploy) deploy ;;
 		esac
+		shift
+	done
+fi
