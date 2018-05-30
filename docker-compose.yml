@@ -1,0 +1,19 @@
+version: '3'
+services:
+    db:
+        image: postgres
+        environment:
+            - POSTGRES_USER=adega
+            - POSTGRES_PASSWORD=adega
+            - POSTGRES_DB=adega
+    web:
+        build: .
+
+        volumes:
+            - .:/adega
+        ports:
+            - "8000:8000"
+        links:
+            - db
+        depends_on:
+            - db

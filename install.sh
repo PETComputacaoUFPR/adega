@@ -4,13 +4,13 @@ verbose=0
 
 # ---------- functions ------------------
 configure() {
-	postgres psql < ../postgres/create.sql
+	postgres psql < postgres/create.sql
 		
-	python3 manage.py makemigrations degree
-	python3 manage.py makemigrations uploads
-	python3 manage.py makemigrations educator
-	python3 manage.py makemigrations adega
-	python3 manage.py migrate
+	python3 src/manage.py makemigrations degree
+	python3 src/manage.py makemigrations uploads
+	python3 src/manage.py makemigrations educator
+	python3 src/manage.py makemigrations adega
+	python3 src/manage.py migrate
 }
 
 
@@ -25,10 +25,12 @@ function install() {
 			DISTRO=${osInfo[$f]}
 		fi
 	done	
+	sudo $DISTRO $PACKAGES
 	if [ ! -d "base_dados" ]; then
 		git clone git@gitlab.c3sl.ufpr.br:adega/base_dados.git
 	fi
-	docker build  --tag adega .
+	#docker build  --tag adega .
+	docker-compose up
 }
 function usase() {
 	echo -ne "

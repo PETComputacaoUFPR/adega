@@ -7,6 +7,4 @@ Run mkdir /adega
 WORKDIR /adega
 ADD . /adega
 Run pip3 install -r requirements.txt
-Run ./install.sh --configure
-VOLUME ["/adega"]
-EXPOSE 8000
+run ./install.sh --configure
