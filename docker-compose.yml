@@ -8,7 +8,11 @@ services:
             - POSTGRES_DB=adega
     web:
         build: .
-
+        command: python3 ./src/manage.py makemigrations degree
+        command: python3 ./src/manage.py makemigrations uploads
+        command: python3 ./src/manage.py makemigrations educator
+        command: python3 ./src/manage.py migrate
+        command: python3 ./src/manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/adega
         ports:
