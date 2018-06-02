@@ -4,8 +4,8 @@ verbose=0
 
 # ---------- functions ------------------
 configure() {
-	postgres psql < postgres/create.sql
-		
+	#~ postgres psql < postgres/create.sql
+	PGPASSWORD=adega psql -h adega_db_1 -U adega < postgres/create.sql
 	python3 src/manage.py makemigrations degree
 	python3 src/manage.py makemigrations uploads
 	python3 src/manage.py makemigrations educator

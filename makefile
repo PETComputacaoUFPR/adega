@@ -36,3 +36,13 @@ install-user:
 	pipenv install
 
 
+
+%:
+	@:
+args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
+
+manage:
+	@echo $(call args,"")
+	sudo docker exec -it adega_web_1 python3 ./src/manage.py $(call args,"")
+	
+
