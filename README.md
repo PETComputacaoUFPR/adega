@@ -21,9 +21,44 @@ E podem ser clonado com o comando
 ```bash
 $ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git
 ```
+## Instalação e dependências com docker
+
+Para executar o projeto com o docker, siga os seguintes passos:
+```bash
+$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git # Comando já executado
+$ cd adega/
+$ sudo make docker-install # Instala o docker.io e docker-compose
+$ sudo make docker-up # Executa os containers postgres e webserver
+```
+
+## Desenvolvimento com o docker
+
+Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas nos arquivos do projeto será compartilhado com os arquivos do container docker. Ou seja, é possível alterar qualquer arquivo do projeto e haverá resultados em tempo real.
 
 
-## Instalação e dependências
+Assim como é possível realizar qualquer comando como seria feito no com o manage.py, também é possível por meio do comando `sudo make docker-manage`. Por exemplo:
+```bash
+$ sudo make docker-manage makemigrations uploads
+$ sudo make docker-manage migrate
+$ sudo make docker-manage createsuperuser
+```
+
+Para realizar esses comandos, certifique-se que o comando `make docker-up`está em execução (recomenda-se deixar uma aba no terminal para isso).
+
+## Recomendações para o docker
+É recomendado que o usuário configure o docker para que o mesmo possa ser executado sem necessidades de privilégios de superusuário, assim não haverá necessidade do uso de `sudo`. Caso contrário, os comandos realizados com `sudo make` poderão criar arquivos cujo proprietário é o usuário `root`. Caso a recomendação não for seguida, o seguinte comando irá alterar o proprietário dos arquivos para o usuário atual:
+```bash
+$ sudo make docker-fix
+```
+
+## Remover os containers + banco de dados
+Para apagar os containers e o banco de dados, execute o seguinte comando:
+```bash
+$ sudo docker-remove-all
+```
+*Observação*: Esse comando **não** irá deletar qualquer arquivo do projeto / diretório local, apenas os containers.   
+
+## Instalação e dependências manuais (não recomendado)
 
 
 ```bash

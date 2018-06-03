@@ -10,7 +10,7 @@ WORKDIR /adega
 # Not necessary (only do the build slow)
 # ADD . /adega
 
-ADD requirements.txt /adega/requirements.txt
+ADD ./requirements.txt /adega/requirements.txt
 
 RUN pip3 install -r requirements.txt
 
