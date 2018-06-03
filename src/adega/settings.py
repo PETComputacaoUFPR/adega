@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'adega',
         'USER': 'adega',
         'PASSWORD': 'adega',
-        'HOST': 'localhost',
+        'HOST': 'adega_db_1',
         'PORT': '5432',
     }
 }

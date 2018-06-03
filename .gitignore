@@ -6,6 +6,9 @@
 *.sqlite3
 src/cache
 *.json
+base_dados/*
+base_dados
+
 
 src/.coverage
 

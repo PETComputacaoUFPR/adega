@@ -36,3 +36,35 @@ install-user:
 	pipenv install
 
 
+# TODO: Create the files in docker with $USER owner	
+docker-fix:
+	chown -R $USER:$USER *
+
+docker-up:
+	docker-compose --project-directory . -f docker_scripts/docker-compose.yml -p adega up
+
+docker-remove-all:
+	docker rm adega_web_1 adega_db_1
+	docker rmi adega_web
+
+
+# Maybe this will not works in all OS systems
+docker-install:
+	apt-get install docker
+	apt-get install docker-compose
+
+
+# The follows commands permit to use manage.py with make. Examples:
+# make docker-manage migrate
+# make docker-manage makemigrations uploads
+
+%:
+	@:
+args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
+
+
+docker-manage:
+	@echo $(call args,"")
+	docker exec -it adega_web_1 python3 ./src/manage.py $(call args,"")
+	
+
