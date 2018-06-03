@@ -20,6 +20,10 @@ django-tests:
     - regular
   script:
     - cd src
+    - python manage.py makemigrations degree
+    - python manage.py makemigrations educator
+    - python manage.py makemigrations upload 
+    - python manage.py migrate
     - python manage.py test
 
 
