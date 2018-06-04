@@ -33,7 +33,7 @@ $ sudo make docker-up # Executa os containers postgres e webserver
 
 ## Desenvolvimento com o docker
 
-Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas nos arquivos do projeto será compartilhado com os arquivos do container docker. Ou seja, é possível alterar qualquer arquivo do projeto e haverá resultados em tempo real.
+Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas nos arquivos do projeto serão compartilhadas com os arquivos do container docker. Ou seja, é possível alterar qualquer arquivo do projeto e haverá resultados em tempo real.
 
 
 Assim como é possível realizar qualquer comando como seria feito no com o manage.py, também é possível por meio do comando `sudo make docker-manage`. Por exemplo:
@@ -54,7 +54,7 @@ $ sudo make docker-fix
 ## Remover os containers + banco de dados
 Para apagar os containers e o banco de dados, execute o seguinte comando:
 ```bash
-$ sudo docker-remove-all
+$ sudo make docker-remove-all
 ```
 *Observação*: Esse comando **não** irá deletar qualquer arquivo do projeto / diretório local, apenas os containers.   
 
