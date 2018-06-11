@@ -9,8 +9,7 @@ import numpy as np
 ANO_ATUAL = 2017
 SEMESTRE_ATUAL = 2
 
-
-def media_ira_turma_ingresso(df):
+def iras_alunos_turmas_ingressos(df):
 	iras = ira_alunos(df)
 	
 	turmas_ingresso_grr = df.groupby([
@@ -31,11 +30,27 @@ def media_ira_turma_ingresso(df):
 	for grr in iras:
 		semestre_ano = ano_semestre_do_grr[grr]
 		resultados[ semestre_ano ].append(iras[grr])
-	
-	
+
+	return resultados
+
+
+
+def media_ira_turma_ingresso(df):
+	iras_alunos_por_turma = iras_alunos_turmas_ingressos(df)
 	# Calcula a média do ira para cada turma_ingresso
-	for r in resultados:
-		aux = np.array(resultados[r])
+	resultados = {}
+	for r in iras_alunos_por_turma:
+		aux = np.array(iras_alunos_por_turma[r])
 		resultados[r] = np.mean(aux)
+	
+	return resultados
+
+def desvio_padrao_turma_ingresso(df):
+	iras_alunos_por_turma = iras_alunos_turmas_ingressos(df)
+	# Calcula o desvio padrão para cada turma_ingresso
+	resultados = {}
+	for r in iras_alunos_por_turma:
+		aux = np.array(iras_alunos_por_turma[r])
+		resultados[r] = np.std(aux)
 	
 	return resultados

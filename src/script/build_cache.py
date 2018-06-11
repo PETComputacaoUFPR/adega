@@ -5,6 +5,7 @@ from script.analysis.student_analysis import *
 from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
 
+from collections import defaultdict
 
 try:
 	to_unicode = unicode
@@ -20,13 +21,13 @@ def build_cache(dataframe):
 
 	for cod, df in dataframe.groupby('COD_CURSO'):
 		path = path + '/' + cod + '/'
-		generate_degree_data(path, df)
-		generate_student_data(path+'students/',df)
+		# generate_degree_data(path, df)
+		# generate_student_data(path+'students/',df)
 		generate_admission_data(path+'/admission/',df)
 		#generate_student_list(path)
-		generate_admission_data(path, dataframe)
-		generate_admission_list(path, dataframe)
-		generate_course_data(path+'disciplina/' ,dataframe)
+		# generate_admission_data(path, dataframe)
+		# generate_admission_list(path, dataframe)
+		# generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
 	ensure_path_exists(path)
@@ -139,17 +140,31 @@ def generate_student_list(path):
 
 def generate_admission_data(path,df):
 	
-	media_ira = media_ira_turma_ingresso(df)
 	listagem = []
 	
-	# x é uma tupla (ano,semestre) 
-	for x in media_ira:
-		listagem.append({
-			"ira": media_ira[x],
+	analises = [
+		("ira", media_ira_turma_ingresso(df)),
+		("desvio_padrao", desvio_padrao_turma_ingresso(df)),
+	]
+
+	# cria um dicionario com as analises para cada turma 
+	turmas = defaultdict(dict)
+	for a in analises:
+		for x in a[1]:
+			turmas[x][ a[0] ] = a[1][x]
+
+	listagem = []
+
+	for t in turmas:
+		resumo_turma = {
 			"ano": x[0],
 			"semestre": x[1]
-		})
-	
+		}
+
+		for analise in turmas[t]:
+			resumo_turma[analise] = turmas[t][analise]
+		
+		listagem.append(resumo_turma)
 
 	save_json(path+"lista_turma_ingresso.json", listagem)
 	
