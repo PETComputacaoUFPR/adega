@@ -19,15 +19,13 @@ def build_cache(dataframe):
 	ensure_path_exists(path)
 
 	for cod, df in dataframe.groupby('COD_CURSO'):
-		path = path + '/' + cod + '/'  
+		path = path + '/' + cod + '/'
 		generate_degree_data(path, df)
 		generate_student_data(path+'students/',df)
-		#~ generate_admission_data(path+'/'+cod+'/admission/',df)
-	#generate_degree_data(path, dataframe)
-	#generate_student_data(path, dataframe)
-	#generate_student_list(path)
-	#generate_admission_data(path)
-	#generate_admission_list(path)
+		generate_admission_data(path+'/admission/',df)
+		#generate_student_list(path)
+		generate_admission_data(path, dataframe)
+		generate_admission_list(path, dataframe)
 		generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
@@ -140,10 +138,23 @@ def generate_student_list(path):
 	pass
 
 def generate_admission_data(path,df):
-	listagem_turma_ingresso(df)
-	pass
+	
+	media_ira = media_ira_turma_ingresso(df)
+	listagem = []
+	
+	# x é uma tupla (ano,semestre) 
+	for x in media_ira:
+		listagem.append({
+			"ira": media_ira[x],
+			"ano": x[0],
+			"semestre": x[1]
+		})
+	
 
-def generate_admission_list(path):
+	save_json(path+"lista_turma_ingresso.json", listagem)
+	
+
+def generate_admission_list(path,df):
 	pass
 
 def generate_course_data(path,df):
