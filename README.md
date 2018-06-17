@@ -33,6 +33,13 @@ $ sudo make docker-up # Executa os containers postgres e webserver
 
 ## Desenvolvimento com o docker
 
+### Dependências
+Docker >=1.13.1
+Docker-compose >=1.21.2
+
+*Observação*: O docker-compose padrão nos repositórios podem não conter a versão mais recente. Caso a etapa de instalação não funcione, consulte a [referência dos desenvolvedores](https://github.com/docker/compose/releases).
+
+### Uso
 Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas nos arquivos do projeto serão compartilhadas com os arquivos do container docker. Ou seja, é possível alterar qualquer arquivo do projeto e haverá resultados em tempo real.
 
 
