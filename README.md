@@ -35,9 +35,23 @@ $ sudo make docker-up # Executa os containers postgres e webserver
 
 ### Dependências
 Docker >=1.13.1
+
+
 Docker-compose >=1.21.2
 
-*Observação*: O docker-compose padrão nos repositórios podem não conter a versão mais recente. Caso a etapa de instalação não funcione, consulte a [referência dos desenvolvedores](https://github.com/docker/compose/releases).
+#### Possíveis erros:
+*1*: O docker-compose padrão nos repositórios podem não conter a versão mais recente. Caso a etapa de instalação não funcione, consulte a [referência dos desenvolvedores](https://github.com/docker/compose/releases).
+
+
+*2*: Seu computador pode ter problemas ao configurar o DNS. Neste caso, erros parecidos como os a seguir irão acontecer:
+```bash
+E: Unable to locate package python3-pip
+E: Unable to locate package postgresql-client
+```
+
+
+Neste caso, consulte [este tutorial](https://development.robinwinslow.uk/2016/06/23/fix-docker-networking-dns/) para resolver o problema.
+
 
 ### Uso
 Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas nos arquivos do projeto serão compartilhadas com os arquivos do container docker. Ou seja, é possível alterar qualquer arquivo do projeto e haverá resultados em tempo real.
