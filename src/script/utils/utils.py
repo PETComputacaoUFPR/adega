@@ -22,7 +22,7 @@ def build_path(path):
 def ensure_path_exists(complete_path):
     parts = complete_path.split('/')
 
-    for i in range(len(parts)):
+    for i in range(1,len(parts)):
         if not os.path.exists('/'.join(parts[:i+1])):
             os.mkdir('/'.join(parts[:i+1]))
 

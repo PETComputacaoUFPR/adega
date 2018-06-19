@@ -12,14 +12,12 @@ except NameError:
 	to_unicode = str
 
 
-def build_cache(dataframe):
+def build_cache(dataframe,path):
 #	os.chdir("../src")
-	path = 'cache/curso'
-	
 	ensure_path_exists(path)
 
 	for cod, df in dataframe.groupby('COD_CURSO'):
-		path = path + '/' + cod + '/'  
+		path = path + '/'
 		generate_degree_data(path, df)
 		generate_student_data(path+'students/',df)
 		#~ generate_admission_data(path+'/'+cod+'/admission/',df)

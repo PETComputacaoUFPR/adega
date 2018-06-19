@@ -10,10 +10,10 @@ from datetime import timedelta
 def analyze(submission):
     start_time = time.clock()
     start_time_exec = time.time()
+    path = submission.path() 
+    dataframe = load_dataframes(path)
 
-    dataframe = load_dataframes(submission.path())
-
-    build_cache(dataframe)
+    build_cache(dataframe,path)
 
     submission.set_done(round(time.clock() - start_time))
 
