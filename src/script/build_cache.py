@@ -5,6 +5,7 @@ from script.analysis.student_analysis import *
 from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
 
+from collections import defaultdict
 
 try:
 	to_unicode = unicode
@@ -19,16 +20,14 @@ def build_cache(dataframe):
 	ensure_path_exists(path)
 
 	for cod, df in dataframe.groupby('COD_CURSO'):
-		path = path + '/' + cod + '/'  
-		generate_degree_data(path, df)
-		generate_student_data(path+'students/',df)
-		#~ generate_admission_data(path+'/'+cod+'/admission/',df)
-	#generate_degree_data(path, dataframe)
-	#generate_student_data(path, dataframe)
-	#generate_student_list(path)
-	#generate_admission_data(path)
-	#generate_admission_list(path)
-		generate_course_data(path+'disciplina/' ,dataframe)
+		path = path + '/' + cod + '/'
+		# generate_degree_data(path, df)
+		# generate_student_data(path+'students/',df)
+		generate_admission_data(path+'/admission/',df)
+		#generate_student_list(path)
+		# generate_admission_data(path, dataframe)
+		# generate_admission_list(path, dataframe)
+		# generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
 	ensure_path_exists(path)
@@ -140,10 +139,37 @@ def generate_student_list(path):
 	pass
 
 def generate_admission_data(path,df):
-	listagem_turma_ingresso(df)
-	pass
+	
+	listagem = []
+	
+	analises = [
+		("ira", media_ira_turma_ingresso(df)),
+		("desvio_padrao", desvio_padrao_turma_ingresso(df)),
+	]
 
-def generate_admission_list(path):
+	# cria um dicionario com as analises para cada turma 
+	turmas = defaultdict(dict)
+	for a in analises:
+		for x in a[1]:
+			turmas[x][ a[0] ] = a[1][x]
+
+	listagem = []
+
+	for t in turmas:
+		resumo_turma = {
+			"ano": x[0],
+			"semestre": x[1]
+		}
+
+		for analise in turmas[t]:
+			resumo_turma[analise] = turmas[t][analise]
+		
+		listagem.append(resumo_turma)
+
+	save_json(path+"lista_turma_ingresso.json", listagem)
+	
+
+def generate_admission_list(path,df):
 	pass
 
 def generate_course_data(path,df):
