@@ -1,4 +1,4 @@
 from django.conf.urls import url
-from . import views
-
-urlpatterns = patterns('',url(r'^$', views.index, name='index')) 
+from degree import views
+urlpatterns = [url(r'^$',views.index, name='index')
+        ]
