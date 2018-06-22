@@ -8,6 +8,8 @@ urlpatterns = [
 
     url(r'^uploads/', include('uploads.urls', namespace='uploads')),
 
+    url(r'^admission/', include('admission.urls', namespace='admission')),
+
     url(r'^public/', include('public.urls', namespace='public')),
 
     url(r'^logout/$', views.logout, name='logout'),

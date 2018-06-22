@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div id="myChart"></div>
+<div id="myChart2"></div>
+{% endblock content %}
+
+
+
+{% block js-foot %}
+  <script>
+    
+    var chart1 = new AdegaChart({
+      data_x: [0,1,2], 
+      data_y: [6,10,2],
+      div_target: "myChart",
+      error_y: [1,2,3],
+      //type: "bar",
+      title: "Exemplo 1"
+    });
+    
+    var chart1 = new AdegaChart({
+      data_x: [0,1,2], 
+      data_y: [[6,10,2], [7,9,2.5]],
+      div_target: "myChart2",
+      error_y: [[1,2,3], [1.5,0.1,0.5]],
+      type:["bar", "scatter"],
+      title: "Exemplo 2",
+      legend: ["linha 1", "linha 2"]
+    });
+    
+  </script>
+{% endblock js-foot %}
