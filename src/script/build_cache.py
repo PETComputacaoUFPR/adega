@@ -5,6 +5,7 @@ from script.analysis.student_analysis import *
 from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
 
+from collections import defaultdict
 
 try:
         to_unicode = unicode
@@ -20,12 +21,7 @@ def build_cache(dataframe,path):
                 path = path + '/'
                 generate_degree_data(path, df)
                 generate_student_data(path+'students/',df)
-                #~ generate_admission_data(path+'/'+cod+'/admission/',df)
-        #generate_degree_data(path, dataframe)
-        #generate_student_data(path, dataframe)
-        #generate_student_list(path)
-        #generate_admission_data(path)
-        #generate_admission_list(path)
+                generate_admission_data(path+'/admission/',df)
                 generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
@@ -33,22 +29,7 @@ def generate_degree_data(path, dataframe):
         ensure_path_exists(path+'students')
 
         students = dataframe[['MATR_ALUNO', 'FORMA_EVASAO']].drop_duplicates()
-        build_degree_json(path,dataframe) 
-
-#       data = {
-#               'average_graduation': average_graduation(dataframe),
-#               'general_failure': general_failure(dataframe),
-#               'general_ira': general_ira(dataframe),
-#               'active_students': students[students.FORMA_EVASAO == EvasionForm.EF_ATIVO].shape[0],
-#               'graduated_students': students[students.FORMA_EVASAO == EvasionForm.EF_FORMATURA].shape[0],
-#       }
-
-        #save_json(path+'/degree.json', data)
-        
-        #~ for ind, hist in dataframe.groupby('MATR_ALUNO'):
-                #~ generate_student_data_old(path+'students/{}.json'.format(ind), dataframe)
-
-
+        build_degree_json(path,dataframe)
 
 def historico(dataframe):
         res = []
@@ -81,77 +62,105 @@ def generate_student_data(path, dataframe):
         all_grrs = list(dataframe["MATR_ALUNO"].drop_duplicates())
         for x in all_grrs:
                 student_data[x] = dict()
-        
-        
+
+
         analises = [
                 # tupla que contem no primeiro elemento a funcao que retorna um dicionario com {"GRR": valor}
                 # e na segunda posicao o nome que esta analise tera no json
-                
+
                 (posicao_turmaIngresso_semestral(dataframe),
                 "posicao_turmaIngresso_semestral"),
-                
+
                 (periodo_real(dataframe),
                 "periodo_real"),
-                
+
                 (periodo_pretendido(dataframe),
                 "periodo_pretendido"),
-                
+
                 (ira_semestral(dataframe),
                 "ira_semestral"),
-                
+
                 (ira_por_quantidade_disciplinas(dataframe),
                 "ira_por_quantidade_disciplinas"),
-                
+
                 (indice_aprovacao_semestral(dataframe),
                 "indice_aprovacao_semestral"),
-                
+
                 (aluno_turmas(dataframe),
                 "aluno_turmas"),
-                
+
                 (taxa_aprovacao(dataframe),
                 "taxa_aprovacao"),
         ]
-        
+
         for x in student_data:
-                for a in analises:                                                                                      # Usar para fazer a verificacao de 
+                for a in analises:                                                                                      # Usar para fazer a verificacao de
                         student_data[x][a[1]] = a[0][x]                                                 # analises nulas para um GRR
-                        
+
                 save_json(path+x+".json", student_data[x])
-        
+
         listagens_arquivos = [
                 EvasionForm.EF_ABANDONO,
                 EvasionForm.EF_DESISTENCIA,
                 EvasionForm.EF_FORMATURA,
                 EvasionForm.EF_ATIVO
         ]
-        
+
         listagens = listagem_alunos(dataframe)
         for l in listagens:
                 if(l in listagens_arquivos):
                         save_json(path+"listagem/"+str(l)+".json", listagens[l])
-        
-        
-        
-        
+
+
+
+
         #Falta verificar se alguem nao recebeu algumas analises
-        
+
 def generate_student_list(path):
         pass
 
 def generate_admission_data(path,df):
-        listagem_turma_ingresso(df)
-        pass
 
-def generate_admission_list(path):
-        pass
+	listagem = []
+
+	analises = [
+		("ira", media_ira_turma_ingresso(df)),
+		("desvio_padrao", desvio_padrao_turma_ingresso(df)),
+	]
+
+	# cria um dicionario com as analises para cada turma
+	turmas = defaultdict(dict)
+	for a in analises:
+		for x in a[1]:
+			turmas[x][ a[0] ] = a[1][x]
+
+	listagem = []
+
+	for t in turmas:
+		resumo_turma = {
+			"ano": x[0],
+			"semestre": x[1]
+		}
+
+		for analise in turmas[t]:
+			resumo_turma[analise] = turmas[t][analise]
+
+		listagem.append(resumo_turma)
+
+	save_json(path+"lista_turma_ingresso.json", listagem)
+
+
+def generate_admission_list(path,df):
+	pass
 
 def generate_course_data(path,df):
-        lista_disciplinas = {} 
-        informacoes_gerais(df,lista_disciplinas) 
-        analises_gerais(df,lista_disciplinas) 
-        analises_semestrais(df,lista_disciplinas) 
+        lista_disciplinas = {}
+        informacoes_gerais(df,lista_disciplinas)
+        analises_gerais(df,lista_disciplinas)
+        analises_semestrais(df,lista_disciplinas)
+
         for disciplina in lista_disciplinas.keys():
-                save_json(path+disciplina+'.json' ,lista_disciplinas[disciplina]) 
-        disciplinas = listagem_disciplina(df,lista_disciplinas) 
-        save_json(path+'disciplinas.json',disciplinas) 
-        
+                save_json(path+disciplina+'.json',lista_disciplinas[disciplina])
+
+        disciplinas = listagem_disciplina(df,lista_disciplinas)
+        save_json(path+'disciplinas.json',disciplinas)
