@@ -8,7 +8,7 @@ class Degree(models.Model):
 
     manager = models.ForeignKey(User)
     def __str__(self):
-        return self.code
+        return self.name
     def clean_code(self):
         if '/' in self.code:
             raise ValidationError('Valor inválido: O código não pode conter "/"')

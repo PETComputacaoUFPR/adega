@@ -4,5 +4,8 @@
 
 {% block content%}
 <h2>Dashboard</h2>
+{% for degree in degrees %}
+<a href="{% url 'degree:index' degree_id=degree.code %}">{{degree}} </a>
+{% endfor %}
 
 {% endblock content %}
