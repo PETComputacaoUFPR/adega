@@ -6,7 +6,8 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^$', views.upload, name='uploads'),
+    url(r'^$', views.index, name='index'),
+    url(r'^(?P<codigo_disciplina>\w+)/$', views.detail, name='detail'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+      <h1>Informações Gerais</h1>
+      <table class="table">
+          <tr>
+            <td>Ano/Semestre</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Quantidade de alunos</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Ira Médio</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Tempo médio de formatura em anos</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Indice de Reprovação</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Indice de Evasão</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Quantidade de Evadidos</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Quantidade de Formados</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Quantidade de alunos ativos</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Quantidade de Abandonos</td>
+            <td> NO </td>
+          </tr>
+          <tr>
+            <td>Quantidade de outras formas de evasão</td>
+            <td> NO </td>
+          </tr>
+      </table>
+  
+      {% comment %}
+      <div>
+        <div class="panel-container">
+          <div class="data-panel">
+            <h3>Nota Média</h3>
+            <span class="data">{{ degree_data.nota_media.0|floatformat:2 }} &#177; {{degree_data.nota_media.1|floatformat:2 }}</span>
+          </div>
+          <div class="data-panel">
+            <h3>Taxa Média de Reprovação</h3>
+            <span class="data">{{ degree_data.taxa_reprovacao.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</span>
+          </div>
+        </div>
+        <div class="panel-container">
+          <div class="data-panel">
+            <h3>Aprovação Aproveitamento de Conhecimento</h3>
+            <span class="data">{{ degree_data.taxa_conhecimento.0|floatformat:2 }}% &#177; {{degree_data.taxa_conhecimento.1|floatformat:2 }}%</span>
+          </div>
+          <div class="data-panel">
+            <h3>Taxa de Trancamento</h3>
+            <span class="data">{{ degree_data.taxa_trancamento.0|floatformat:2 }}% &#177;{{degree_data.taxa_trancamento.1|floatformat:2}}%</span>
+          </div>
+        </div>
+      </div>
+      {% endcomment %}
+
+      {% comment %}
+      <div id="graficos">
+        <div class="row">
+                  <div class="col-md-6">
+                      <h3>Quantidade alunos/IRA</h3>
+                      <canvas id="ira_semestral" data-data='{{ degree_data.ira_medio_grafico|safe }}'></canvas>
+                  </div>
+                  <div class="col-md-6">
+                      <h3>Quantidade evasão/período</h3>
+                      <canvas id="evasao_semestre" data-data='{{ degree_data.evasao_grafico|safe }}'></canvas>
+                  </div>
+          <!--
+          <div class="col-md-6">
+            <h3>Nota Média/Periodo</h3>
+            <canvas id="nota_media_semestre"
+                data-data='{{ degree_data.media_disc|safe }}'></canvas>
+          </div> essa analise foi feita de uma maneira ruim no adega
+          antigo -->
+          <!-- analises sa02 -->
+          <div class="col-md-6">
+            <h3>Alunos/Periodo</h3>
+            <canvas id="aluno_periodo"
+                data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
+          </div>
+  
+          <div class="col-md-6">
+            <h3>Nota Média/Periodo</h3>
+            <canvas id="nota_media_periodo"
+                data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
+          </div>
+  
+  
+          <div class="col-md-6">
+            <h3>Taxa Aprovação/Periodo</h3>
+            <canvas id="taxa_aprovacao_periodo"
+                data-data='{{ degree_data.taxa_aprovacao_periodo|safe }}'></canvas>
+          </div>
+          <!-- fim analise sa02 -->
+            </div>
+      </div>
+    {% endcomment %}
+
+    
+    </div>
+  </div>
+  
+<div id="myChart"></div>
+<div id="myChart2"></div>
+{% endblock content %}
+
+
+
+{% block js-foot %}
+  <script>
+    
+    var chart1 = new AdegaChart({
+      data_x: [0,1,2], 
+      data_y: [6,10,2],
+      div_target: "myChart",
+      error_y: [1,2,3],
+      //type: "bar",
+      title: "Exemplo 1"
+    });
+    
+    var chart1 = new AdegaChart({
+      data_x: [0,1,2], 
+      data_y: [[6,10,2], [7,9,2.5]],
+      div_target: "myChart2",
+      error_y: [[1,2,3], [1.5,0.1,0.5]],
+      type:["bar", "scatter"],
+      title: "Exemplo 2",
+      legend: ["linha 1", "linha 2"]
+    });
+    
+  </script>
+{% endblock js-foot %}
