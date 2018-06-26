@@ -181,7 +181,7 @@ def build_dict_ira_medio(alunos):
 
     return dic
 
-def build_degree_json(df):
+def build_degree_json(path,df):
     def merge_dicts(dict1, dict2, dict3):
         dict_out = {}
         for key, value in dict1.items():
@@ -203,5 +203,5 @@ def build_degree_json(df):
         "taxa_reprovacao_atual": current_students_failure(df),
         "tempo_formatura": average_graduation_time(df),
     }
-    with open("cache/curso/curso.json",'w') as f:
+    with open(path+"/degree.json",'w') as f:
         f.write(json.dumps(degree_json,indent=4))

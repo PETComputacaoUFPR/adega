@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'degree', 
 	'educator', 
 	'admission', 
+    'report_api',
     'uploads'
 ]
 

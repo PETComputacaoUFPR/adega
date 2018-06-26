@@ -8,8 +8,10 @@ from django.contrib.auth import logout as process_logout
 
 @login_required
 def dashboard(request):
-
-    return render(request, 'adega/dashboard.html', {'title': 'Dashboard'})
+    degree = request.user.educator.degree.all() 
+    return render(request, 'adega/dashboard.html', {'title': 'Dashboard',
+        "degrees":degree 
+        })
 
 
 @login_required

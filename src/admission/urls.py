@@ -6,7 +6,7 @@ from admission import views
 
 
 urlpatterns = [
-    url(r'^$', views.upload, name='upload'),
+    url(r'^$', views.upload, name='admission'),
 ]
 
 if settings.DEBUG:

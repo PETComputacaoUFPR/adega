@@ -1,3 +1,4 @@
+
 from django.conf.urls import include, url
 from django.contrib import admin
 
@@ -9,6 +10,8 @@ urlpatterns = [
     url(r'^uploads/', include('uploads.urls', namespace='uploads')),
 
     url(r'^admission/', include('admission.urls', namespace='admission')),
+    
+    url(r'^degree/(?P<degree_id>\w*)/', include('degree.urls', namespace='degree')),
 
     url(r'^public/', include('public.urls', namespace='public')),
 
