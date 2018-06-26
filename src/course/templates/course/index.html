@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+		<h2>Disciplinas</h2>
+		<table id="lista_disciplinas" class="table">
+			<thead>
+				<tr>
+					<th>Código</th>
+					<th>Nome</th>
+					<th>Nota Média</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for key, value in courses.items %}
+					<tr>
+						<td>
+							<a href="{% url 'course:detail' degree_id=degree.code codigo_disciplina=key %}">{{key}}</a>
+						</td>
+						<td> {{key}} </td>
+						<td> {{value.nota.0 | floatformat:2}} &plusmn {{value.nota.1 | floatformat:2}} </td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+	
+{% endblock content %}

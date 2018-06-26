@@ -3,8 +3,8 @@
     <li><a href="#">Alunos</a></li>
     <li style="display: block;">
       <div>
-        <a href="#">Disciplinas</a>
-        <a href="#" class="drop" data-toggle="collapse" data-target="#side-disciplinas">
+        <a href="{% url 'course:index' degree_id=degree.code%}">Disciplinas</a>
+        <a href="course" class="drop" data-toggle="collapse" data-target="#side-disciplinas">
           <span class="rotate"><i class="fa fa-angle-left"></i></span>
         </a>
       </div>
@@ -14,7 +14,7 @@
     </li>
     <li class="disabled"><a href="#">Professores</a></li>
     <li class="disabled"><a href="#">Turmas</a></li>
-    <li><a href="#">Turmas de Ingresso</a></li>
+    <li><a href="{% url 'admission:index' degree_id=degree.code%}">Turmas de Ingresso</a></li>
 
     <li style="display: block;" >
       <a href="#" data-toggle="collapse" data-target="#side-outros" style="display:flex" class="drop">

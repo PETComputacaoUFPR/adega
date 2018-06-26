@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'adega',
     'public',
     'degree', 
+	'educator', 
+	'admission', 
+	'course', 
     'report_api',
-    'educator', 
     'uploads'
 ]
 

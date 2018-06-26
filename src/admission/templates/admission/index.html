@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+		<h2>Turmas de Ingresso</h2>
+		<table class="table datatable">
+            <thead>
+                <tr>
+                    <th>Ano/Semestre</th>
+                    <th>Ira médio</th>
+                    <th>Quantidade Ingresso</th>
+                    <th>Alunos Evadidos</th>
+                    <th>Alunos Formados</th>
+                    <th>Alunos Ativos</th>
+                </tr>
+            </thead>
+            <tbody>
+				{% for ti in listage_admissions %}
+				<tr>
+					<td>
+						<a href="{% url 'admission:detail' degree_id=degree.code ano=ti.ano semestre=ti.semestre %}">
+							{{ ti.ano }}/{{ ti.semestre }}
+						</a>
+					</td>
+					<td>{{ti.ira|floatformat:2}} &plusmn {{ti.desvio_padrao|floatformat:2}}</td>
+					<td> NO </td>
+					<td> NO </td>
+					<td> NO </td>
+					<td> NO </td>
+				</tr>
+				{% endfor %}
+			</tbody>
+				
+		</table>
+	</div>
+</div>
+{% endblock content %}
