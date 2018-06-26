@@ -65,6 +65,6 @@ args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
 docker-manage:
 	@echo $(call args,"")
-	docker exec -it adega_web_1 python3 ./src/manage.py $(call args,"")
+	docker exec -it adega_web_1 bash -c "cd src; python3 manage.py $(call args,'')"  
 	
 
