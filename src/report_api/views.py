@@ -14,5 +14,13 @@ def get_data(session,degree,data_name):
     return data
 
 def get_degree_information(session,degree):
-    return get_data(session,degree,"degree.json") 
+    return get_data(session,degree,"degree.json")
 
+def get_list_admission(session,degree):
+    return get_data(session,degree,"admission/lista_turma_ingresso.json")
+
+def get_list_courses(session,degree):
+    return get_data(session,degree,"disciplina/disciplinas.json")
+
+def get_course_detail(session,degree, course_id):
+    return get_data(session,degree,"disciplina/"+course_id+".json")

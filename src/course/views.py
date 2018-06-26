@@ -4,17 +4,22 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 
 from degree.models import Degree
-from report_api.views import get_list_admission
+from report_api.views import get_list_courses, get_course_detail
 
 
 
-def detail(request, degree_id, ano, semestre):
+def detail(request, degree_id, codigo_disciplina):
     degree = Degree.objects.get(code=degree_id)
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
+
+    course_detail = get_course_detail(request.session, degree, codigo_disciplina)
     
-    return render(request, 'admission/detail.html',{
-        "degree": degree
+    return render(request, 'course/detail.html',{
+        "analysis_result": course_detail,
+        "degree": degree,
+        "codigo_disciplina": codigo_disciplina,
+        "nome_disciplina": course_detail["disciplina_nome"]
     })
 
 
@@ -23,7 +28,7 @@ def index(request, degree_id):
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
-    return render(request, 'admission/index.html', {
-        "listage_admissions": get_list_admission(request.session, degree),
+    return render(request, 'course/index.html', {
+        "courses": get_list_courses(request.session, degree)["cache"],
         "degree": degree
     })
