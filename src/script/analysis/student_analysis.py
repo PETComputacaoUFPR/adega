@@ -7,21 +7,21 @@ import numpy as np
 from script.utils.situations import *
 import pandas as pd
 
-ANO_ATUAL = 2017
-SEMESTRE_ATUAL = 2
+CURRENT_YEAR = 2017
+CURRENT_SEMESTER = 1
 
 
-def listagem_alunos(df):
+def list_students(df):
 	#~ ativos = df[["MATR_ALUNO", "NOME_PESSOA",]][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates()
-	situacoes = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
-	situacoes = list(pd.DataFrame({'count' : situacoes.size()}).reset_index().groupby(["FORMA_EVASAO"]))
+	situations = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
+	situations = list(pd.DataFrame({'count' : situations.size()}).reset_index().groupby(["FORMA_EVASAO"]))
 	#~ Cria lista de nome de listagens
-	retorno = {}
-	for s in situacoes:
+	list_situations = {}
+	for s in situations:
 		#Busca a lista de alunos relacionados a um codigo
-		retorno[s[0]] = list(s[1]["MATR_ALUNO"])
+		list_situations[s[0]] = list(s[1]["MATR_ALUNO"])
 
-	return retorno
+	return list_situations
 
 def ira_alunos(df):
 	iras = ira_por_quantidade_disciplinas(df)
@@ -87,7 +87,7 @@ def periodo_pretendido(df):
 	aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO"])
 	students = {}
 	for x in aux:
-		students[x[0][0]] = (ANO_ATUAL - int(x[0][1])) * 2 + SEMESTRE_ATUAL - int(x[0][2]) + 1
+		students[x[0][0]] = (CURRENT_YEAR - int(x[0][1])) * 2 + CURRENT_SEMESTER - int(x[0][2]) + 1
 	return students
 
 
