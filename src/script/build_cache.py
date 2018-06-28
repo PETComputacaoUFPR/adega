@@ -1,7 +1,7 @@
 from script.utils.utils import *
 from script.utils.situations import *
 from script.analysis.degree_analysis import *
-from script.analysis.student_analysis import *
+from script.analysis.student_analysis import StudentAnalysis
 from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
 
@@ -13,16 +13,21 @@ except NameError:
     to_unicode = str
 
 
+
+student_analysis = None
+
 def build_cache(dataframe,path):
 #   os.chdir("../src")
     ensure_path_exists(path)
 
+    student_analysis = StudentAnalysis(dataframe)
+
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
-        # generate_degree_data(path, df)
-        generate_student_data(path+'students/',df)
-        # generate_admission_data(path+'/admission/',df)
-        # generate_course_data(path+'disciplina/' ,dataframe)
+        generate_degree_data(path, df)
+        generate_student_data(path+'students/', dataframe, student_analysis)
+        generate_admission_data(path+'/admission/',df)
+        generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
     ensure_path_exists(path)
@@ -57,7 +62,7 @@ def process_semestre(per, df):
 
 
 
-def generate_student_data(path, dataframe):
+def generate_student_data(path, dataframe, student_analysis):
     student_data = dict()
     all_grrs = list(dataframe["MATR_ALUNO"].drop_duplicates())
     for x in all_grrs:
@@ -68,29 +73,29 @@ def generate_student_data(path, dataframe):
         # tupla que contem no primeiro elemento a funcao que retorna um dicionario com {"GRR": valor}
         # e na segunda posicao o nome que esta analise tera no json
 
-        # (posicao_turmaIngresso_semestral(dataframe),
-        # "posicao_turmaIngresso_semestral"),
+        (student_analysis.posicao_turmaIngresso_semestral(),
+        "posicao_turmaIngresso_semestral"),
 
-        # (periodo_real(dataframe),
-        # "periodo_real"),
+        (student_analysis.periodo_real(),
+        "periodo_real"),
 
-        # (periodo_pretendido(dataframe),
-        # "periodo_pretendido"),
+        (student_analysis.periodo_pretendido(),
+        "periodo_pretendido"),
 
-        # (ira_semestral(dataframe),
-        # "ira_semestral"),
+        (student_analysis.ira_semestral(),
+        "ira_semestral"),
 
-        # (ira_por_quantidade_disciplinas(dataframe),
-        # "ira_por_quantidade_disciplinas"),
+        (student_analysis.ira_por_quantidade_disciplinas(),
+        "ira_por_quantidade_disciplinas"),
 
-        # (indice_aprovacao_semestral(dataframe),
-        # "indice_aprovacao_semestral"),
+        (student_analysis.indice_aprovacao_semestral(),
+        "indice_aprovacao_semestral"),
 
-        # (aluno_turmas(dataframe),
-        # "aluno_turmas"),
+        (student_analysis.aluno_turmas(),
+        "aluno_turmas"),
 
-        # (taxa_aprovacao(dataframe),
-        # "taxa_aprovacao"),
+        (student_analysis.taxa_aprovacao(),
+        "taxa_aprovacao"),
     ]
 
     for x in student_data:
@@ -103,14 +108,18 @@ def generate_student_data(path, dataframe):
         EvasionForm.EF_ABANDONO,
         EvasionForm.EF_DESISTENCIA,
         EvasionForm.EF_FORMATURA,
-        EvasionForm.EF_ATIVO
+        EvasionForm.EF_ATIVO,
+        EvasionForm.EF_OUTROS
     ]
 
-    list_situations = list_students(dataframe)
-    for l in list_situations:
-        if(l in files_list):
-            list_name = EvasionForm.code_to_str(int(l))
-            save_json(path+"list/"+list_name+".json", list_situations[l])
+    list_situations = student_analysis.list_students()
+    for fl in files_list:
+        list_name = EvasionForm.code_to_str(int(fl))
+        list_content = []
+        if(fl in list_situations):
+            list_content = list_situations[fl]
+
+        save_json(path+"list/"+list_name+".json", list_content)
 
 
 

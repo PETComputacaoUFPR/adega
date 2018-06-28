@@ -24,3 +24,6 @@ def get_list_courses(session,degree):
 
 def get_course_detail(session,degree, course_id):
     return get_data(session,degree,"disciplina/"+course_id+".json")
+
+def get_list_students(session, degree, list_name):
+    return get_data(session,degree,"students/list/"+list_name+".json")

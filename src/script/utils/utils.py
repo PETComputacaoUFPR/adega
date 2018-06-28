@@ -1,4 +1,5 @@
 import os
+import copy
 
 import ujson as json
 
@@ -8,6 +9,18 @@ try:
     DEBUG = settings.DEBUG
 except:
     DEBUG = True
+
+
+
+# Use this class as decorator to save functions returns
+def memoize(f):
+    memo = {}
+    def helper(x):
+        if str(x) not in memo:            
+            memo[str(x)] = f(x)
+        return copy.deepcopy(memo[str(x)])
+    return helper
+
 
 
 def invert_dict(d):

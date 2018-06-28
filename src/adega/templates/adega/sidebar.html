@@ -1,6 +1,6 @@
 <div class="sidebar left hidden-sm hidden-xs">
   <ul class="list-sidebar">
-    <li><a href="#">Alunos</a></li>
+    <li><a href="{% url 'student:index' degree_id=degree.code%}">Alunos</a></li>
     <li style="display: block;">
       <div>
         <a href="{% url 'course:index' degree_id=degree.code%}">Disciplinas</a>

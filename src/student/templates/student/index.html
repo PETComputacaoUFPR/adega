@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+
+		<h1>Listagem dos Alunos</h1>
+		<div>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#sem_evasao" aria-controls="sem_evasao" role="tab" data-toggle="tab">Sem Evasão</a></li>
+					<li role="presentation"><a href="#formados" aria-controls="formados" role="tab" data-toggle="tab">Formados</a></li>
+					<li role="presentation"><a href="#abandono" aria-controls="abandono" role="tab" data-toggle="tab">Abandono</a></li>
+					<li role="presentation"><a href="#desistencia" aria-controls="desistencia" role="tab" data-toggle="tab">Desistência</a></li>
+					<li role="presentation"><a href="#outras" aria-controls="outras" role="tab" data-toggle="tab">Outras Formas de Evasão</a></li>
+				</ul>
+		</div>
+		<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="sem_evasao">
+						<table class="table datatable">
+				            <thead>
+				                <tr>
+				                    <th class="col-md-2">GRR</th>
+				                    <th class="col-md-4">Nome</th>
+				                    <th class="col-md-2">ira</th>
+				                    <th class="col-md-2">Forma evasão</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                {% for l in sem_evasao %}
+				                <tr>
+				                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+				                <td class="col-md-4">{{ l.nome }}</td>
+				                <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+				                <td class="col-md-2">{{ l.forma_evasao }}</td>
+				                </tr>
+				                {% endfor %}
+				            </tbody>
+						</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="formados">
+					<table class="table datatable">
+									<thead>
+											<tr>
+												<th class="col-md-2">GRR</th>
+												<th class="col-md-4">Nome</th>
+												<th class="col-md-2">ira</th>
+												<th class="col-md-2">Forma evasão</th>
+											</tr>
+									</thead>
+									<tbody>
+											{% for l in formatura %}
+											<tr>
+											<td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+											<td class="col-md-4">{{ l.nome }}</td>
+											<td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+											<td class="col-md-2">{{ l.forma_evasao }}</td>
+											</tr>
+											{% endfor %}
+									</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="abandono">
+					<table class="table datatable">
+									<thead>
+											<tr>
+												<th class="col-md-2">GRR</th>
+												<th class="col-md-4">Nome</th>
+												<th class="col-md-2">ira</th>
+												<th class="col-md-2">Forma evasão</th>
+											</tr>
+									</thead>
+									<tbody>
+											{% for l in abandono %}
+											<tr>
+												<td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+												<td class="col-md-4">{{ l.nome }}</td>
+												<td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+												<td class="col-md-2">{{ l.forma_evasao }}</td>
+											</tr>
+											{% endfor %}
+									</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="desistencia">
+					<table class="table datatable">
+									<thead>
+											<tr>
+												<th class="col-md-2">GRR</th>
+												<th class="col-md-4">Nome</th>
+												<th class="col-md-2">ira</th>
+												<th class="col-md-2">Forma evasão</th>
+											</tr>
+									</thead>
+									<tbody>
+											{% for l in desistencia %}
+											<tr>
+												<td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+												<td class="col-md-4">{{ l.nome }}</td>
+												<td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+												<td class="col-md-2">{{ l.forma_evasao }}</td>
+											</tr>
+											{% endfor %}
+									</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="outras">
+					<table class="table datatable">
+									<thead>
+											<tr>
+												<th class="col-md-2">GRR</th>
+												<th class="col-md-4">Nome</th>
+												<th class="col-md-2">ira</th>
+												<th class="col-md-2">Forma evasão</th>
+											</tr>
+									</thead>
+									<tbody>
+											{% for l in outros %}
+											<tr>
+												<td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+												<td class="col-md-4">{{ l.nome }}</td>
+												<td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+												<td class="col-md-2">{{ l.forma_evasao }}</td>
+											</tr>
+											{% endfor %}
+									</tbody>
+					</table>
+				</div>
+		</div>
+	</div>
+</div>
+
+	
+{% endblock content %}
