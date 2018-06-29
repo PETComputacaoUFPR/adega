@@ -63,18 +63,17 @@ def process_semestre(per, df):
 
 
 def generate_student_data(path, dataframe, student_analysis):
-    student_data = dict()
+    student_data = defaultdict(dict)
     all_grrs = list(dataframe["MATR_ALUNO"].drop_duplicates())
     for x in all_grrs:
         student_data[x] = dict()
-
-
+    
     analysis = [
-        # tupla que contem no primeiro elemento a funcao que retorna um dicionario com {"GRR": valor}
-        # e na segunda posicao o nome que esta analise tera no json
+        # tuple that contains in the first element the function that returns a dictionary with {"GRR": value}
+        # and in the second position the name that this analysis will have in json
 
-        (student_analysis.posicao_turmaIngresso_semestral(),
-        "posicao_turmaIngresso_semestral"),
+        # (student_analysis.posicao_turmaIngresso_semestral(),
+        # "posicao_turmaIngresso_semestral"),
 
         (student_analysis.periodo_real(),
         "periodo_real"),
@@ -96,12 +95,14 @@ def generate_student_data(path, dataframe, student_analysis):
 
         (student_analysis.taxa_aprovacao(),
         "taxa_aprovacao"),
+
+        (student_analysis.student_info(),
+        "student"),
     ]
-
+    
     for x in student_data:
-        for a in analysis:                                              # Usar para fazer a verificacao de
-            student_data[x][a[1]] = a[0][x]                         # analises nulas para um GRR
-
+        for a in analysis:                      # Use this to verify
+            student_data[x][a[1]] = a[0][x]     # null fields in analysis
         save_json(path+x+".json", student_data[x])
 
     files_list = [

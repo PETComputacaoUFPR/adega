@@ -45,8 +45,6 @@ def save_json(path, data):
     ensure_path_exists(os.path.dirname(path))
 
     params = {} if not DEBUG else {'indent': 4}
-
     with open(path, 'w') as f:
-        json.dump(data, f, **params)
-
+        json.dump(data, f, **params, ensure_ascii=False)
 

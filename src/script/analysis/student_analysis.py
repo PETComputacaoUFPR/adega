@@ -19,18 +19,49 @@ class StudentAnalysis:
 		self.data_frame = df
 	
 	@memoize
+	def student_info(self, df=None):
+		df = df if df is not None else self.data_frame
+		students = df.groupby([
+			"MATR_ALUNO",
+			"NOME_PESSOA",
+			"ANO_INGRESSO",
+			"SEMESTRE_INGRESSO",
+			"ANO_EVASAO",
+			"SEMESTRE_EVASAO",
+			"FORMA_EVASAO",
+		])
+
+		students = students.groups.keys()
+		iras = self.ira_alunos()
+		info = {}
+		
+		for stnd in students:
+			grr = stnd[0]
+			if(stnd[0][-1] == 1):
+				print(stnd[0])
+			info[grr] = {
+				"grr": grr,
+				"name": str(stnd[1]),
+				"ano_ingresso": str(stnd[2]),
+				"semestre_ingresso": str(stnd[3]),
+				"ano_evasao": str(stnd[4]),
+				"semestre_evasao": str(stnd[5]),
+				"forma_evasao": EvasionForm.code_to_str(stnd[6]),
+				"ira": iras[grr],
+			}
+		return info
+
+
+	@memoize
 	def list_students(self, df=None):
 		df = df if df is not None else self.data_frame
 
-		#~ ativos = df[["MATR_ALUNO", "NOME_PESSOA",]][df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO].drop_duplicates()
 		situations = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
 		situations = list(pd.DataFrame({'count' : situations.size()}).reset_index().groupby(["FORMA_EVASAO"]))
-		#~ Cria lista de nome de listagens
 		
 		iras = self.ira_alunos()
 		list_situations = defaultdict(list)
 		for sit in situations:
-			#Busca a lista de alunos relacionados a um codigo
 			grrs = list(sit[1]["MATR_ALUNO"])
 			people_names = list(sit[1]["NOME_PESSOA"])
 			
@@ -81,9 +112,6 @@ class StudentAnalysis:
 				aprovacoes_semestres[aluno] = aprovacoes/total
 			else:
 				aprovacoes_semestres[aluno] = None
-			#~ for semestre in aprovacoes_semestres[aluno]:
-				#~ aprovacoes+=aprovacoes_semestres[aluno][semestre][0]
-				#~ total+=aprovacoes_semestres[semestre][1]
 				
 		return aprovacoes_semestres
 		
@@ -154,10 +182,8 @@ class StudentAnalysis:
 			situacao = int(df["SITUACAO"][i])
 			nota = float(df["MEDIA_FINAL"][i])
 			carga = float(df["CH_TOTAL"][i])
-			#media_credito = int(df["MEDIA_CREDITO"][i])
 			
 			
-			#if (situacao in Situation.SITUATION_AFFECT_IRA and media_credito != 0):
 			if (situacao in Situation.SITUATION_AFFECT_IRA):
 				if not (ano + "/" + semestre in students[matr]):
 					students[matr][ano + "/" + semestre] = [0, 0, 0]

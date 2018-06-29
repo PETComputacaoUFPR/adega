@@ -4,6 +4,8 @@ class AdegaChart{
         
         //Object with two arrays (two charts), and the key is the x-axis
         this.data = config.data || null;
+        this.legend = config.legend || null;
+
 
         if(config.data == null){
             this.data_x = config.data_x;
@@ -12,15 +14,34 @@ class AdegaChart{
         }
         else{
             this.data_x = [];
-            this.data_y = [[],[]];
+            this.data_y = [];
+            var first_element;
+            for (first_element in this.data) break;
+            first_element = this.data[first_element];
+            var multiplePlots = Array.isArray(first_element);
+
+            if(multiplePlots){
+                for(var i in first_element){
+                    this.data_y.push([]);
+                }
+            }
+
             for(var obj in this.data){
                 this.data_x.push(obj);
             }
             this.data_x.sort();
             for(var i in this.data_x){
                 var key = this.data_x[i];
-                this.data_y[0].push(this.data[key][0]);
-                this.data_y[1].push(this.data[key][1]);
+
+                if(multiplePlots){
+                    for(var i in first_element){
+                        this.data_y[i].push(this.data[key][i]);
+                    }
+                }
+                else{
+                    this.data_y.push(this.data[key]);
+                }
+
             }
         }
 
@@ -28,7 +49,7 @@ class AdegaChart{
         this.div_target = config.div_target;
         this.type = config.type || "scatter";
         this.title = config.title || "";
-        this.legend = config.legend || null;
+        
 
         if(typeof(this.data_y[0]) == "number"){
             this.data_y = [this.data_y];

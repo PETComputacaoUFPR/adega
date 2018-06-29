@@ -4,23 +4,40 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 
 from degree.models import Degree
-from report_api.views import get_list_students, get_course_detail
+from report_api.views import get_list_students, get_student_detail
+
+import json
 
 
-
-def detail(request, degree_id, codigo_disciplina):
+def detail(request, degree_id, grr):
     degree = Degree.objects.get(code=degree_id)
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
-    course_detail = get_course_detail(request.session, degree, codigo_disciplina)
     
-    return render(request, 'student/detail.html',{
-        "analysis_result": course_detail,
-        "degree": degree,
-        "codigo_disciplina": codigo_disciplina,
-        "nome_disciplina": course_detail["disciplina_nome"]
+
+
+    
+    cache_j = get_student_detail(request.session, degree, grr)
+
+
+    analysis_result = {
+        'indice_aprovacao' : cache_j['taxa_aprovacao'],
+        'periodo_real': cache_j['periodo_real'],
+        'periodo_pretendido': cache_j['periodo_pretendido'],
+        'ira_semestral': json.dumps(cache_j['ira_semestral']),
+        'indice_reprovacao_semestral': json.dumps(sorted(cache_j['indice_aprovacao_semestral'].items())),
+        # 'posicao_turmaIngresso_semestral': json.dumps(sorted(cache_j['posicao_turmaIngresso_semestral'].items())),
+        'ira_por_quantidade_disciplinas': json.dumps(sorted(cache_j['ira_por_quantidade_disciplinas'].items())),
+        'student': cache_j['student'],
+        # 'aluno_turmas': alunoTurmas,
+    }
+
+    return render(request, 'student/detail.html', {
+        'degree_id': degree_id,
+        'analysis_result': analysis_result
     })
+
 
 
 def index(request, degree_id):

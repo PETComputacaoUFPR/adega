@@ -2,123 +2,139 @@
 
 {% load static %}
 
+{% load math_tags %}
+
 {% block content %}
 <div class="row">
-  <div class="col-md-12">
-  <h1>{{ nome_disciplina }}
-      <small>{{ codigo_disciplina }}</small>
-  </h1>
+    <div class="col-md-12">
+        <h1>{{ analysis_result.student.name }}
+        <small>{{ analysis_result.student.grr }}</small>
+        </h1>
+        <div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#resumo" aria-controls="resumo" role="tab" data-toggle="tab">Resumo</a></li>
+            <li role="presentation"><a href="#disciplinas" aria-controls="disciplinas" role="tab" data-toggle="tab">Lista de Disciplinas</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="resumo">
+                <div class="panel-container">
+                    <div class="data-panel">
+                        <h3>Entrada</h3>
+                        <span class="data">{{ analysis_result.student.ano_ingresso }}/{{ analysis_result.student.semestre_ingresso }}</span>
+                    </div>
+
+                    {% if analysis_result.student.ano_evasao %}
+
+                    <div class="data-panel">
+                        <h3>Saida</h3>
+                        <span class="data">{{ analysis_result.student.forma_evasao }}</span><br>
+                        <span class="data">{{ analysis_result.student.ano_evasao }}/{{analysis_result.student.semestre_evasao}}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="panel-container">
+                    <div class="data-panel">
+                        <h3>Ira</h3>
+                        <span class="data">{{ analysis_result.student.ira|floatformat:2 }}</span>
+                    </div>
+
+                    <div class="data-panel">
+                        <h3>Taxa de Aprovação</h3>
+                        <span class="data">{{ analysis_result.indice_aprovacao|multiply:100|floatformat:2 }}%</span>
+                    </div>
+
+                    <div class="data-panel">
+                        <h3>Periodo real</h3>
+                        {% if analysis_result.periodo_real %}
+                            <span class="data">{{ analysis_result.periodo_real }}</span>
+                        {% elif analysis_result.student.forma_evasao == 'Formatura' %}
+                            <span class="data">Formado</span>
+                        {% else %}
+                            <span class="data">Jubilado</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="data-panel">
+                        <h3>Periodo pretendido</h3>
+                        {% if analysis_result.periodo_pretendido %}
+                        <span class="data">{{ analysis_result.periodo_pretendido }}</span>
+                        {% else %}
+                        <span class="data">Formado</span>                            
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% comment "aluno_turmas doesnt exists" %}
+            <div role="tabpanel" class="tab-pane" id="disciplinas">
+                <h1>Disciplinas Feitas</h1>
+                <table id="lista_disciplinas" class="table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Nota</th>
+                            <th>Situação</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for at in analysis_result.aluno_turmas %}
+                        <tr>
+                            <td><a href="{% url 'disciplina:detail' degree_id=degree_id codigo_disciplina=at.turma.disciplina.codigo %}">
+                                {{ at.turma.disciplina.codigo }}</a></td>
+                            <td>{{ at.turma.disciplina.nome }}</td>
+                            <td>{{ at.nota }}</td>
+                            <td>{{ at.situacao }}</td>
+                            <td>{{ at.turma.ano }}/{{ at.turma.semestre }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endcomment %}
+
+            <div id="graficos">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="ira_semestral"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Índice de aprovação/Semestre</h3>
+                            <canvas id="aprovacao_semestral"
+                                    data-data='{{ analysis_result.indice_reprovacao_semestral|safe }}'></canvas>
+                    </div>
+                </div>
+                <div class="row">
+                    {% comment "posicao_turma_ingresso_semestral doesnt exists" %}
+                    <div class="col-md-6">
+                        <h3>Posição do aluno em relação a turma de ingresso/Semestre(%)</h3>
+                        <canvas id="posicao_turma_ingresso_semestral"
+                                data-data='{{ analysis_result.posicao_turmaIngresso_semestral|safe }}'></canvas>
+                    </div>
+                    {% endcomment %}
+                    <div class="col-md-6">
+                        <h3>Relação entre IRA e a quantidade de disciplinas por semestre</h3>
+                        <canvas id="ira_disciplinas_semestre"
+                                data-data='{{ analysis_result.ira_por_quantidade_disciplinas|safe }}'></canvas>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Aprovação Acumulada</h3>
+                        <canvas id="aprovacao_acumulada" data-data='{{ analysis_result.indice_reprovacao_semestral|safe  }}'></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
   
-  <br>
-
-  <h2>Informações Gerais</h2>
-  <table class="table">
-      <tr>
-          <td>Quantidade de matrículas</td>
-          <td>{% if analysis_result.qtd_alunos >= 0%}
-                  {{ analysis_result.qtd_alunos }}
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Nota Média</td>
-          <td>{% if analysis_result.nota.0 >= 0%}
-                {{analysis_result.nota.0|floatformat:2}} &plusmn {{analysis_result.nota.1|floatformat:2}}
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Nota Média/ Último ano</td>
-          <td>{% if analysis_result.nota_ultimo_ano.0 >= 0%}
-                {{analysis_result.nota_ultimo_ano.0|floatformat:2}} &plusmn {{analysis_result.nota_ultimo_ano.1|floatformat:2}}
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-  </table>
-  <h1>Taxas</h1>
-  <table class="table">
-      <tr>
-          <td>Taxa Reprovação</td>
-          <td>{% if analysis_result.taxa_reprovacao_absoluta >= 0%}
-                  {{ analysis_result.taxa_reprovacao_absoluta|floatformat:2 }}%
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Taxa Reprovação Frequência </td>
-          <td>{% if analysis_result.taxa_reprovacao_frequencia >= 0%}
-                  {{ analysis_result.taxa_reprovacao_frequencia|floatformat:2 }}%
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-
-      <tr>
-          <td>Taxa Reprovação/Último ano</td>
-          <td>{% if analysis_result.taxa_reprovacao_ultimo_absoluto >= 0%}
-                  {{ analysis_result.taxa_reprovacao_ultimo_absoluto|floatformat:2 }}%
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Taxa Reprovação/Último ano Frequência</td>
-          <td>{% if analysis_result.taxa_reprovacao_ultimo_frequencia >= 0%}
-                  {{ analysis_result.taxa_reprovacao_ultimo_frequencia|floatformat:2 }}%
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Quantidade de Aproveitamento de Conhecimento</td>
-          <td>
-              {% if analysis_result.qtd_conhecimento >= 0 %}
-                  {{ analysis_result.qtd_conhecimento }}
-              {% else %}
-                  Desconhecido
-              {% endif %}
-          </td>
-      </tr>
-      <tr>
-          <td>Taxa Aprovação/Aproveitamento de Conhecimento</td>
-          <td>{% if analysis_result.taxa_aproveitamento_conhecimento >= 0%}
-                  {{ analysis_result.taxa_aproveitamento_conhecimento|floatformat:2 }}%
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Quantidade Trancamento</td>
-          <td>{% if analysis_result.qtd_trancamento >= 0%}
-                  {{ analysis_result.qtd_trancamento }}
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Taxa Trancamento</td>
-          <td>{% if analysis_result.taxa_trancamento >= 0%}
-                  {{ analysis_result.taxa_trancamento|floatformat:2 }}%
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </tr>
-      <tr>
-          <td>Quantidade Média de Vezes Cursada até Aprovação</td>
-          <td>{% if analysis_result.qtd_cursada_aprov >= 0 %}
-                  {{ analysis_result.qtd_cursada_aprov|floatformat:2 }}
-              {% else %}
-                  Desconhecido
-              {% endif %}</td>
-      </td>
-  </table>
-
-  
-<div id="aprovacao_semestre"></div>
 <div id="myChart2"></div>
 {% endblock content %}
 
@@ -127,15 +143,15 @@
 {% block js-foot %}
   <script>
     
-    var chart1 = new AdegaChart({
-      data: {{analysis_result.aprovacao_semestral|safe}},
-      div_target: "aprovacao_semestre",
-      //type: "bar",
-      title: "Índice de aprovação/Semestre",
-      fill: "none",
-      legend: ["Aprovação %","Quantidade de alunos"]
-    });
     
+    var chart1 = new AdegaChart({
+      data: {{analysis_result.ira_semestral|safe}},
+      div_target: "ira_semestral",
+      //type: "bar",
+      title: "Ira Semestral",
+      legend: ["IRA"]
+    });
+
     var chart1 = new AdegaChart({
       data_x: [0,1,2], 
       data_y: [[6,10,2], [7,9,2.5]],
