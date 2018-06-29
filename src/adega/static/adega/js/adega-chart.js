@@ -4,6 +4,9 @@ class AdegaChart{
         
         //Object with two arrays (two charts), and the key is the x-axis
         this.data = config.data || null;
+        
+        this.hide_charts = config.hide_charts || null;
+        
         this.legend = config.legend || null;
 
 
@@ -63,35 +66,51 @@ class AdegaChart{
         this.reloadGraph();
     }
 
+    transformToAcumulation(){
+        var number_lines = this.data_y.length;
+        
+        
+
+        for(var i in this.data_y){
+            var acumulation = 0;
+            for(var j in this.data_y[i]){
+                acumulation += this.data_y[i][j];
+                this.data_y[i][j] = acumulation;
+            }
+        };
+        this.reloadGraph();
+    }
+
     reloadGraph(){
         var data = [];
         for(var i in this.data_y){
-        data.push(
-            {
-            x: this.data_x,
-            y: this.data_y[i],
-            type: this.type[i],
-            fill: this.fill
+            if(this.hide_charts && this.hide_charts[i])
+                continue;
+            data.push(
+                {
+                x: this.data_x,
+                y: this.data_y[i],
+                type: this.type[i],
+                fill: this.fill
+                }
+            );
+            
+            if(this.legend && this.legend[i] != null){
+                data[i].name = this.legend[i];
             }
-        );
-        
-        if(this.legend && this.legend[i] != null){
-            data[i].name = this.legend[i];
-        }
 
-        if(this.error_y && this.error_y[i] != null){
-            data[i].error_y = {
-            type: 'data',
-            array: this.error_y[i],
-            visible: true,
+            if(this.error_y && this.error_y[i] != null){
+                data[i].error_y = {
+                    type: 'data',
+                    array: this.error_y[i],
+                    visible: true,
+                }
             }
-        }
-
-        
         }
 
         var layout = {
-        title: this.title
+            title: this.title,
+            showlegend: true
         };
         Plotly.newPlot(this.div_target, data, layout);
     }

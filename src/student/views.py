@@ -26,11 +26,11 @@ def detail(request, degree_id, grr):
         'periodo_real': cache_j['periodo_real'],
         'periodo_pretendido': cache_j['periodo_pretendido'],
         'ira_semestral': json.dumps(cache_j['ira_semestral']),
-        'indice_reprovacao_semestral': json.dumps(sorted(cache_j['indice_aprovacao_semestral'].items())),
+        'indice_aprovacao_semestral': cache_j['indice_aprovacao_semestral'],
         # 'posicao_turmaIngresso_semestral': json.dumps(sorted(cache_j['posicao_turmaIngresso_semestral'].items())),
-        'ira_por_quantidade_disciplinas': json.dumps(sorted(cache_j['ira_por_quantidade_disciplinas'].items())),
+        'ira_por_quantidade_disciplinas': json.dumps(cache_j['ira_por_quantidade_disciplinas']),
         'student': cache_j['student'],
-        # 'aluno_turmas': alunoTurmas,
+        'aluno_turmas': cache_j["aluno_turmas"],
     }
 
     return render(request, 'student/detail.html', {
