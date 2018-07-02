@@ -167,3 +167,10 @@ footer h3 {
 .content {
     padding: 2em;
 }
+
+
+.paginate_button{
+    margin-left:10px;
+    margin-right:10px;
+    cursor: pointer;
+}

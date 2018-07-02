@@ -140,6 +140,7 @@ class StudentAnalysis:
 		
 		aux = df.groupby(["MATR_ALUNO"])
 		students = {}
+		#TODO: Calculate the real value
 		for x in aux:
 			students[x[0]] = None
 		return students
