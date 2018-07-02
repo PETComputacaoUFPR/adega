@@ -28,7 +28,10 @@ def index(request, degree_id):
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
+    analysis_result = get_list_courses(request.session, degree)
+    courses_list = analysis_result["cache"]
+
     return render(request, 'course/index.html', {
-        "courses": get_list_courses(request.session, degree)["cache"],
+        "courses": courses_list,
         "degree": degree
     })
