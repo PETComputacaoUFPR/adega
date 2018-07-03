@@ -34,7 +34,7 @@ def detail(request, degree_id, grr):
     }
 
     return render(request, 'student/detail.html', {
-        'degree_id': degree_id,
+        'degree': degree,
         'analysis_result': analysis_result
     })
 
