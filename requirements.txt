@@ -8,4 +8,4 @@ django-extensions
 ujson
 eventlet
 gunicorn
-psycopg2
+psycopg2-binary
