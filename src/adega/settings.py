@@ -47,6 +47,10 @@ INSTALLED_APPS = [
 	'educator', 
 	'admission', 
 	'course', 
+<<<<<<< HEAD
+=======
+	'student', 
+>>>>>>> origin/115-integrar-as-analises-alunos-com-o-sistema-web
     'report_api',
     'uploads'
 ]

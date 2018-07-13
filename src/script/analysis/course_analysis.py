@@ -247,10 +247,13 @@ def listagem_disciplina(df,lista_disciplinas):
 
 	for disciplina in lista_disciplinas.keys(): 
 		disciplina_dict = lista_disciplinas[disciplina] 
-		cache[disciplina] = {"nota":disciplina_dict["nota"],
-				"taxa_reprovacao_absoluta":disciplina_dict["taxa_reprovacao_absoluta"],
-				"taxa_reprovacao_frequencia":disciplina_dict["taxa_reprovacao_frequencia"],
-				"taxa_trancamento":disciplina_dict["taxa_trancamento"] }  
+		cache[disciplina] = {
+			"name": disciplina_dict["disciplina_nome"],
+			"nota": disciplina_dict["nota"],
+			"taxa_reprovacao_absoluta": disciplina_dict["taxa_reprovacao_absoluta"],
+			"taxa_reprovacao_frequencia": disciplina_dict["taxa_reprovacao_frequencia"],
+			"taxa_trancamento": disciplina_dict["taxa_trancamento"]
+		}
 		compara_disciplina = [] 
 		compara_nota[disciplina]= lista_disciplinas[disciplina]["compara_nota"]  
 		#calcula aprovacao semestral

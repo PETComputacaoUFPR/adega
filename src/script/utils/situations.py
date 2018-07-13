@@ -65,6 +65,20 @@ class EvasionForm:
         (EF_OUTROS, 'Outro'),
     )
 
+    @staticmethod
+    def code_to_str(code):
+        for ef in EvasionForm.EVASION_FORM:
+            if(ef[0] == code):
+                return ef[1].replace("'","").replace("\"","")
+        return ""
+    
+    @staticmethod
+    def str_to_code(str):
+        for ef in EvasionForm.EVASION_FORM:
+            if(ef[1] == str):
+                return ef[0]
+        return -1
+
 # == Situation Courses == #
 #note:  os valores da coluna media_final não são confiavel, situation como
 # reprovacao,reprovacao_freq,dispensa_com_nota aparecem em algumas linha como
