@@ -171,3 +171,7 @@ class Situation:
         SIT_INCOMPLETO,
         SIT_CANCELADO,
     )
+    SITUATION_CONHECIMENTO = (
+            SIT_CONHECIMENTO_APROVADO,
+            SIT_CONHECIMENTO_REPROVADO
+            ) 
