@@ -1,19 +1,11 @@
 [[source]]
-
-name = "pypi"
+url = "https://pypi.org/simple"
 verify_ssl = true
-url = "https://pypi.python.org/simple"
-
-
-[dev-packages]
-
-coverage = "*"
-ipython = "*"
-
+name = "pypi"
 
 [packages]
-
-Django = "==1.11.10"
+coverage = "*"
+ipython = "*"
 django-widget-tweaks = "*"
 pandas = "==0.22"
 xlrd = "*"
@@ -22,3 +14,9 @@ ujson = "*"
 eventlet = "*"
 gunicorn = "*"
 "psycopg2" = "*"
+Django = "==1.11.10"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
