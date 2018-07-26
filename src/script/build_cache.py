@@ -21,7 +21,7 @@ def build_cache(dataframe,path):
                 path = path + '/'
                 generate_degree_data(path, df)
                 generate_student_data(path+'students/',df)
-                generate_admission_data(path+'/admission/',df)
+                generate_admission_data(path+'admission/',df)
                 generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
@@ -121,33 +121,38 @@ def generate_student_list(path):
 
 def generate_admission_data(path,df):
 
-	listagem = []
+    listagem = []
 
-	analises = [
-		("ira", media_ira_turma_ingresso(df)),
-		("desvio_padrao", desvio_padrao_turma_ingresso(df)),
-	]
+    analises = [
+    	("ira", media_ira_turma_ingresso(df)),
+    	("std", desvio_padrao_turma_ingresso(df)),
+    	("ira_per_semester", admission_class_ira_per_semester(df)),
+    ]
 
-	# cria um dicionario com as analises para cada turma
-	turmas = defaultdict(dict)
-	for a in analises:
-		for x in a[1]:
-			turmas[x][ a[0] ] = a[1][x]
+# cria um dicionario com as analises para cada turma
+    turmas = defaultdict(dict)
+    for a in analises:
+        for x in a[1]:
+            valor = a[1][x]
+            x = ( str(x[0]),  str(x[1]))
+            turmas[x][ a[0] ] = valor
 
-	listagem = []
+    listagem = []
 
-	for t in turmas:
-		resumo_turma = {
-			"ano": x[0],
-			"semestre": x[1]
-		}
+    for t in turmas:
+        resumo_turma = {
+            "ano": t[0],
+            "semestre": t[1]
+        }
 
-		for analise in turmas[t]:
-			resumo_turma[analise] = turmas[t][analise]
+        for analise in turmas[t]:
+            resumo_turma[analise] = turmas[t][analise]
 
-		listagem.append(resumo_turma)
+        listagem.append(resumo_turma)
 
-	save_json(path+"lista_turma_ingresso.json", listagem)
+
+
+    save_json(path+"lista_turma_ingresso.json", listagem)
 
 
 def generate_admission_list(path,df):
@@ -164,3 +169,5 @@ def generate_course_data(path,df):
 
         disciplinas = listagem_disciplina(df,lista_disciplinas)
         save_json(path+'disciplinas.json',disciplinas)
+
+
