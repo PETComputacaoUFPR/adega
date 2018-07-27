@@ -152,6 +152,10 @@ class Situation:
         SIT_REPROVADO_ADIAN,
         SIT_CONHECIMENTO_REPROVADO
     )
+    SITUATION_KNOWLDGE = (
+        SIT_CONHECIMENTO_APROVADO,
+        SIT_CONHECIMENTO_REPROVADO
+        ) 
 
     """
     isso deve ser pra filtrar fora coisas que não são disciplinas cumpridas

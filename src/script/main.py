@@ -2,7 +2,6 @@
 import time
 from script.base.dataframe_base import load_dataframes
 from script.build_cache import build_cache
-from script.analysis.course_analysis import *
 
 from datetime import timedelta
 

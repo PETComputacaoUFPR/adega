@@ -2,7 +2,7 @@ from script.utils.utils import *
 from script.utils.situations import *
 from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
-from script.analysis.course_analysis import *
+from script.analysis.course_analysis import Course
 from script.analysis.admission_analysis import *
 
 from collections import defaultdict
@@ -19,9 +19,9 @@ def build_cache(dataframe,path):
 
         for cod, df in dataframe.groupby('COD_CURSO'):
                 path = path + '/'
-                generate_degree_data(path, df)
-                generate_student_data(path+'students/',df)
-                generate_admission_data(path+'/admission/',df)
+                #generate_degree_data(path, df)
+                #generate_student_data(path+'students/',df)
+                #generate_admission_data(path+'/admission/',df)
                 generate_course_data(path+'disciplina/' ,dataframe)
 
 def generate_degree_data(path, dataframe):
@@ -154,13 +154,15 @@ def generate_admission_list(path,df):
 	pass
 
 def generate_course_data(path,df):
+        course = Course(df) 
+        course.generate_cache_dict()
         lista_disciplinas = {}
-        informacoes_gerais(df,lista_disciplinas)
-        analises_gerais(df,lista_disciplinas)
-        analises_semestrais(df,lista_disciplinas)
+        #informacoes_gerais(df,lista_disciplinas)
+        #analises_gerais(df,lista_disciplinas)
+        #analises_semestrais(df,lista_disciplinas)
 
-        for disciplina in lista_disciplinas.keys():
-                save_json(path+disciplina+'.json',lista_disciplinas[disciplina])
+        #for disciplina in lista_disciplinas.keys():
+        #        save_json(path+disciplina+'.json',lista_disciplinas[disciplina])
 
-        disciplinas = listagem_disciplina(df,lista_disciplinas)
-        save_json(path+'disciplinas.json',disciplinas)
+        #disciplinas = listagem_disciplina(df,lista_disciplinas)
+        #save_json(path+'disciplinas.json',disciplinas)
