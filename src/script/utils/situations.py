@@ -146,6 +146,11 @@ class Situation:
         SIT_DISPENSA_COM_NOTA
     )
 
+    SITUATION_KNOWLDGE = (
+            SIT_CONHECIMENTO_APROVADO,
+            SIT_CONHECIMENTO_REPROVADO
+    )
+
     SITUATION_FAIL = (
         SIT_REPROVADO,
         SIT_REPROVADO_FREQ,
