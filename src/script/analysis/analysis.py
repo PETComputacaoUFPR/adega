@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#import pandas
-import json
-import numpy 
+import numpy as np
 from script.utils.situations import Situation as sit
 from collections import namedtuple
 rate = namedtuple("rate", ["name", "collumn_name", "fields_x", "fields_X"])
@@ -66,7 +64,9 @@ class Analysis(object):
         for rate in rates:
             x = self.count(groups, rate.collumn_name, rate.fields_x)
             X = self.count(groups, rate.collumn_name, rate.fields_X)
-            rate_dict[rate.name] = [x/X, x, X]
+            rate_c = x/X 
+            rate_c[np.isnan(rate_c)] = 0.0
+            rate_dict[rate.name] = [rate_c, x, X]
         return rate_dict
 
 
