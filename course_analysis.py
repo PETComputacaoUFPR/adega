@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+import pandas
+import json
+import numpy 
 from script.utils.situations import Situation as sit
 from script.analysis.analysis import Analysis, rate, mean
+from collections import namedtuple
 
 
 class Course(Analysis):
@@ -60,7 +64,6 @@ class Course(Analysis):
              list(sit.SITUATION_AFFECT_IRA),
              "MEDIA_FINAL")
     ]
-    __semestral_rate = [__rates[1]]
 
     def __init__(self, df):
         df_filted = df[df['SITUACAO'].isin(sit.SITUATION_COURSED)]
@@ -283,22 +286,6 @@ class Course(Analysis):
         Cria o dicionario para cada json de disciplina, ex 'CI055.json'.
         """
         courses = []
-        aprovacao_d = {}
-        # semestral
-        for rate_it in self.__semestral_rate:
-            # pega uma lista no qual o primeiro elemento é a taxa, o segundo
-            # e o terceiro são quantidades
-            rate_data = self.analysis["semestral_rate"][rate_it.name]
-            for i in rate_data[0].index:
-                if i[0] not in aprovacao_d:
-                    aprovacao_d[i[0]] = {}
-
-                periodo = str(i[1])+"/"+str(i[2])
-                aprovacao_d[i[0]][periodo] = [
-                        float(rate_data[0][i]),
-                        int(rate_data[1][i])
-                        ]
-
         for course in self.analysis["courses"].index:
             course_dict = {}
             course_dict["disciplina_codigo"] = course
@@ -310,13 +297,13 @@ class Course(Analysis):
             # taxas
             for rate_it in self.__rates:
                 rate_data = self.analysis["general_rates"][rate_it.name]
-                course_dict[rate_it.name] = float(rate_data[0][course])
+                course_dict[rate_it.name] = rate_data[0][course]
                 course_str = rate_it.name.replace("taxa", "qtd")
-                course_dict[course_str] = float(rate_data[1][course])
+                course_dict[course_str] = rate_data[1][course]
                 course_dict["grafico_qtd_cursada_aprov"] = \
                     self.analysis["coursed_count"][course]
-                # rate_calc = self.analysis["general_rates"][rate_it.name][0]
-            course_dict["aprovacao_semestral"] = aprovacao_d[course]
-            courses.append(course_dict)
+            if(course == "CI055"):
+                print(course_dict)
 
+            courses.append(course_dict)
         return courses
