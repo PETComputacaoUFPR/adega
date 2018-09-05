@@ -4,6 +4,7 @@ from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
 from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
+from script.analysis.others_analysis import *
 
 from collections import defaultdict
 
@@ -23,6 +24,8 @@ def build_cache(dataframe,path):
                 generate_student_data(path+'students/',df)
                 generate_admission_data(path+'/admission/',df)
                 generate_course_data(path+'disciplina/' ,dataframe)
+                generate_others_data(path+'/others/',df)
+
 
 def generate_degree_data(path, dataframe):
         ensure_path_exists(path)
@@ -164,3 +167,9 @@ def generate_course_data(path,df):
 
         disciplinas = listagem_disciplina(df,lista_disciplinas)
         save_json(path+'disciplinas.json',disciplinas)
+
+def generate_others_data(path, df):
+    others_dict = {}
+
+    others_dict["alunos_reprovacoes_na_mesma_disciplina"] = student_three_fails_subject(df)
+    save_json(path+"cepe9615.json",  others_dict)
