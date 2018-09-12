@@ -107,3 +107,27 @@ def desvio_padrao_turma_ingresso(df):
 		resultados[r] = np.std(aux)
 	
 	return resultados
+
+def taxa_aprovacao_ti(df):
+    df = df.dropna(subset=['MEDIA_FINAL'])
+    affect_ira = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
+    aprovados = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_PASS)]
+
+    return aprovados.shape[0] / affect_ira.shape[0]
+
+def taxa_aprovacao(df):
+    students = df.drop_duplicates()
+
+    turmas_ingresso = students.groupby([
+        "ANO_INGRESSO",
+        "SEMESTRE_INGRESSO"]
+    ).groups
+
+    resultados = {}
+
+    for ti in turmas_ingresso:
+        students_ti = students.loc[(df.ANO_INGRESSO == ti[0]) & (df.SEMESTRE_INGRESSO == ti[1])]
+
+        resultados[ti] = taxa_aprovacao_ti(students_ti)
+
+    return resultados
