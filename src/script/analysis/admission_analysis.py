@@ -107,3 +107,46 @@ def desvio_padrao_turma_ingresso(df):
 		resultados[r] = np.std(aux)
 	
 	return resultados
+
+def tempo_de_formatura_ti(df):
+    graduates = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
+    total_graduate = graduates.shape[0]
+
+    if (total_graduate == 0):
+        return 0
+
+    average_time = 0
+    year_end = int(df['ANO'].max())
+    semester_end = graduates['PERIODO'].max()
+    for index, row in graduates.iterrows():
+        if pd.notnull(row['ANO_EVASAO']):
+            year_end = int(row['ANO_EVASAO'])
+            try: 
+                semester_end = int(row['SEMESTRE_EVASAO'])
+            except ValueError:
+                semester_end = graduates['PERIODO'].max()
+        year = int(row['ANO_INGRESSO'])
+        semester = int(row['SEMESTRE_INGRESSO'])
+        difference = 2 * (year_end - year) + (semester_end - semester) + 1
+        average_time += difference
+    average_time /= total_graduate
+    average_time /= 2
+
+    return average_time
+
+def tempo_de_formatura(df):
+    students = df.drop_duplicates()
+
+    turmas_ingresso = students.groupby([
+        "ANO_INGRESSO",
+        "SEMESTRE_INGRESSO"]
+    ).groups
+
+    resultados = {}
+
+    for ti in turmas_ingresso:
+        students_ti = students.loc[(df.ANO_INGRESSO == ti[0]) & (df.SEMESTRE_INGRESSO == ti[1])]
+
+        resultados[ti] = tempo_de_formatura_ti(students_ti)
+
+    return resultados
