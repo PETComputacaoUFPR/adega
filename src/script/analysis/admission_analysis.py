@@ -107,3 +107,22 @@ def desvio_padrao_turma_ingresso(df):
 		resultados[r] = np.std(aux)
 	
 	return resultados
+
+def taxa_de_evasao(df):
+    students = df.drop_duplicates()
+
+    turmas_ingresso = students.groupby([
+        "ANO_INGRESSO",
+        "SEMESTRE_INGRESSO"]
+    ).groups
+
+    resultados = {}
+
+    for ti in turmas_ingresso:
+        students_ti = students.loc[(df.ANO_INGRESSO == ti[0]) & (df.SEMESTRE_INGRESSO == ti[1])]
+        ti_num_students = students_ti.shape[0]
+        ti_num_evasions = students_ti.loc[(students_ti.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (students_ti.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (students_ti.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)].shape[0]
+        
+        resultados[ti] = ti_num_evasions/ti_num_students
+
+    return resultados
