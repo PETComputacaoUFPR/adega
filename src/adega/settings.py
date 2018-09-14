@@ -24,9 +24,9 @@ PROJECT_DIR = os.path.join(BASE_DIR, '..')
 SECRET_KEY = 'e#-^aknk(5k)ej6rh#h$i(%h(m9)-j*lwrc_1dxnk=a@-mixlt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,10 +43,10 @@ INSTALLED_APPS = [
 
     'adega',
     'public',
-    'degree', 
-	'educator', 
-	'admission', 
-	'course', 
+    'degree',
+	'educator',
+	'admission',
+	'course',
     'report_api',
     'uploads'
 ]
@@ -155,11 +155,12 @@ MESSAGE_TAGS = {
 
 
 if not DEBUG:
-    FORCE_SCRIPT_NAME = '/adega/'
+#    FORCE_SCRIPT_NAME = '/adega/'
 
-    STATIC_URL = '/adega/static/'
+    STATIC_URL = '/static/'
 else:
     STATIC_URL = '/static/'
+
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
