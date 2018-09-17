@@ -28,6 +28,7 @@ Para executar o projeto com o docker, siga os seguintes passos:
 $ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git # Comando já executado
 $ cd adega/
 $ sudo make docker-install # Instala o docker.io e docker-compose
+$ sudo apt install docker.io
 $ sudo make docker-up # Executa os containers postgres e webserver
 ```
 
