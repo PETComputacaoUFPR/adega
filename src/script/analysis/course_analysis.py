@@ -246,7 +246,7 @@ class Course(Analysis):
 
         self.analysis["coursed_count"] = course_dict
 
-    def build_courses(self):
+    def build_general_course(self):
         """
         Cria o dicionario para o json chamado 'disciplina.json'
         """
