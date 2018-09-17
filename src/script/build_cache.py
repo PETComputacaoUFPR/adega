@@ -4,7 +4,7 @@ from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
 from script.analysis.course_analysis import *
 from script.analysis.admission_analysis import *
-from script.analysis.others_analysis import *
+from script.analysis.cepe9615 import *
 
 from collections import defaultdict
 
@@ -24,7 +24,7 @@ def build_cache(dataframe,path):
                 generate_student_data(path+'students/',df)
                 generate_admission_data(path+'/admission/',df)
                 generate_course_data(path+'disciplina/' ,dataframe)
-                generate_others_data(path+'/others/',df)
+                generate_cepe_data(path+'/cepe/',df)
 
 
 def generate_degree_data(path, dataframe):
@@ -168,7 +168,8 @@ def generate_course_data(path,df):
         disciplinas = listagem_disciplina(df,lista_disciplinas)
         save_json(path+'disciplinas.json',disciplinas)
 
-def generate_others_data(path, df):
+# CEPE 96/15 - resolution from UFPR
+def generate_cepe_data(path, df):
     others_dict = {}
 
     others_dict["alunos_reprovacoes_na_mesma_disciplina"] = student_three_fails_subject(df)
