@@ -1,3 +1,5 @@
+"""This resolution from CEPE deals with the cases where studants might have
+their academic record canceled."""
 import numpy as np
 import pandas as pd 
 from script.utils.situations import *
