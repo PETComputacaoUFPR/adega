@@ -7,14 +7,14 @@ services:
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
     web:
-        build: 
+        build:
             context: .
             dockerfile: ./docker_scripts/Dockerfile
-        command: bash "./docker_scripts/on_docker_init.sh"
+        command: bash "./docker_scripts/on_docker_init_production.sh"
         volumes:
             - .:/adega
-        ports:
-            - "8000:8000"
+        #ports:
+        #    - "8000:8000"
         links:
             - db
         depends_on:
@@ -24,3 +24,15 @@ services:
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
             - POSTGRES_HOST=adega_db_1
+
+    nginx:
+        restart: always
+        build: ./nginx/
+        ports:
+            - "80:80"
+        depends_on:
+            - web
+        links:
+            - web:web
+        volumes:
+            - ./static:/adega/static

@@ -156,8 +156,9 @@ MESSAGE_TAGS = {
 
 if not DEBUG:
 #    FORCE_SCRIPT_NAME = '/adega/'
-
+#    STATIC_URL = '/static/'
     STATIC_URL = '/static/'
+
 else:
     STATIC_URL = '/static/'
 
