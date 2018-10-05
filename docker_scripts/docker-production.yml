@@ -13,8 +13,8 @@ services:
         command: bash "./docker_scripts/on_docker_init_production.sh"
         volumes:
             - .:/adega
-        #ports:
-        #    - "8000:8000"
+#        ports:
+#            - "8000:8000"
         links:
             - db
         depends_on:
