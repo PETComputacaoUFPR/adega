@@ -8,4 +8,4 @@ python manage.py migrate
 python manage.py collectstatic
 chmod 775 -R adega/static
 #python manage.py runserver 0.0.0.0:8000
-gunicorn adega.wsgi:application -w 2 -b :8000
+gunicorn adega.wsgi:application --workers 2 --timeout 600 -b :8000
