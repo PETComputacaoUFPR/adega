@@ -2,8 +2,9 @@ from script.utils.utils import *
 from script.utils.situations import *
 from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
-from script.analysis.course_analysis import *
+from script.analysis.course_analysis import Course
 from script.analysis.admission_analysis import *
+from script.analysis.cepe9615 import *
 
 from collections import defaultdict
 
@@ -23,6 +24,8 @@ def build_cache(dataframe,path):
                 generate_student_data(path+'students/',df)
                 generate_admission_data(path+'admission/',df)
                 generate_course_data(path+'disciplina/' ,dataframe)
+                generate_cepe_data(path+'/others/',df)
+
 
 def generate_degree_data(path, dataframe):
         ensure_path_exists(path)
@@ -124,9 +127,9 @@ def generate_admission_data(path,df):
     listagem = []
 
     analises = [
-    	("ira", media_ira_turma_ingresso(df)),
-    	("std", desvio_padrao_turma_ingresso(df)),
-    	("ira_per_semester", admission_class_ira_per_semester(df)),
+        ("ira", media_ira_turma_ingresso(df)),
+        ("std", desvio_padrao_turma_ingresso(df)),
+        ("ira_per_semester", admission_class_ira_per_semester(df)),
     ]
 
 # cria um dicionario com as analises para cada turma
@@ -156,18 +159,13 @@ def generate_admission_data(path,df):
 
 
 def generate_admission_list(path,df):
-	pass
+        pass
 
-def generate_course_data(path,df):
-        lista_disciplinas = {}
-        informacoes_gerais(df,lista_disciplinas)
-        analises_gerais(df,lista_disciplinas)
-        analises_semestrais(df,lista_disciplinas)
-
-        for disciplina in lista_disciplinas.keys():
-                save_json(path+disciplina+'.json',lista_disciplinas[disciplina])
-
-        disciplinas = listagem_disciplina(df,lista_disciplinas)
-        save_json(path+'disciplinas.json',disciplinas)
-
-
+def generate_course_data(path, df):
+    course = Course(df)
+    course.build_analysis()
+    courses = course.build_general_course()
+    save_json(path+"disciplinas.json", courses)
+    course_list = course.build_course()
+    for i in course_list:
+        save_json(path+i["disciplina_codigo"]+".json", i)

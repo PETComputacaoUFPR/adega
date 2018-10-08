@@ -28,6 +28,7 @@ Para executar o projeto com o docker, siga os seguintes passos:
 $ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git # Comando já executado
 $ cd adega/
 $ sudo make docker-install # Instala o docker.io e docker-compose
+$ sudo apt install docker.io
 $ sudo make docker-up # Executa os containers postgres e webserver
 ```
 
@@ -51,7 +52,7 @@ E: Unable to locate package postgresql-client
 
 
 Neste caso, consulte [este tutorial](https://development.robinwinslow.uk/2016/06/23/fix-docker-networking-dns/) para resolver o problema.
-Lembre de utilizar o comando `sudo docker system prune -a` para limpar a cache e evitar os problemas.
+Depois de fazer o tutorial, lembre de utilizar o comando `sudo docker system prune -a` para limpar a cache e evitar os problemas.
 
 ### Uso
 Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas nos arquivos do projeto serão compartilhadas com os arquivos do container docker. Ou seja, é possível alterar qualquer arquivo do projeto e haverá resultados em tempo real.
@@ -108,7 +109,7 @@ python manage.py createsuperuser
 ```
 
 
-## Executando o projeto
+## Executando o projeto (se você fez as instalações de forma manual)
 
 Por padrão ele irá rodar no 127.0.0.1:8000, ative o virtualenv antes
 ```bash
@@ -131,7 +132,7 @@ Ao sair do projeto execute `exit` para sair do virtualenv e evitar polui-lo
 Após você logar no sistema com o seu super usuário você terá acesso ao `URL_DO_SITE/admin`, graças ao [Django admin](https://docs.djangoproject.com/en/1.10/ref/contrib/admin/) nesta tela você é capaz de gerenciar os dados salvos nas models do projeto.   
 Para transformar o seu usuário em professor basta clicar em `professor`e então selecionar o seu usuário e o curso. Agora se você voltar para a página inicial do sistema você deve ver uma listagem dos seus cursos. 
 
-## Executando análises
+## Executando análises (se vocẽ está usando docker)
 
 Para executar as análises, acesse `localhost:8000/admin` e adicione um submission.
 Após isso execute o comando:
