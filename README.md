@@ -1,7 +1,7 @@
 # ADEGA
 
 
-Este software faz parte de um projeto do PET Computação UFPR para 
+Este software faz parte de um projeto do PET Computação UFPR para
 análise de dados dos cursos de graduação da UFPR. Veja a [wiki](http://gitlab.c3sl.ufpr.br/adega/adega/wikis/home).
 
 
@@ -80,6 +80,37 @@ $ sudo make docker-remove-all
 ```
 *Observação*: Esse comando **não** irá deletar qualquer arquivo do projeto / diretório local, apenas os containers.   
 
+## Versão de produção
+Para fazer o deploy do adega na versão de produção primeiro verifique se settings.py está com a seguinte linha:
+```python
+DEBUG = False
+```
+Então execute:
+```bash
+$ sudo make docker-production
+```
+Este comando funciona da mesma forma que `make docker-up` e portando também funciona com os comandos `make docker-manage`.
+
+O aplicativo vai rodar na porta 8000, para alterar mude a porta do container nginx no arquivo `docker-production.yml`.
+
+### Observações do servidor
+Se não for possível construir as imgens do docker no servidor será necessário copia-las manualmente por scp.
+
+Para salvar uma imagem execute:
+```bash
+$ sudo docker save imagem -o imagem_destino
+```
+Para carregar:
+```bash
+$ sudo docker load -i imagem
+```
+É necessário carregar as imagens `adega_web`, `adega_db` e `adega_nginx`.
+
+Se alterações forem feitas no código do adega elas serão automaticamente refletidas no servidor, mesmo na versão de produção.
+Porém se mudanças forem feitas no container do nginx a imagem deste deverá ser refeita.
+
+Para manter o aplicativo atualizado só é necessário dar pull na branch production.
+
 ## Instalação e dependências manuais (não recomendado)
 
 
@@ -96,8 +127,8 @@ sudo -u postgres psql < postgres/create.sql
 ```
 
 
-se você possui o arquivo do banco de dados compartilhado internamente pelos 
-desenvolvedores do projeto coloque-o na home do projeto, ele vem com um usuário 
+se você possui o arquivo do banco de dados compartilhado internamente pelos
+desenvolvedores do projeto coloque-o na home do projeto, ele vem com um usuário
 `pet` com senha `pet` pré-configurado para testes.
 
 
@@ -130,7 +161,7 @@ Ao sair do projeto execute `exit` para sair do virtualenv e evitar polui-lo
 ## Transformando o seu usuário em um professor
 
 Após você logar no sistema com o seu super usuário você terá acesso ao `URL_DO_SITE/admin`, graças ao [Django admin](https://docs.djangoproject.com/en/1.10/ref/contrib/admin/) nesta tela você é capaz de gerenciar os dados salvos nas models do projeto.   
-Para transformar o seu usuário em professor basta clicar em `professor`e então selecionar o seu usuário e o curso. Agora se você voltar para a página inicial do sistema você deve ver uma listagem dos seus cursos. 
+Para transformar o seu usuário em professor basta clicar em `professor`e então selecionar o seu usuário e o curso. Agora se você voltar para a página inicial do sistema você deve ver uma listagem dos seus cursos.
 
 ## Executando análises (se vocẽ está usando docker)
 
