@@ -4,7 +4,7 @@ from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
 from script.analysis.course_analysis import Course
 from script.analysis.admission_analysis import *
-from script.analysis.cepe9615 import *
+from script.analysis.cepe9615_analysis import *
 
 from collections import defaultdict
 
@@ -26,6 +26,12 @@ def build_cache(dataframe,path):
                 generate_course_data(path+'disciplina/' ,dataframe)
                 generate_cepe_data(path+'/others/',df)
 
+
+def generate_cepe_data(path,df):
+    cepe_dict = {}
+    cepe_dict["student_fails_course"] = student_fails_course(df)
+    cepe_dict["n_fails_semester"] = n_fails_semester(df)
+    save_json(path+"cepe9615.json", cepe_dict)
 
 def generate_degree_data(path, dataframe):
         ensure_path_exists(path)
