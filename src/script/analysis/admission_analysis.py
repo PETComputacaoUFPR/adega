@@ -1,7 +1,7 @@
 import numpy as np
 
 from script.utils.situations import *
-from script.analysis.student_analysis import ira_alunos
+from script.analysis.student_analysis import StudentAnalysis
 from collections import defaultdict
 
 import numpy as np
@@ -63,8 +63,9 @@ def admission_class_ira_per_semester(df):
 	return dict_admission
 
 def iras_alunos_turmas_ingressos(df):
-	iras = ira_alunos(df)
-	
+	student_analysis = StudentAnalysis(df)
+	iras = student_analysis.ira_alunos()
+
 	turmas_ingresso_grr = df.groupby([
 		"ANO_INGRESSO",
 		"SEMESTRE_INGRESSO",

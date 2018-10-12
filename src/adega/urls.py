@@ -13,6 +13,8 @@ urlpatterns = [
     
     url(r'^course/(?P<degree_id>\w*)/', include('course.urls', namespace='course')),
     
+    url(r'^student/(?P<degree_id>\w*)/', include('student.urls', namespace='student')),
+    
     url(r'^degree/(?P<degree_id>\w*)/', include('degree.urls', namespace='degree')),
 
     url(r'^public/', include('public.urls', namespace='public')),

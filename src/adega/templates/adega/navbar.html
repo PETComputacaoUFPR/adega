@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="col-md-2">
+<nav class="navbar-expand-lg navbar-dark bg-primary">
+    <div class="col-md-2">
     <a class="navbar-brand" href="{% url 'dashboard' %}">ADEGA</a>
   </div>
   <div class="collapse navbar-collapse" id="navbartoggle">
@@ -63,7 +63,7 @@
 
 
                 <ul class="nav navbar-nav hidden-md hidden-lg">
-                    <li><a href="#">Alunos</a></li>
+                    <li><a href="{% url 'student:index' degree_id=degree.code%}">Alunos</a></li>
                     <li><a href="{% url 'course:index' degree_id=degree.code%}">Turmas de Ingresso</a></li>
                     <li class="dropdown">
                             <a href="{% url 'course:index' degree_id=degree.code%}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
