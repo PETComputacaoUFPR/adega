@@ -7,7 +7,7 @@
 		<table class="table">
 				<tr>
 					<td>Quantidade de alunos ativos</td>
-					<td>{{degree_data.active_students}}</td>
+					<td>{{degree_data.qtd_alunos_atuais}}</td>
 				</tr>
 				<tr>
 					<td>I.R.A. médio desde o inicio do curso</td>
@@ -26,7 +26,7 @@
 				<tr>
 					<td>Taxa de reprovação dos alunos atualmente no curso</td>
 
-					<td>{{ degree_data.taxa_reprovacao_atual.0|floatformat:2 }}% &#177; {{degree_data.media_reprovacao_alunos_cursando.1|floatformat:2}}%</td>
+					<td>{{ degree_data.taxa_reprovacao_atual.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao_atual.1|floatformat:2}}%</td>
 				</tr>
 				<tr>
 				{% comment %}
