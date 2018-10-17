@@ -23,13 +23,13 @@ def build_cache(dataframe,path):
 
     student_analysis = StudentAnalysis(dataframe)
 
-        for cod, df in dataframe.groupby('COD_CURSO'):
-                path = path + '/'
-                generate_degree_data(path, df)
-                generate_student_data(path+'students/',df)
-                generate_admission_data(path+'admission/',df)
-                generate_course_data(path+'disciplina/' ,dataframe)
-                generate_cepe_data(path+'/others/',df)
+    for cod, df in dataframe.groupby('COD_CURSO'):
+        path = path + '/'
+        generate_degree_data(path, df)
+        generate_student_data(path+'students/',df,student_analysis)
+        generate_admission_data(path+'admission/',df)
+        generate_course_data(path+'disciplina/' ,dataframe)
+        generate_cepe_data(path+'/others/',df)
 
 
 def generate_cepe_data(path,df):
