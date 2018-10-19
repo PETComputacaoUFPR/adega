@@ -17,6 +17,8 @@ urlpatterns = [
 
     url(r'^adega/course/(?P<degree_id>\w*)/', include('course.urls', namespace='course')),
 
+    url(r'^adega/student/(?P<degree_id>\w*)/', include('student.urls', namespace='student')),
+
     url(r'^adega/degree/(?P<degree_id>\w*)/', include('degree.urls', namespace='degree')),
 
     url(r'^adega/public/', include('public.urls', namespace='public')),
