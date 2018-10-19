@@ -12,6 +12,8 @@ base_dados
 
 src/.coverage
 
+./static
+
 # lixo
 
 **/migrations/**
