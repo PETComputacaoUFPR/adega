@@ -14,8 +14,6 @@ src/.coverage
 
 # lixo
 
-static
-src/adega/static
 **/migrations/**
 *~
 *.swp
