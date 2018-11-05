@@ -25,10 +25,10 @@ def build_cache(dataframe,path):
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
-        generate_degree_data(path, df)
-        generate_student_data(path+'students/',df,student_analysis)
-        generate_admission_data(path+'admission/',df)
-        generate_course_data(path+'disciplina/' ,dataframe)
+        # generate_degree_data(path, df)
+        # generate_student_data(path+'students/',df,student_analysis)
+        # generate_admission_data(path+'admission/',df)
+        # generate_course_data(path+'disciplina/' ,dataframe)
         generate_cepe_data(path+'/others/',df)
 
 
@@ -36,6 +36,7 @@ def generate_cepe_data(path,df):
     cepe_dict = {}
     cepe_dict["student_fails_course"] = student_fails_course(df)
     cepe_dict["n_fails_semester"] = n_fails_semester(df)
+    cepe_dict["n_fails_by_freq"] = n_fails_by_freq(df)
     save_json(path+"cepe9615.json", cepe_dict)
 
 def generate_degree_data(path, dataframe):

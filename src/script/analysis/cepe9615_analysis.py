@@ -8,9 +8,11 @@ from script.utils.situations import *
 
 fails_by_course = [10] # used at: student_three_fails_course
 fails_by_semester = [6, 10] # used at: n_fails_semester
+fails_by_freq = [1, 2, 3] # used at: n_fails_by_freq
+
 
 pp = pprint.PrettyPrinter(indent=4)
-
+        
 # for x in LISTA_DISCIPLINA_REPROVACOES_CONTAGEM:
 #     computa_lista_reprovacoes(reprovacoes=x)
 
@@ -76,7 +78,6 @@ def student_fails_course(df):
 
 
 def n_fails_semester (df):
-
     """
     Lists of students that failed X, Y, Z ... courses in the same semester.
     X, Y, Z ... are declared in the list "fails_by_semester" at the top.
@@ -147,3 +148,48 @@ def n_fails_semester (df):
     # pp.pprint (final_dict)
     return final_dict
 
+
+def n_fails_by_freq(df):
+    """
+    Lists of students that failed a course X, Y, Z ... times, all of them by lack of frequency!
+    X, Y, Z ... are declared in the list "fails_by_freq" at the top.
+        
+    This function is inspired by CEPE 96/15 ART.4:
+    Students will be categorize with insuficient academic rendimento
+    when failing 2 times a course 
+
+    First this function filters students who are still registrered in the University 
+    and have failed courses by lack of frequenecy.
+    Then for each n in fails_by_freq, filters if a course repeat n times for a student
+
+    Parameters
+    ----------
+    df : DataFrame
+        
+    Returns
+    -------
+    dict of {int: dict}
+
+        final_dict={
+        "X": {student: course, student: course, ...},
+        "Y": {student: course, student: course, ...},
+        ...
+        }
+
+
+    Examples
+    --------
+
+    """
+    people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
+    failedbyfreq = people_studying_df.loc[people_studying_df['SITUACAO'] == Situation.SITUATION_FAIL[1]]
+  
+    coursefailed_bystudent = failedbyfreq.groupby(["NOME_PESSOA", "MATR_ALUNO", "COD_ATIV_CURRIC"])
+    
+    final_dict = {}
+    for fail in coursefailed_bystudent:
+        for n in fails_by_freq:
+            if fail[1].shape[0] == n:
+                final_dict[n] = (fail[0][0], fail[0][2])
+
+    pp.pprint (final_dict)
