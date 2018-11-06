@@ -25,18 +25,18 @@ def build_cache(dataframe,path):
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
-        # generate_degree_data(path, df)
-        # generate_student_data(path+'students/',df,student_analysis)
-        # generate_admission_data(path+'admission/',df)
-        # generate_course_data(path+'disciplina/' ,dataframe)
+        generate_degree_data(path, df)
+        generate_student_data(path+'students/',df,student_analysis)
+        generate_admission_data(path+'admission/',df)
+        generate_course_data(path+'disciplina/' ,dataframe)
         generate_cepe_data(path+'/others/',df)
 
 
 def generate_cepe_data(path,df):
     cepe_dict = {}
     cepe_dict["student_fails_course"] = student_fails_course(df)
-    cepe_dict["n_fails_semester"] = n_fails_semester(df)
-    cepe_dict["n_fails_by_freq"] = n_fails_by_freq(df)
+    cepe_dict["fails_semester"] = fails_semester(df)
+    cepe_dict["fails_by_freq"] = fails_by_freq(df)
     save_json(path+"cepe9615.json", cepe_dict)
 
 def generate_degree_data(path, dataframe):
@@ -77,7 +77,7 @@ def generate_student_data(path, dataframe, student_analysis):
     all_grrs = list(dataframe["MATR_ALUNO"].drop_duplicates())
     for x in all_grrs:
         student_data[x] = dict()
-    
+
     analysis = [
         # tuple that contains in the first element the function that returns a dictionary with {"GRR": value}
         # and in the second position the name that this analysis will have in json
@@ -109,7 +109,7 @@ def generate_student_data(path, dataframe, student_analysis):
         (student_analysis.student_info(),
         "student"),
     ]
-    
+
     for x in student_data:
         for a in analysis:                      # Use this to verify
             student_data[x][a[1]] = a[0][x]     # null fields in analysis
