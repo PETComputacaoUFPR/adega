@@ -191,7 +191,10 @@ def fails_by_freq(df):
            ('Pietra Martins Moreira', 'CI210')]}
     """
     people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
+    
+    // workaround: SIT_REPROVADO_FREQ é o item 1 na tupla SITUATION_FAIL
     failedbyfreq = people_studying_df.loc[people_studying_df['SITUACAO'] == Situation.SITUATION_FAIL[1]]
+    
     coursefailed_bystudent = failedbyfreq.groupby(["NOME_PESSOA", "MATR_ALUNO", "COD_ATIV_CURRIC"])
     final_dict = {}
     for n in fails_by_freq:
