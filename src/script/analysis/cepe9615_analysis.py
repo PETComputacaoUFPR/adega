@@ -202,4 +202,5 @@ def fails_by_freq(df):
         for fail in coursefailed_bystudent:
             if fail[1].shape[0] == n:
                 final_dict[n].append((fail[0][0], fail[0][2]))
-    pp.pprint (final_dict)
+    # pp.pprint (final_dict)
+    return final_dict
