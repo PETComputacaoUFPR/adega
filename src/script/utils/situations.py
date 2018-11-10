@@ -188,5 +188,5 @@ class Situation:
         SIT_CONHECIMENTO_REPROVADO,
         SIT_REPROVADO_SEM_NOTA,
         SIT_INCOMPLETO,
-        SIT_CANCELADO,
+            SIT_CANCELADO,
     )
