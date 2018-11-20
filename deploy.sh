@@ -6,7 +6,7 @@
 
 if ! sudo -u postgres psql adega
 then
-	sudo -u postgres psql < postgres/create.sql
+    sudo -u postgres psql < postgres/create.sql
 fi
 
 

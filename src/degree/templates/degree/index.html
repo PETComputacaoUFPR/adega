@@ -2,78 +2,78 @@
 
 {% block content%}
 <div class="row">
-	<div class="col-md-12">
-		<h1>Informações Gerais</h1>
-		<table class="table">
-				<tr>
-					<td>Quantidade de alunos ativos</td>
-					<td>{{degree_data.qtd_alunos_atuais}}</td>
-				</tr>
-				<tr>
-					<td>I.R.A. médio desde o inicio do curso</td>
-					<td>{{degree_data.ira_medio.0|floatformat:2}} &#177;
-						{{degree_data.ira_medio.1|floatformat:2}}</td>
-				</tr>
-				<tr>
-					<td> I.R.A. médio dos alunos atualmente no curso</td>
-					<td>{{degree_data.ira_atual.0|floatformat:2}} &#177; {{degree_data.ira_atual.1|floatformat:2}}</td>
-				</tr>
-				<tr>
-					<td>Taxa de reprovação desde o inicio do curso</td>
-					<td>{{ degree_data.taxa_reprovacao.0|floatformat:2 }}%
-						&#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</td>
-				</tr>
-				<tr>
-					<td>Taxa de reprovação dos alunos atualmente no curso</td>
+    <div class="col-md-12">
+        <h1>Informações Gerais</h1>
+        <table class="table">
+                <tr>
+                    <td>Quantidade de alunos ativos</td>
+                    <td>{{degree_data.qtd_alunos_atuais}}</td>
+                </tr>
+                <tr>
+                    <td>I.R.A. médio desde o inicio do curso</td>
+                    <td>{{degree_data.ira_medio.0|floatformat:2}} &#177;
+                        {{degree_data.ira_medio.1|floatformat:2}}</td>
+                </tr>
+                <tr>
+                    <td> I.R.A. médio dos alunos atualmente no curso</td>
+                    <td>{{degree_data.ira_atual.0|floatformat:2}} &#177; {{degree_data.ira_atual.1|floatformat:2}}</td>
+                </tr>
+                <tr>
+                    <td>Taxa de reprovação desde o inicio do curso</td>
+                    <td>{{ degree_data.taxa_reprovacao.0|floatformat:2 }}%
+                        &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</td>
+                </tr>
+                <tr>
+                    <td>Taxa de reprovação dos alunos atualmente no curso</td>
 
-					<td>{{ degree_data.taxa_reprovacao_atual.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao_atual.1|floatformat:2}}%</td>
-				</tr>
-				<tr>
-				{% comment %}
-					<td>Média de formandos (de {{ degree_data.total_alunos }} alunos)</td>
-					<td>{{ degree_data.media_formandos|floatformat:2 }}%</td>
-				</tr>
-				<tr>
-					<td>Taxa de evasão desde o inicio do curso</td>
-					<td>{{degree_data.evasao_geral|percentage}}</td>
-				</tr>
-				<tr>
-					<td>Tempo médio para formatura</td>
-					<td>{{degree_data.tempo_medio_formatura|floatformat:2}} anos</td>
-				</tr>
-				<tr>
-					<td>Possíveis jubilandos nesse semestre</td>
-					<td>{{degree_data.jubilamento}}</td>
-				</tr>
-				{% endcomment %}
-		</table>
+                    <td>{{ degree_data.taxa_reprovacao_atual.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao_atual.1|floatformat:2}}%</td>
+                </tr>
+                <tr>
+                {% comment %}
+                    <td>Média de formandos (de {{ degree_data.total_alunos }} alunos)</td>
+                    <td>{{ degree_data.media_formandos|floatformat:2 }}%</td>
+                </tr>
+                <tr>
+                    <td>Taxa de evasão desde o inicio do curso</td>
+                    <td>{{degree_data.evasao_geral|percentage}}</td>
+                </tr>
+                <tr>
+                    <td>Tempo médio para formatura</td>
+                    <td>{{degree_data.tempo_medio_formatura|floatformat:2}} anos</td>
+                </tr>
+                <tr>
+                    <td>Possíveis jubilandos nesse semestre</td>
+                    <td>{{degree_data.jubilamento}}</td>
+                </tr>
+                {% endcomment %}
+        </table>
 
-		{% comment %}
-		<div>
-			<div class="panel-container">
-				<div class="data-panel">
-					<h3>Nota Média</h3>
-					<span class="data">{{ degree_data.nota_media.0|floatformat:2 }} &#177; {{degree_data.nota_media.1|floatformat:2 }}</span>
-				</div>
-				<div class="data-panel">
-					<h3>Taxa Média de Reprovação</h3>
-					<span class="data">{{ degree_data.taxa_reprovacao.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</span>
-				</div>
-			</div>
-			<div class="panel-container">
-				<div class="data-panel">
-					<h3>Aprovação Aproveitamento de Conhecimento</h3>
-					<span class="data">{{ degree_data.taxa_conhecimento.0|floatformat:2 }}% &#177; {{degree_data.taxa_conhecimento.1|floatformat:2 }}%</span>
-				</div>
-				<div class="data-panel">
-					<h3>Taxa de Trancamento</h3>
-					<span class="data">{{ degree_data.taxa_trancamento.0|floatformat:2 }}% &#177;{{degree_data.taxa_trancamento.1|floatformat:2}}%</span>
-				</div>
-			</div>
-		</div>
-		{% endcomment %}
-		<div id="graficos">
-			<div class="row">
+        {% comment %}
+        <div>
+            <div class="panel-container">
+                <div class="data-panel">
+                    <h3>Nota Média</h3>
+                    <span class="data">{{ degree_data.nota_media.0|floatformat:2 }} &#177; {{degree_data.nota_media.1|floatformat:2 }}</span>
+                </div>
+                <div class="data-panel">
+                    <h3>Taxa Média de Reprovação</h3>
+                    <span class="data">{{ degree_data.taxa_reprovacao.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</span>
+                </div>
+            </div>
+            <div class="panel-container">
+                <div class="data-panel">
+                    <h3>Aprovação Aproveitamento de Conhecimento</h3>
+                    <span class="data">{{ degree_data.taxa_conhecimento.0|floatformat:2 }}% &#177; {{degree_data.taxa_conhecimento.1|floatformat:2 }}%</span>
+                </div>
+                <div class="data-panel">
+                    <h3>Taxa de Trancamento</h3>
+                    <span class="data">{{ degree_data.taxa_trancamento.0|floatformat:2 }}% &#177;{{degree_data.taxa_trancamento.1|floatformat:2}}%</span>
+                </div>
+            </div>
+        </div>
+        {% endcomment %}
+        <div id="graficos">
+            <div class="row">
                 <div class="col-md-6">
                     <!-- <h3>Quantidade alunos/IRA</h3> -->
                     <div id="ira_semestral"></div>
@@ -82,76 +82,76 @@
                     <!-- <h3>Quantidade evasão/período</h3> -->
                     <div id="evasao_semestre"></div>
                 </div>
-				<!--
-				<div class="col-md-6">
-					<h3>Nota Média/Periodo</h3>
-					<canvas id="nota_media_semestre"
-							data-data='{{ degree_data.media_disc|safe }}'></canvas>
-				</div> essa analise foi feita de uma maneira ruim no adega
-				antigo -->
-				<!-- analises sa02 -->
-				{% comment %}
-				<div class="col-md-6">
-					<h3>Alunos/Periodo</h3>
-					<canvas id="aluno_periodo"
-							data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
-				</div>
+                <!--
+                <div class="col-md-6">
+                    <h3>Nota Média/Periodo</h3>
+                    <canvas id="nota_media_semestre"
+                            data-data='{{ degree_data.media_disc|safe }}'></canvas>
+                </div> essa analise foi feita de uma maneira ruim no adega
+                antigo -->
+                <!-- analises sa02 -->
+                {% comment %}
+                <div class="col-md-6">
+                    <h3>Alunos/Periodo</h3>
+                    <canvas id="aluno_periodo"
+                            data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
+                </div>
 
-				<div class="col-md-6">
-					<h3>Nota Média/Periodo</h3>
-					<canvas id="nota_media_periodo"
-							data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
-				</div>
+                <div class="col-md-6">
+                    <h3>Nota Média/Periodo</h3>
+                    <canvas id="nota_media_periodo"
+                            data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
+                </div>
 
 
-				<div class="col-md-6">
-					<h3>Taxa Aprovação/Periodo</h3>
-					<canvas id="taxa_aprovacao_periodo"
-							data-data='{{ degree_data.taxa_aprovacao_periodo|safe }}'></canvas>
-				</div>
-				{% endcomment %}
-				<!-- fim analise sa02 -->
-        	</div>
-		</div>
-	</div>
+                <div class="col-md-6">
+                    <h3>Taxa Aprovação/Periodo</h3>
+                    <canvas id="taxa_aprovacao_periodo"
+                            data-data='{{ degree_data.taxa_aprovacao_periodo|safe }}'></canvas>
+                </div>
+                {% endcomment %}
+                <!-- fim analise sa02 -->
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}
 
 {% block js-foot %}
   <script>
-	
-	// TODO: Refactor the analyzes to avoid this pretreatment
-	
-	
-	// Assure that the keys is in order and convert the data
-	// to a format that AdegaChart will accept
-	function convert_degree_chart_data(data){
-		var new_data = {};
-		var dict_order_keys = Object.keys(data[0][1]);
+    
+    // TODO: Refactor the analyzes to avoid this pretreatment
+    
+    
+    // Assure that the keys is in order and convert the data
+    // to a format that AdegaChart will accept
+    function convert_degree_chart_data(data){
+        var new_data = {};
+        var dict_order_keys = Object.keys(data[0][1]);
 
-		data.map(function(x){
-			var elements_tick = [];
-			for(var i in dict_order_keys) elements_tick.push(0);
-			for(var y in x[1]){
-				var index = dict_order_keys.indexOf(y);
-				elements_tick[index] = x[1][y];
-			}
-			
-			var index = x[0];
-			new_data[index] = elements_tick;
-		});
-		return new_data;
-	}
-	
-	
-	var ira_semestral = {{degree_data.ira_medio_grafico|safe}};
-	var ira_semestral_data = convert_degree_chart_data(ira_semestral);
+        data.map(function(x){
+            var elements_tick = [];
+            for(var i in dict_order_keys) elements_tick.push(0);
+            for(var y in x[1]){
+                var index = dict_order_keys.indexOf(y);
+                elements_tick[index] = x[1][y];
+            }
+            
+            var index = x[0];
+            new_data[index] = elements_tick;
+        });
+        return new_data;
+    }
+    
+    
+    var ira_semestral = {{degree_data.ira_medio_grafico|safe}};
+    var ira_semestral_data = convert_degree_chart_data(ira_semestral);
 
-	var evasao_semestre = {{degree_data.evasao_grafico|safe}};
-	var evasao_semestre_data = convert_degree_chart_data(evasao_semestre);
-	// ira_semestral_data will be in format of:
-	// {"00-4.9": [10,20,30], "05-9.9": [11,21,31], ...}
-	console.log(evasao_semestre_data);
+    var evasao_semestre = {{degree_data.evasao_grafico|safe}};
+    var evasao_semestre_data = convert_degree_chart_data(evasao_semestre);
+    // ira_semestral_data will be in format of:
+    // {"00-4.9": [10,20,30], "05-9.9": [11,21,31], ...}
+    console.log(evasao_semestre_data);
 
     var chart1 = new AdegaChart({
       data: ira_semestral_data,
