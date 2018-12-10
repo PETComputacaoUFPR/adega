@@ -33,23 +33,23 @@ def student_fails_course(df):
     -------
     dict of {int:dict}
 
-			quantity={
-			"3":{aluno1:GRR, aluno2:GRR, ...},
-			"7":{aluno1:GRR, aluno2:GRR, ...},
-			...
-			}
+            quantity={
+            "3":{aluno1:GRR, aluno2:GRR, ...},
+            "7":{aluno1:GRR, aluno2:GRR, ...},
+            ...
+            }
 
     Examples
     --------
     "3" : {
-	"José da Silva Carvalho": 20114027,
-	"Pedro dos Santos" : 20152678,
+    "José da Silva Carvalho": 20114027,
+    "Pedro dos Santos" : 20152678,
         ...
     }
 
     "7" : {
-	"José da Silva Carvalho": 20114027,
-	"Pedro dos Santos" : 20152678,
+    "José da Silva Carvalho": 20114027,
+    "Pedro dos Santos" : 20152678,
         ...
 }
     """
@@ -192,12 +192,12 @@ def fails_by_freq(df):
     """
     people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
     
-    // workaround: SIT_REPROVADO_FREQ é o item 1 na tupla SITUATION_FAIL
+    # workaround: SIT_REPROVADO_FREQ é o item 1 na tupla SITUATION_FAIL
     failedbyfreq = people_studying_df.loc[people_studying_df['SITUACAO'] == Situation.SITUATION_FAIL[1]]
     
     coursefailed_bystudent = failedbyfreq.groupby(["NOME_PESSOA", "MATR_ALUNO", "COD_ATIV_CURRIC"])
     final_dict = {}
-    for n in fails_by_freq:
+    for n in failedbyfreq:
         final_dict[n] = []
         for fail in coursefailed_bystudent:
             if fail[1].shape[0] == n:

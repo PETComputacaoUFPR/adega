@@ -4,27 +4,27 @@
   </div>
   <div class="collapse navbar-collapse" id="navbartoggle">
     <span class="navbar-brand mr-auto">
-		{% if degree != None %} 
-		<a href="{% url 'degree:index' degree_id=degree.code%}">{{degree.name}} </a>
-		{% endif %} 
+        {% if degree != None %} 
+        <a href="{% url 'degree:index' degree_id=degree.code%}">{{degree.name}} </a>
+        {% endif %} 
     </span>
 
 
     {% comment %}
-	<li class="dropdown">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			Cursos <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu" role="menu">
-			{% if len(user.educator.degree.all()) > 1 %} 
-				{% for degree in user.educator.degree.all() %} 
-				<li><a href="{% url 'degree:index'
-				degree_id=degree.code%}">{{degree.name}} </a></li>
-				{% endfor %} 
-			{% else %} 
-			{% endif %} 
-		</ul>
-	</li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            Cursos <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            {% if len(user.educator.degree.all()) > 1 %} 
+                {% for degree in user.educator.degree.all() %} 
+                <li><a href="{% url 'degree:index'
+                degree_id=degree.code%}">{{degree.name}} </a></li>
+                {% endfor %} 
+            {% else %} 
+            {% endif %} 
+        </ul>
+    </li>
     {% endcomment %}
     <span class="navbar-text">
       Relatório 2016/1
