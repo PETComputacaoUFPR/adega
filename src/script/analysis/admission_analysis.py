@@ -110,19 +110,28 @@ def desvio_padrao_turma_ingresso(df):
     return resultados
 
 def evasion_per_semester(df):
+    # filtra a planilha, deixando apenas 1 linha por estudante por periodo que ele passou desde que entrou no curso
     turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO','PERIODO', 'MATR_ALUNO'], keep='last')
+    # agrupa as linhas do dataframe resultante da filtragem pela tupla (ano de entrada, periodo de entrada, ano, periodo)
     t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO','PERIODO'])['MATR_ALUNO']
+    # filtra o dataframe, deixando apenas 1 linha por estudante que evadiu
     t_i_evasions = turmas_ingresso.loc[(turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)]
+    # agrupa as linhas do dataframe de evadidos indexados pela tupla (ano de entrada, periodo de entrada, ano, periodo), conta o numero de linhas e transforma isso em um dicionario
     t_i_evasions_semestral_size = t_i_evasions.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO_EVASAO','SEMESTRE_EVASAO'])['MATR_ALUNO'].nunique().to_dict()
     dict_evasion = {}
     aux = {}
+    # transforma o groupby em um dicionario que contem a evasao dividida pelo numero de linhas de cada grupo do agrupamento, indexado pela tupla de tuplas ((ano de entrada, periodo de entrada), (ano, periodo))
     for t_i_s in t_i_semestral_size:
+        # trata os campos 2 e 3 da tupla (ano de entrada, periodo de entrada, ano, periodo) para que fique no mesmo formato que as chaves do dicionario t_i_evasions_semestral_size
         t_i_s_aux = (t_i_s[0][0], t_i_s[0][1], str(t_i_s[0][2]), t_i_s[0][3].split("o")[0])
+        # pega o numero de evasoes de acordo com a tupla (ano de entrada, periodo de entrada, ano, periodo)
         if t_i_s_aux in t_i_evasions_semestral_size:
             evasions = t_i_evasions_semestral_size[t_i_s_aux]
         else:
             evasions = 0
         aux.update({((t_i_s[0][0], t_i_s[0][1]), (t_i_s[0][2], t_i_s[0][3])):(evasions/t_i_s[1].size)})
+    # transforma o dicionario anterior em um outro dicionario, indexado pela tupla (ano de entrada, periodo de entrada), tendo como elementos outros dicionarios.
+    # cada dicionario contido no dicionario e indexado pela tupla (ano, periodo) e contem a evasao dividida pelo numero de linhas de cada grupo do agrupamento
     for t_i_s, value in aux.items():
         dict_evasion.setdefault(t_i_s[0], {})[t_i_s[1]] = value
     return dict_evasion
