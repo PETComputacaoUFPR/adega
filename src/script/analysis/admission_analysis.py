@@ -106,7 +106,6 @@ def desvio_padrao_turma_ingresso(df):
     for r in iras_alunos_por_turma:
         aux = np.array(iras_alunos_por_turma[r])
         resultados[r] = np.std(aux)
-    
     return resultados
 
 def evasion_per_semester(df):
@@ -135,3 +134,19 @@ def evasion_per_semester(df):
     for t_i_s, value in aux.items():
         dict_evasion.setdefault(t_i_s[0], {})[t_i_s[1]] = value
     return dict_evasion
+
+def students_per_semester(df):
+    # filtra a planilha, deixando apenas 1 linha por estudante por periodo que ele passou desde que entrou no curso
+    turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO', 'ANO', 'PERIODO', 'MATR_ALUNO'], keep='last')
+    # agrupa as linhas do dataframe resultante da filtragem pela tupla (ano de entrada, periodo de entrada, ano, periodo)
+    t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO', 'ANO', 'PERIODO'])['MATR_ALUNO']
+    dict_students = {}
+    aux = {}
+    # transforma o groupby em um dicionario que contem o numero de linhas de cada grupo do agrupamento, indexado pela tupla de tuplas ((ano de entrada, periodo de entrada), (ano, periodo))
+    for t_i_s in t_i_semestral_size:
+        aux.update({((t_i_s[0][0], t_i_s[0][1]), (t_i_s[0][2], t_i_s[0][3])):(t_i_s[1].size)})
+    # transforma o dicionario anterior em um outro dicionario, indexado pela tupla (ano de entrada, periodo de entrada), tendo como elementos outros dicionarios.
+    # cada dicionario contido no dicionario e indexado pela tupla (ano, periodo) e contem o numero de linhas de cada grupo do agrupamento
+    for t_i_s, value in aux.items():
+        dict_students.setdefault(t_i_s[0], {})[t_i_s[1]] = value
+    return dict_students
