@@ -149,6 +149,7 @@ def generate_admission_data(path,df):
         ("std", desvio_padrao_turma_ingresso(df)),
         ("ira_per_semester", admission_class_ira_per_semester(df)),
         ("evasion_per_semester", evasion_per_semester(df)),
+        ("students_per_semester", students_per_semester(df)),
     ]
 
 # cria um dicionario com as analises para cada turma
