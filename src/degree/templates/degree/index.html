@@ -60,6 +60,7 @@
                     <span class="data">{{ degree_data.taxa_reprovacao.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</span>
                 </div>
             </div>
+            <br>
             <div class="panel-container">
                 <div class="data-panel">
                     <h3>Aprovação Aproveitamento de Conhecimento</h3>
@@ -74,11 +75,14 @@
         {% endcomment %}
         <div id="graficos">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <!-- <h3>Quantidade alunos/IRA</h3> -->
                     <div id="ira_semestral"></div>
                 </div>
-                <div class="col-md-6">
+            </div>
+
+            </div class="row">
+                <div class="col-md-12">
                     <!-- <h3>Quantidade evasão/período</h3> -->
                     <div id="evasao_semestre"></div>
                 </div>
@@ -96,14 +100,13 @@
                     <canvas id="aluno_periodo"
                             data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
                 </div>
-
+                <br>
                 <div class="col-md-6">
                     <h3>Nota Média/Periodo</h3>
                     <canvas id="nota_media_periodo"
                             data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
                 </div>
-
-
+                <br>
                 <div class="col-md-6">
                     <h3>Taxa Aprovação/Periodo</h3>
                     <canvas id="taxa_aprovacao_periodo"
@@ -158,14 +161,20 @@
       div_target: "ira_semestral",
       title: "Quantidade alunos/IRA",
       fill: "none",
-      legend: ["Ira médio", "Alunos sem evasão", "Formados"]
+      legend: [
+          "Quantidade total de alunos",
+          "Quantidade total de alunos sem evasão",
+          "Quantidade total de alunos formados"
+      ],
     });
     var chart2 = new AdegaChart({
       data: evasao_semestre_data,
       div_target: "evasao_semestre",
       title: "Quantidade evasão/período",
       fill: "none",
-      legend: ["Taxa", "Quantidade"]
+      type: ["bar","scatter"],
+      legend: ["Quantidade", "Taxa"],
+      data_axis_y: ["y1","y2"]
     }); 
 
 

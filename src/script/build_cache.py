@@ -179,7 +179,7 @@ def generate_admission_data(path,df):
 
 
 def generate_admission_list(path,df):
-        pass
+    pass
 
 def generate_course_data(path, df):
     course = Course(df)

@@ -1,3 +1,5 @@
+// This module simplify the use of Plotly library on this project
+
 class AdegaChart{
 
     constructor(config){
@@ -9,6 +11,8 @@ class AdegaChart{
         
         this.legend = config.legend || null;
 
+        this.barmode = config.barmode || "stack";
+
 
         if(config.data == null){
             this.data_x = config.data_x;
@@ -18,8 +22,8 @@ class AdegaChart{
         else{
             this.data_x = [];
             this.data_y = [];
-            var first_element;
-            for (first_element in this.data) break;
+            var first_element = Object.keys(this.data)[0];
+
             first_element = this.data[first_element];
             var multiplePlots = Array.isArray(first_element);
 
@@ -53,7 +57,7 @@ class AdegaChart{
         this.type = config.type || "scatter";
         this.title = config.title || "";
         
-
+        
         if(typeof(this.data_y[0]) == "number"){
             this.data_y = [this.data_y];
             this.type = [this.type];
@@ -62,6 +66,9 @@ class AdegaChart{
             if(this.error_y != null)
                 this.error_y = [this.error_y];
         }
+
+
+        this.data_axis_y = config.data_axis_y || this.data_y.map(function(x){return "y1";});
 
         this.reloadGraph();
     }
@@ -88,10 +95,11 @@ class AdegaChart{
                 continue;
             data.push(
                 {
-                x: this.data_x,
-                y: this.data_y[i],
-                type: this.type[i],
-                fill: this.fill
+                    x: this.data_x,
+                    y: this.data_y[i],
+                    type: this.type[i],
+                    fill: this.fill,
+                    yaxis: this.data_axis_y[i]
                 }
             );
             
@@ -110,8 +118,23 @@ class AdegaChart{
 
         var layout = {
             title: this.title,
-            showlegend: true
+            showlegend: true,
+            yaxis: {
+                // title: 'yaxis title',
+                rangemode: 'tozero'
+                // overlaying: 'y'
+            },
+            yaxis2: {
+                // title: 'yaxis2 title',
+                // titlefont: {color: 'rgb(148, 103, 189)'},
+                // tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y1',
+                side: 'right',
+                rangemode: 'tozero'
+            },
+            barmode: this.barmode
         };
+        
         Plotly.newPlot(this.div_target, data, layout);
     }
 

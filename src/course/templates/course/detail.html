@@ -130,10 +130,11 @@
     var chart1 = new AdegaChart({
       data: {{analysis_result.aprovacao_semestral|safe}},
       div_target: "aprovacao_semestre",
-      //type: "bar",
-      title: "Índice de aprovação/Semestre",
+      title: "Indice de aprovação/Semestre",
       fill: "none",
-      legend: ["Aprovação %","Quantidade de alunos"]
+      legend: ["Taxa de aprovação","Quantidade de alunos"],
+      type:["scatter", "bar"],
+      data_axis_y: ["y2", "y"]
     });
     
     var chart1 = new AdegaChart({
