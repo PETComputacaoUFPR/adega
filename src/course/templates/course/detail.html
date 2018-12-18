@@ -85,8 +85,8 @@
       </tr>
       <tr>
           <td>Taxa Aprovação/Aproveitamento de Conhecimento</td>
-          <td>{% if analysis_result.taxa_aproveitamento_conhecimento >= 0%}
-                  {{ analysis_result.taxa_aproveitamento_conhecimento|floatformat:2 }}%
+          <td>{% if analysis_result.taxa_conhecimento >= 0%}
+                  {{ analysis_result.taxa_conhecimento|floatformat:2 }}%
               {% else %}
                   Desconhecido
               {% endif %}</td>

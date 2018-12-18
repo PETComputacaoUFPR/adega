@@ -188,5 +188,10 @@ class Situation:
         SIT_CONHECIMENTO_REPROVADO,
         SIT_REPROVADO_SEM_NOTA,
         SIT_INCOMPLETO,
-            SIT_CANCELADO,
+        SIT_CANCELADO,
+    )
+    SITUATION_CANCELLED = (
+            SIT_TRANCAMENTO_TOTAL,
+            SIT_TRANCAMENTO_ADMINISTRATIVO,
+            SIT_CANCELADO
     )

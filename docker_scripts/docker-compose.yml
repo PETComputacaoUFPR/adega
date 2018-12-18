@@ -1,12 +1,14 @@
 version: '3'
 services:
     db:
+        container_name: adega_db_1
         image: postgres
         environment:
             - POSTGRES_USER=adega
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
     web:
+        container_name: adega_web_1
         build: 
             context: .
             dockerfile: ./docker_scripts/Dockerfile

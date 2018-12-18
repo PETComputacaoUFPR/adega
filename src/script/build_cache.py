@@ -27,8 +27,8 @@ def build_cache(dataframe,path):
         path = path + '/'
         generate_degree_data(path, df)
         generate_student_data(path+'students/',df,student_analysis)
-        generate_admission_data(path+'admission/',df)
-        generate_course_data(path+'disciplina/' ,dataframe)
+        generate_admission_data(path+'admissions/',df)
+        generate_course_data(path+'courses/' ,dataframe)
         generate_cepe_data(path+'/others/',df)
 
 
