@@ -116,17 +116,33 @@
               {% endif %}</td>
       </td>
   </table>
+  <div id="graficos">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Indice de aprovação/Semestre</h3>
+            <div id="aprovacao_semestre"></div>
+        </div>
+        <div class="col-md-12">
+            <h3>Quantidade de Alunos/Vezes Cursadas</h3>
+            <div id="qtd_cursada_aprov"></div>
+        </div>
+    </div>
+  </div>
 
+
+</div>
   
-<div id="aprovacao_semestre"></div>
-<div id="myChart2"></div>
 {% endblock content %}
 
 
 
 {% block js-foot %}
   <script>
-    
+    var grafico_qtd_cursada_aprov = AdegaChart.sort_object_by_key(
+        {{analysis_result.grafico_qtd_cursada_aprov|safe}}
+    );
+    var grafico_qtd_cursada_aprov_x = grafico_qtd_cursada_aprov[0];
+    var grafico_qtd_cursada_aprov_y = grafico_qtd_cursada_aprov[1];
     var chart1 = new AdegaChart({
       data: {{analysis_result.aprovacao_semestral|safe}},
       div_target: "aprovacao_semestre",
@@ -138,13 +154,12 @@
     });
     
     var chart1 = new AdegaChart({
-      data_x: [0,1,2], 
-      data_y: [[6,10,2], [7,9,2.5]],
-      div_target: "myChart2",
-      error_y: [[1,2,3], [1.5,0.1,0.5]],
-      type:["bar", "scatter"],
-      title: "Exemplo 2",
-      legend: ["linha 1", "linha 2"]
+      data_x: grafico_qtd_cursada_aprov_x, 
+      data_y: grafico_qtd_cursada_aprov_y,
+      div_target: "qtd_cursada_aprov",
+      type:["scatter"],
+      title: "Quantidade de Alunos/Vezes Cursadas",
+      legend: "Quantidade de alunos"
     });
     
   </script>

@@ -115,24 +115,48 @@ class StudentAnalysis:
                 
         return aprovacoes_semestres
         
+
+    def turma_ingresso(self, df=None):
+        df = df if df is not None else self.data_frame
+        df = df.drop_duplicates(subset="MATR_ALUNO", keep="first")
+        admissions = {}
+        for i,std in df.iterrows():
+            admissions[std["MATR_ALUNO"]] = std["ANO_INGRESSO_y"]+"/"+std["SEMESTRE_INGRESSO"]
+        return admissions
+    
     @memoize
     def posicao_turmaIngresso_semestral(self, df=None):
         df = df if df is not None else self.data_frame
-        
-        iras = self.ira_semestral()
-        iraMax = {}
-        for matr in iras:
-            for semestreAno in iras[matr]:
-                if not (semestreAno in iraMax):
-                    iraMax[semestreAno] = iras[matr][semestreAno]
-                else:
-                    if (iras[matr][semestreAno] > iraMax[semestreAno]):
-                        iraMax[semestreAno] = iras[matr][semestreAno]
-        for matr in iras:
-            for semestreAno in iras[matr]:
-                iras[matr][semestreAno] /= iraMax[semestreAno]
 
-        return iras
+        grr_to_admissions = self.turma_ingresso()
+        
+
+        admissions = defaultdict(list)
+
+        # Create an dict of list where each key represent an admission class,
+        # and its values represents the set of students
+        # By instance: {"2015/1":["GRR20151346","GRR20154562", ...], ...}
+        for grr in grr_to_admissions:
+            admissions[grr_to_admissions[grr]].append(grr)
+        
+        
+        iras_by_semester = self.ira_semestral()
+        positions = defaultdict(dict)
+        for grr in iras_by_semester:
+            for semester in iras_by_semester[grr]:
+                student_admission = admissions[grr_to_admissions[grr]]
+                
+                competition = [matr for matr in student_admission if semester in iras_by_semester[matr]]
+
+                classifications = sorted(
+                    competition,
+                    key = lambda matr: iras_by_semester[matr][semester]
+                )
+                positions[grr][semester] = (1+classifications.index(grr))/len(competition)
+
+                
+            
+        return positions
 
     @memoize
     def periodo_real(self, df=None):
@@ -200,6 +224,7 @@ class StudentAnalysis:
         
         return students
 
+     
     @memoize
     def indice_aprovacao_semestral(self, df=None):
         df = df if df is not None else self.data_frame
@@ -226,6 +251,7 @@ class StudentAnalysis:
                 students[matr][ano + "/" + semestre][1] += 1
             
         return (students)
+
 
     @memoize
     def aluno_turmas(self, df=None):

@@ -81,19 +81,17 @@
       
       <div id="graficos">
         <div class="row">
-                  <div class="col-md-12">
-                      <h3>IRA/Semestre</h3>
-                      <div id="ira_semestral"></div>
-                  </div>
-                  <div class="col-md-12">
-                      <h3>Quantidade de alunos/Semestre</h3>
-                      <div id="students_per_semester"></div>
-                  </div>
+            <div class="col-md-12">
+              <h3>IRA/Semestre</h3>
+              <div id="ira_semestral"></div>
+            </div>
+            <div class="col-md-12">
+              <h3>Quantidade de alunos/Semestre</h3>
+              <div id="students_per_semester"></div>
+            </div>
+        </div>
       </div>
-
-    
-    </div>
-  </div>
+</div>
   
 <div id="myChart2"></div>
 {% endblock content %}
@@ -103,16 +101,6 @@
 {% block js-foot %}
   <script>
     
-    function sort_object_by_key(obj){
-      keys = Object.keys(obj);
-      keys.sort();
-      values = keys.map(function(x){
-        return obj[x];
-      });
-
-      return [keys,values];
-    }
-    
     
     var admission_info =  {{admission_info|safe}};
 
@@ -120,7 +108,7 @@
     // ira_per_semester contains an object with year/semester
     // as keys, and an tuple (mean,std) as values
     // So, we need to transform this data before use on AdegaChart
-    var sorted = sort_object_by_key(admission_info.ira_per_semester);
+    var sorted = AdegaChart.sort_object_by_key(admission_info.ira_per_semester);
     ira_per_semester_x = sorted[0];
     ira_per_semester_y = sorted[1];
 
@@ -141,7 +129,7 @@
       title: "IRA/Semestre"
     });
     
-    var sorted = sort_object_by_key(admission_info.students_per_semester);
+    var sorted = AdegaChart.sort_object_by_key(admission_info.students_per_semester);
     students_per_semester_x = sorted[0];
     students_per_semester_y = sorted[1];
 

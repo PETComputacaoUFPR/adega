@@ -30,7 +30,10 @@ def index(request, degree_id):
 
     analysis_result = get_list_courses(request.session, degree)
     courses_list = analysis_result["cache"]
-
+    code_to_name = analysis_result["disciplinas"]
+    for code in courses_list:
+        courses_list[code]["name"] = code_to_name[code]
+    
     return render(request, 'course/index.html', {
         "courses": courses_list,
         "degree": degree

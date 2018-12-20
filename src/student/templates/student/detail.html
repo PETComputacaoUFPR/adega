@@ -101,25 +101,28 @@
 
             <div id="graficos">
                 <div class="row">
+                    <h3>IRA/Semestre</h3>
                     <div class="col-md-12">
                         <div id="ira_semestral"></div>
                     </div>
                     <div class="col-md-12">
+                        <h3>Índice de aprovação/Semestre</h3>
                         <div id="aprovacao_semestral"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <h3>Posição do aluno em relação a turma de ingresso/Semestre(%)</h3>
-                        <canvas id="posicao_turma_ingresso_semestral"
-                                data-data='{{ analysis_result.posicao_turmaIngresso_semestral|safe }}'></canvas>
+                        <div id="posicao_turma_ingresso_semestral"></div>
                     </div>
                     <div class="col-md-12">
+                        <h3>Relação entre IRA e a quantidade de disciplinas por semestre</h3>
                         <div id="ira_disciplinas_semestre"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <h3>Aprovações Acumulada</h3>
                         <div id="aprovacao_acumulada"></div>
                     </div>
                 </div>
@@ -139,20 +142,30 @@
       data: {{analysis_result.ira_semestral|safe}},
       div_target: "ira_semestral",
       //type: "bar",
-      title: "Ira Semestral",
+      title: "IRA/Semestre",
       legend: "IRA"
     });
-
+    
     var chart2 = new AdegaChart({
-      data: {{analysis_result.indice_aprovacao_semestral|safe}},
-      div_target: "aprovacao_semestral",
-      type: ["bar","bar"],
-      title: "Índice de aprovação/Semestre",
-      legend: ["Aprovações em disciplinas","Quantidade disciplinas cursadas"],
-      barmode: "grouped"
+        data: {{analysis_result.indice_aprovacao_semestral|safe}},
+        div_target: "aprovacao_semestral",
+        type: ["bar","bar"],
+        title: "Índice de aprovação/Semestre",
+        legend: ["Aprovações em disciplinas","Quantidade disciplinas cursadas"],
+        barmode: "grouped"
     });
-
+    
     var chart3 = new AdegaChart({
+      data: {{analysis_result.posicao_turmaIngresso_semestral|safe}},
+      div_target: "posicao_turma_ingresso_semestral",
+      fill: "none",
+      title: "Posição do aluno em relação a turma de ingresso/Semestre(%)",
+      legend: "Posição relativa"
+    });
+    
+
+
+    var chart4 = new AdegaChart({
       data: {{analysis_result.ira_por_quantidade_disciplinas|safe}},
       div_target: "ira_disciplinas_semestre",
       type: ["scatter","bar","scatter"],
@@ -166,16 +179,16 @@
     var aprovacao_semestral = {{analysis_result.indice_aprovacao_semestral|safe}} ;
     
 
-    var chart4 = new AdegaChart({
+    var chart5 = new AdegaChart({
       data: aprovacao_semestral,
       div_target: "aprovacao_acumulada",
       type: ["bar","bar"],
-      title: "Aprovação Acumulada",
+      title: "Aprovações Acumulada",
       legend: ["Aprovações acumuladas","Disciplinas cursadas acumuladas"],
       barmode: "grouped"
     });
 
-    chart4.transformToAcumulation();
+    chart5.transformToAcumulation();
 
     
 

@@ -79,11 +79,12 @@ def generate_student_data(path, dataframe, student_analysis):
         student_data[x] = dict()
 
     analysis = [
-        # tuple that contains in the first element the function that returns a dictionary with {"GRR": value}
-        # and in the second position the name that this analysis will have in json
+        # tuple that contains in the first element the function that returns a
+        # dictionary with {"GRR": value} and in the second position the name
+        # that this analysis will have in json
 
-        # (student_analysis.posicao_turmaIngresso_semestral(),
-        # "posicao_turmaIngresso_semestral"),
+        (student_analysis.posicao_turmaIngresso_semestral(),
+        "posicao_turmaIngresso_semestral"),
 
         (student_analysis.periodo_real(),
         "periodo_real"),

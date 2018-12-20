@@ -139,3 +139,13 @@ class AdegaChart{
     }
 
 }
+
+AdegaChart.sort_object_by_key = function(obj){
+    keys = Object.keys(obj);
+    keys.sort();
+    values = keys.map(function(x){
+        return obj[x];
+    });
+
+    return [keys,values];
+}

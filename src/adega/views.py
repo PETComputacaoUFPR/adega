@@ -10,7 +10,7 @@ from django.contrib.auth import logout as process_logout
 def dashboard(request):
     degree = request.user.educator.degree.all() 
     return render(request, 'adega/dashboard.html', {'title': 'Dashboard',
-        "degrees":degree 
+        "degrees":degree, "hide_navbar": True
         })
 
 
