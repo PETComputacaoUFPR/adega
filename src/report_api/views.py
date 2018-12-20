@@ -19,6 +19,9 @@ def get_degree_information(session, degree):
 def get_list_admission(session, degree):
     return get_data(session,degree,"admissions/lista_turma_ingresso.json")
 
+def get_admission_detail(session, degree, year, semester):
+    return get_data(session,degree,"admissions/"+year+"/"+semester+".json")
+
 def get_list_courses(session, degree):
     return get_data(session,degree,"courses/disciplinas.json")
 

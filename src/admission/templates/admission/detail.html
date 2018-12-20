@@ -9,7 +9,7 @@
       <table class="table">
           <tr>
             <td>Ano/Semestre</td>
-            <td> NO </td>
+            <td> {{admission_info.ano}}/{{admission_info.semestre}} </td>
           </tr>
           <tr>
             <td>Quantidade de alunos</td>
@@ -17,7 +17,7 @@
           </tr>
           <tr>
             <td>Ira Médio</td>
-            <td> NO </td>
+            <td> {{admission_info.ira|floatformat:2}} &plusmn {{admission_info.std|floatformat:2}} </td>
           </tr>
           <tr>
             <td>Tempo médio de formatura em anos</td>
@@ -33,23 +33,23 @@
           </tr>
           <tr>
             <td>Quantidade de Evadidos</td>
-            <td> NO </td>
+            <td> {{admission_info.alunos_evadidos}} </td>
           </tr>
           <tr>
             <td>Quantidade de Formados</td>
-            <td> NO </td>
+            <td> {{admission_info.formatura}} </td>
           </tr>
           <tr>
             <td>Quantidade de alunos ativos</td>
-            <td> NO </td>
+            <td> {{admission_info.ativos}} </td>
           </tr>
           <tr>
             <td>Quantidade de Abandonos</td>
-            <td> NO </td>
+            <td> {{admission_info.abandono}} </td>
           </tr>
           <tr>
             <td>Quantidade de outras formas de evasão</td>
-            <td> NO </td>
+            <td> {{admission_info.outras_formas_evasao}} </td>
           </tr>
       </table>
   

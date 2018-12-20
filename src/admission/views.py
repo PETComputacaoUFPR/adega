@@ -4,7 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 
 from degree.models import Degree
-from report_api.views import get_list_admission
+from report_api.views import get_list_admission, get_admission_detail
 
 
 
@@ -18,6 +18,16 @@ def detail(request, degree_id, ano, semestre):
         if(admission["ano"] == ano and admission["semestre"] == semestre):
             admission_info = admission
             break
+
+    admission_detail = get_admission_detail(
+        request.session,
+        degree,
+        ano,
+        semestre
+    )
+
+    for x in admission_detail:
+        admission_info[x] = admission_detail[x]
 
     return render(request, 'admission/detail.html',{
         "degree": degree,

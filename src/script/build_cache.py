@@ -1,9 +1,17 @@
-from script.utils.utils import *
+from script.utils.utils import save_json, ensure_path_exists
 from script.utils.situations import *
 from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
 from script.analysis.course_analysis import Course
-from script.analysis.admission_analysis import *
+
+from script.analysis.admission_analysis import Admission
+from script.analysis.admission_analysis import media_ira_turma_ingresso
+from script.analysis.admission_analysis import desvio_padrao_turma_ingresso
+from script.analysis.admission_analysis import students_per_semester
+from script.analysis.admission_analysis import admission_class_ira_per_semester
+from script.analysis.admission_analysis import evasion_per_semester
+
+
 from script.analysis.cepe9615_analysis import *
 
 from collections import defaultdict
@@ -141,19 +149,32 @@ def generate_student_data(path, dataframe, student_analysis):
 def generate_student_list(path):
     pass
 
-def generate_admission_data(path,df):
+def generate_admission_data(path, df):
 
     listagem = []
+    a = Admission(df)
+    a.build_analysis()
+    admissions = a.build_cache()
 
+    
+    for i in admissions:
+        save_json(path+i["ano"]+"/"+i["semestre"]+".json", i)
+
+    evasion_count = a.build_cache_evasion_count()
     analises = [
         ("ira", media_ira_turma_ingresso(df)),
         ("std", desvio_padrao_turma_ingresso(df)),
         ("ira_per_semester", admission_class_ira_per_semester(df)),
         ("evasion_per_semester", evasion_per_semester(df)),
         ("students_per_semester", students_per_semester(df)),
+        ("abandono", evasion_count["abandono"]),
+        ("ativos", evasion_count["ativos"]),
+        ("formatura", evasion_count["formatura"]),
+        ("alunos_evadidos", evasion_count["alunos_evadidos"]),
+        ("outras_formas_evasao", evasion_count["outras_formas_evasao"])
     ]
-
-# cria um dicionario com as analises para cada turma
+    print(a.build_cache_evasion_count())
+    # cria um dicionario com as analises para cada turma
     turmas = defaultdict(dict)
     for a in analises:
         for x in a[1]:
