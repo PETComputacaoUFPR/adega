@@ -51,14 +51,25 @@ def admission_class_ira_per_semester(df):
         
         for semester in semester_grouped:
             student_grouped = semester[1].groupby('ID_ALUNO')
-            ira_class = 0
+            ira_class = []
             
+            # Compute all individual IRA from an class
             for student in student_grouped:
                 #TODO: Verify if this can be calculated without groupby
-                ira_individual =( (student[1].MEDIA_FINAL*student[1].TOTAL_CARGA_HORARIA).sum() )/(100*student[1].TOTAL_CARGA_HORARIA.sum())
-                ira_class += ira_individual
-            ira_class = ira_class / len(student_grouped)
-            dict_ira_semester.update({semester[0]:ira_class})        
+                ira_individual =(
+                    (student[1].MEDIA_FINAL*student[1].TOTAL_CARGA_HORARIA).sum() )/(100*student[1].TOTAL_CARGA_HORARIA.sum()
+                )
+                ira_class.append(ira_individual)
+            
+            # Compute the mean and standard variation from an class
+            # semester[0] represents a semester/year key
+            dict_ira_semester.update({
+                semester[0]: [
+                    np.mean(ira_class),
+                    np.std(ira_class)
+                ]
+            })
+
         dict_admission.update({admission[0]:dict_ira_semester})
     return dict_admission
 

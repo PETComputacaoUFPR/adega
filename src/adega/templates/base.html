@@ -30,7 +30,9 @@
     <section id="wrap-page" class="container-fluid">
       <div class="row" style="min-height:100%">
         <aside class="col-md-2 sidebar">
-            {% include 'adega/sidebar.html' %}
+            {% if not hide_navbar %}
+              {% include 'adega/sidebar.html' %}
+            {% endif %}
         </aside>
         <section class="col-md-10">
           {% if messages %}

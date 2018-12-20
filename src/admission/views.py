@@ -13,8 +13,15 @@ def detail(request, degree_id, ano, semestre):
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
     
+    
+    for admission in get_list_admission(request.session, degree):
+        if(admission["ano"] == ano and admission["semestre"] == semestre):
+            admission_info = admission
+            break
+
     return render(request, 'admission/detail.html',{
-        "degree": degree
+        "degree": degree,
+        "admission_info": admission_info
     })
 
 
