@@ -27,7 +27,7 @@ def detail(request, degree_id, grr):
         'periodo_pretendido': cache_j['periodo_pretendido'],
         'ira_semestral': json.dumps(cache_j['ira_semestral']),
         'indice_aprovacao_semestral': cache_j['indice_aprovacao_semestral'],
-        # 'posicao_turmaIngresso_semestral': json.dumps(sorted(cache_j['posicao_turmaIngresso_semestral'].items())),
+        'posicao_turmaIngresso_semestral': json.dumps(cache_j['posicao_turmaIngresso_semestral']),
         'ira_por_quantidade_disciplinas': json.dumps(cache_j['ira_por_quantidade_disciplinas']),
         'student': cache_j['student'],
         'aluno_turmas': cache_j["aluno_turmas"],
