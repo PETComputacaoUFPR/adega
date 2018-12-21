@@ -87,7 +87,7 @@
                     <tbody>
                         {% for at in analysis_result.aluno_turmas %}
                         <tr>
-                            <td><a href="{% url 'course:detail' degree_id=degree.code codigo_disciplina=at.codigo %}">
+                            <td><a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=at.codigo %}">
                                 {{ at.codigo }}</a></td>
                             <td>{{ at.nome }}</td>
                             <td>{{ at.nota }}</td>

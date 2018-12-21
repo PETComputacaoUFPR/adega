@@ -7,15 +7,15 @@ from . import views
 urlpatterns = [
     url(r'^$', views.dashboard, name='dashboard'),
 
-    url(r'^uploads/', include('uploads.urls', namespace='uploads')),
+    url(r'^submission/', include('uploads.urls', namespace='uploads')),
 
-    url(r'^admission/(?P<degree_id>\w*)/', include('admission.urls', namespace='admission')),
+    url(r'^admission/(?P<submission_id>\w*)/', include('admission.urls', namespace='admission')),
     
-    url(r'^course/(?P<degree_id>\w*)/', include('course.urls', namespace='course')),
+    url(r'^course/(?P<submission_id>\w*)/', include('course.urls', namespace='course')),
     
-    url(r'^student/(?P<degree_id>\w*)/', include('student.urls', namespace='student')),
+    url(r'^student/(?P<submission_id>\w*)/', include('student.urls', namespace='student')),
     
-    url(r'^degree/(?P<degree_id>\w*)/', include('degree.urls', namespace='degree')),
+    url(r'^degree/(?P<submission_id>\w*)/', include('degree.urls', namespace='degree')),
 
     url(r'^public/', include('public.urls', namespace='public')),
 

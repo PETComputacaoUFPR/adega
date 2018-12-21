@@ -9,13 +9,21 @@ import json
 
 
 @login_required
-def index(request,degree_id):
-    degree = Degree.objects.get(code=degree_id)
+def index(request, submission_id):
+    submission_id = int(submission_id)
+    submission = Submission.objects.get(id=submission_id)
+    degree = submission.degree
+
+
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
-    degree_data = get_degree_information(request.session,degree)
-    return render(request,"degree/index.html",{"degree":degree,"degree_data":degree_data})
+    degree_data = get_degree_information(request.session,degree, submission_id=submission_id)
+    return render(request,"degree/index.html",{
+        "submission":submission,
+        "degree": degree,
+        "degree_data":degree_data
+    })
 
 #class Views(View):
 #    template_name = "index.html"
