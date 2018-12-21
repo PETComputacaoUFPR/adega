@@ -5,11 +5,14 @@ from django.contrib import messages
 
 from degree.models import Degree
 from report_api.views import get_list_admission, get_admission_detail
+from uploads.models import Submission
 
 
+def detail(request, submission_id, ano, semestre):
+    submission_id = int(submission_id)
+    submission = Submission.objects.get(id=submission_id)
+    degree = submission.degree
 
-def detail(request, degree_id, ano, semestre):
-    degree = Degree.objects.get(code=degree_id)
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
     
@@ -31,16 +34,21 @@ def detail(request, degree_id, ano, semestre):
 
     return render(request, 'admission/detail.html',{
         "degree": degree,
-        "admission_info": admission_info
+        "admission_info": admission_info,
+        "submission": submission
     })
 
 
-def index(request, degree_id):
-    degree = Degree.objects.get(code=degree_id)
+def index(request, submission_id):
+    submission_id = int(submission_id)
+    submission = Submission.objects.get(id=submission_id)
+    degree = submission.degree
+
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
     return render(request, 'admission/index.html', {
         "listage_admissions": get_list_admission(request.session, degree),
-        "degree": degree
+        "degree": degree,
+        "submission": submission
     })

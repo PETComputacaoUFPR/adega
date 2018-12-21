@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="aslsndf_hist" name="historico">
+      <label class="custom-file-label" for="aslsndf_hist">Histórico</label>
+    </div>
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="aslsndf_matr" name="matricula">
+      <label class="custom-file-label" for="aslsndf_matr">Matrícula</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+{% endblock %}
