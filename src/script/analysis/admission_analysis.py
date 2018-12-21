@@ -1,5 +1,7 @@
 import numpy as np
 
+from script.utils.situations import Situation as sit
+from script.utils.situations import EvasionForm as ef
 from script.utils.situations import *
 from script.analysis.student_analysis import StudentAnalysis
 from collections import defaultdict
@@ -8,6 +10,81 @@ import numpy as np
 
 ANO_ATUAL = 2017
 SEMESTRE_ATUAL = 2
+
+
+class Admission(object):
+    __dataframes = {}
+    __groupbys = {}
+    analysis = {}
+    def __init__(self, df):
+        self.__dataframes["df_original"] = df
+        self.__dataframes["df_filted"] = df.drop_duplicates(["MATR_ALUNO"])
+        self.__groupbys["groupby_original"] = df.groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
+        self.__groupbys["groupby_filted"] = self.__dataframes["df_filted"].groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
+        #print(self.__dataframes["df_filted"])
+    def count_evasion_form(self,g,evasion_form):
+        return g.apply(lambda x: x.loc[(x.FORMA_EVASAO == evasion_form)].shape[0])
+
+    def counts(self):
+        qtd_alunos_ingresso = self.__groupbys["groupby_filted"].apply(lambda x: x.shape[0])
+        evasions = [
+                ("qtd_ativos",ef.EF_ATIVO),
+                ("qtd_abandono",ef.EF_ABANDONO),
+                ("qtd_formatura",ef.EF_FORMATURA),
+                ("qtd_ativos",ef.EF_ATIVO)
+                ]
+        # calcula a quantidade de alunos qtd_ativos, qtd_abandono e qtd_formatura
+        for i in evasions:
+            self.analysis[i[0]] = self.count_evasion_form(self.__groupbys["groupby_filted"],i[1])
+
+        # calcula a quantidade de alunos evadidos
+
+        self.analysis["alunos_evadidos"] = qtd_alunos_ingresso - self.analysis["qtd_ativos"]
+        self.analysis["outras_formas_evasao"] = self.analysis["alunos_evadidos"] - self.analysis["qtd_formatura"] - self.analysis["qtd_abandono"]
+    def admission_list(self):
+        self.analysis["admission_list"] = list(self.__groupbys["groupby_filted"].groups.keys())
+                                                                                                                
+
+    def build_analysis(self):
+        self.counts()
+        self.admission_list()
+
+    def build_cache(self):
+        admissions = []
+        for i in self.analysis["admission_list"]:
+            admission_dict = {}
+            # This will create an directory when build_cache create the json
+            # By instance: The files and directories admission/2010/1.json will
+            # be created
+            admission_dict["ano"] = i[0]
+            admission_dict["semestre"] = i[1]
+            admission_dict["abandono"] = int(self.analysis["qtd_abandono"][i])
+            admission_dict["ativos"] = int(self.analysis["qtd_ativos"][i])
+            admission_dict["formatura"] = int(self.analysis["qtd_formatura"][i])
+            admission_dict["alunos_evadidos"] = int(self.analysis["alunos_evadidos"][i])
+            admission_dict["outras_formas_evasao"] = int(self.analysis["outras_formas_evasao"][i])
+            admissions.append(admission_dict)
+        return admissions
+    
+
+    def build_cache_evasion_count(self):
+        admission_dict = {}
+        admission_dict["ano"] = {}
+        admission_dict["semestre"] = {}
+        admission_dict["abandono"] = {}
+        admission_dict["ativos"] = {}
+        admission_dict["formatura"] = {}
+        admission_dict["alunos_evadidos"] = {}
+        admission_dict["outras_formas_evasao"] = {}
+        for i in self.analysis["admission_list"]:
+            admission_dict["ano"][i] = i[0]
+            admission_dict["semestre"][i] = i[1]
+            admission_dict["abandono"][i] = int(self.analysis["qtd_abandono"][i])
+            admission_dict["ativos"][i] = int(self.analysis["qtd_ativos"][i])
+            admission_dict["formatura"][i] = int(self.analysis["qtd_formatura"][i])
+            admission_dict["alunos_evadidos"][i] = int(self.analysis["alunos_evadidos"][i])
+            admission_dict["outras_formas_evasao"][i] = int(self.analysis["outras_formas_evasao"][i])
+        return admission_dict
 
 def admission_class_ira_per_semester(df):
 
