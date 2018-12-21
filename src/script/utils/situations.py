@@ -190,3 +190,8 @@ class Situation:
         SIT_INCOMPLETO,
         SIT_CANCELADO,
     )
+    SITUATION_CANCELLED = (
+            SIT_TRANCAMENTO_TOTAL,
+            SIT_TRANCAMENTO_ADMINISTRATIVO,
+            SIT_CANCELADO
+    )

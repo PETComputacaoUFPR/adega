@@ -1,9 +1,17 @@
-from script.utils.utils import *
+from script.utils.utils import save_json, ensure_path_exists
 from script.utils.situations import *
 from script.analysis.degree_analysis import *
 from script.analysis.student_analysis import *
 from script.analysis.course_analysis import Course
-from script.analysis.admission_analysis import *
+
+from script.analysis.admission_analysis import Admission
+from script.analysis.admission_analysis import media_ira_turma_ingresso
+from script.analysis.admission_analysis import desvio_padrao_turma_ingresso
+from script.analysis.admission_analysis import students_per_semester
+from script.analysis.admission_analysis import admission_class_ira_per_semester
+from script.analysis.admission_analysis import evasion_per_semester
+
+
 from script.analysis.cepe9615_analysis import *
 
 from collections import defaultdict
@@ -27,15 +35,16 @@ def build_cache(dataframe,path):
         path = path + '/'
         generate_degree_data(path, df)
         generate_student_data(path+'students/',df,student_analysis)
-        generate_admission_data(path+'admission/',df)
-        generate_course_data(path+'disciplina/' ,dataframe)
+        generate_admission_data(path+'admissions/',df)
+        generate_course_data(path+'courses/' ,dataframe)
         generate_cepe_data(path+'/others/',df)
 
 
 def generate_cepe_data(path,df):
     cepe_dict = {}
     cepe_dict["student_fails_course"] = student_fails_course(df)
-    cepe_dict["n_fails_semester"] = n_fails_semester(df)
+    cepe_dict["fails_semester"] = fails_semester(df)
+    cepe_dict["fails_by_freq"] = fails_by_freq(df)
     save_json(path+"cepe9615.json", cepe_dict)
 
 def generate_degree_data(path, dataframe):
@@ -78,11 +87,12 @@ def generate_student_data(path, dataframe, student_analysis):
         student_data[x] = dict()
 
     analysis = [
-        # tuple that contains in the first element the function that returns a dictionary with {"GRR": value}
-        # and in the second position the name that this analysis will have in json
+        # tuple that contains in the first element the function that returns a
+        # dictionary with {"GRR": value} and in the second position the name
+        # that this analysis will have in json
 
-        # (student_analysis.posicao_turmaIngresso_semestral(),
-        # "posicao_turmaIngresso_semestral"),
+        (student_analysis.posicao_turmaIngresso_semestral(),
+        "posicao_turmaIngresso_semestral"),
 
         (student_analysis.periodo_real(),
         "periodo_real"),
@@ -139,17 +149,32 @@ def generate_student_data(path, dataframe, student_analysis):
 def generate_student_list(path):
     pass
 
-def generate_admission_data(path,df):
+def generate_admission_data(path, df):
 
     listagem = []
+    a = Admission(df)
+    a.build_analysis()
+    admissions = a.build_cache()
 
+    
+    for i in admissions:
+        save_json(path+i["ano"]+"/"+i["semestre"]+".json", i)
+
+    evasion_count = a.build_cache_evasion_count()
     analises = [
         ("ira", media_ira_turma_ingresso(df)),
         ("std", desvio_padrao_turma_ingresso(df)),
         ("ira_per_semester", admission_class_ira_per_semester(df)),
+        ("evasion_per_semester", evasion_per_semester(df)),
+        ("students_per_semester", students_per_semester(df)),
+        ("abandono", evasion_count["abandono"]),
+        ("ativos", evasion_count["ativos"]),
+        ("formatura", evasion_count["formatura"]),
+        ("alunos_evadidos", evasion_count["alunos_evadidos"]),
+        ("outras_formas_evasao", evasion_count["outras_formas_evasao"])
     ]
-
-# cria um dicionario com as analises para cada turma
+    print(a.build_cache_evasion_count())
+    # cria um dicionario com as analises para cada turma
     turmas = defaultdict(dict)
     for a in analises:
         for x in a[1]:
@@ -176,7 +201,7 @@ def generate_admission_data(path,df):
 
 
 def generate_admission_list(path,df):
-        pass
+    pass
 
 def generate_course_data(path, df):
     course = Course(df)

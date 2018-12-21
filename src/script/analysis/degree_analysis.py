@@ -145,20 +145,50 @@ def period_evasion_graph(df):
     di_qtd = {}
     dic = {}
     evasions_total = 0
+    
+    # Discover the minimum and maximum values for year
     year_start = int(df['ANO'].min())
     year_end = int(df['ANO'].max()) + 1
+
     students = df.drop_duplicates()
+
+
+    # Iterate between all semester/year possible
     for year in range(year_start, year_end):
         for semester in range(1, 3):
-            evasions = students.loc[(df['ANO_EVASAO'] == str(year)) & (df['SEMESTRE_EVASAO'] == str(semester))].shape[0]
+
+            # Filter the rows and mantain only the registers
+            # that match with year and semester of this iteration
+            evasions = students.loc[
+                (df['ANO_EVASAO'] == str(year)) &
+                (df['SEMESTRE_EVASAO'] == str(semester))
+            ]
+
+            # Count only one row per student by removing
+            # all duplicate rows with same MATR_ALUNO
+            # and keeping the first row founded
+            # Than, get the number of rows computed
+            evasions = evasions.drop_duplicates(
+                subset="MATR_ALUNO",
+                keep='first'
+            ).shape[0]
+
+            # Name of string on dictionary generated
             date = str(year) + ' {}º Período'.format(semester)
             di_qtd[date] = evasions
+            
+            # Count the total of evasions identified, that will be
+            # used to compute the rate
             evasions_total += evasions
+    
+    # If at least one evasion was computed
     if evasions_total:
+        # Compute the ratio of evasion per
+        # semester and name the attributes
         for di in di_qtd:
             qtd = di_qtd[di]
-            dic[di] = {'qtd': qtd, 'taxa': (qtd/evasions_total)*100}
-
+            dic[di] = {'qtd': qtd, 'taxa': (float(qtd)/evasions_total)*100}
+    
     return dic
 
 def build_dict_ira_medio(alunos):
@@ -182,14 +212,26 @@ def build_dict_ira_medio(alunos):
     return dic
 
 def build_degree_json(path,df):
+    
     def merge_dicts(dict1, dict2, dict3):
         dict_out = {}
         for key, value in dict1.items():
             v2 = dict2[key] if key in dict2 else None
             v3 = dict3[key] if key in dict3 else None
-            dict_out[key] = {'ira_medio': value, 'sem_evasao': v2, 'formatura': v3}
+            dict_out[key] = {
+                'ira_medio': value,
+                'sem_evasao': v2,
+                'formatura': v3
+            }
+        
         return dict_out
-    dic = merge_dicts(average_ira_graph(df),current_students_average_ira_graph(df),graduates_average_ira_graph(df))
+
+    dic = merge_dicts(
+        average_ira_graph(df),
+        current_students_average_ira_graph(df),
+        graduates_average_ira_graph(df)
+    )
+
     degree_json = {
         "ira_medio_grafico": json.dumps(sorted(dic.items())),
         "evasao_grafico": json.dumps(sorted(period_evasion_graph(df).items())),

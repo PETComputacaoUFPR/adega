@@ -2,7 +2,7 @@ from degree.models import Degree
 from uploads.models import Submission
 import json
 
-def get_data(session,degree,data_name): 
+def get_data(session, degree, data_name): 
     if "submission" in session:
         submission = session["submission"] 
     else:
@@ -17,13 +17,16 @@ def get_degree_information(session, degree):
     return get_data(session,degree,"degree.json")
 
 def get_list_admission(session, degree):
-    return get_data(session,degree,"admission/lista_turma_ingresso.json")
+    return get_data(session,degree,"admissions/lista_turma_ingresso.json")
+
+def get_admission_detail(session, degree, year, semester):
+    return get_data(session,degree,"admissions/"+year+"/"+semester+".json")
 
 def get_list_courses(session, degree):
-    return get_data(session,degree,"disciplina/disciplinas.json")
+    return get_data(session,degree,"courses/disciplinas.json")
 
 def get_course_detail(session, degree, course_id):
-    return get_data(session,degree,"disciplina/"+course_id+".json")
+    return get_data(session,degree,"courses/"+course_id+".json")
 
 def get_list_students(session, degree, list_name):
     return get_data(session,degree,"students/list/"+list_name+".json")

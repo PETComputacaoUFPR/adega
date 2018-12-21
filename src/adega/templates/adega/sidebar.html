@@ -1,29 +1,38 @@
 <div class="sidebar left hidden-sm hidden-xs">
-  <ul class="list-sidebar">
-    <li><a href="{% url 'student:index' degree_id=degree.code%}">Alunos</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'dashboard' %}">Gerenciar relatórios</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'degree:index' degree_id=degree.code%}">Informações gerais do curso</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'student:index' degree_id=degree.code%}">Alunos</a></li>
     <li style="display: block;">
       <div>
-        <a href="{% url 'course:index' degree_id=degree.code%}">Disciplinas</a>
-        <a href="course" class="drop" data-toggle="collapse" data-target="#side-disciplinas">
+        <a class="btn btn-primary text-left" href="{% url 'course:index' degree_id=degree.code%}">Disciplinas</a>
+        {% comment %}
+        <a class="btn btn-primary text-left" href="course" class="drop" data-toggle="collapse" data-target="#side-disciplinas">
           <span class="rotate"><i class="fa fa-angle-left"></i></span>
         </a>
+        {% endcomment %}
       </div>
+      {% comment %}
       <ul class="sub-menu collapse" id="side-disciplinas">
-        <li><a href="#">Comparar</a></li>
+        <li><a class="btn btn-primary text-left disabled" href="compare">Comparar</a></li>
       </ul>
+      {% endcomment %}
     </li>
-    <li class="disabled"><a href="#">Professores</a></li>
-    <li class="disabled"><a href="#">Turmas</a></li>
-    <li><a href="{% url 'admission:index' degree_id=degree.code%}">Turmas de Ingresso</a></li>
-
+    {% comment %}
+    <li><a class="btn btn-primary disabled text-left" href="#">Professores</a></li>
+    <li><a class="btn btn-primary disabled text-left" href="#">Turmas</a></li>
+    {% endcomment %}
+    <li><a class="btn btn-primary text-left" href="{% url 'admission:index' degree_id=degree.code%}">Turmas de Ingresso</a></li>
+    {% comment %}
     <li style="display: block;" >
       <a href="#" data-toggle="collapse" data-target="#side-outros" style="display:flex" class="drop">
         <span style="flex-grow:1">Outros</span>
         <span style="padding-top:3px" class="rotate"><i class="fa fa-angle-left"></i></span>
       </a>
+      
       <ul class="sub-menu collapse" id="side-outros">
-        <li><a href="#">Cepe 96/15</a></li>
+        <li><a class="btn btn-primary disabled text-left" href="#">Cepe 96/15</a></li>
       </ul>
     </li>
+    {% endcomment %}
   </ul>
 </div>

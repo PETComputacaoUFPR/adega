@@ -35,4 +35,4 @@ services:
         links:
             - web:web
         volumes:
-            - ./static:/adega/static
+            - ./src/adega/static:/adega/static
