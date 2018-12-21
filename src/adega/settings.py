@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.contrib import messages
 
+import os
+print()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.join(BASE_DIR, '..')
@@ -24,7 +27,7 @@ PROJECT_DIR = os.path.join(BASE_DIR, '..')
 SECRET_KEY = 'e#-^aknk(5k)ej6rh#h$i(%h(m9)-j*lwrc_1dxnk=a@-mixlt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ['VERSION'] == "DEVELOPMENT"
 
 ALLOWED_HOSTS = ["*"]
 

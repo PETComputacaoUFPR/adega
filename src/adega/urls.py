@@ -11,11 +11,9 @@ urlpatterns = [
 
     url(r'^adega/$', views.dashboard, name='dashboard'),
 
-    url(r'^adega/uploads/', include('uploads.urls', namespace='uploads')),
+    url(r'^adega/admission/(?P<submission_id>\w*)/', include('admission.urls', namespace='admission')),
 
-    url(r'^adega/admission/(?P<degree_id>\w*)/', include('admission.urls', namespace='admission')),
-
-    url(r'^adega/course/(?P<degree_id>\w*)/', include('course.urls', namespace='course')),
+    url(r'^adega/course/(?P<submission_id>\w*)/', include('course.urls', namespace='course')),
 
     url(r'^adega/submission/', include('uploads.urls', namespace='uploads')),
 

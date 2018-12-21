@@ -11,6 +11,7 @@ import json
 @login_required
 def index(request, submission_id):
     submission_id = int(submission_id)
+
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 

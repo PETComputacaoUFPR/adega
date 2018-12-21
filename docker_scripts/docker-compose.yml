@@ -9,7 +9,7 @@ services:
             - POSTGRES_DB=adega
     web:
         container_name: adega_web_1
-        build: 
+        build:
             context: .
             dockerfile: ./docker_scripts/Dockerfile
         command: bash "./docker_scripts/on_docker_init.sh"
@@ -26,3 +26,4 @@ services:
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
             - POSTGRES_HOST=adega_db_1
+            - VERSION=DEVELOPMENT

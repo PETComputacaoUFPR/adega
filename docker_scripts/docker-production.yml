@@ -24,6 +24,7 @@ services:
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
             - POSTGRES_HOST=adega_db_1
+            - VERSION=PRODUCTION
 
     nginx:
         restart: always
@@ -35,4 +36,4 @@ services:
         links:
             - web:web
         volumes:
-            - ./src/adega/static:/adega/static
+            - ./static:/adega/static
