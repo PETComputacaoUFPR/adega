@@ -14,10 +14,10 @@ base_dados
 
 src/.coverage
 
+static/*
+
 # lixo
 
-
-src/static
 **/migrations/**
 *~
 *.swp

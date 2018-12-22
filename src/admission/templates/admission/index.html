@@ -24,7 +24,7 @@
                 {% for ti in listage_admissions %}
                 <tr>
                     <td>
-                        <a href="{% url 'admission:detail' degree_id=degree.code ano=ti.ano semestre=ti.semestre %}">
+                        <a href="{% url 'admission:detail' submission_id=submission.id ano=ti.ano semestre=ti.semestre %}">
                             {{ ti.ano }}/{{ ti.semestre }}
                         </a>
                     </td>
