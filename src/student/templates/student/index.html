@@ -33,7 +33,7 @@
                             <tbody>
                                 {% for l in sem_evasao %}
                                 <tr>
-                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                                 <td class="col-md-4">{{ l.nome }}</td>
                                 <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
                                 <td class="col-md-2">{{ l.forma_evasao }}</td>
@@ -55,7 +55,7 @@
                                     <tbody>
                                             {% for l in formatura %}
                                             <tr>
-                                            <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+                                            <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                                             <td class="col-md-4">{{ l.nome }}</td>
                                             <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
                                             <td class="col-md-2">{{ l.forma_evasao }}</td>
@@ -77,7 +77,7 @@
                                     <tbody>
                                             {% for l in abandono %}
                                             <tr>
-                                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+                                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                                                 <td class="col-md-4">{{ l.nome }}</td>
                                                 <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
                                                 <td class="col-md-2">{{ l.forma_evasao }}</td>
@@ -99,7 +99,7 @@
                                     <tbody>
                                             {% for l in desistencia %}
                                             <tr>
-                                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+                                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                                                 <td class="col-md-4">{{ l.nome }}</td>
                                                 <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
                                                 <td class="col-md-2">{{ l.forma_evasao }}</td>
@@ -121,7 +121,7 @@
                                     <tbody>
                                             {% for l in outros %}
                                             <tr>
-                                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr degree_id=degree.code %}">{{ l.grr }}</a></td>
+                                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                                                 <td class="col-md-4">{{ l.nome }}</td>
                                                 <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
                                                 <td class="col-md-2">{{ l.forma_evasao }}</td>

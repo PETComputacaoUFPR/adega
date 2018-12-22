@@ -1,10 +1,10 @@
 <div class="sidebar left hidden-sm hidden-xs">
-    <li><a class="btn btn-primary text-left" href="{% url 'dashboard' %}">Gerenciar relatórios</a></li>
-    <li><a class="btn btn-primary text-left" href="{% url 'degree:index' degree_id=degree.code%}">Informações gerais do curso</a></li>
-    <li><a class="btn btn-primary text-left" href="{% url 'student:index' degree_id=degree.code%}">Alunos</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'uploads:SubmissionListView' %}">Gerenciar relatórios</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'degree:index' submission_id=submission.id%}">Informações gerais do curso</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'student:index' submission_id=submission.id%}">Alunos</a></li>
     <li style="display: block;">
       <div>
-        <a class="btn btn-primary text-left" href="{% url 'course:index' degree_id=degree.code%}">Disciplinas</a>
+        <a class="btn btn-primary text-left" href="{% url 'course:index' submission_id=submission.id%}">Disciplinas</a>
         {% comment %}
         <a class="btn btn-primary text-left" href="course" class="drop" data-toggle="collapse" data-target="#side-disciplinas">
           <span class="rotate"><i class="fa fa-angle-left"></i></span>
@@ -21,7 +21,7 @@
     <li><a class="btn btn-primary disabled text-left" href="#">Professores</a></li>
     <li><a class="btn btn-primary disabled text-left" href="#">Turmas</a></li>
     {% endcomment %}
-    <li><a class="btn btn-primary text-left" href="{% url 'admission:index' degree_id=degree.code%}">Turmas de Ingresso</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'admission:index' submission_id=submission.id%}">Turmas de Ingresso</a></li>
     {% comment %}
     <li style="display: block;" >
       <a href="#" data-toggle="collapse" data-target="#side-outros" style="display:flex" class="drop">

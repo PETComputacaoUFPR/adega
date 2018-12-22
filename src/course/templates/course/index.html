@@ -21,7 +21,7 @@
                 {% for key, value in courses.items %}
                     <tr>
                         <td>
-                            <a href="{% url 'course:detail' degree_id=degree.code codigo_disciplina=key %}">{{key}}</a>
+                            <a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=key %}">{{key}}</a>
                         </td>
                         <td> {{value.name}} </td>
                         <td> {{value.nota.0 | floatformat:2}} &plusmn {{value.nota.1 | floatformat:2}} </td>

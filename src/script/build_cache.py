@@ -173,7 +173,6 @@ def generate_admission_data(path, df):
         ("alunos_evadidos", evasion_count["alunos_evadidos"]),
         ("outras_formas_evasao", evasion_count["outras_formas_evasao"])
     ]
-    print(a.build_cache_evasion_count())
     # cria um dicionario com as analises para cada turma
     turmas = defaultdict(dict)
     for a in analises:
