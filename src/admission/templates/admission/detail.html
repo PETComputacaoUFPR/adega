@@ -5,7 +5,7 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-      <h1>Informações Gerais</h1>
+      <h1>Informações Gerais - Turma Ingresso</h1>
       <table class="table">
           <tr>
             <td>Ano/Semestre</td>
@@ -13,23 +13,23 @@
           </tr>
           <tr>
             <td>Quantidade de alunos</td>
-            <td> NO </td>
+            <td> {{admission_info.quantidade_alunos}} </td>
           </tr>
           <tr>
-            <td>Ira Médio</td>
+            <td>IRA Médio</td>
             <td> {{admission_info.ira|floatformat:2}} &plusmn {{admission_info.std|floatformat:2}} </td>
           </tr>
           <tr>
-            <td>Tempo médio de formatura em anos</td>
-            <td> NO </td>
+            <td>Tempo médio de formatura em anos <b>atual</b></td>
+            <td> {{admission_info.formatura_media}} </td>
           </tr>
           <tr>
-            <td>Indice de Reprovação</td>
-            <td> NO </td>
+            <td>Índice de Reprovação</td>
+            <td> {{admission_info.taxa_reprovacao|floatformat:2}} </td>
           </tr>
           <tr>
             <td>Indice de Evasão</td>
-            <td> NO </td>
+            <td> {{admission_info.taxa_evasao|floatformat:2}} </td>
           </tr>
           <tr>
             <td>Quantidade de Evadidos</td>

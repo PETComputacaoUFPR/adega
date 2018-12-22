@@ -37,6 +37,7 @@ class Submission(models.Model):
     historico = models.FileField(upload_to=get_path)
     matricula = models.FileField(upload_to=get_path)
 
+    
     degree = models.ForeignKey(Degree)
 
     timestamp = models.DateTimeField(default=timezone.now)
@@ -49,6 +50,8 @@ class Submission(models.Model):
 
     analysis_status = models.IntegerField(default=0, choices=ANALYSIS_STATUS_CHOICES)
     
+    last_error = models.CharField(default="", max_length=4096)
+
     relative_year = models.IntegerField(null=True)
 
     relative_semester = models.IntegerField(null=True)
@@ -91,11 +94,12 @@ class Submission(models.Model):
         self.analysis_status = 1
         self.save()
 
-    def set_fail(self,time):
+    def set_fail(self,time, error_message):
         self.processed = False
         self.process_time = time
         self.done_in = timezone.now()
         self.analysis_status = 2
+        self.last_error = error_message
         self.save()
 
 # @receiver(models.signals.post_save, sender=Submission)

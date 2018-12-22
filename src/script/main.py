@@ -26,11 +26,12 @@ def analyze(submission, debug=True):
             print("--- Tempo de CPU: {} ---".format(cpu_time))
             print("--- Tempo total: {} ---".format(run_time))
 
-    except:
+
+    except Exception as e:
         if(debug):
-            print("Error on submission analysis:",ValueError)
+            print("Error on submission analysis:",e)
         
-        submission.set_fail(round(time.clock() - start_time))
+        submission.set_fail(round(time.clock() - start_time), error_message=str(e))
     
 
 
