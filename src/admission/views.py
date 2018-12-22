@@ -21,7 +21,7 @@ def detail(request, submission_id, ano, semestre):
         if(admission["ano"] == ano and admission["semestre"] == semestre):
             admission_info = admission
             break
-
+    
     admission_detail = get_admission_detail(
         request.session,
         degree,
@@ -32,6 +32,9 @@ def detail(request, submission_id, ano, semestre):
     for x in admission_detail:
         admission_info[x] = admission_detail[x]
 
+    if(admission_info["formatura_media"] == -1):
+        admission_info["formatura_media"] = "Não há alunos formados nesta turma"
+    
     return render(request, 'admission/detail.html',{
         "degree": degree,
         "admission_info": admission_info,
