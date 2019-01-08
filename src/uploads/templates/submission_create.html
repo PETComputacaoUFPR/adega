@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="alert alert-warning" role="alert">
+	Selecione as planilhas adquiridas a partir dos relatórios providos pelo
+	sistema SIE.<br><br>
+
+
+	Ao clicar no botão "Enviar relatório", você entrará em um estado de espera,
+	onde a página ficará ociosa em um status de carregamento.<br><br>
+
+	Caso o processamento dos dados execute em pouco tempo, você receberá uma mensagem de confirmação.<br><br>
+
+	É possível, caso o processamento demore muito tempo, que a página perca o 
+	status de ociosa, perdendo a indicação de que o processamento está sendo realizado.
+	Caso isso aconteça, verifique a página de <a href="{% url 'uploads:SubmissionListView' %}">Gerenciamento de relatórios</a>
+	e visualize o status do processamento da submissão dos relatórios,
+	que pode ser "Terminado", "Executando" ou "Falha".<br>
+	Em caso de falha, verifique se as planilhas de Matrícula e Histórico
+	são válidas e estão em ordem correta. <br><br>
+
+	<b>Código do relatório de histórico no SIE:</b> 11.02.05.99.18
+	<ul>
+		<li>Contém as informações referentes às matrículas dos alunos em 
+		disciplinas e seus resultados</li>
+	</ul>
+	<b>Código do relatório de matrícula no SIE:</b> 11.02.04.99.43
+	<ul>
+		<li>Contém informações das matrículas de cada aluno no curso</li>
+	</ul>
+	
+	
+</div>
+
+<div class="formBox form-group">
+	<form method="post" enctype="multipart/form-data" >
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-4">
+				{{ form.as_p }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-4">
+				<button class="btn btn-success btn-block" type="submit">Enviar relatório</button>
+			</div>
+			<div class="col-lg-3 col-md-4 col-sm-4">
+				<button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script charset="utf-8">
+  $("input[type=file]").change(function () {
+	var fieldVal = $(this).val();
+
+	// Change the node's value by removing the fake path (Chrome)
+	fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+		
+	if (fieldVal != undefined || fieldVal != "") {
+		$(this).next(".custom-file-label").attr('data-content', fieldVal);
+		$(this).next(".custom-file-label").text(fieldVal);
+	}
+});
+</script>
+{% endblock content %}

@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+  <h1>{{ nome_disciplina }}
+      <small>{{ codigo_disciplina }}</small>
+  </h1>
+  
+  <br>
+
+  <h2>Informações Gerais</h2>
+  <table class="table">
+      <tr>
+          <td>Quantidade de matrículas</td>
+          <td>{% if analysis_result.qtd_alunos >= 0%}
+                  {{ analysis_result.qtd_alunos }}
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Nota Média</td>
+          <td>{% if analysis_result.nota.0 >= 0%}
+                {{analysis_result.nota.0|floatformat:2}} &plusmn {{analysis_result.nota.1|floatformat:2}}
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Nota Média/ Último ano</td>
+          <td>{% if analysis_result.nota_ultimo_ano.0 >= 0%}
+                {{analysis_result.nota_ultimo_ano.0|floatformat:2}} &plusmn {{analysis_result.nota_ultimo_ano.1|floatformat:2}}
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+  </table>
+  <h1>Taxas</h1>
+  <table class="table">
+      <tr>
+          <td>Taxa Reprovação</td>
+          <td>{% if analysis_result.taxa_reprovacao_absoluta >= 0%}
+                  {{ analysis_result.taxa_reprovacao_absoluta|floatformat:2 }}%
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Taxa Reprovação Frequência </td>
+          <td>{% if analysis_result.taxa_reprovacao_frequencia >= 0%}
+                  {{ analysis_result.taxa_reprovacao_frequencia|floatformat:2 }}%
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+
+      <tr>
+          <td>Taxa Reprovação/Último ano</td>
+          <td>{% if analysis_result.taxa_reprovacao_ultimo_absoluto >= 0%}
+                  {{ analysis_result.taxa_reprovacao_ultimo_absoluto|floatformat:2 }}%
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Taxa Reprovação/Último ano Frequência</td>
+          <td>{% if analysis_result.taxa_reprovacao_ultimo_frequencia >= 0%}
+                  {{ analysis_result.taxa_reprovacao_ultimo_frequencia|floatformat:2 }}%
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Quantidade de Aproveitamento de Conhecimento</td>
+          <td>
+              {% if analysis_result.qtd_conhecimento >= 0 %}
+                  {{ analysis_result.qtd_conhecimento }}
+              {% else %}
+                  Desconhecido
+              {% endif %}
+          </td>
+      </tr>
+      <tr>
+          <td>Taxa Aprovação/Aproveitamento de Conhecimento</td>
+          <td>{% if analysis_result.taxa_conhecimento >= 0%}
+                  {{ analysis_result.taxa_conhecimento|floatformat:2 }}%
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Quantidade Trancamento</td>
+          <td>{% if analysis_result.qtd_trancamento >= 0%}
+                  {{ analysis_result.qtd_trancamento }}
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Taxa Trancamento</td>
+          <td>{% if analysis_result.taxa_trancamento >= 0%}
+                  {{ analysis_result.taxa_trancamento|floatformat:2 }}%
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </tr>
+      <tr>
+          <td>Quantidade Média de Vezes Cursada até Aprovação</td>
+          <td>{% if analysis_result.qtd_cursada_aprov >= 0 %}
+                  {{ analysis_result.qtd_cursada_aprov|floatformat:2 }}
+              {% else %}
+                  Desconhecido
+              {% endif %}</td>
+      </td>
+  </table>
+  <div id="graficos">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Indice de aprovação/Semestre</h3>
+            <div id="aprovacao_semestre"></div>
+        </div>
+        <div class="col-md-12">
+            <h3>Quantidade de Alunos/Vezes Cursadas</h3>
+            <div id="qtd_cursada_aprov"></div>
+        </div>
+    </div>
+  </div>
+
+
+</div>
+  
+{% endblock content %}
+
+
+
+{% block js-foot %}
+  <script>
+    var grafico_qtd_cursada_aprov = AdegaChart.sort_object_by_key(
+        {{analysis_result.grafico_qtd_cursada_aprov|safe}}
+    );
+    var grafico_qtd_cursada_aprov_x = grafico_qtd_cursada_aprov[0];
+    var grafico_qtd_cursada_aprov_y = grafico_qtd_cursada_aprov[1];
+    var chart1 = new AdegaChart({
+      data: {{analysis_result.aprovacao_semestral|safe}},
+      div_target: "aprovacao_semestre",
+      title: "Indice de aprovação/Semestre",
+      fill: "none",
+      legend: ["Taxa de aprovação","Quantidade de alunos"],
+      type:["scatter", "bar"],
+      data_axis_y: ["y2", "y"]
+    });
+    
+    var chart1 = new AdegaChart({
+      data_x: grafico_qtd_cursada_aprov_x, 
+      data_y: grafico_qtd_cursada_aprov_y,
+      div_target: "qtd_cursada_aprov",
+      type:["scatter"],
+      title: "Quantidade de Alunos/Vezes Cursadas",
+      legend: "Quantidade de alunos"
+    });
+    
+  </script>
+{% endblock js-foot %}

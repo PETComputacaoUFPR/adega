@@ -1,0 +1,11 @@
+coverage 
+ipython
+Django==1.11.10
+django-widget-tweaks
+pandas==0.22
+xlrd
+django-extensions
+ujson
+eventlet
+gunicorn
+psycopg2-binary

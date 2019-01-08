@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+      <h1>Informações Gerais - Turma Ingresso</h1>
+      <table class="table">
+          <tr>
+            <td>Ano/Semestre</td>
+            <td> {{admission_info.ano}}/{{admission_info.semestre}} </td>
+          </tr>
+          <tr>
+            <td>Quantidade de alunos</td>
+            <td> {{admission_info.quantidade_alunos}} </td>
+          </tr>
+          <tr>
+            <td>IRA Médio</td>
+            <td> {{admission_info.ira|floatformat:2}} &plusmn {{admission_info.std|floatformat:2}} </td>
+          </tr>
+          <tr>
+            <td>Tempo médio de formatura em anos <b>atual</b></td>
+            <td> {{admission_info.formatura_media}} </td>
+          </tr>
+          <tr>
+            <td>Índice de Reprovação</td>
+            <td> {{admission_info.taxa_reprovacao|floatformat:2}} </td>
+          </tr>
+          <tr>
+            <td>Indice de Evasão</td>
+            <td> {{admission_info.taxa_evasao|floatformat:2}} </td>
+          </tr>
+          <tr>
+            <td>Quantidade de Evadidos</td>
+            <td> {{admission_info.alunos_evadidos}} </td>
+          </tr>
+          <tr>
+            <td>Quantidade de Formados</td>
+            <td> {{admission_info.formatura}} </td>
+          </tr>
+          <tr>
+            <td>Quantidade de alunos ativos</td>
+            <td> {{admission_info.ativos}} </td>
+          </tr>
+          <tr>
+            <td>Quantidade de Abandonos</td>
+            <td> {{admission_info.abandono}} </td>
+          </tr>
+          <tr>
+            <td>Quantidade de outras formas de evasão</td>
+            <td> {{admission_info.outras_formas_evasao}} </td>
+          </tr>
+      </table>
+  
+      {% comment %}
+      <div>
+        <div class="panel-container">
+          <div class="data-panel">
+            <h3>Nota Média</h3>
+            <span class="data">{{ degree_data.nota_media.0|floatformat:2 }} &#177; {{degree_data.nota_media.1|floatformat:2 }}</span>
+          </div>
+          <div class="data-panel">
+            <h3>Taxa Média de Reprovação</h3>
+            <span class="data">{{ degree_data.taxa_reprovacao.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</span>
+          </div>
+        </div>
+        <div class="panel-container">
+          <div class="data-panel">
+            <h3>Aprovação Aproveitamento de Conhecimento</h3>
+            <span class="data">{{ degree_data.taxa_conhecimento.0|floatformat:2 }}% &#177; {{degree_data.taxa_conhecimento.1|floatformat:2 }}%</span>
+          </div>
+          <div class="data-panel">
+            <h3>Taxa de Trancamento</h3>
+            <span class="data">{{ degree_data.taxa_trancamento.0|floatformat:2 }}% &#177;{{degree_data.taxa_trancamento.1|floatformat:2}}%</span>
+          </div>
+        </div>
+      </div>
+      {% endcomment %}
+
+      
+      <div id="graficos">
+        <div class="row">
+            <div class="col-md-12">
+              <h3>IRA/Semestre</h3>
+              <div id="ira_semestral"></div>
+            </div>
+            <div class="col-md-12">
+              <h3>Quantidade de alunos/Semestre</h3>
+              <div id="students_per_semester"></div>
+            </div>
+        </div>
+      </div>
+</div>
+  
+<div id="myChart2"></div>
+{% endblock content %}
+
+
+
+{% block js-foot %}
+  <script>
+    
+    
+    var admission_info =  {{admission_info|safe}};
+
+
+    // ira_per_semester contains an object with year/semester
+    // as keys, and an tuple (mean,std) as values
+    // So, we need to transform this data before use on AdegaChart
+    var sorted = AdegaChart.sort_object_by_key(admission_info.ira_per_semester);
+    ira_per_semester_x = sorted[0];
+    ira_per_semester_y = sorted[1];
+
+    ira_per_semester_error = [];
+    ira_per_semester_y = ira_per_semester_y.map(function(x){
+      ira_per_semester_error.push(x[1]);
+      return x[0];
+    });
+
+
+    var chart1 = new AdegaChart({
+      data_x: ira_per_semester_x,
+      data_y: ira_per_semester_y,
+      error_y: ira_per_semester_error,
+      div_target: "ira_semestral",
+      type: "scatter",
+      legend: "IRA",
+      title: "IRA/Semestre"
+    });
+    
+    var sorted = AdegaChart.sort_object_by_key(admission_info.students_per_semester);
+    students_per_semester_x = sorted[0];
+    students_per_semester_y = sorted[1];
+
+    var chart2 = new AdegaChart({
+      data_x: students_per_semester_x, 
+      data_y: students_per_semester_y,
+      div_target: "students_per_semester",
+      type:["scatter"],
+      title: "Quantidade de alunos/Semestre",
+      legend: "Quantidade de alunos"
+    });
+    
+  </script>
+{% endblock js-foot %}

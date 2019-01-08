@@ -1,0 +1,39 @@
+version: '3'
+services:
+    db:
+        image: postgres
+        environment:
+            - POSTGRES_USER=adega
+            - POSTGRES_PASSWORD=adega
+            - POSTGRES_DB=adega
+    web:
+        build:
+            context: .
+            dockerfile: ./docker_scripts/Dockerfile
+        command: bash "./docker_scripts/on_docker_init_production.sh"
+        volumes:
+            - .:/adega
+#        ports:
+#            - "8000:8000"
+        links:
+            - db
+        depends_on:
+            - db
+        environment:
+            - POSTGRES_USER=adega
+            - POSTGRES_PASSWORD=adega
+            - POSTGRES_DB=adega
+            - POSTGRES_HOST=adega_db_1
+            - VERSION=PRODUCTION
+
+    nginx:
+        restart: always
+        build: ./nginx/
+        ports:
+            - "8000:80"
+        depends_on:
+            - web
+        links:
+            - web:web
+        volumes:
+            - ./static:/adega/static

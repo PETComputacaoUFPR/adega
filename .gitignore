@@ -1,3 +1,5 @@
+# info de contas criadas no sistema
+login_info
 # base de dados
 
 *.csv
@@ -6,13 +8,16 @@
 *.sqlite3
 src/cache
 *.json
+base_dados/*
+base_dados
+
 
 src/.coverage
 
+static/*
+
 # lixo
 
-
-src/static
 **/migrations/**
 *~
 *.swp

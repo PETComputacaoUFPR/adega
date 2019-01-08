@@ -1,300 +1,387 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-import pprint
-import pandas as pd
-import json
-import numpy as np
 from script.utils.situations import Situation as sit
-def grafico(df,lista_disciplinas): 
-			for disciplina in lista_disciplinas.keys() :
-				qtd_aluno = lista_disciplinas[disciplina]["qtd_alunos"] 
-				dic = {"00-4.9":0.0 , "05-9.9":0.0 , "10-14.9":0.0 , "15-19.9":0.0 , "20-24.9":0.0 , "25-29.9":0.0 , "30-34.9":0.0 ,
-					   "35-39.9":0.0 , "40-44.9":0.0 , "45-49.9":0.0 , "50-54.9":0.0 , "55-59.9":0.0 , "60-64.9":0.0 , "65-69.9":0.0 ,
-					   "70-74.9":0.0 , "75-79.9":0.0 , "80-84.9":0.0 , "85-89.9":0.0 , "90-94.9":0.0 ,"95-100": 0.0}
-				disciplina_df = df.loc[df.COD_ATIV_CURRIC == disciplina] 
-				disci_lista = [] 
-				for i in disciplina_df.iterrows():
-					nota = 0.0 if i[1].MEDIA_FINAL > 100 else i[1].MEDIA_FINAL 
-					for key in dic.keys():
-						a = key.split('-') 
-						value_min = float(a[0])  
-						value_max = float(a[1])  
-						if((nota >= value_min) and (nota <= value_max)): 
-							dic[key] += float(nota)   
-							break;
-				for j in dic.keys():
-					disci_lista.append([j, 0.0 if qtd_aluno == 0 else dic[j] / qtd_aluno])
-
-				lista_disciplinas[disciplina]["compara_nota"]  = disci_lista
+from script.analysis.analysis import Analysis, rate, mean
+import numpy as np
 
 
+class Course(Analysis):
+    """
+    Classe que calcula analises relacionada a disciplina.
 
+    """
+    __data = {}
+    __build_analyze = False
+    analysis = dict.fromkeys([
+        "courses",
+        "general_rate",
+        "semestral_rate",
+        "general_mean",
+        "semestral_mean",
+        "semestral_count_application",
+        "general_count_application",
+        "coursed_count",
+        "graph_course"
+    ], None)
 
-def informacoes_gerais(df,lista_disciplinas):
-	#quantidade de matriculas
-	disciplinas = df.groupby(["COD_ATIV_CURRIC"]).size()  
-	for disciplina in disciplinas.index:
-		disciplina_dict = {} 
-		disciplina_df = df.loc[df.COD_ATIV_CURRIC == disciplina] 
-		disciplina_dict["qtd_alunos"] = int(disciplinas[disciplina])   
-		disciplina_dict["disciplina_codigo"] = disciplina 
-		disciplina_dict["disciplina_nome"] = \
-		disciplina_df.NOME_ATIV_CURRIC.values[0]	
-		lista_disciplinas[disciplina] = disciplina_dict 
-def conhecimento(qtd,disciplina_dict):
-	conheci_df = qtd.loc[(qtd.SITUACAO == sit.SIT_CONHECIMENTO_APROVADO) |
-			(qtd.SITUACAO == sit.SIT_CONHECIMENTO_REPROVADO)] 
-	total_conheci = conheci_df.qtd.sum() 
-	if np.isnan(total_conheci):
-		total_conheci = 0
-	conheci_aprov = conheci_df.loc[conheci_df.SITUACAO == \
-			sit.SIT_CONHECIMENTO_APROVADO].set_index("COD_ATIV_CURRIC" ) 
-	disciplina_dict["qtd_conhecimento"] = int(total_conheci)
+    __rates = [
+        rate(
+            "taxa_reprovacao_absoluta",
+            "SITUACAO",
+            list(sit.SITUATION_FAIL),
+            list(sit.SITUATION_COURSED),
+            1
+        ),
+        rate(
+            "taxa_aprovacao",
+            "SITUACAO",
+            list(sit.SITUATION_PASS),
+            list(sit.SITUATION_FAIL) + list(sit.SITUATION_PASS),
+            2
+        ),
+        rate(
+            "taxa_trancamento",
+            "SITUACAO",
+            list(sit.SITUATION_CANCELLED),
+            list(sit.SITUATION_COURSED),
+            1
+        ),
+        rate(
+            "taxa_conhecimento",
+            "SITUACAO",
+            [sit.SIT_CONHECIMENTO_APROVADO],
+            list(sit.SITUATION_KNOWLDGE),
+            1
+        ),
+        rate(
+            "taxa_reprovacao_frequencia",
+            "SITUACAO",
+            [sit.SIT_REPROVADO_FREQ],
+            list(sit.SITUATION_COURSED),
+            1
+        )
+    ]
+    __mean_set = [
+        mean("nota",
+             "SITUACAO",
+             list(sit.SITUATION_AFFECT_IRA),
+             "MEDIA_FINAL")
+    ]
+    __semestral_rate = [__rates[1]]
+    last_rate = [__rates[0], __rates[4]]
 
-	if (total_conheci !=0) and (not conheci_aprov.empty):
-		disciplina_dict["taxa_conhecimento"] = float(conheci_aprov.qtd.values[0] /
-				total_conheci)
-	else:
-		disciplina_dict["taxa_conhecimento"] = 0.0
+    def __init__(self, df):
+        df_filted = df[df['SITUACAO'].isin(sit.SITUATION_COURSED)]
+        dict_df = {
+            "normal_dataframe": df,
+            "filted_dataframe": df_filted
+        }
+        for df in dict_df:
+            type_df = df.split("_")[0] + "_"
+            general_tmp = dict_df[df].groupby(["COD_ATIV_CURRIC"])
+            semestral_tmp = dict_df[df].groupby(
+                ["COD_ATIV_CURRIC", "ANO", "PERIODO"])
+            self.__data[type_df + "general_groupby"] = general_tmp
+            self.__data[type_df + "semestral_groupby"] = semestral_tmp
+            self.__data[df] = dict_df[df]
 
-def trancamento(qtd,disciplina_dict,qtd_matr):
-	trancamento_df = qtd.loc[(qtd.SITUACAO == sit.SIT_TRANCAMENTO_ADMINISTRATIVO) | 
-						(qtd.SITUACAO == sit.SIT_TRANCAMENTO_TOTAL) | 
-						(qtd.SITUACAO == sit.SIT_CANCELADO)] 
-	qtd_tranc = trancamento_df.qtd.sum() 
-	if np.isnan(qtd_tranc):
-		qtd_tranc = 0
-	disciplina_dict["qtd_trancamento"] = int(qtd_tranc) 
-	disciplina_dict["taxa_trancamento"] = float(qtd_tranc / qtd_matr) if qtd_matr else 0.0
+    def __str__(self):
+        """
+        Retorna uma string com todas as analises feita no momento.
+        """
+        analysis = []
+        for analyze in self.analysis:
+            if self.analysis[analyze] is not None:
+                analysis.append(self.analysis[analyze])
+        return "Analises: {} \n".format(analysis)
 
- 
-def reprovacao(qtd,disciplina,qtd_matr,taxa_reprov_absoluta,taxa_reprov_freq): 
-	"""existem as analises reprovacao absoluta, reprovacao por frequencia,	
-	reprovacao absoluta, reprovacao por frequencia da ultima vez que a
-	disciplina foi ofertada, a logica das analise sao a mesma so muda os valores
-	do dataframe qtd e o nomes das chaves do dicionario,logo é possível reaproveitar
-	o mesmo codigo para fazer analise geral e da ultima vez que foi ofertado.""" 
-	sit_reprov = sit.SITUATION_FAIL + (sit.SIT_REPROVADO_SEM_NOTA,)
-	reprov_df = qtd.loc[(qtd.SITUACAO == sit_reprov[0]) |
-						(qtd.SITUACAO == sit_reprov[1]) |
-						(qtd.SITUACAO == sit_reprov[2]) |
-						(qtd.SITUACAO == sit_reprov[3]) ]
-	qtd_reprov_abso = reprov_df.qtd.sum() #quantidade de reprovacao absoluta
-	qtd_reprov_freq = reprov_df.loc[reprov_df.SITUACAO == sit_reprov[1]] 
-	if qtd_matr != 0:
-		if np.isnan(qtd_reprov_abso): 
-			disciplina[taxa_reprov_absoluta] = 0.0
-		else:
-			disciplina[taxa_reprov_absoluta] = float(qtd_reprov_abso / qtd_matr)
+    def build_analysis(self):
+        """
+        Chama todos os metodos de analises.
+        O metodo é responsável por fazer todas analises necessarias
+        para disciplina, ao final de fazer todas as analises o metodo muda o
+        valor do atributo self.__build_analyze para True, desta maneira não é
+        necessario executar uma analises, se ela já foi feita.
 
-		if qtd_reprov_freq.empty:
-			disciplina[taxa_reprov_freq] = 0.0 
-		else:
-			disciplina[taxa_reprov_freq] = float(qtd_reprov_freq.qtd.values[0] / qtd_matr)
+        """
+        self.courses_list()
+        self.general_rate()
+        self.semestral_rate()
+        self.general_count_submission()
+        self.semestral_count_submission()
+        self.graph_course()
+        self.coursed_count()
+        self.general_note_statistic()
+        self.last_year_rate()
 
-	else:
-		disciplina[taxa_reprov_absoluta] = 0.0
-		disciplina[taxa_reprov_freq] = 0.0 
+        self.__build_analyze = True
 
-def nota(notas_df,disciplina,index):
-	notas = [] 
-	for i in notas_df.iterrows():
-		if i[1].SITUACAO in sit.SITUATION_AFFECT_IRA:
-			nota = 0 if np.isnan(i[1].MEDIA_FINAL) else i[1].MEDIA_FINAL	 
-			#alguns valores de media_final não são confiaveis na tabela .33
-			nota = 0 if nota > 100 else nota 
-			notas.append(nota) 
+    def courses_list(self):
+        """
+        Obtém a lista de disciplina de um curso.
 
-	if len(notas) != 0: 
-		notas_np = np.array(notas) 
-		media_np = np.mean(notas_np) 
-		desvio_np = np.std(notas_np) 
-		media = 0.0 if np.isnan(media_np) else media_np 
-		desvio = 0.0 if np.isnan(desvio_np) else desvio_np 
-		disciplina[index] = [media,desvio]	
-	else:
-		disciplina[index] = [0.0,0.0]  
+        A lista de disciplina de um curso se resume em uma serie (pandas),
+        no qual o valor é o nome da disciplina e o index é o código da
+        disciplina.
+        A serie é obtida por meio do dataframe df, em que é retirado todas as
+        linhas em que o valor da coluna COD_ATIV_CURRIC é duplicado, e redinido
+        o index para a coluna COD_ATIV_CURRIC, assim é possivel obter a serie.
 
+        """
+        df = self.__data["filted_dataframe"]
+        df = df[["COD_ATIV_CURRIC", "NOME_ATIV_CURRIC"]].drop_duplicates()
+        df = df.set_index("COD_ATIV_CURRIC")
+        self.analysis["courses"] = df["NOME_ATIV_CURRIC"]
 
-def analises_gerais(df,lista_disciplinas):
-	qtd_geral= df.groupby(["COD_ATIV_CURRIC","SITUACAO"]).size().reset_index(name="qtd" ) 
-	qtd_ultimo_geral = \
-	df.groupby(["COD_ATIV_CURRIC","SITUACAO","ANO"]).size().reset_index(name="qtd")  
-	matr_por_semestre = \
-	df.groupby(["COD_ATIV_CURRIC","ANO"]).size().reset_index(name="matr") 
-	""" dataframe com a quantidade de matriculas por periodo e ano, por exemplo
-	disciplina ci055 2010/1 teve x matriculas""" 
-	"""Dataframes relacionado a notas.O campo qtd é inutil, o groupby pede se
-	que se use um apply sobre o groupby, pois se não o grouby é tratado como
-	objeto e não como um dataframe	""" 
-	nota_geral_df = df.groupby(["COD_ATIV_CURRIC","MEDIA_FINAL", "SITUACAO",
-			]).size().reset_index(name = "qtd" )  
-	nota_semestral_df = df.groupby(["COD_ATIV_CURRIC","ANO", "MEDIA_FINAL", "SITUACAO",
-			]).size().reset_index(name = "qtd" )  
-	for disciplina in lista_disciplinas.keys():
-		disciplina_dict = {} #facilitar os calculos 
+    def last_year_rate(self):
+        # reprovaçao rate
 
-		qtd  = qtd_geral.loc[qtd_geral.COD_ATIV_CURRIC == disciplina] 
+        last_rates = self.last_rate
 
-		disciplina_semestral = qtd_ultimo_geral.loc[qtd_ultimo_geral.COD_ATIV_CURRIC == \
-				disciplina] 
+        def f(x, rate):
+            x1 = x.loc[x.ANO == x.ANO.max()]
+            x_num = x1[x1[rate.collumn_name].isin(rate.fields_x)].shape[0]
+            x_deno = x1[x1[rate.collumn_name].isin(rate.fields_X)].shape[0]
+            return x_num / x_deno if x_deno > 0 else 0
 
-		ano = datetime.now().year - 1
+        groups = self.__data["normal_general_groupby"]
+        for r_it in last_rates:
+            g = groups.apply(lambda x: f(x, r_it))
+            self.analysis["last_year_" + r_it.name] = g
 
-		qtd_ultimo = disciplina_semestral.loc[disciplina_semestral.ANO == ano] 
+    def general_rate(self):
+        """
+        Calcula as taxas gerais para cada disciplina e a media das taxas.
 
+        O calculo das taxas para cada disciplina utiliza o metodo da super
+        classe Analysis calc_rate, no qual é passado um groupby object e Uma
+        lista de taxas a serem calculadas. O calculo da media das taxas é feito
+        calculando a media das taxas de cada dataframes do
+        groupby object groups.
+        """
+        groups = self.__data["normal_general_groupby"]
+        rates = self.calc_rate(groups, self.__rates)
+        self.analysis["general_rates"] = rates
+        # calculo das rates do ultimo ano
+        # calcula estastistica gerais de todas disciplina
+        for rate_it in self.__rates:
+            rate_mean = self.analysis["general_rates"][rate_it.name][0].mean()
+            rate_std = self.analysis["general_rates"][rate_it.name][0].std()
+            self.analysis[rate_it.name] = [rate_mean, rate_std]
 
-		#quantidade de alunos
-		qtd_matriculas = lista_disciplinas[disciplina]["qtd_alunos"]  
+    def semestral_rate(self):
+        """
+        Calcula as taxas de modo semestrais para cada disciplina.
 
+        O calculo das taxas semestrais utiliza o metodo da super classe
+        Analysis calc_rate, no qual é passado um groupby object e uma lista
+        de taxas a serem calculadas.
+        """
+        groups = self.__data["normal_semestral_groupby"]
+        rates = self.calc_rate(groups, [self.__rates[1]])
+        self.analysis["semestral_rate"] = rates
 
-		#qtd é um dataframe que contem a ocorrencia de cada situacao
-		qtd  = qtd_geral.loc[qtd_geral.COD_ATIV_CURRIC == disciplina] 
+    def semestral_count_submission(self):
+        """
+        calcula a quantidade de matriculas por semestre.
 
-		#faz analises relacionada ao conhecimento
-		conhecimento(qtd,disciplina_dict) 
+        calcula quantos alunos se matricularam na disciplina em cada
+        semestre.
 
-		# faz analises relacionada ao trancamento
-		trancamento(qtd,disciplina_dict,qtd_matriculas) 
+        """
+        serie_count = self.count(self.__data["normal_semestral_groupby"])
+        self.analysis["semestral_count_application"] = serie_count.to_dict()
 
-		# faz analises relacionada a reprovacoes
-		reprovacao(qtd,disciplina_dict,qtd_matriculas,"taxa_reprovacao_absoluta","taxa_reprovacao_frequencia") 
-		qtd_matr_ultimo = matr_por_semestre.loc[(matr_por_semestre.COD_ATIV_CURRIC \
-			== disciplina) & matr_por_semestre.ANO == ano]
+    def general_note_statistic(self):
+        """
+        Calcula algumas estatisticas sobre MEDIA_FINAL relacionada a course.
+        """
+        group = self.__data["filted_general_groupby"]
+        serie_mean = group.apply(lambda x: x["MEDIA_FINAL"].mean())
+        serie_std = group.apply(lambda x: x["MEDIA_FINAL"].std())
+        last_year_mean = group.apply(
+            lambda x: x.loc[x.ANO == x.ANO.max()].MEDIA_FINAL.mean())
+        last_year_std = group.apply(
+            lambda x: x.loc[x.ANO == x.ANO.max()].MEDIA_FINAL.std())
+        # caso tenha algum nan, troque por 0.0
+        serie_mean[np.isnan(serie_mean)] = 0.0
+        serie_std[np.isnan(serie_std)] = 0.0
+        last_year_mean[np.isnan(last_year_mean)] = 0.0
+        last_year_std[np.isnan(last_year_std)] = 0.0
+        general_mean = serie_mean.mean()
+        general_std = serie_std.mean()
+        self.analysis["general_note_statistic"] = [serie_mean, serie_std]
+        self.analysis["general_note_mean"] = general_mean
+        self.analysis["general_note_std"] = general_std
+        self.analysis["last_year_statistic"] = [last_year_mean, last_year_std]
+        self.analysis["general_last_year_mean"] = last_year_mean.mean()
+        self.analysis["general_last_year_std"] = last_year_std.mean()
 
-		if qtd_matr_ultimo.empty: #caso a disciplina nao foi ofertada no ultimo ano
-			disciplina_dict["taxa_reprovacao_ultimo_absoluta"] = -1  
-			disciplina_dict["taxa_reprovacao_ultimo_frequencia"] = -1  
-		else:
-			reprovacao(qtd_ultimo,disciplina_dict,qtd_matriculas,"taxa_reprovacao_ultimo_absoluta",
-					"taxa_reprovacao_ultimo_frequencia") 
+    def general_count_submission(self):
+        """
+        Conta a quantidade de matriculas que cada disciplina tem.
+        """
+        serie_count = self.count(self.__data["normal_general_groupby"])
+        self.analysis["general_count_submission"] = serie_count.to_dict()
 
-		#faz as analises relacionada a nota
-		nota_df = nota_geral_df.loc[nota_geral_df.COD_ATIV_CURRIC == disciplina] 
-		nota_por_semestre_df = nota_semestral_df.loc[nota_semestral_df.COD_ATIV_CURRIC == disciplina] 
-		nota_ultimo = nota_por_semestre_df.loc[nota_por_semestre_df.ANO ==
-				ano] 
+    def __calc_graph_mean(self, group, min_v, max_v, graph):
+        """
+        Calcula a media que está entre um intervalo.
+        Calcula a media das notas que estão ente o intervalo min_v e max_v e
+        groupby.
+        """
+        interval_key = str(min_v) + "-" + str(max_v)
+        col = "MEDIA_FINAL"
 
-		nota(nota_df,disciplina_dict,"nota") 
-		if nota_ultimo.empty:
-			disciplina_dict["nota_ultimo_ano"] = -1 
-		nota(nota_ultimo,disciplina_dict,"nota_ultimo_ano") 
+        # para ficar mais legivel
+        def f(x, min_v, max_v):
+            return self.sum_interval(x, col, min_v, max_v)
 
+        graph_serie = group.apply(lambda x: f(x, min_v, max_v) / x.shape[0])
+        graph_dict = graph_serie.to_dict()  # transforma em dicionario
 
-		lista_disciplinas[disciplina].update(disciplina_dict)
-#	*cursada ate a aprovacao
-def analises_semestrais(df,lista_disciplinas):
-	# [ ] -> nota media de aprovaçao 
-	geral_df = \
-	df.groupby(["COD_ATIV_CURRIC","ANO","PERIODO"]).size().reset_index(name
-			= "matr" ) 
-	df_semestral = df.groupby(["COD_ATIV_CURRIC", "ANO", "PERIODO" ,
-	   "SITUACAO"]).size().reset_index(name = "qtds" ) 
-	disciplinas = {} 
-	for i in df_semestral.iterrows(): # percorre o dataframe
-		disciplina = i[1].COD_ATIV_CURRIC #nome da disciplina
-		if not(disciplina in disciplinas):
-			disciplinas[disciplina] = {} 
+        for course in graph_dict:  # coloca a media e o intervalo no dicionario
+            graph[course].append([interval_key, graph_dict[course]])
 
-		# para chave do dicionario ser do formato ano/periodo
-		ano = str(int(i[1].ANO)) 
-		periodo = str(i[1].PERIODO)   
-		periodo_curso = ano+"/"+periodo # chave do dicionario
+    def graph_course(self):
+        """
+        Calcula o grafico de nota disciplina.
+        """
+        group = self.__data["filted_general_groupby"]
+        graph = {}
+        if self.analysis["courses"] is None:
+            self.courses_list()
 
-		situacao = i[1].SITUACAO 
-		#verifica se a chave ano/periodo exitste no dicionario
-		if not(periodo_curso in disciplinas[disciplina] ): 
-			disciplinas[disciplina][periodo_curso]	= [0,0] #qtd aprovado,total
-				
-		# se a situacao for igual a aprovado entao qtd de aprovados em
-		# ano/periodo +1
-		if situacao in sit.SITUATION_PASS:
-			disciplinas[disciplina][periodo_curso][0] += 1 # qtd de aprovados
-		
-		#quantidade total de matriculas no periodo ano/periodo
-		disciplinas[disciplina][periodo_curso][1] += 1
+        # inicializa o dicionario que vai guardar o grafico
+        for course in self.analysis["courses"].index:
+            graph[course] = []
 
-	for disciplina in disciplinas.keys(): 
-		for ano_periodo in disciplinas[disciplina].keys():	
-			qtd_total = disciplinas[disciplina][ano_periodo][1]
-			qtd_aprovados = disciplinas[disciplina][ano_periodo][0]
-			#calcula a taxa de aprovacao por semestre, qtd_aprov/qtd_total 
-			if qtd_total != 0:
-				disciplinas[disciplina][ano_periodo][0] = qtd_aprovados / qtd_total
-			else:
-				disciplinas[disciplina][ano_periodo][0] = 0.0
-				
-		aprovacao_semestral = disciplinas[disciplina]	
-		lista_disciplinas[disciplina]["aprovacao_semestral"] = aprovacao_semestral
-def transforma_json(lista_disciplinas):
-	for disciplina in lista_disciplinas.keys():
-		disciplina_dict =lista_disciplinas[disciplina] 
-		with open('cache/'+disciplina+'.json','w') as f:
-			f.write(json.dumps(lista_disciplinas[disciplina],indent=4))
-def listagem_disciplina(df,lista_disciplinas):
-	listagem = {} 
-	compara_aprov = {} 
-	compara_nota = {} 
-	cache = {} 
-	disciplinas = {} 
-	# nota media de todas as disciplinas
-	trancamento = []
-	reprovacao = []
-	conhecimento = []
-	nota= [] # lista que contem todas as notas medias de todas as disciplinas
-	nota_desvio = [] # lista que contem todos os desvio padrao de todas as disciplinas 
-	grafico(df,lista_disciplinas) 
+        for i in range(18):
+            min_v = i * 5
+            max_v = min_v + 4.99
+            self.__calc_graph_mean(group, min_v, max_v, graph)
 
-	for disciplina in lista_disciplinas.keys(): 
-		disciplina_dict = lista_disciplinas[disciplina] 
-		cache[disciplina] = {"nota":disciplina_dict["nota"],
-				"taxa_reprovacao_absoluta":disciplina_dict["taxa_reprovacao_absoluta"],
-				"taxa_reprovacao_frequencia":disciplina_dict["taxa_reprovacao_frequencia"],
-				"taxa_trancamento":disciplina_dict["taxa_trancamento"] }  
-		compara_disciplina = [] 
-		compara_nota[disciplina]= lista_disciplinas[disciplina]["compara_nota"]  
-		#calcula aprovacao semestral
-		for ano in disciplina_dict["aprovacao_semestral"].keys():  
-			aprov_por_ano = [ano,disciplina_dict["aprovacao_semestral"][ano][0]] 
-			compara_disciplina.append(aprov_por_ano) 
+        min_v = 95
+        max_v = 100
+        self.__calc_graph_mean(group, min_v, max_v, graph)
 
-		compara_aprov[disciplina] = compara_disciplina 
-		disciplinas[disciplina] = disciplina_dict["disciplina_nome"]  
+        self.analysis["graph_course"] = graph
 
-		# pega todas as taxas adiciona em uma lista, que depois será tranformada
-		# em numpy array para poder uutilizar os metodos np.mean e np.std
-		conhecimento.append(disciplina_dict["taxa_conhecimento"])
-		trancamento.append(disciplina_dict["taxa_trancamento" ])
-		reprovacao.append(disciplina_dict["taxa_reprovacao_absoluta" ])
-		nota.append(disciplina_dict["nota"][0])  
+    def coursed_count(self):
+        """
+        Calcula a quandidade de vezes que cada aluno cursou a disciplina.
+        """
+        dict_name = "filted_course_student_groupby"
+        self.__data[dict_name] = self.__data["normal_dataframe"].groupby([
+            "COD_ATIV_CURRIC",
+            "MATR_ALUNO"
+        ])
+        course_dict = {}
+        for df in self.__data[dict_name]:
+            if df[0][0] not in course_dict:
+                course_dict[df[0][0]] = dict.fromkeys(
+                    [str(i) for i in range(1, 6)], 0)
+            count = df[1].shape[0] if df[1].shape[0] <= 5 else 5
+            course_dict[df[0][0]][str(count)] += 1
 
-	#nota
-	nota_np = np.array(nota) 
-	nota_media= np.mean(nota_np) 
-	nota_desvio= np.std(nota_np) 
-	#trancamento
-	trancamento_np = np.array(trancamento) 
-	trancamento_media = np.mean(trancamento_np) 
-	trancamento_desvio = np.std(trancamento_np) 
-	#conhecimento
-	conhecimento_np = np.array(trancamento) 
-	conhecimento_media = np.mean(trancamento_np) 
-	conhecimento_desvio = np.std(trancamento_np) 
-	#reprovacao
-	reprovacao_np = np.array(trancamento) 
-	reprovacao_media = np.mean(trancamento_np) 
-	reprovacao_desvio = np.std(trancamento_np) 
+        self.analysis["coursed_count"] = course_dict
+        # ratio coursed count
 
-	#verificar se o resultado final não é nan
+        def f(x):
+            coursed_succes = x[x['SITUACAO'].isin(sit.SITUATION_PASS)].shape[0]
+            return (x.shape[0] / coursed_succes) if coursed_succes > 0 else -1
 
-	listagem = { "cache" : cache,
-			"compara_aprov":  compara_aprov,
-			"compara_nota": compara_nota, 
-			"disciplinas": disciplinas,
-			"taxa_conhecimento":[float(conhecimento_media),float(conhecimento_desvio)] ,
-			"taxa_trancamento":[float(trancamento_media),float(trancamento_desvio)] ,
-			"taxa_reprovacao":[float(reprovacao_media),float(reprovacao_desvio)] ,
-			"nota": [float(nota_media),float(nota_desvio)] 
-			} 
-	return listagem
+        groups = self.__data["filted_dataframe"].groupby(["COD_ATIV_CURRIC"])
+        ratio_coursed = groups.apply(lambda x: f(x))
+        self.analysis["coursed_ratio"] = ratio_coursed.to_dict()
 
+    def build_general_course(self):
+        """
+        Cria o dicionario para o json chamado 'disciplina.json'
+        """
+
+        courses = {}
+
+        if self.__build_analyze is False:
+            self.build_analysis()
+
+        courses["taxa_conhecimento"] = self.analysis["taxa_conhecimento"]
+        courses["taxa_reprovacao"] = self.analysis["taxa_reprovacao_absoluta"]
+        courses["taxa_trancamento"] = self.analysis["taxa_trancamento"]
+
+        # cria cache
+        cache = {}
+        note = self.analysis["general_note_statistic"]
+        for rate_it in self.__rates:
+            rate_calc = self.analysis["general_rates"][rate_it.name][0]
+            for course in self.analysis["courses"].index:
+                if course not in cache:
+                    cache[course] = {}
+                cache[course][rate_it.name] = rate_calc[course]
+                cache[course]["nota"] = [note[0][course], note[1][course]]
+
+        courses["cache"] = cache
+
+        # cria o campo compara_aprov
+        courses["compara_aprov"] = self.analysis["graph_course"]
+
+        # cria o campo courses
+        courses["disciplinas"] = self.analysis["courses"].to_dict()
+
+        return courses
+
+    def build_course(self):
+        """
+        Cria o dicionario para cada json de disciplina, ex 'CI055.json'.
+        """
+        courses = []
+        aprovacao_d = {}
+        # semestral
+        for rate_it in self.__semestral_rate:
+            # pega uma lista no qual o primeiro elemento é a taxa, o segundo
+            # e o terceiro são quantidades
+            rate_data = self.analysis["semestral_rate"][rate_it.name]
+            for i in rate_data[0].index:
+                if i[0] not in aprovacao_d:
+                    aprovacao_d[i[0]] = {}
+
+                periodo = str(i[1]) + "/" + str(i[2])
+                aprovacao_d[i[0]][periodo] = [
+                    float(rate_data[0][i]),
+                    int(rate_data[rate_it.count_sel][i])]
+
+        note = self.analysis["general_note_statistic"]
+        note_last_year = self.analysis["last_year_statistic"]
+        for course in self.analysis["courses"].index:
+            course_dict = {}
+            course_dict["disciplina_codigo"] = course
+            course_dict["disciplina_nome"] = self.analysis["courses"][course]
+            # quantidade de matriculas
+            count = self.analysis["general_count_submission"][course]
+            course_dict["qtd_alunos"] = count
+            # notas
+            course_dict["qtd_cursada_aprov"] = self.analysis["coursed_ratio"][course]
+            course_dict["nota"] = [note[0][course], note[1][course]]
+            course_dict["nota_ultimo_ano"] = [
+                note_last_year[0][course],
+                note_last_year[1][course]
+            ]
+            # taxas
+            for rate_it in self.__rates:
+                rate_data = self.analysis["general_rates"][rate_it.name]
+                course_dict[rate_it.name] = float(rate_data[0][course])
+                course_str = rate_it.name.replace("taxa", "qtd")
+                # count_sel define qual quantidade vai para o json, a especifica
+                # ou geral
+                course_dict[course_str] = int(
+                    rate_data[rate_it.count_sel][course])
+                # rate_calc = self.analysis["general_rates"][rate_it.name][0]
+
+            # taxas do ultimo anos
+            course_dict["taxa_reprovacao_ultimo_absoluto"] = self.analysis["last_year_taxa_reprovacao_absoluta"][course]
+            course_dict["taxa_reprovacao_ultimo_frequencia"] = self.analysis["last_year_taxa_reprovacao_frequencia"][course]
+
+            course_dict["grafico_qtd_cursada_aprov"] = self.analysis["coursed_count"][course]
+            course_dict["aprovacao_semestral"] = aprovacao_d[course]
+            courses.append(course_dict)
+
+        return courses

@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.contrib import messages
 
+import os
+print()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.join(BASE_DIR, '..')
@@ -24,9 +27,9 @@ PROJECT_DIR = os.path.join(BASE_DIR, '..')
 SECRET_KEY = 'e#-^aknk(5k)ej6rh#h$i(%h(m9)-j*lwrc_1dxnk=a@-mixlt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['VERSION'] == "DEVELOPMENT"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,8 +46,12 @@ INSTALLED_APPS = [
 
     'adega',
     'public',
-    'degree', 
-	'educator', 
+    'degree',
+    'educator',
+    'admission',
+    'course',
+    'student',
+    'report_api',
     'uploads'
 ]
 
@@ -98,7 +105,7 @@ DATABASES = {
         'NAME': 'adega',
         'USER': 'adega',
         'PASSWORD': 'adega',
-        'HOST': 'localhost',
+        'HOST': 'adega_db_1',
         'PORT': '5432',
     }
 }
@@ -152,11 +159,13 @@ MESSAGE_TAGS = {
 
 
 if not DEBUG:
-    FORCE_SCRIPT_NAME = '/adega/'
+#    FORCE_SCRIPT_NAME = '/adega/'
+#    STATIC_URL = '/static/'
+    STATIC_URL = '/static/'
 
-    STATIC_URL = '/adega/static/'
 else:
     STATIC_URL = '/static/'
+
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 

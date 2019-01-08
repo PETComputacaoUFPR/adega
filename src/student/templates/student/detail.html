@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load math_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ analysis_result.student.name }}
+        <small>{{ analysis_result.student.grr }}</small>
+        </h1>
+        <div>
+            <!-- Nav tabs -->
+            <div class="nav nav-tabs" role="tablist">
+             <a class="nav-item nav-link active" href="#resumo" aria-controls="resumo" data-toggle="tab">Resumo</a>
+             <a class="nav-item nav-link" href="#disciplinas" aria-controls="disciplinas" data-toggle="tab">Lista de Disciplinas</a>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="resumo">
+                <div class="panel-container">
+                    <div class="data-panel">
+                        <h3>Entrada</h3>
+                        <span class="data">{{ analysis_result.student.ano_ingresso }}/{{ analysis_result.student.semestre_ingresso }}</span>
+                    </div>
+
+                    {% if analysis_result.student.ano_evasao %}
+
+                    <div class="data-panel">
+                        <h3>Saida</h3>
+                        <span class="data">{{ analysis_result.student.forma_evasao }}</span><br>
+                        {% if analysis_result.student.forma_evasao != "Sem evasão" %}
+                            <span class="data">{{ analysis_result.student.ano_evasao }}/{{analysis_result.student.semestre_evasao}}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="panel-container">
+                    <div class="data-panel">
+                        <h3>Ira</h3>
+                        <span class="data">{{ analysis_result.student.ira|floatformat:2 }}</span>
+                    </div>
+
+                    <div class="data-panel">
+                        <h3>Taxa de Aprovação</h3>
+                        <span class="data">{{ analysis_result.indice_aprovacao|multiply:100|floatformat:2 }}%</span>
+                    </div>
+
+                    <div class="data-panel">
+                        <h3>Periodo real</h3>
+                        {% if analysis_result.periodo_real %}
+                            <span class="data">{{ analysis_result.periodo_real }}</span>
+                        {% elif analysis_result.student.forma_evasao == 'Formatura' %}
+                            <span class="data">Formado</span>
+                        {% else %}
+                            <span class="data">Desconhecido</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="data-panel">
+                        <h3>Periodo pretendido</h3>
+                        {% if analysis_result.periodo_pretendido %}
+                        <span class="data">{{ analysis_result.periodo_pretendido }}</span>
+                        {% else %}
+                        <span class="data">Formado</span>                            
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+
+            <div role="tabpanel" class="tab-pane" id="disciplinas">
+                <h1>Disciplinas Feitas</h1>
+                <table id="course_list" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Nota</th>
+                            <th>Situação</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for at in analysis_result.aluno_turmas %}
+                        <tr>
+                            <td><a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=at.codigo %}">
+                                {{ at.codigo }}</a></td>
+                            <td>{{ at.nome }}</td>
+                            <td>{{ at.nota }}</td>
+                            <td>{{ at.situacao }}</td>
+                            <td>{{ at.ano }}/{{ at.semestre }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="graficos">
+                <div class="row">
+                    <h3>IRA/Semestre</h3>
+                    <div class="col-md-12">
+                        <div id="ira_semestral"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <h3>Índice de aprovação/Semestre</h3>
+                        <div id="aprovacao_semestral"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Posição do aluno em relação a turma de ingresso/Semestre(%)</h3>
+                        <div id="posicao_turma_ingresso_semestral"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <h3>Relação entre IRA e a quantidade de disciplinas por semestre</h3>
+                        <div id="ira_disciplinas_semestre"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Aprovações Acumulada</h3>
+                        <div id="aprovacao_acumulada"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  
+{% endblock content %}
+
+{% block js-foot %}
+  <script>
+    
+    var chart1 = new AdegaChart({
+      data: {{analysis_result.ira_semestral|safe}},
+      div_target: "ira_semestral",
+      //type: "bar",
+      title: "IRA/Semestre",
+      legend: "IRA"
+    });
+    
+    var chart2 = new AdegaChart({
+        data: {{analysis_result.indice_aprovacao_semestral|safe}},
+        div_target: "aprovacao_semestral",
+        type: ["bar","bar"],
+        title: "Índice de aprovação/Semestre",
+        legend: ["Aprovações em disciplinas","Quantidade disciplinas cursadas"],
+        barmode: "grouped"
+    });
+    
+    var chart3 = new AdegaChart({
+      data: {{analysis_result.posicao_turmaIngresso_semestral|safe}},
+      div_target: "posicao_turma_ingresso_semestral",
+      fill: "none",
+      title: "Posição do aluno em relação a turma de ingresso/Semestre(%)",
+      legend: "Posição relativa"
+    });
+    
+
+
+    var chart4 = new AdegaChart({
+      data: {{analysis_result.ira_por_quantidade_disciplinas|safe}},
+      div_target: "ira_disciplinas_semestre",
+      type: ["scatter","bar","scatter"],
+      title: "Relação entre IRA e a quantidade de disciplinas por semestre",
+      legend: ["IRA","Quantidade disciplinas","Carga horária"],
+      hide_charts: [false,false,true],
+      fill: "none",
+      data_axis_y: ["y2", "y"]
+    });
+
+    var aprovacao_semestral = {{analysis_result.indice_aprovacao_semestral|safe}} ;
+    
+
+    var chart5 = new AdegaChart({
+      data: aprovacao_semestral,
+      div_target: "aprovacao_acumulada",
+      type: ["bar","bar"],
+      title: "Aprovações Acumulada",
+      legend: ["Aprovações acumuladas","Disciplinas cursadas acumuladas"],
+      barmode: "grouped"
+    });
+
+    chart5.transformToAcumulation();
+
+    
+
+    $('#course_list').dataTable({
+      "bPaginate": true,
+      "bInfo": false,
+      "aaSorting": [[ 4, "desc" ]],
+      "responsive": true
+    });
+
+
+  </script>
+{% endblock js-foot %}

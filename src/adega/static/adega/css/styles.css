@@ -1,8 +1,8 @@
 
 html {
     height: 100%;
+    font-size: 100%; /* Fix bootstrap resizing problem */
 }
-
 
 
 
@@ -166,4 +166,11 @@ footer h3 {
 
 .content {
     padding: 2em;
+}
+
+
+.paginate_button{
+    margin-left:10px;
+    margin-right:10px;
+    cursor: pointer;
 }
