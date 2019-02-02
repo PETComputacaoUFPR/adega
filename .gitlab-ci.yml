@@ -1,41 +1,29 @@
-image: python:3.5
-
-variables:
-    POSTGRES_USER: "adega"
-    POSTGRES_PASSWORD: "adega"
-    POSTGRES_DB: "adega"
-    POSTGRES_HOST: "postgres"
-    POSTGRES_PORT: "5432"
-    VERSION: "DEVELOPMENT"
-
-
-services:
-    - postgres
 before_script:
   - export LC_ALL=C.UTF-8
   - export LANG=C.UTF-8
-# apt-get --quiet=2 não é efetivo, com >> /dev/null só mostra erros da saída
-# stderr
-  - apt-get update --assume-yes >> /dev/null 
-  - apt-get install --assume-yes  python3-pip libpq-dev postgresql-client >> /dev/null
+    #  - apt-get update -qq
+    #  - apt-get install -y make
+    #  - make install
+    #  - make install-user
+    #- pip3 install -U pip setuptools pipenv==9.0.3
+    ## pip3 --version
+  #- pipenv install
+  #- source $(pipenv --venv)/bin/activate
+  #  - pipenv shell
+  #  - python --version
+  #  - pip3 show django | grep Version
 
-  - pip3 install --quiet -r requirements.txt
-  - pip3 show django | grep Version
-
-job:
 django-tests:
-      tags:
-        - ubuntu
-        - regular
-      script:
-        - cd src
-        - python manage.py makemigrations degree
-        - python manage.py makemigrations educator
-        - python manage.py makemigrations uploads
-        - python manage.py makemigrations student 
-        - python manage.py makemigrations admission 
-        - python manage.py migrate
-        - python manage.py test
+  tags:
+    - ubuntu
+    - regular
+  script:
+    - cd src
+      # - python manage.py makemigrations degree
+      # - python manage.py makemigrations educator
+      # - python manage.py makemigrations upload 
+      # - python manage.py migrate
+      #- python manage.py test
 
 
 

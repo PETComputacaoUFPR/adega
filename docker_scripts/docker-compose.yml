@@ -1,16 +1,14 @@
 version: '3'
 services:
     db:
-        container_name: adega_db
+        container_name: adega_db_1
         image: postgres
         environment:
             - POSTGRES_USER=adega
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
-            - POSTGRES_HOST=adega_db
-            - POSTGRES_PORT=5432
     web:
-        container_name: adega_web
+        container_name: adega_web_1
         build:
             context: .
             dockerfile: ./docker_scripts/Dockerfile
@@ -27,6 +25,5 @@ services:
             - POSTGRES_USER=adega
             - POSTGRES_PASSWORD=adega
             - POSTGRES_DB=adega
-            - POSTGRES_HOST=adega_db
-            - POSTGRES_PORT=5432
+            - POSTGRES_HOST=adega_db_1
             - VERSION=DEVELOPMENT

@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.contrib import messages
 
-# copy envioment variables to env
-env = os.environ.copy()
+import os
+print()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -99,16 +99,14 @@ WSGI_APPLICATION = 'adega.wsgi.application'
 #}
 
 
-# verifica se informação do banco de dados está definido em variavel de
-# ambiente, caso não esteja setado usa se informações default.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env.get("POSTGRES_DB", "adega"),
-        'USER': env.get("POSTGRES_USER", "adega"),
-        'PASSWORD': env.get("POSTGRES_PASSWORD", "adega"),
-        'HOST': env.get("POSTGRES_HOST", "adega_db"),
-        'PORT': env.get("POSTGRES_PORT", "5432")
+        'NAME': 'adega',
+        'USER': 'adega',
+        'PASSWORD': 'adega',
+        'HOST': 'adega_db_1',
+        'PORT': '5432',
     }
 }
 
