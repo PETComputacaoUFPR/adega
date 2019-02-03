@@ -3,7 +3,7 @@ their academic record canceled."""
 import numpy as np
 import pandas as pd
 import pprint
-from script.utils.situations import *
+from submission.analysis.utils.situations import *
 
 
 fails_by_course = [10] # used at: student_three_fails_course

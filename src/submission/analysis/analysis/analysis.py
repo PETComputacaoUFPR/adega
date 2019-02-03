@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from script.utils.situations import Situation as sit
+from submission.analysis.utils.situations import Situation as sit
 from collections import namedtuple
 """
 Rate é uma tupla nomeada(deixa mais legivel fazer rate.name do que rate[0]) o

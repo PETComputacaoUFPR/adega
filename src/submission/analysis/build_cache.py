@@ -1,18 +1,18 @@
-from script.utils.utils import save_json, ensure_path_exists
-from script.utils.situations import *
-from script.analysis.degree_analysis import *
-from script.analysis.student_analysis import *
-from script.analysis.course_analysis import Course
+from submission.analysis.utils.utils import save_json, ensure_path_exists
+from submission.analysis.utils.situations import *
+from submission.analysis.analysis.degree_analysis import *
+from submission.analysis.analysis.student_analysis import *
+from submission.analysis.analysis.course_analysis import Course
 
-from script.analysis.admission_analysis import Admission
-from script.analysis.admission_analysis import media_ira_turma_ingresso
-from script.analysis.admission_analysis import desvio_padrao_turma_ingresso
-from script.analysis.admission_analysis import students_per_semester
-from script.analysis.admission_analysis import admission_class_ira_per_semester
-from script.analysis.admission_analysis import evasion_per_semester
+from submission.analysis.analysis.admission_analysis import Admission
+from submission.analysis.analysis.admission_analysis import media_ira_turma_ingresso
+from submission.analysis.analysis.admission_analysis import desvio_padrao_turma_ingresso
+from submission.analysis.analysis.admission_analysis import students_per_semester
+from submission.analysis.analysis.admission_analysis import admission_class_ira_per_semester
+from submission.analysis.analysis.admission_analysis import evasion_per_semester
 
 
-from script.analysis.cepe9615_analysis import *
+from submission.analysis.analysis.cepe9615_analysis import *
 
 from collections import defaultdict
 
@@ -60,7 +60,8 @@ def historico(dataframe):
     res = []
 
     for _, row in dataframe.iterrows():
-        res.append(dict(row[['ANO', 'MEDIA_FINAL', 'PERIODO', 'SITUACAO', 'COD_ATIV_CURRIC', 'NOME_ATIV_CURRIC',
+        res.append(dict(row[['ANO', 'MEDIA_FINAL', 'PERIODO', 'SITUACAO',
+                             'COD_ATIV_CURRIC', 'NOME_ATIV_CURRIC',
                              'CREDITOS', 'CH_TOTAL', 'DESCR_ESTRUTURA', 'FREQUENCIA']]))
 
     return res

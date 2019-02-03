@@ -1,6 +1,6 @@
 from django import forms
 from datetime import datetime
-from uploads.models import Submission
+from submission.models import Submission
 
 
 class SubmissionForm(forms.ModelForm):
@@ -13,10 +13,10 @@ class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
         fields = [
-                'historico',
-                'matricula',
-                'semester_status',
-                'relative_year',
-                'relative_semester',
-                'degree'
-                ]
+            'historico',
+            'matricula',
+            'semester_status',
+            'relative_year',
+            'relative_semester',
+            'degree'
+            ]

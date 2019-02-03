@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
-from uploads.models import Submission
+from submission.models import Submission
 
-from script.main import analyze
+from submission.analysis.main import analyze
 
 
 class Command(BaseCommand):

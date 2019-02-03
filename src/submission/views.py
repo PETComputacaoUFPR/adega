@@ -2,10 +2,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
-from uploads.models import Submission
-from uploads.forms import SubmissionForm
+from submission.models import Submission
+from submission.forms import SubmissionForm
 from degree.models import Degree
-from script import main as submission_analysis
+from submission.analysis import main as submission_analysis
 
 class SubmissionCreate(SuccessMessageMixin, CreateView):
     model = Submission
@@ -13,12 +13,12 @@ class SubmissionCreate(SuccessMessageMixin, CreateView):
     template_name = 'submission_create.html'
     success_url = reverse_lazy('dashboard')
     success_message = "Relatório enviado com suceso"
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
         return context
-    
+
     def form_valid(self, form):
         # muda nomes dos arquivos
         form.instance.historico.name = "historico.xls"
@@ -29,11 +29,11 @@ class SubmissionCreate(SuccessMessageMixin, CreateView):
         form.instance.degree = degree
 
         response = super(SubmissionCreate, self).form_valid(form)
-        
+
         submission_analysis.analyze(self.object, debug=False)
 
         return response
-    
+
 
 class SubmissionUpdate(UpdateView):
     model = Submission
@@ -41,12 +41,12 @@ class SubmissionUpdate(UpdateView):
     context_object_name = 'submission'
     success_url = reverse_lazy('dashboard')
     fields = [
-            'historico',
-            'matricula',
-            'relative_year',
-            'relative_semester',
-            'semester_status']
-    
+        'historico',
+        'matricula',
+        'relative_year',
+        'relative_semester',
+        'semester_status']
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True

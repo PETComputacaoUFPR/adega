@@ -5,12 +5,12 @@ from django.utils import timezone
 from os import path
 from django.conf import settings
 
-from degree.models import Degree 
+from degree.models import Degree
 
 from django.dispatch import receiver
 
 
-from script import main as submission_analysis
+from submission.analysis import main as submission_analysis
 
 
 def get_path(instance, filename):

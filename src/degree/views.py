@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as process_logout
 from report_api.views import get_degree_information
 from degree.models import Degree
-from uploads.models import Submission
+from submission.models import Submission
 import json
 
 

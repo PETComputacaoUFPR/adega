@@ -15,7 +15,7 @@ urlpatterns = [
 
     url(r'^adega/course/(?P<submission_id>\w*)/', include('course.urls', namespace='course')),
 
-    url(r'^adega/submission/', include('uploads.urls', namespace='uploads')),
+    url(r'^adega/submission/', include('submission.urls', namespace='submission')),
 
     url(r'^adega/student/(?P<submission_id>\w*)/', include('student.urls', namespace='student')),
 

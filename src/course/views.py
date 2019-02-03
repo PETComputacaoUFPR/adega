@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from degree.models import Degree
 from report_api.views import get_list_courses, get_course_detail
-from uploads.models import Submission
+from submission.models import Submission
 
 
 def detail(request, submission_id, codigo_disciplina):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from script.utils.situations import Situation as sit
-from script.analysis.analysis import Analysis, rate, mean
+from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.analysis.analysis import Analysis, rate, mean
 import numpy as np
 
 
