@@ -10,6 +10,9 @@ src/cache
 *.json
 base_dados/*
 base_dados
+*/~lock.*
+!./src/submission/analysis/test/historico.xls
+!./src/submission/analysis/test/matricula.xls
 
 
 src/.coverage
