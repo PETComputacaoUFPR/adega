@@ -1,7 +1,7 @@
-import pandas as pd
 import math
 import json
-from script.utils.situations import Situation, EvasionForm
+import pandas as pd
+from submission.analysis.utils.situations import Situation, EvasionForm
 
 
 def average_graduation(df):

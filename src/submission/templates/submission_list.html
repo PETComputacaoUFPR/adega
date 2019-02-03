@@ -7,7 +7,7 @@
 		<h2>Relatórios Submetidos</h2>
 	</div>
 	<div class="col-offset-8">
-		<a href="{% url 'uploads:SubmissionCreateView' %}"> <button type="button" class="btn btn-primary">Submeter relatório</button></a>
+		<a href="{% url 'submission:SubmissionCreateView' %}"> <button type="button" class="btn btn-primary">Submeter relatório</button></a>
 	</div>
 	
 </div>
@@ -18,7 +18,8 @@
 	
 	As linhas em vermelho indicam as submissões que não puderam ser processadas.
 	Caso este problema aconteça, verifique novamente na etapa de que pode ser causado
-	pela incompatibilidade das planilhas submetidas em <a href="{% url 'uploads:SubmissionCreateView' %}">Submeter relatório</a>
+	pela incompatibilidade das planilhas submetidas em <a href="{% url
+        'submission:SubmissionCreateView' %}">Submeter relatório</a>
 	(colunas faltando, ordem errada da submissão de matrícula e histórico).<br><br>
 
 	Também, ao submeter, verifique o Status da submissão que caso esteja em
@@ -51,9 +52,9 @@
 							<td>{{sub.get_analysis_status_display}}</td>
 							<td>{{sub.timestamp}}</td>
 							<td class="table-primary bg-primary bg-white">
-								<!-- <a href="{% url 'uploads:SubmissionDetailView' sub.pk %}">Detalhes </a><br> -->
-								<a href="{% url 'uploads:SubmissionUpdateView' sub.pk %}">Editar </a><br>
-								<a href="{% url 'uploads:SubmissionDeleteView' sub.pk %}">Remover </a><br>
+								<!-- <a href="{% url 'submission:SubmissionDetailView' sub.pk %}">Detalhes </a><br> -->
+								<a href="{% url 'submission:SubmissionUpdateView' sub.pk %}">Editar </a><br>
+								<a href="{% url 'submission:SubmissionDeleteView' sub.pk %}">Remover </a><br>
 								{% if sub.get_analysis_status_display == 'Terminado' %}
 									<a href="{% url 'degree:index' submission_id=sub.id %}"> Visualizar relatório (gráficos e taxas) </a>
 								{% endif %}

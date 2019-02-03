@@ -1,9 +1,8 @@
-
 import os
 import pandas as pd
 import numpy as np
-from script.utils.situations import *
-from script.utils.utils import invert_dict
+from submission.analysis.utils.situations import *
+from submission.analysis.utils.utils import invert_dict
 
 
 class DataframeHolder:
@@ -29,18 +28,14 @@ def load_dataframes(cwd='.'):
 
     dataframe = fix_dataframes(dataframes)
     dh = DataframeHolder(dataframe)
-    #~ dh.students.aggregate(teste)
-#       print(dh.students['MEDIA_FINAL'].aggregate(teste))
     return dataframe
 
 
 def read_excel(path, planilha='Planilha1'):
     return pd.read_excel(path)
 
-
 def read_csv(path):
     return pd.read_csv(path)
-
 
 def fix_dataframes(dataframes):
     for df in dataframes:
@@ -59,7 +54,11 @@ def fix_dataframes(dataframes):
     # inner = exste nos dois relatórios, é o que a gente quer
     # o que fazer com quem não está em um dos dois é um questão em aberto
     merged = pd.merge(history, register, how='inner', on=['MATR_ALUNO'])
-    merged = merged.rename(index=str, columns={"ANO_INGRESSO_x": "ANO_INGRESSO", "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO", "FORMA_INGRESSO_x": "FORMA_INGRESSO"})
+    merged = merged.rename(index=str, columns={
+        "ANO_INGRESSO_x": "ANO_INGRESSO",
+        "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO",
+        "FORMA_INGRESSO_x": "FORMA_INGRESSO"
+        })
 
     fix_situation(merged)
     fix_admission(merged)
@@ -73,9 +72,9 @@ def clean_history(df):
     print(df.columns)
 
     drop_columns = ['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
-        'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
-        'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
-    ]
+                    'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
+                    'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
+                    ]
 
     drop_columns = [x for x in drop_columns if x in df.columns]
 
@@ -92,7 +91,7 @@ def clean_register(df):
     df['ANO_EVASAO'] = df_split.str[0]
     df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
 
-    drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE','COD_CURSO',
+    drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE', 'COD_CURSO',
                     'PERIODO_INGRESSO', 'PERIODO_EVASAO']
 
     drop_columns = [x for x in drop_columns if x in df.columns]
@@ -101,6 +100,7 @@ def clean_register(df):
 
 
 def get_situation(d, default):
+
     def getter(x):
         return invert_dict(d).get(x, default)
     return getter

@@ -1,8 +1,7 @@
-
 from django.contrib import admin
-from .models import Submission
+from submission.models import Submission
 
-from script.main import analyze
+from submission.analysis.main import analyze
 
 from traceback import print_exc
 

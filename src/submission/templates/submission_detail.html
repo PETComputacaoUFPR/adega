@@ -6,5 +6,5 @@
 <p>Status: {{ submission.processed }}</p>
 <p>Autor: {{ submission.author }}</p>
 <p>Status do semestre: {{ submission.semester_status }}</p>
-<a href="{% url 'uploads:SubmissionUpdateView' submission.pk %}">Editar</a>
+<a href="{% url 'submission:SubmissionUpdateView' submission.pk %}">Editar</a>
 {% endblock %}

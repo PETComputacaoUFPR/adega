@@ -1,7 +1,6 @@
-
 import time
-from script.base.dataframe_base import load_dataframes
-from script.build_cache import build_cache
+from submission.analysis.base.dataframe_base import load_dataframes
+from submission.analysis.build_cache import build_cache
 
 from datetime import timedelta
 
@@ -29,11 +28,9 @@ def analyze(submission, debug=True):
 
     except Exception as e:
         if(debug):
-            print("Error on submission analysis:",e)
-        
-        submission.set_fail(round(time.clock() - start_time), error_message=str(e))
-    
+            print("Error on submission analysis:", e)
 
+        submission.set_fail(round(time.clock() - start_time), error_message=str(e))
 
 def main():
     print("Não pra você estar fazendo isso")
