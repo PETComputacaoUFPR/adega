@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.contrib import messages
 
-import os
-print()
+# copy envioment variables to env
+env = os.environ.copy()
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -90,26 +91,18 @@ WSGI_APPLICATION = 'adega.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
-
-
+# verifica se informação do banco de dados está definido em variavel de
+# ambiente, caso não esteja setado usa se informações default.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'adega',
-        'USER': 'adega',
-        'PASSWORD': 'adega',
-        'HOST': 'adega_db_1',
-        'PORT': '5432',
+        'NAME': env.get("POSTGRES_DB", "adega"),
+        'USER': env.get("POSTGRES_USER", "adega"),
+        'PASSWORD': env.get("POSTGRES_PASSWORD", "adega"),
+        'HOST': env.get("POSTGRES_HOST", "adega_db"),
+        'PORT': env.get("POSTGRES_PORT", "5432")
     }
 }
-
 
 AUTHENTICATION_BACKENDS = ['public.auth.EmailBackend']
 
