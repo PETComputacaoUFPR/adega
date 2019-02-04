@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.contrib import messages
 
-import os
-print()
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.join(BASE_DIR, '..')
@@ -64,7 +61,14 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'adega.middleware.LoginRequiredMiddleware',
+
 ]
+
+LOGIN_EXEMPT_URLS = (
+    r'/admin/$',
+    r'adega/admin/',
+)
 
 ROOT_URLCONF = 'adega.urls'
 

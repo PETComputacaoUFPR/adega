@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as process_logout
 from report_api.views import get_degree_information
 from degree.models import Degree
@@ -8,7 +7,6 @@ from submission.models import Submission
 import json
 
 
-@login_required
 def index(request, submission_id):
     submission_id = int(submission_id)
 
@@ -28,7 +26,6 @@ def index(request, submission_id):
 
 #class Views(View):
 #    template_name = "index.html"
-#    @login_required
 #    def setDegree(self,request,degree_id):
 #        request.session["degree"] = degree_id
 #        return redirect('degree:index' )

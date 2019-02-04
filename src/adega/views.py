@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as process_logout
 from submission.models import Submission
 
 
 
 
-@login_required
 def dashboard(request):
     degrees = request.user.educator.degree.all()
     degrees_last_submissions = []
@@ -24,8 +22,6 @@ def dashboard(request):
                                                     "hide_navbar": True
                                                     })
 
-
-@login_required
 def logout(request):
     process_logout(request)
 
