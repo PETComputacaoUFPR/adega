@@ -60,7 +60,7 @@ Enquanto o `sudo make docker-up` estiver sendo executado, as alterações feitas
 
 Assim como é possível realizar qualquer comando como seria feito no com o manage.py, também é possível por meio do comando `sudo make docker-manage`. Por exemplo:
 ```bash
-$ sudo make docker-manage makemigrations uploads
+$ sudo make docker-manage makemigrations submission
 $ sudo make docker-manage migrate
 $ sudo make docker-manage createsuperuser
 ```

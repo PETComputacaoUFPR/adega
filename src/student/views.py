@@ -8,7 +8,7 @@ from report_api.views import get_list_students, get_student_detail
 
 import json
 
-from uploads.models import Submission
+from submission.models import Submission
 
 def detail(request, submission_id, grr):
     submission_id = int(submission_id)

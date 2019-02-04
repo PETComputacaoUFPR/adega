@@ -1,5 +1,5 @@
 from degree.models import Degree
-from uploads.models import Submission
+from submission.models import Submission
 import json
 
 def get_data(session, degree, data_name, submission_id=None):

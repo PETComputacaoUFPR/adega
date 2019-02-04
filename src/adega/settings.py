@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'course',
     'student',
     'report_api',
-    'uploads'
+    'submission'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -170,7 +170,7 @@ else:
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/script/base/'
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'uploads')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'submission')
 
 # MEDIA_URL = None # a gente não quer ninguem fazendo download disso
 # MEDIA_ROOT = os.path.join(PROJECT_DIR, 'uploads')

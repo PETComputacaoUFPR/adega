@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as process_logout
-from uploads.models import Submission
+from submission.models import Submission
 
 
 
@@ -19,9 +19,10 @@ def dashboard(request):
             "code": degree.code,
             "last_submission": last_submission
         })
-    return render(request, 'adega/dashboard.html', {'title': 'Dashboard',
-        "degrees_last_submissions":degrees_last_submissions, "hide_navbar": True
-        })
+    return render(request, 'adega/dashboard.html', {"title": "Dashboard",
+                                                    "degrees_last_submissions":degrees_last_submissions,
+                                                    "hide_navbar": True
+                                                    })
 
 
 @login_required

@@ -4,8 +4,8 @@ import numpy as np
 #~ FAZER CACHE DE TUDO
 #~ AO CHAMAR A FUNCAO VERIFICAR SE TEM ALGO NA CACHE
 
-from script.utils.situations import *
-from script.utils.utils import memoize
+from submission.analysis.utils.situations import *
+from submission.analysis.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
 

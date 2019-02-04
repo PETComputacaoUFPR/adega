@@ -1,11 +1,9 @@
-import numpy as np
-
-from script.utils.situations import Situation as sit
-from script.utils.situations import EvasionForm as ef
-from script.utils.situations import *
-from script.utils.situations import Situation as sit
-from script.utils.situations import EvasionForm as ef
-from script.analysis.student_analysis import StudentAnalysis
+from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.utils.situations import EvasionForm as ef
+from submission.analysis.utils.situations import *
+from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.utils.situations import EvasionForm as ef
+from submission.analysis.analysis.student_analysis import StudentAnalysis
 from collections import defaultdict
 
 import numpy as np

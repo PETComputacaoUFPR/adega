@@ -1,5 +1,5 @@
 <div class="sidebar left hidden-sm hidden-xs">
-    <li><a class="btn btn-primary text-left" href="{% url 'uploads:SubmissionListView' %}">Gerenciar relatórios</a></li>
+    <li><a class="btn btn-primary text-left" href="{% url 'submission:SubmissionListView' %}">Gerenciar relatórios</a></li>
     <li><a class="btn btn-primary text-left" href="{% url 'degree:index' submission_id=submission.id%}">Informações gerais do curso</a></li>
     <li><a class="btn btn-primary text-left" href="{% url 'student:index' submission_id=submission.id%}">Alunos</a></li>
     <li style="display: block;">
