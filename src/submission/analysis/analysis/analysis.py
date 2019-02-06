@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from script.utils.situations import Situation as sit
+from submission.analysis.utils.situations import Situation as sit
 from collections import namedtuple
-rate = namedtuple("rate", ["name", "collumn_name", "fields_x", "fields_X"])
+"""
+Rate é uma tupla nomeada(deixa mais legivel fazer rate.name do que rate[0]) o
+campo name define qual nome da taxa sera utilizado, collumn_name é qual coluna
+do dataframe será utilizado para extrair dados, fields_x quais lista de valores
+especifico será utilizado (numerador da taxa), fields_X é a lista de valores
+gerais (denominador da taxa) e count_sel, assume valores 1 e 2, define qual quantidade será utilizada a
+especifica ou a geral.
+"""
+rate = namedtuple("rate", ["name", "collumn_name", "fields_x", "fields_X", "count_sel"])
 mean = namedtuple("mean", [
     "name",
     "collumn_name",
@@ -45,7 +53,7 @@ class Analysis(object):
         Calcula todas as taxas contida na lista rates para todos os dataframes
         que estão dentro do groupby object groups.
         O calculo de uma taxa, para um dataframe em especifico é feito da
-        seguinte maneira: filtrar se o dataframe de acordo com os valores da
+        seguinte maneira: filtra se o dataframe de acordo com os valores da
         especificado em rate.collumn_name com os valores de rate.field_x para o
         numerador e rate.fields_X para o denominador, a taxa é a divisão do
         numerador pelo denominador.
@@ -66,6 +74,7 @@ class Analysis(object):
             X = self.count(groups, rate.collumn_name, rate.fields_X)
             rate_c = x/X 
             rate_c[np.isnan(rate_c)] = 0.0
+            rate_c[np.isinf(rate_c)] = 0.0
             rate_dict[rate.name] = [rate_c, x, X]
         return rate_dict
 

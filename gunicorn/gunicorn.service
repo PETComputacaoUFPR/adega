@@ -6,8 +6,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/adega/src
-ExecStart=/var/www/adega/venv/bin/gunicorn --access-logfile - -k eventlet --workers 4 --bind unix:/var/www/adega/adega.sock adega.wsgi:application
+ExecStart=/var/www/adega/venv/bin/gunicorn --access-logfile - -k eventlet --workers 2 --timeout 300 --bind unix:/var/www/adega/adega.sock adega.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
-

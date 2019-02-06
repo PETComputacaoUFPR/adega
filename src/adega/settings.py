@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.contrib import messages
 
+# copy envioment variables to env
+env = os.environ.copy()
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.join(BASE_DIR, '..')
@@ -24,9 +28,9 @@ PROJECT_DIR = os.path.join(BASE_DIR, '..')
 SECRET_KEY = 'e#-^aknk(5k)ej6rh#h$i(%h(m9)-j*lwrc_1dxnk=a@-mixlt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['VERSION'] == "DEVELOPMENT"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,13 +47,13 @@ INSTALLED_APPS = [
 
     'adega',
     'public',
-    'degree', 
-	'educator', 
-	'admission', 
-	'course', 
-	'student', 
+    'degree',
+    'educator',
+    'admission',
+    'course',
+    'student',
     'report_api',
-    'uploads'
+    'submission'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -87,26 +91,18 @@ WSGI_APPLICATION = 'adega.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
-
-
+# verifica se informação do banco de dados está definido em variavel de
+# ambiente, caso não esteja setado usa se informações default.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'adega',
-        'USER': 'adega',
-        'PASSWORD': 'adega',
-        'HOST': 'adega_db_1',
-        'PORT': '5432',
+        'NAME': env.get("POSTGRES_DB", "adega"),
+        'USER': env.get("POSTGRES_USER", "adega"),
+        'PASSWORD': env.get("POSTGRES_PASSWORD", "adega"),
+        'HOST': env.get("POSTGRES_HOST", "adega_db"),
+        'PORT': env.get("POSTGRES_PORT", "5432")
     }
 }
-
 
 AUTHENTICATION_BACKENDS = ['public.auth.EmailBackend']
 
@@ -156,16 +152,18 @@ MESSAGE_TAGS = {
 
 
 if not DEBUG:
-    FORCE_SCRIPT_NAME = '/adega/'
+#    FORCE_SCRIPT_NAME = '/adega/'
+#    STATIC_URL = '/static/'
+    STATIC_URL = '/static/'
 
-    STATIC_URL = '/adega/static/'
 else:
     STATIC_URL = '/static/'
+
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/script/base/'
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'uploads')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'submission')
 
 # MEDIA_URL = None # a gente não quer ninguem fazendo download disso
 # MEDIA_ROOT = os.path.join(PROJECT_DIR, 'uploads')

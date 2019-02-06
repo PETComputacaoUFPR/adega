@@ -43,6 +43,9 @@ docker-fix:
 docker-up:
 	docker-compose --project-directory . -f docker_scripts/docker-compose.yml -p adega up
 
+docker-production:
+	docker-compose --project-directory . -f docker_scripts/docker-production.yml -p adega up
+
 docker-remove-all:
 	docker rm adega_web_1 adega_db_1
 	docker rmi adega_web

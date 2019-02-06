@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from script.utils.situations import Situation as sit
-from script.analysis.analysis import Analysis, rate, mean
+from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.analysis.analysis import Analysis, rate, mean
+import numpy as np
 
 
 class Course(Analysis):
@@ -27,31 +28,36 @@ class Course(Analysis):
             "taxa_reprovacao_absoluta",
             "SITUACAO",
             list(sit.SITUATION_FAIL),
-            list(sit.SITUATION_COURSED)
+            list(sit.SITUATION_COURSED),
+            1
         ),
         rate(
             "taxa_aprovacao",
             "SITUACAO",
             list(sit.SITUATION_PASS),
-            list(sit.SITUATION_COURSED)
+            list(sit.SITUATION_FAIL) + list(sit.SITUATION_PASS),
+            2
         ),
         rate(
             "taxa_trancamento",
             "SITUACAO",
-            [sit.SIT_CANCELADO],
-            list(sit.SITUATION_COURSED)
+            list(sit.SITUATION_CANCELLED),
+            list(sit.SITUATION_COURSED),
+            1
         ),
         rate(
             "taxa_conhecimento",
             "SITUACAO",
             [sit.SIT_CONHECIMENTO_APROVADO],
-            list(sit.SITUATION_KNOWLDGE)
-         ),
+            list(sit.SITUATION_KNOWLDGE),
+            1
+        ),
         rate(
             "taxa_reprovacao_frequencia",
             "SITUACAO",
             [sit.SIT_REPROVADO_FREQ],
-            list(sit.SITUATION_COURSED)
+            list(sit.SITUATION_COURSED),
+            1
         )
     ]
     __mean_set = [
@@ -61,6 +67,7 @@ class Course(Analysis):
              "MEDIA_FINAL")
     ]
     __semestral_rate = [__rates[1]]
+    last_rate = [__rates[0], __rates[4]]
 
     def __init__(self, df):
         df_filted = df[df['SITUACAO'].isin(sit.SITUATION_COURSED)]
@@ -103,6 +110,8 @@ class Course(Analysis):
         self.semestral_count_submission()
         self.graph_course()
         self.coursed_count()
+        self.general_note_statistic()
+        self.last_year_rate()
 
         self.__build_analyze = True
 
@@ -118,10 +127,26 @@ class Course(Analysis):
         o index para a coluna COD_ATIV_CURRIC, assim é possivel obter a serie.
 
         """
-        df = self.__data["normal_dataframe"]
+        df = self.__data["filted_dataframe"]
         df = df[["COD_ATIV_CURRIC", "NOME_ATIV_CURRIC"]].drop_duplicates()
         df = df.set_index("COD_ATIV_CURRIC")
         self.analysis["courses"] = df["NOME_ATIV_CURRIC"]
+
+    def last_year_rate(self):
+        # reprovaçao rate
+
+        last_rates = self.last_rate
+
+        def f(x, rate):
+            x1 = x.loc[x.ANO == x.ANO.max()]
+            x_num = x1[x1[rate.collumn_name].isin(rate.fields_x)].shape[0]
+            x_deno = x1[x1[rate.collumn_name].isin(rate.fields_X)].shape[0]
+            return x_num / x_deno if x_deno > 0 else 0
+
+        groups = self.__data["normal_general_groupby"]
+        for r_it in last_rates:
+            g = groups.apply(lambda x: f(x, r_it))
+            self.analysis["last_year_" + r_it.name] = g
 
     def general_rate(self):
         """
@@ -136,6 +161,8 @@ class Course(Analysis):
         groups = self.__data["normal_general_groupby"]
         rates = self.calc_rate(groups, self.__rates)
         self.analysis["general_rates"] = rates
+        # calculo das rates do ultimo ano
+        # calcula estastistica gerais de todas disciplina
         for rate_it in self.__rates:
             rate_mean = self.analysis["general_rates"][rate_it.name][0].mean()
             rate_std = self.analysis["general_rates"][rate_it.name][0].std()
@@ -171,11 +198,23 @@ class Course(Analysis):
         group = self.__data["filted_general_groupby"]
         serie_mean = group.apply(lambda x: x["MEDIA_FINAL"].mean())
         serie_std = group.apply(lambda x: x["MEDIA_FINAL"].std())
+        last_year_mean = group.apply(
+            lambda x: x.loc[x.ANO == x.ANO.max()].MEDIA_FINAL.mean())
+        last_year_std = group.apply(
+            lambda x: x.loc[x.ANO == x.ANO.max()].MEDIA_FINAL.std())
+        # caso tenha algum nan, troque por 0.0
+        serie_mean[np.isnan(serie_mean)] = 0.0
+        serie_std[np.isnan(serie_std)] = 0.0
+        last_year_mean[np.isnan(last_year_mean)] = 0.0
+        last_year_std[np.isnan(last_year_std)] = 0.0
         general_mean = serie_mean.mean()
-        general_std = serie_mean.mean()
+        general_std = serie_std.mean()
         self.analysis["general_note_statistic"] = [serie_mean, serie_std]
         self.analysis["general_note_mean"] = general_mean
         self.analysis["general_note_std"] = general_std
+        self.analysis["last_year_statistic"] = [last_year_mean, last_year_std]
+        self.analysis["general_last_year_mean"] = last_year_mean.mean()
+        self.analysis["general_last_year_std"] = last_year_std.mean()
 
     def general_count_submission(self):
         """
@@ -240,11 +279,20 @@ class Course(Analysis):
         for df in self.__data[dict_name]:
             if df[0][0] not in course_dict:
                 course_dict[df[0][0]] = dict.fromkeys(
-                        [str(i) for i in range(1, 6)], 0)
+                    [str(i) for i in range(1, 6)], 0)
             count = df[1].shape[0] if df[1].shape[0] <= 5 else 5
             course_dict[df[0][0]][str(count)] += 1
 
         self.analysis["coursed_count"] = course_dict
+        # ratio coursed count
+
+        def f(x):
+            coursed_succes = x[x['SITUACAO'].isin(sit.SITUATION_PASS)].shape[0]
+            return (x.shape[0] / coursed_succes) if coursed_succes > 0 else -1
+
+        groups = self.__data["filted_dataframe"].groupby(["COD_ATIV_CURRIC"])
+        ratio_coursed = groups.apply(lambda x: f(x))
+        self.analysis["coursed_ratio"] = ratio_coursed.to_dict()
 
     def build_general_course(self):
         """
@@ -262,12 +310,15 @@ class Course(Analysis):
 
         # cria cache
         cache = {}
+        note = self.analysis["general_note_statistic"]
         for rate_it in self.__rates:
             rate_calc = self.analysis["general_rates"][rate_it.name][0]
             for course in self.analysis["courses"].index:
                 if course not in cache:
                     cache[course] = {}
                 cache[course][rate_it.name] = rate_calc[course]
+                cache[course]["nota"] = [note[0][course], note[1][course]]
+
         courses["cache"] = cache
 
         # cria o campo compara_aprov
@@ -293,12 +344,13 @@ class Course(Analysis):
                 if i[0] not in aprovacao_d:
                     aprovacao_d[i[0]] = {}
 
-                periodo = str(i[1])+"/"+str(i[2])
+                periodo = str(i[1]) + "/" + str(i[2])
                 aprovacao_d[i[0]][periodo] = [
-                        float(rate_data[0][i]),
-                        int(rate_data[1][i])
-                        ]
+                    float(rate_data[0][i]),
+                    int(rate_data[rate_it.count_sel][i])]
 
+        note = self.analysis["general_note_statistic"]
+        note_last_year = self.analysis["last_year_statistic"]
         for course in self.analysis["courses"].index:
             course_dict = {}
             course_dict["disciplina_codigo"] = course
@@ -306,16 +358,29 @@ class Course(Analysis):
             # quantidade de matriculas
             count = self.analysis["general_count_submission"][course]
             course_dict["qtd_alunos"] = count
-
+            # notas
+            course_dict["qtd_cursada_aprov"] = self.analysis["coursed_ratio"][course]
+            course_dict["nota"] = [note[0][course], note[1][course]]
+            course_dict["nota_ultimo_ano"] = [
+                note_last_year[0][course],
+                note_last_year[1][course]
+            ]
             # taxas
             for rate_it in self.__rates:
                 rate_data = self.analysis["general_rates"][rate_it.name]
                 course_dict[rate_it.name] = float(rate_data[0][course])
                 course_str = rate_it.name.replace("taxa", "qtd")
-                course_dict[course_str] = float(rate_data[1][course])
-                course_dict["grafico_qtd_cursada_aprov"] = \
-                    self.analysis["coursed_count"][course]
+                # count_sel define qual quantidade vai para o json, a especifica
+                # ou geral
+                course_dict[course_str] = int(
+                    rate_data[rate_it.count_sel][course])
                 # rate_calc = self.analysis["general_rates"][rate_it.name][0]
+
+            # taxas do ultimo anos
+            course_dict["taxa_reprovacao_ultimo_absoluto"] = self.analysis["last_year_taxa_reprovacao_absoluta"][course]
+            course_dict["taxa_reprovacao_ultimo_frequencia"] = self.analysis["last_year_taxa_reprovacao_frequencia"][course]
+
+            course_dict["grafico_qtd_cursada_aprov"] = self.analysis["coursed_count"][course]
             course_dict["aprovacao_semestral"] = aprovacao_d[course]
             courses.append(course_dict)
 

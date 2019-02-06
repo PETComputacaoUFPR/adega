@@ -5,51 +5,51 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-      <h1>Informações Gerais</h1>
+      <h1>Informações Gerais - Turma Ingresso</h1>
       <table class="table">
           <tr>
             <td>Ano/Semestre</td>
-            <td> NO </td>
+            <td> {{admission_info.ano}}/{{admission_info.semestre}} </td>
           </tr>
           <tr>
             <td>Quantidade de alunos</td>
-            <td> NO </td>
+            <td> {{admission_info.quantidade_alunos}} </td>
           </tr>
           <tr>
-            <td>Ira Médio</td>
-            <td> NO </td>
+            <td>IRA Médio</td>
+            <td> {{admission_info.ira|floatformat:2}} &plusmn {{admission_info.std|floatformat:2}} </td>
           </tr>
           <tr>
-            <td>Tempo médio de formatura em anos</td>
-            <td> NO </td>
+            <td>Tempo médio de formatura em anos <b>atual</b></td>
+            <td> {{admission_info.formatura_media}} </td>
           </tr>
           <tr>
-            <td>Indice de Reprovação</td>
-            <td> NO </td>
+            <td>Índice de Reprovação</td>
+            <td> {{admission_info.taxa_reprovacao|floatformat:2}} </td>
           </tr>
           <tr>
             <td>Indice de Evasão</td>
-            <td> NO </td>
+            <td> {{admission_info.taxa_evasao|floatformat:2}} </td>
           </tr>
           <tr>
             <td>Quantidade de Evadidos</td>
-            <td> NO </td>
+            <td> {{admission_info.alunos_evadidos}} </td>
           </tr>
           <tr>
             <td>Quantidade de Formados</td>
-            <td> NO </td>
+            <td> {{admission_info.formatura}} </td>
           </tr>
           <tr>
             <td>Quantidade de alunos ativos</td>
-            <td> NO </td>
+            <td> {{admission_info.ativos}} </td>
           </tr>
           <tr>
             <td>Quantidade de Abandonos</td>
-            <td> NO </td>
+            <td> {{admission_info.abandono}} </td>
           </tr>
           <tr>
             <td>Quantidade de outras formas de evasão</td>
-            <td> NO </td>
+            <td> {{admission_info.outras_formas_evasao}} </td>
           </tr>
       </table>
   
@@ -78,53 +78,21 @@
       </div>
       {% endcomment %}
 
-      {% comment %}
+      
       <div id="graficos">
         <div class="row">
-                  <div class="col-md-6">
-                      <h3>Quantidade alunos/IRA</h3>
-                      <canvas id="ira_semestral" data-data='{{ degree_data.ira_medio_grafico|safe }}'></canvas>
-                  </div>
-                  <div class="col-md-6">
-                      <h3>Quantidade evasão/período</h3>
-                      <canvas id="evasao_semestre" data-data='{{ degree_data.evasao_grafico|safe }}'></canvas>
-                  </div>
-          <!--
-          <div class="col-md-6">
-            <h3>Nota Média/Periodo</h3>
-            <canvas id="nota_media_semestre"
-                data-data='{{ degree_data.media_disc|safe }}'></canvas>
-          </div> essa analise foi feita de uma maneira ruim no adega
-          antigo -->
-          <!-- analises sa02 -->
-          <div class="col-md-6">
-            <h3>Alunos/Periodo</h3>
-            <canvas id="aluno_periodo"
-                data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
-          </div>
-  
-          <div class="col-md-6">
-            <h3>Nota Média/Periodo</h3>
-            <canvas id="nota_media_periodo"
-                data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
-          </div>
-  
-  
-          <div class="col-md-6">
-            <h3>Taxa Aprovação/Periodo</h3>
-            <canvas id="taxa_aprovacao_periodo"
-                data-data='{{ degree_data.taxa_aprovacao_periodo|safe }}'></canvas>
-          </div>
-          <!-- fim analise sa02 -->
+            <div class="col-md-12">
+              <h3>IRA/Semestre</h3>
+              <div id="ira_semestral"></div>
             </div>
+            <div class="col-md-12">
+              <h3>Quantidade de alunos/Semestre</h3>
+              <div id="students_per_semester"></div>
+            </div>
+        </div>
       </div>
-    {% endcomment %}
-
-    
-    </div>
-  </div>
+</div>
   
-<div id="myChart"></div>
 <div id="myChart2"></div>
 {% endblock content %}
 
@@ -133,23 +101,45 @@
 {% block js-foot %}
   <script>
     
+    
+    var admission_info =  {{admission_info|safe}};
+
+
+    // ira_per_semester contains an object with year/semester
+    // as keys, and an tuple (mean,std) as values
+    // So, we need to transform this data before use on AdegaChart
+    var sorted = AdegaChart.sort_object_by_key(admission_info.ira_per_semester);
+    ira_per_semester_x = sorted[0];
+    ira_per_semester_y = sorted[1];
+
+    ira_per_semester_error = [];
+    ira_per_semester_y = ira_per_semester_y.map(function(x){
+      ira_per_semester_error.push(x[1]);
+      return x[0];
+    });
+
+
     var chart1 = new AdegaChart({
-      data_x: [0,1,2], 
-      data_y: [6,10,2],
-      div_target: "myChart",
-      error_y: [1,2,3],
-      //type: "bar",
-      title: "Exemplo 1"
+      data_x: ira_per_semester_x,
+      data_y: ira_per_semester_y,
+      error_y: ira_per_semester_error,
+      div_target: "ira_semestral",
+      type: "scatter",
+      legend: "IRA",
+      title: "IRA/Semestre"
     });
     
-    var chart1 = new AdegaChart({
-      data_x: [0,1,2], 
-      data_y: [[6,10,2], [7,9,2.5]],
-      div_target: "myChart2",
-      error_y: [[1,2,3], [1.5,0.1,0.5]],
-      type:["bar", "scatter"],
-      title: "Exemplo 2",
-      legend: ["linha 1", "linha 2"]
+    var sorted = AdegaChart.sort_object_by_key(admission_info.students_per_semester);
+    students_per_semester_x = sorted[0];
+    students_per_semester_y = sorted[1];
+
+    var chart2 = new AdegaChart({
+      data_x: students_per_semester_x, 
+      data_y: students_per_semester_y,
+      div_target: "students_per_semester",
+      type:["scatter"],
+      title: "Quantidade de alunos/Semestre",
+      legend: "Quantidade de alunos"
     });
     
   </script>
