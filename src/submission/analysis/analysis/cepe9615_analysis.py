@@ -76,6 +76,72 @@ def student_fails_course(df):
     return quantity
 
 
+def student_fails_2_courses(df):
+    """
+    Lists of students that failed X, Y, Z ... times in the 2 different courses.
+    X, Y, Z ... are declared in the list "fails_by_course" at the top of analysis.
+
+    This function is inspired by CEPE 96/15 ART.9:
+    Students with 3 fails in two different courses would have their registration suspended.
+
+    Parameters
+    ----------
+    df : DataFrame
+
+    Returns
+    -------
+    dict of {int:dict}
+
+            quantity={
+            "3":{aluno1:GRR, aluno2:GRR, ...},
+            "7":{aluno1:GRR, aluno2:GRR, ...},
+            ...
+            }
+
+    Examples
+    --------
+    "3" : {
+    "José da Silva Carvalho": 20114027,
+    "Pedro dos Santos" : 20152678,
+        ...
+    }
+
+    "7" : {
+    "José da Silva Carvalho": 20114027,
+    "Pedro dos Santos" : 20152678,
+        ...
+    }
+    """
+    most_failures = 0
+    second_most_failures = 0
+    # Filters based on the students that have failed at least once
+    # and are still registered on the University
+    df = df[df['SITUACAO'].isin(Situation.SITUATION_FAIL)]
+    df = df[(df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO)]
+    # Creates a tuple with (specified informations, dataframe)
+    students = df.groupby(["NOME_PESSOA", "MATR_ALUNO"])
+    quantity = {}
+    for times in fails_by_course:
+        names = {}
+        for student in students:
+            # For each student that have failed, we will have a dataframe of
+            # the student and in which course they did fail
+            courses = student[1].groupby("COD_ATIV_CURRIC")
+            for course in courses:
+                if course[1].shape[0] > most_failures:
+                    most_failures = course[1].shape[0]
+                elif course[1].shape[0] > second_most_failures:
+                    second_most_failures = course[1].shape[0]
+                if (most_failures != 0) and (second_most_failures != 0):
+                    if (most_failures + second_most_failures) >= times:
+                        names[student[0][0]] = student[0][1]
+                        break
+
+        quantity[str(times)] = names
+
+    return quantity
+
+
 
 def fails_semester (df):
     """
