@@ -149,6 +149,76 @@ def fails_semester (df):
     return final_dict
 
 
+def fails_by_freq_semester (df):
+    """
+    Lists of students that failed X, Y, Z ... courses in the same semester.
+    X, Y, Z ... are declared in the list "fails_by_semester" at the top.
+
+    This function is inspired by CEPE 96/15 ART.9:
+    Students with 3 fails in the semester would have their registration suspended.
+
+    First this function filters students who are still registrered in the University
+    and have failed courses.
+    Then it creates a dictionary of semesters.
+    Inside each semester there is a second dictionary of names and df with the failed courses
+    This second dictionary will be turned into a list of names according to each N in fails_by_semester
+
+    Parameters
+    ----------
+    df : DataFrame
+
+    Returns
+    -------
+    dict of {int:dict}
+
+        final_dict={
+        "X":{semester1: list_of_students1, ...},
+        "Y":{semester1: list_of_students1, ...},
+        ...
+        }
+
+    Examples
+    --------
+        '4': {   (2001, '2o. Semestre'): [],
+                     (2002, '1o. Semestre'): [],
+                     (2002, '2o. Semestre'): [],
+                     (2003, '1o. Semestre'): [],
+                     (2004, '2o. Semestre'): [],
+                     (2007, '1o. Semestre'): [],
+                     (2007, '2o. Semestre'): [   (   'Carlos das Neves Vieira',
+                                                     'GRR20073713'),
+                                                 (   'Adriano Dias Barbosa',
+                                                     'GRR20075214')],
+                     (2008, '1o. Semestre'): [   (   'Anderson Silveira Alves',
+                                                     'GRR20075297')],
+    """
+    people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
+    failed_people_df = people_studying_df.loc[people_studying_df['SITUACAO'] == Situation.SITUATION_FAIL[1]]
+    failed_people_per_semester_grouped = failed_people_df.groupby(['ANO','PERIODO'])
+    # semester_dict = { (2017/1): names_dict1, (2017/2): names_dict2, ...}
+    # names_dict    = { (nome, grr): df, (nome. grr): df, ...)
+    semester_dict = {}
+    for semester in failed_people_per_semester_grouped:
+        names_dict = {}
+        student_grouped = semester[1].groupby(["NOME_PESSOA", "MATR_ALUNO"])
+        for student in student_grouped:
+            names_dict[student[0]] = student[1]
+        semester_dict[semester[0]] = names_dict
+
+    # semester_finaldict = { semester: list of students tha failed all courses by frequency in that semester}
+    psdf = people_studying_df
+    semester_finaldict = {}
+    for semester in semester_dict:
+        name_list = []
+        for student in semester_dict[semester]:
+            student_courses_semester = psdf.loc[(psdf['MATR_ALUNO'] == student[1]) & (psdf['ANO'] == semester[0]) & (psdf['PERIODO'] == semester[1])]
+            if semester_dict[semester][student].shape[0] == student_courses_semester.shape[0]:
+                name_list.append(student)
+        semester_finaldict[semester] = name_list
+    # pp.pprint (semester_finaldict)
+    return semester_finaldict
+
+
 def fails_by_freq(df):
     """
     Lists of students that failed a course X, Y, Z ... times, all of them by lack of frequency!

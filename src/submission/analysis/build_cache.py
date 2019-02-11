@@ -44,6 +44,7 @@ def generate_cepe_data(path, df):
     cepe_dict = {}
     cepe_dict["student_fails_course"] = student_fails_course(df)
     cepe_dict["fails_semester"] = fails_semester(df)
+    cepe_dict["fails_by_freq_semester"] = fails_by_freq_semester(df)
     cepe_dict["fails_by_freq"] = fails_by_freq(df)
     save_json(path + "cepe9615.json", cepe_dict)
 
