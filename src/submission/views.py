@@ -6,6 +6,8 @@ from submission.models import Submission
 from submission.forms import SubmissionForm
 from degree.models import Degree
 from submission.analysis import main as submission_analysis
+from multiprocessing import Process
+from django.http import HttpResponseRedirect
 
 class SubmissionCreate(SuccessMessageMixin, CreateView):
     model = Submission
@@ -30,9 +32,12 @@ class SubmissionCreate(SuccessMessageMixin, CreateView):
 
         response = super(SubmissionCreate, self).form_valid(form)
 
-        submission_analysis.analyze(self.object, debug=False)
+        #submission_analysis.analyze(self.object, debug=False)
+        analysis = Process(target=submission_analysis.analyze, args=(self.object, False))
+        analysis.start()
 
-        return response
+        #return response
+        return HttpResponseRedirect('/adega/submission')
 
 
 class SubmissionUpdate(UpdateView):
