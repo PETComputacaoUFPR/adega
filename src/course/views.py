@@ -15,7 +15,12 @@ def detail(request, submission_id, codigo_disciplina):
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
-    course_detail = get_course_detail(request.session, degree, codigo_disciplina)
+    course_detail = get_course_detail(
+        request.session,
+        degree,
+        codigo_disciplina,
+        submission_id
+    )
     
     return render(request, 'course/detail.html',{
         "analysis_result": course_detail,
@@ -34,7 +39,7 @@ def index(request, submission_id):
     if not (degree in request.user.educator.degree.all()):
         return redirect("adega:dashboard")
 
-    analysis_result = get_list_courses(request.session, degree)
+    analysis_result = get_list_courses(request.session, degree, submission_id)
     courses_list = analysis_result["cache"]
     code_to_name = analysis_result["disciplinas"]
     for code in courses_list:
