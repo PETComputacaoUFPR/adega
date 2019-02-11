@@ -17,7 +17,7 @@ def detail(request, submission_id, ano, semestre):
         return redirect("adega:dashboard")
     
     
-    for admission in get_list_admission(request.session, degree):
+    for admission in get_list_admission(request.session, degree, submission_id):
         if(admission["ano"] == ano and admission["semestre"] == semestre):
             admission_info = admission
             break
@@ -26,7 +26,8 @@ def detail(request, submission_id, ano, semestre):
         request.session,
         degree,
         ano,
-        semestre
+        semestre,
+        submission_id
     )
 
     for x in admission_detail:
@@ -51,7 +52,11 @@ def index(request, submission_id):
         return redirect("adega:dashboard")
 
     return render(request, 'admission/index.html', {
-        "listage_admissions": get_list_admission(request.session, degree),
+        "listage_admissions": get_list_admission(
+            request.session,
+            degree,
+            submission_id
+        ),
         "degree": degree,
         "submission": submission
     })
