@@ -80,7 +80,7 @@ def clean_history(df):
 
     df.drop(drop_columns, axis=1, inplace=True)
 
-    df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
+    # df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
 
 
 def clean_register(df):
