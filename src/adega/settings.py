@@ -12,9 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 from django.contrib import messages
+env = os.environ.copy()
 
-import os
-print()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,8 +23,7 @@ PROJECT_DIR = os.path.join(BASE_DIR, '..')
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e#-^aknk(5k)ej6rh#h$i(%h(m9)-j*lwrc_1dxnk=a@-mixlt'
-
+SECRET_KEY = env.get("SECRET_KEY", 'e#-^aknk(5k)ej6rh#h$i(%h(m9)-j*lwrc_1dxnk=a@-mixlt'),
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['VERSION'] == "DEVELOPMENT"
 
@@ -102,13 +100,14 @@ WSGI_APPLICATION = 'adega.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'adega',
-        'USER': 'adega',
-        'PASSWORD': 'adega',
-        'HOST': 'adega_db_1',
-        'PORT': '5432',
+        'NAME': env.get("POSTGRES_DB", "adega"),
+        'USER': env.get("POSTGRES_USER", "adega"),
+        'PASSWORD': env.get("POSTGRES_PASSWORD", "adega"),
+        'HOST': env.get("POSTGRES_HOST", "adega_db_1"),
+        'PORT': env.get("POSTGRES_PORT", "5432")
     }
 }
+
 
 
 AUTHENTICATION_BACKENDS = ['public.auth.EmailBackend']
