@@ -6,9 +6,6 @@ from datetime import timedelta
 
 
 def analyze(submission, debug=True):
-    print(submission.path())
-
-
     start_time = time.clock()
     start_time_exec = time.time()
     try:

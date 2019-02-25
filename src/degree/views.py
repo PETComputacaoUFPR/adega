@@ -13,11 +13,12 @@ def index(request, submission_id):
     submission_id = int(submission_id)
 
     submission = Submission.objects.get(id=submission_id)
+
     degree = submission.degree
 
 
     if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
+        return redirect("dashboard")
 
     degree_data = get_degree_information(request.session,degree, submission_id=submission_id)
     return render(request,"degree/index.html",{

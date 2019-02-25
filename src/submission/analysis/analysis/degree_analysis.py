@@ -88,14 +88,24 @@ def average_graduation_time(df):
     total_graduate = graduates.shape[0]
     average_time = 0
     year_end = int(df['ANO'].max())
-    semester_end = graduates['PERIODO'].max()
     for index, row in graduates.iterrows():
         if pd.notnull(row['ANO_EVASAO']):
             year_end = int(row['ANO_EVASAO'])
             try: 
                 semester_end = int(row['SEMESTRE_EVASAO'])
             except ValueError:
-                semester_end = graduates['PERIODO'].max()
+                try:
+                    evasion_dt = int(row["DT_EVASAO"].split("/")[1])
+                    if(evasion_dt > 7):
+                        semester_end = 2
+                    else:
+                        semester_end = 1
+                except ValueError:
+                    # TODO: Some students will be not considered
+                    # The interface must inform the user this information
+                    # and how many students wasnt considered
+                    continue
+
         year = int(row['ANO_INGRESSO'])
         semester = int(row['SEMESTRE_INGRESSO'])
         difference = 2 * (year_end - year) + (semester_end - semester) + 1
