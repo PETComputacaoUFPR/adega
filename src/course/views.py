@@ -49,3 +49,53 @@ def index(request, submission_id):
         "courses": courses_list,
         "submission": submission
     })
+
+def compare(request, submission_id):
+    print(request,submission_id)
+    submission_id = int(submission_id)
+    print(submission_id)
+
+    submission = Submission.objects.get(id=submission_id)
+    degree = submission.degree
+
+    if not (degree in request.user.educator.degree.all()):
+        return redirect("adega:dashboard")
+
+    analysis_result = get_list_courses(request.session, degree, submission_id)
+    courses_list = analysis_result["cache"]
+    code_to_name = analysis_result["disciplinas"]
+    
+    # TODO: The data of one graph is in another file (detail file)
+    # The analysis must be changed to join the information.
+    # Even if the data is redundant
+    
+    charts = {
+        "compara_aprov": analysis_result["compara_aprov"]
+    }
+    
+    chart_approvation_rate = {}
+    for course_name in courses_list:
+        course_detail = get_course_detail(request.session, degree, course_name, submission_id)
+        chart_approvation_rate[course_name] = course_detail["aprovacao_semestral"]
+    
+    charts["approvation_rate"] = chart_approvation_rate
+
+    courses_info = {}
+    course_names = {}
+    for code in courses_list:
+        courses_list[code]["name"] = code_to_name[code]
+        course_names[code] = courses_list[code]["name"]
+        
+        courses_info[code] = {
+            "grade_mean": courses_list[code]["nota"],
+            "fail_rate": courses_list[code]["taxa_reprovacao_absoluta"],
+            "fail_rate_presence": courses_list[code]["taxa_reprovacao_frequencia"],
+            "lock_rate": courses_list[code]["taxa_trancamento"]
+        }
+
+    return render(request, 'course/compare.html', {
+        "charts": charts,
+        "submission": submission,
+        "course_names": course_names,
+        "courses_info": courses_info,
+    })

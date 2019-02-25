@@ -12,7 +12,14 @@ class AdegaChart{
         this.legend = config.legend || null;
 
         this.barmode = config.barmode || "stack";
-
+        
+        this.yaxis_title = config.yaxis_title || "";
+        this.yaxis2_title = config.yaxis2_title || "";
+        this.xaxis_title = config.xaxis_title || "";
+        
+        this.mode = config.mode;
+        
+        this.marker = config.marker;
 
         if(config.data == null){
             this.data_x = config.data_x;
@@ -75,8 +82,6 @@ class AdegaChart{
 
     transformToAcumulation(){
         var number_lines = this.data_y.length;
-        
-        
 
         for(var i in this.data_y){
             var acumulation = 0;
@@ -99,7 +104,7 @@ class AdegaChart{
                     y: this.data_y[i],
                     type: this.type[i],
                     fill: this.fill,
-                    yaxis: this.data_axis_y[i]
+                    yaxis: this.data_axis_y[i],
                 }
             );
             
@@ -114,13 +119,22 @@ class AdegaChart{
                     visible: true,
                 }
             }
+            if(this.mode && this.mode[i]){
+                data[i].mode = this.mode[i];
+            }
+            if(this.marker != undefined){
+                data[i].marker = this.marker;
+            }
         }
 
         var layout = {
             title: this.title,
             showlegend: true,
+            xaxis:{
+                title:this.xaxis_title
+            },
             yaxis: {
-                // title: 'yaxis title',
+                title: this.yaxis_title,
                 rangemode: 'tozero'
                 // overlaying: 'y'
             },
@@ -130,7 +144,8 @@ class AdegaChart{
                 // tickfont: {color: 'rgb(148, 103, 189)'},
                 overlaying: 'y1',
                 side: 'right',
-                rangemode: 'tozero'
+                rangemode: 'tozero',
+                title: this.yaxis2_title,
             },
             barmode: this.barmode
         };

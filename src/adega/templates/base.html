@@ -6,22 +6,25 @@
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
     <title>{% if title %}{{ title}} | {% endif %}A.D.E.G.A.</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/> -->
+    
+    <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}"/>
+    
     <link rel="stylesheet" href="{% static 'flatly/bootstrap.css' %}"/>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
     <link rel="stylesheet" href="{% static 'fontawesome5/css/fa-regular.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'adega/css/styles.css' %}"/>
 
-    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script defer src="{% static 'bootstrap4/js/bootstrap.bundle.min.js' %}"></script>
     
-    <script defer src="{% static 'adega/js/scripts.js' %}"></script>
 
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic" as="style"/>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.css" /> -->
     
+    <link rel="stylesheet" href="{% static 'bootstrap-select/css/bootstrap-select.min.css' %}"/>
     
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
   </head>
   <body>
     <section id="header">
@@ -29,11 +32,11 @@
     </section>
     <section id="wrap-page" class="container-fluid">
       <div class="row" style="min-height:100%">
-        <aside class="col-md-2 sidebar">
+        <nav class="col-md-2 sidebar">
             {% if not hide_navbar %}
               {% include 'adega/sidebar.html' %}
             {% endif %}
-        </aside>
+        </nav>
         <section class="col-md-10">
           {% if messages %}
           <div id="messages">
@@ -74,18 +77,34 @@
     </footer>
   </body>
 
-  <script src="{% static 'adega/js/plotly-latest.min.js' %}"></script>
-  <script src="{% static 'jquery/jquery-3.3.1.js' %}"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+  
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+  
+  <script src="{% static 'bootstrap4/js/bootstrap.bundle.min.js' %}"></script>
+  
+  <script src="{% static 'adega/js/scripts.js' %}"></script>
+  
+
+  <script src="{% static 'adega/js/plotly-latest.min.js' %}"></script>
+  
+  
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
   
   <script src="{% static 'adega/js/adega-chart.js' %}"></script>
 
 
-  <link rel="stylesheet" href="{% static 'datatables/dataTables.bootstrap.min.css' %}"/>
   <script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     
   
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js"></script> -->
+  <script>
+    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+  </script>
 
   {% block js-foot %}
     
