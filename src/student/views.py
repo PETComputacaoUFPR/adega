@@ -9,7 +9,9 @@ from report_api.views import get_list_students, get_student_detail
 import json
 
 from submission.models import Submission
+from guardian.decorators import permission_required_or_403
 
+@permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def detail(request, submission_id, grr):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
@@ -46,6 +48,7 @@ def detail(request, submission_id, grr):
 
 
 
+@permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def index(request, submission_id):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'widget_tweaks',
+    'guardian',
 
     'adega',
     'public',
@@ -104,8 +105,13 @@ DATABASES = {
     }
 }
 
-AUTHENTICATION_BACKENDS = ['public.auth.EmailBackend']
+AUTHENTICATION_BACKENDS = [
+        'public.auth.EmailBackend',
+        'guardian.backends.ObjectPermissionBackend',
 
+        ]
+
+ANONYMOUS_USER_NAME = "Público"
 
 LOGIN_URL = 'public:index'
 

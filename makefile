@@ -47,7 +47,7 @@ docker-production:
 	docker-compose --project-directory . -f docker_scripts/docker-production.yml -p adega up
 
 docker-remove-all:
-	docker rm adega_web_1 adega_db_1
+	docker rm adega_web adega_db_1
 	docker rmi adega_web
 
 
@@ -68,6 +68,6 @@ args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
 docker-manage:
 	@echo $(call args,"")
-	docker exec -it adega_web_1 bash -c "cd src; python3 manage.py $(call args,'')"  
+	docker exec -it adega_web bash -c "cd src; python3 manage.py $(call args,'')"  
 	
 

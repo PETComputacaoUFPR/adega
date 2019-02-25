@@ -6,8 +6,10 @@ from django.contrib import messages
 from degree.models import Degree
 from report_api.views import get_list_admission, get_admission_detail
 from submission.models import Submission
+from guardian.decorators import permission_required_or_403
 
 
+@permission_required_or_403('view_admission', (Submission, 'id', 'submission_id'))
 def detail(request, submission_id, ano, semestre):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
@@ -43,6 +45,7 @@ def detail(request, submission_id, ano, semestre):
     })
 
 
+@permission_required_or_403('view_admission', (Submission, 'id', 'submission_id'))
 def index(request, submission_id):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
