@@ -5,16 +5,47 @@ from submission.analysis.utils.situations import Situation, EvasionForm
 
 
 def average_graduation(df):
+    """
+    This function calculates the ratio of students who have already graduated
+    to number of students on the original dataframe.
+
+    Parameters
+    ----------
+    df : DataFrame
+
+    Returns
+    -------
+    float
+
+    Examples
+    --------
+    13.395865237366003
+    """
     total_student = df['MATR_ALUNO'].drop_duplicates().shape[0]
     total_graduate = df[df.FORMA_EVASAO == EvasionForm.EF_FORMATURA].shape[0]
-
     return total_graduate / total_student
 
 
 def general_failure(df):
+    """
+    This function
+
+    Parameters
+    ----------
+    df : DataFrame
+
+    Returns
+    -------
+    float
+
+    Examples
+    --------
+    13.395865237366003
+    """
     affect_ira = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     failures = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_FAIL)]
 
+    # average = reprovados/
     average = failures.shape[0] / affect_ira.shape[0]
 
     student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
@@ -91,7 +122,7 @@ def average_graduation_time(df):
     for index, row in graduates.iterrows():
         if pd.notnull(row['ANO_EVASAO']):
             year_end = int(row['ANO_EVASAO'])
-            try: 
+            try:
                 semester_end = int(row['SEMESTRE_EVASAO'])
             except ValueError:
                 try:
@@ -129,6 +160,19 @@ def taxa_abandono(df):
     return total_abandono / total_student
 
 def average_ira_graph(df):
+    """
+
+    Parameters
+    ----------
+    df :
+
+    Returns
+    -------
+
+
+    Example
+    --------
+    """
     alunos = df.drop_duplicates('MATR_ALUNO')
 
     dic = build_dict_ira_medio(alunos)
@@ -155,7 +199,7 @@ def period_evasion_graph(df):
     di_qtd = {}
     dic = {}
     evasions_total = 0
-    
+
     # Discover the minimum and maximum values for year
     year_start = int(df['ANO'].min())
     year_end = int(df['ANO'].max()) + 1
@@ -186,11 +230,11 @@ def period_evasion_graph(df):
             # Name of string on dictionary generated
             date = str(year) + ' {}º Período'.format(semester)
             di_qtd[date] = evasions
-            
+
             # Count the total of evasions identified, that will be
             # used to compute the rate
             evasions_total += evasions
-    
+
     # If at least one evasion was computed
     if evasions_total:
         # Compute the ratio of evasion per
@@ -198,7 +242,7 @@ def period_evasion_graph(df):
         for di in di_qtd:
             qtd = di_qtd[di]
             dic[di] = {'qtd': qtd, 'taxa': (float(qtd)/evasions_total)*100}
-    
+
     return dic
 
 def build_dict_ira_medio(alunos):
@@ -221,21 +265,49 @@ def build_dict_ira_medio(alunos):
 
     return dic
 
-def build_degree_json(path,df):
-    
-    def merge_dicts(dict1, dict2, dict3):
-        dict_out = {}
-        for key, value in dict1.items():
-            v2 = dict2[key] if key in dict2 else None
-            v3 = dict3[key] if key in dict3 else None
-            dict_out[key] = {
-                'ira_medio': value,
-                'sem_evasao': v2,
-                'formatura': v3
-            }
-        
-        return dict_out
 
+def merge_dicts(dict1, dict2, dict3):
+    """
+    Makes a dict for the STUDENTS per IRA GRAPH.
+
+    Takes 3 dictionaries whose keys are IRA ranges and merge them.
+    Each IRA range (dict_out's keys) got as value a dictionary with 3 itens:
+    number of all students with the IRA range;
+    number of students attending University with the IRA range;
+    number of graduated students with with the IRA range;
+
+    Parameters
+    ----------
+    df : 3 dicts
+
+    Returns
+    -------
+    dict of dict
+
+    Example
+    --------
+        {'05-9.9': {'sem_evasao': 9,
+                    'formatura': 3,
+                    'ira_medio': 43},
+        '10-14.9': {'sem_evasao': 12,
+                    'formatura': 7,
+                    'ira_medio': 37},
+        ...}
+    """
+    dict_out = {}
+    for key, value in dict1.items():
+        v2 = dict2[key] if key in dict2 else None
+        v3 = dict3[key] if key in dict3 else None
+        dict_out[key] = {
+            'ira_medio': value,
+            'sem_evasao': v2,
+            'formatura': v3
+        }
+    print (dict_out)
+    return dict_out
+
+
+def build_degree_json(path,df):
     dic = merge_dicts(
         average_ira_graph(df),
         current_students_average_ira_graph(df),
