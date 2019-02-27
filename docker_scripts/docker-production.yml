@@ -1,12 +1,14 @@
 version: '3'
 services:
     db:
+        restart: always
         image: postgres
         environment:
-            - POSTGRES_USER=adega
-            - POSTGRES_PASSWORD=adega
-            - POSTGRES_DB=adega
+            - POSTGRES_USER=${pg_user}
+            - POSTGRES_PASSWORD=${pg_password}
+            - POSTGRES_DB=${pg_database}
     web:
+        restart: always
         build:
             context: .
             dockerfile: ./docker_scripts/Dockerfile
@@ -20,20 +22,23 @@ services:
         depends_on:
             - db
         environment:
-            - POSTGRES_USER=adega
-            - POSTGRES_PASSWORD=adega
-            - POSTGRES_DB=adega
-            - POSTGRES_HOST=adega_db
+            - POSTGRES_USER=${pg_user}
+            - POSTGRES_PASSWORD=${pg_password}
+            - POSTGRES_DB=${pg_database}
+            - POSTGRES_HOST=adega_db_1
+              #- SECRET_KEY=${token}
             - VERSION=PRODUCTION
 
     nginx:
         restart: always
         build: ./nginx/
         ports:
-            - "8000:80"
+            - "80:80"
+            - "443:443"
         depends_on:
             - web
         links:
             - web:web
         volumes:
             - ./static:/adega/static
+            - /etc/ssl:/ssl
