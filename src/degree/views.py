@@ -17,13 +17,10 @@ def index(request, submission_id):
     degree = submission.degree
 
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("dashboard")
-
-    degree_data = get_degree_information(request.session,degree, submission_id=submission_id)
-    return render(request,"degree/index.html",{
-        "submission":submission,
+    degree_data = get_degree_information(request.session, degree, submission_id=submission_id)
+    return render(request, "degree/index.html", {
+        "submission": submission,
         "degree": degree,
-        "degree_data":degree_data
+        "degree_data": degree_data
     })
 

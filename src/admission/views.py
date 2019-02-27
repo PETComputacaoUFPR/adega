@@ -15,8 +15,6 @@ def detail(request, submission_id, ano, semestre):
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
     
     
     for admission in get_list_admission(request.session, degree, submission_id):
@@ -51,8 +49,6 @@ def index(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
     return render(request, 'admission/index.html', {
         "listage_admissions": get_list_admission(

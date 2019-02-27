@@ -17,8 +17,6 @@ def detail(request, submission_id, grr):
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
     cache_j = get_student_detail(
         request.session,
@@ -54,8 +52,6 @@ def index(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
 
     sem_evasao = get_list_students(
