@@ -8,17 +8,22 @@ from report_api.views import get_list_students, get_student_detail
 
 import json
 
-from uploads.models import Submission
+from submission.models import Submission
+from guardian.decorators import permission_required_or_403
 
+@permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def detail(request, submission_id, grr):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
-    cache_j = get_student_detail(request.session, degree, grr)
+    cache_j = get_student_detail(
+        request.session,
+        degree,
+        grr,
+        submission_id
+    )
 
 
     analysis_result = {
@@ -41,20 +46,44 @@ def detail(request, submission_id, grr):
 
 
 
+@permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def index(request, submission_id):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
 
-    sem_evasao = get_list_students(request.session, degree, "Sem evasão")
-    formatura = get_list_students(request.session, degree, "Formatura")
-    abandono = get_list_students(request.session, degree, "Abandono")
-    desistencia = get_list_students(request.session, degree, "Desistência")
-    outros = get_list_students(request.session, degree, "Outro")
+    sem_evasao = get_list_students(
+        request.session,
+        degree,
+        "Sem evasão",
+        submission_id
+    )
+    formatura = get_list_students(
+        request.session,
+        degree,
+        "Formatura",
+        submission_id
+    )
+    abandono = get_list_students(
+        request.session,
+        degree,
+        "Abandono",
+        submission_id
+    )
+    desistencia = get_list_students(
+        request.session,
+        degree,
+        "Desistência",
+        submission_id
+    )
+    outros = get_list_students(
+        request.session,
+        degree,
+        "Outro",
+        submission_id
+    )
 
     return render(request, 'student/index.html', {
         'degree': degree,

@@ -93,8 +93,7 @@ footer h3 {
     padding:0;
 }
 
-.sidebar li,
-.sidebar li div {
+.nav-item {
     display: flex;
 }
 

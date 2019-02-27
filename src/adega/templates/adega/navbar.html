@@ -1,15 +1,30 @@
-<nav class="navbar-expand-lg navbar-dark bg-primary">
-    <div class="col-md-2">
-    <a class="navbar-brand" href="{% url 'dashboard' %}">ADEGA</a>
-  </div>
-  <div class="collapse navbar-collapse" id="navbartoggle">
-    <span class="navbar-brand mr-auto">
-        {% if degree != None %} 
-        <a href="{% url 'degree:index' submission_id=submission.id%}">{{degree.name}} </a>
-        {% endif %}
-    </span>
-
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="navbar-item navbar-text">
+                    <a class="navbar-brand" href="{% url 'dashboard' %}">ADEGA</a>
+                    <span class="navbar-brand mr-auto">
+                        <!-- {% if degree != None %} 
+                        <a href="{% url 'degree:index' submission_id=submission.id%}">{{degree.name}} </a>
+                        {% endif %} -->
+                    </span>
+                </li>
+                <li class="navbar-item navbar-text">
+                    <a class="nav-link" href="{% url 'dashboard' %}">Início</a>
+                </li>
+                <li class="navbar-item navbar-text">
+                    <a class="nav-link" href="{% url 'submission:SubmissionListView' %}">Relatórios</a>
+                </li>
+            </ul>
+        </div>
+        
+        <ul class="nav navbar-nav navbar-right">
+            <li class="navbar-item navbar-text">
+                <a class="nav-link" href="{% url 'logout' %}">Sair</a>
+            </li>
+        </ul>
+    </div>
     {% comment %}
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -26,25 +41,18 @@
         </ul>
     </li>
     {% endcomment %}
-    <span class="navbar-text">
-            <a href="{% url 'dashboard' %}">Início</a>
-        </span>
-    <span class="navbar-text">
-        <a href="{% url 'uploads:SubmissionListView' %}">Relatórios</a>
-    </span>
-    &nbsp;&nbsp;&nbsp;
+    
+    
     {% comment %}
     <form class="form-inline my-2 my-lg-0" id="navbarsearch">
-      <input class="form-control mr-sm-2" placeholder="Buscar" type="text">
-      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Buscar</button>
+    <input class="form-control mr-sm-2" placeholder="Buscar" type="text">
+    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Buscar</button>
     </form>
     &nbsp;&nbsp;&nbsp;
     {% endcomment %}
-    <div class="col-md-1">
-    <span class="navbar-text"><a href="{% url 'logout' %}">Sair</a></span>
-</div>
-  </div>
-</nav>
+</nav> 
+
+
 {% comment %}
 <nav class="navbar navbar-expand-md navbar-dark flex-column flex-lg-row bg-dark">
         <!-- Brand and toggle get grouped for better mobile display -->
