@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+
+
 {% block content %}
 
 <div class="alert alert-warning" role="alert">
@@ -33,36 +35,124 @@
 	
 </div>
 
-<div class="formBox form-group">
-	<form method="post" enctype="multipart/form-data" >
+
+<div class="formBox form-group ">
+    <form id="form_sub" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 		{% csrf_token %}
+        
+        <!-- Uploads files -->
+        <div class="form-row">
+            <div class="col-lg-5 col-md-5 col-sm-4">
+                <label for="historico" type="file"
+                    class="custom-file-label">Histórico</label>
+                <input type="file" name="historico"
+                class="custom-file-input" id="historico"/>
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-4 offset-lg-1 offset-md-1">
+                <label for="matricula" class="custom-file-label">Matrícula</label>
+                <input type="file" name="matricula" id="matricula"
+                class="custom-file-input"/>
+            </div>
+            
+        </div>
+
+        <!-- Integer field -->
+        <div class="form-row">
+            <div class="col-lg-5 col-md-5">
+                <label for="relative_year">Ano do relatório</label>
+                <input type="number" class="form-control" name="relative_year" id="relative_year"
+                                                        value="{{form.relative_year.field.initial}}" />
+            </div>
+            
+            <div class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
+                <label for="relative_semester">Semestre do relatório</label>
+                <input type="number" class="form-control" name="relative_semester" id="relative_semester"
+                                                        value="{{form.relative_semester.field.initial}}" />
+            </div>
+        </div>
+
+        <!-- Select field -->
+        <div class="form-row">
+            <div class="col-lg-5 col-md-5">
+               <label>Selecione o status do semestre</label>
+               <select name="semester_status" class="browser-default custom-select" id="semester_status">
+                   {% for choice in form.semester_status.field.choices %}
+                   <option value="{{choice.0}}">{{choice.1}}</option>
+                   {% endfor %}
+               </select> 
+            </div>
+
+
+            <div class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
+               <label>Selecione o curso de graduação</label>
+               <select name="degree" class="browser-default custom-select" id="degree">
+                   {% for choice in form.degree.field.choices %}
+                   <option value="{{choice.0}}">{{choice.1}}</option>
+                   {% endfor %}
+               </select> 
+            </div>
+
+        </div>
+
+        <!-- Permissions -->
+        <div class="row">
+            <table class="table table-striped" id="ptable" >
+              <thead >
+                  <tr>
+                    <th rowspan="3">Usuário</th>
+                    <th colspan="5">Permissões</th>
+                  </tr>
+                  <tr>
+                    {% for permission in permissions %}
+                      <th scope="col"> {{permission}}</th>
+                    {% endfor %}
+                  </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                  <tr>
+                    <th>{{user}}</th>
+                    {% for permission in perms %}
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input position-static"
+                                 type="checkbox"
+                                 id="perm-{{user}}-{{permission}}"
+                                 name="perm-{{user}}-{{permission}}"
+                                 value=1 aria-label="...">
+                        </div>
+                      </td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+        
 		<div class="row">
-			<div class="col-lg-3 col-md-4 col-sm-4">
-				{{ form.as_p }}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-3 col-md-4 col-sm-4">
+			<div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
 				<button class="btn btn-success btn-block" type="submit">Enviar relatório</button>
 			</div>
 			<div class="col-lg-3 col-md-4 col-sm-4">
 				<button class="btn btn-danger btn-block" type="submit">Cancelar</button>
 			</div>
 		</div>
-	</form>
+    </form>
+    
 </div>
-
-<script charset="utf-8">
-  $("input[type=file]").change(function () {
-	var fieldVal = $(this).val();
-
-	// Change the node's value by removing the fake path (Chrome)
-	fieldVal = fieldVal.replace("C:\\fakepath\\", "");
-		
-	if (fieldVal != undefined || fieldVal != "") {
-		$(this).next(".custom-file-label").attr('data-content', fieldVal);
-		$(this).next(".custom-file-label").text(fieldVal);
-	}
-});
-</script>
 {% endblock content %}
+
+{% block js-foot %}
+    <script src="{% static 'datatables/jquery.dataTables.min.js' %}">
+          $('#ptable').dataTable({
+            "bPaginate": true,
+            "bInfo": false,
+            "aaSorting": [[ 1, "desc" ]],
+            "responsive": true
+   });
+    
+    </script>
+    
+{% endblock js-foot %}
+
