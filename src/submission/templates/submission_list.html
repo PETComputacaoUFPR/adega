@@ -53,8 +53,10 @@
 							<td>{{sub.timestamp}}</td>
 							<td class="table-primary bg-primary bg-white">
 								<!-- <a href="{% url 'submission:SubmissionDetailView' sub.pk %}">Detalhes </a><br> -->
-								<a href="{% url 'submission:SubmissionUpdateView' sub.pk %}">Editar </a><br>
-								<a href="{% url 'submission:SubmissionDeleteView' sub.pk %}">Remover </a><br>
+								<!-- <a href="{% url 'submission:SubmissionUpdateView' sub.pk %}">Editar </a><br> -->
+								{% if sub.get_analysis_status_display != 'Executando' %}
+									<a href="{% url 'submission:SubmissionDeleteView' sub.pk %}">Remover </a><br>
+								{% endif %}
 								{% if sub.get_analysis_status_display == 'Terminado' %}
 									<a href="{% url 'degree:index' submission_id=sub.id %}"> Visualizar relatório (gráficos e taxas) </a>
 								{% endif %}

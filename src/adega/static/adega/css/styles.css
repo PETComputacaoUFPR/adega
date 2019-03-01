@@ -55,10 +55,10 @@ h1#title {
 /* =========================================  FOOTER */
 
 footer {
-    background-color: #263646;
-    border-top: 4px solid #31c2e4;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    background-color: #132940;
+    /* border-top: 1px solid #001a2054; */
+    padding-top: 10px;
+    padding-bottom: 10px;
     color: #FFF;
 }
 
@@ -83,9 +83,18 @@ footer h3 {
 .sidebar {
     transition: all 0.5s ease-in-out;
     padding: 0;
-    background-color: #2f4861;
+    background-color: #132940;
     min-height: 100%;
 }
+
+.navbar {
+    transition: all 0.5s ease-in-out;
+    background-color: #132940;
+}
+
+.sidebar > li > .dropdown-menu { background-color:#1a2c3f; }
+.sidebar > li > a { background-color:#1a2c3f; }
+.sidebar > li > button { background-color:#1a2c3f; }
 
 .sidebar ul {
     list-style:none;

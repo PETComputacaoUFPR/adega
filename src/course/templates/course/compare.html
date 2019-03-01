@@ -161,7 +161,6 @@
             div_target: "approvation_rate",
             title: "Taxa de aprovação por semestre",
             fill: "none",
-            legend: ["Taxa de aprovação","Quantidade de alunos"],
             type: ["scatter", "scatter"],
             mode: ["lines+markers", "lines+markers"],
             legend: [codeCourse1,codeCourse2],
@@ -174,20 +173,21 @@
         });
     }
 
+    function to_percent(value){
+        return ((value*100).toFixed(2)) + "%";
+    }
     function updateCourseInfo(){
         var grade_mean_1 = courses_info[codeCourse1].grade_mean;
-        var grade_mean_2 = courses_info[codeCourse1].grade_mean;
         $("#grade_mean_1").html(grade_mean_1[0].toFixed(2)+" &plusmn "+grade_mean_1[1]);
-        $("#fail_rate_1").html(courses_info[codeCourse1].fail_rate);
-        $("#fail_rate_presence_1").html(courses_info[codeCourse1].fail_rate_presence);
-        $("#lock_rate_1").html(courses_info[codeCourse1].lock_rate);
-
-        grade_mean_1 = courses_info[codeCourse1].grade_mean;
-        grade_mean_2 = courses_info[codeCourse1].grade_mean;
+        $("#fail_rate_1").html(to_percent(courses_info[codeCourse1].fail_rate));
+        $("#fail_rate_presence_1").html(to_percent(courses_info[codeCourse1].fail_rate_presence));
+        $("#lock_rate_1").html(to_percent(courses_info[codeCourse1].lock_rate));
+        
+        var grade_mean_2 = courses_info[codeCourse2].grade_mean;
         $("#grade_mean_2").html(grade_mean_2[0].toFixed(2)+" &plusmn "+grade_mean_2[1]);
-        $("#fail_rate_2").html(courses_info[codeCourse2].fail_rate);
-        $("#fail_rate_presence_2").html(courses_info[codeCourse2].fail_rate_presence);
-        $("#lock_rate_2").html(courses_info[codeCourse2].lock_rate);
+        $("#fail_rate_2").html(to_percent(courses_info[codeCourse2].fail_rate));
+        $("#fail_rate_presence_2").html(to_percent(courses_info[codeCourse2].fail_rate_presence));
+        $("#lock_rate_2").html(to_percent(courses_info[codeCourse2].lock_rate));
     }
     $("#selectCourse1").change(function(){
         codeCourse1 = $(this).val();

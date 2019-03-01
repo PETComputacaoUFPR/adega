@@ -80,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
             ],
+            'libraries':{
+                'adega_templatetag': 'adega.templatetags.adega_templatetag',
+            }
         },
     },
 ]

@@ -43,16 +43,16 @@
         <!-- Uploads files -->
         <div class="form-row">
             <div class="col-lg-5 col-md-5 col-sm-4">
-                <label for="historico" type="file"
-                    class="custom-file-label">Histórico</label>
                 <input type="file" name="historico"
                 class="custom-file-input" id="historico"/>
+                <label for="historico" type="file"
+                    class="custom-file-label">Histórico</label>
             </div>
 
             <div class="col-lg-5 col-md-5 col-sm-4 offset-lg-1 offset-md-1">
-                <label for="matricula" class="custom-file-label">Matrícula</label>
                 <input type="file" name="matricula" id="matricula"
                 class="custom-file-input"/>
+                <label for="matricula" class="custom-file-label">Matrícula</label>
             </div>
             
         </div>
@@ -87,14 +87,14 @@
             <div class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
                <label>Selecione o curso de graduação</label>
                <select name="degree" class="browser-default custom-select" id="degree">
-                   {% for choice in form.degree.field.choices %}
-                   <option value="{{choice.0}}">{{choice.1}}</option>
-                   {% endfor %}
+                    {% for degree in degree_options %}
+                    <option value="{{degree.id}}">{{degree.name}}</option>
+                    {% endfor %}
                </select> 
             </div>
 
         </div>
-
+        <br>
         <!-- Permissions -->
         <div class="row">
             <table class="table table-striped" id="ptable" >
@@ -145,13 +145,23 @@
 
 {% block js-foot %}
     <script src="{% static 'datatables/jquery.dataTables.min.js' %}">
-          $('#ptable').dataTable({
+        $('#ptable').dataTable({
             "bPaginate": true,
             "bInfo": false,
             "aaSorting": [[ 1, "desc" ]],
             "responsive": true
-   });
-    
+        });
+    </script>
+
+    <script>
+        // Change the file input to add its name
+        $('.custom-file-input').on('change',function(e){
+            //get the file name
+            // var fileName = $(this).val();
+            var fileName = e.target.files[0].name;
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(fileName);
+        })
     </script>
     
 {% endblock js-foot %}

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load adega_templatetag %}
+
 {% block content%}
 <div class="row">
     <div class="col-md-12">
@@ -10,28 +12,29 @@
                     <td>{{degree_data.qtd_alunos_atuais}}</td>
                 </tr>
                 <tr>
-                    <td>I.R.A. médio desde o inicio do curso</td>
+                    <td>IRA médio desde o inicio do curso</td>
                     <td>{{degree_data.ira_medio.0|floatformat:2}} &#177;
                         {{degree_data.ira_medio.1|floatformat:2}}</td>
                 </tr>
                 <tr>
-                    <td> I.R.A. médio dos alunos atualmente no curso</td>
+                    <td> IRA médio dos alunos atualmente no curso</td>
                     <td>{{degree_data.ira_atual.0|floatformat:2}} &#177; {{degree_data.ira_atual.1|floatformat:2}}</td>
                 </tr>
                 <tr>
                     <td>Taxa de reprovação desde o inicio do curso</td>
-                    <td>{{ degree_data.taxa_reprovacao.0|floatformat:2 }}%
-                        &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</td>
+                    <td>{{ degree_data.taxa_reprovacao.0 | to_percent }}
+                        &#177; {{degree_data.taxa_reprovacao.1 | to_percent }}</td>
                 </tr>
                 <tr>
                     <td>Taxa de reprovação dos alunos atualmente no curso</td>
 
-                    <td>{{ degree_data.taxa_reprovacao_atual.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao_atual.1|floatformat:2}}%</td>
+                    <td>{{ degree_data.taxa_reprovacao_atual.0|to_percent }}
+                         &#177; {{degree_data.taxa_reprovacao_atual.1|to_percent}}</td>
                 </tr>
                 <tr>
                 {% comment %}
                     <td>Média de formandos (de {{ degree_data.total_alunos }} alunos)</td>
-                    <td>{{ degree_data.media_formandos|floatformat:2 }}%</td>
+                    <td>{{ degree_data.media_formandos|to_percent }}</td>
                 </tr>
                 <tr>
                     <td>Taxa de evasão desde o inicio do curso</td>
@@ -53,22 +56,22 @@
             <div class="panel-container">
                 <div class="data-panel">
                     <h3>Nota Média</h3>
-                    <span class="data">{{ degree_data.nota_media.0|floatformat:2 }} &#177; {{degree_data.nota_media.1|floatformat:2 }}</span>
+                    <span class="data">{{ 100*degree_data.nota_media.0|to_percent }} &#177; {{100*degree_data.nota_media.1|floatformat:2 }}</span>
                 </div>
                 <div class="data-panel">
                     <h3>Taxa Média de Reprovação</h3>
-                    <span class="data">{{ degree_data.taxa_reprovacao.0|floatformat:2 }}% &#177; {{degree_data.taxa_reprovacao.1|floatformat:2 }}%</span>
+                    <span class="data">{{ 100*degree_data.taxa_reprovacao.0|to_percent }} &#177; {{100*degree_data.taxa_reprovacao.1|to_percent}}</span>
                 </div>
             </div>
             <br>
             <div class="panel-container">
                 <div class="data-panel">
                     <h3>Aprovação Aproveitamento de Conhecimento</h3>
-                    <span class="data">{{ degree_data.taxa_conhecimento.0|floatformat:2 }}% &#177; {{degree_data.taxa_conhecimento.1|floatformat:2 }}%</span>
+                    <span class="data">{{ degree_data.taxa_conhecimento.0|to_percent }} &#177; {{degree_data.taxa_conhecimento.1|to_percent}}</span>
                 </div>
                 <div class="data-panel">
                     <h3>Taxa de Trancamento</h3>
-                    <span class="data">{{ degree_data.taxa_trancamento.0|floatformat:2 }}% &#177;{{degree_data.taxa_trancamento.1|floatformat:2}}%</span>
+                    <span class="data">{{ degree_data.taxa_trancamento.0|to_percent }} &#177;{{degree_data.taxa_trancamento.1|to_percent}}</span>
                 </div>
             </div>
         </div>
@@ -147,34 +150,39 @@
     }
     
     
-    var ira_semestral = {{degree_data.ira_medio_grafico|safe}};
-    var ira_semestral_data = convert_degree_chart_data(ira_semestral);
+    var ira_medio = {{degree_data.ira_medio_grafico|safe}};
+    var ira_medio_data = convert_degree_chart_data(ira_medio);
 
     var evasao_semestre = {{degree_data.evasao_grafico|safe}};
     var evasao_semestre_data = convert_degree_chart_data(evasao_semestre);
+
     // ira_semestral_data will be in format of:
     // {"00-4.9": [10,20,30], "05-9.9": [11,21,31], ...}
-    console.log(evasao_semestre_data);
 
     var chart1 = new AdegaChart({
-      data: ira_semestral_data,
+      data: ira_medio_data,
       div_target: "ira_semestral",
-      title: "Quantidade alunos/IRA",
+      title: "Distribuição de alunos por faixas de IRA",
       fill: "none",
       legend: [
           "Quantidade total de alunos",
           "Quantidade total de alunos sem evasão",
           "Quantidade total de alunos formados"
       ],
+      xaxis_title: "Faixa de IRA",
+      yaxis_title: "Quantidade de alunos",
     });
     var chart2 = new AdegaChart({
       data: evasao_semestre_data,
       div_target: "evasao_semestre",
-      title: "Quantidade evasão/período",
+      title: "Quantidade de evasão em cada período",
       fill: "none",
       type: ["scatter","bar"],
-      legend: ["Taxa", "Quantidade"],
-      data_axis_y: ["y2","y1"]
+      legend: ["Quantidade", "Taxa"],
+      xaxis_title: "Período",
+      yaxis_title: "Quantidade de evasões",
+      yaxis2_title: "Taxa de evasão (em relação ao total)",
+      data_axis_y: ["y1","y2"]
     }); 
 
 
