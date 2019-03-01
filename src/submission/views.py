@@ -24,11 +24,14 @@ class SubmissionCreate(SuccessMessageMixin, CreateView):
     success_message = "Relatório enviado com suceso"
 
     def get_context_data(self, **kwargs):
+        user = self.request.user
         context = super().get_context_data(**kwargs)
-        context["users"] = User.objects.filter(~Q(username=self.request.user.username))
+        context["users"] = User.objects.filter(~Q(username=user.username))
         context["permissions"] = [x[1] for x in Submission._meta.permissions]
         context["perms"] = [x[0] for x in Submission._meta.permissions]
         context["hide_navbar"] = True
+        context["degree_options"] = user.educator.degree.all()
+
         return context
 
     def form_valid(self, form):

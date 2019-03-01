@@ -7,7 +7,6 @@ from submission.models import Submission
 import json
 from guardian.decorators import permission_required_or_403
 
-
 @permission_required_or_403('view_degree', (Submission, 'id', 'submission_id'))
 def index(request, submission_id):
     submission_id = int(submission_id)

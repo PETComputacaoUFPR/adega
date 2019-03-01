@@ -237,8 +237,7 @@ def admission_class_ira_per_semester(df):
         dict_admission.update({admission[0]:dict_ira_semester})
     return dict_admission
 
-def iras_alunos_turmas_ingressos(df):
-    student_analysis = StudentAnalysis(df)
+def iras_alunos_turmas_ingressos(df, student_analysis):
     iras = student_analysis.ira_alunos()
 
     turmas_ingresso_grr = df.groupby([
@@ -264,8 +263,8 @@ def iras_alunos_turmas_ingressos(df):
 
 
 
-def media_ira_turma_ingresso(df):
-    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df)
+def media_ira_turma_ingresso(df, student_analysis):
+    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df, student_analysis)
     # Calcula a média do ira para cada turma_ingresso
     resultados = {}
     for r in iras_alunos_por_turma:
@@ -274,8 +273,8 @@ def media_ira_turma_ingresso(df):
 
     return resultados
 
-def desvio_padrao_turma_ingresso(df):
-    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df)
+def desvio_padrao_turma_ingresso(df, student_analysis):
+    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df, student_analysis)
     # Calcula o desvio padrão para cada turma_ingresso
     resultados = {}
     for r in iras_alunos_por_turma:
