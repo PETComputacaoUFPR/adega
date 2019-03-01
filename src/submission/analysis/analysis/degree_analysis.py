@@ -2,7 +2,8 @@ import math
 import json
 import pandas as pd
 from submission.analysis.utils.situations import Situation, EvasionForm
-
+from submission.analysis.utils import IntervalCount
+from submission.analysis.analysis.student_analysis import *
 
 def average_graduation(df):
     """
@@ -159,24 +160,8 @@ def taxa_abandono(df):
 
     return total_abandono / total_student
 
-def average_ira_graph(df):
-    """
-
-    Parameters
-    ----------
-    df :
-
-    Returns
-    -------
-
-
-    Example
-    --------
-    """
-    alunos = df.drop_duplicates('MATR_ALUNO')
-
-    dic = build_dict_ira_medio(alunos)
-
+def average_ira_graph(student_analysis):
+    dic = build_dict_ira_medio_certo(student_analysis.ira_alunos())
     return dic
 
 def current_students_average_ira_graph(df):
@@ -246,35 +231,82 @@ def period_evasion_graph(df):
     return dic
 
 def build_dict_ira_medio(alunos):
-    dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0, "25-29.9":0, "30-34.9":0,
-           "35-39.9":0, "40-44.9":0, "45-49.9":0, "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0,
-           "70-74.9":0, "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
+    """
+    Cretes a dict with IRA intevals as keys
+
+    Parameters
+    ----------
+    df : alunos (df with one line per student)
+
+    Returns
+    -------
+    dic : {string: integer}
+
+    Example
+    --------
+    {'80-84.9': 64, '25-29.9': 41, ...}
+    """
+    dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0,
+            "25-29.9":0, "30-34.9":0, "35-39.9":0, "40-44.9":0, "45-49.9":0,
+            "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0, "70-74.9":0,
+            "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
 
     iras = []
     for index, row in alunos.iterrows():
         if(row['MEDIA_FINAL'] is not None):
             iras.append(row['MEDIA_FINAL'])
 
-    for d in dic:
-        aux = d.split('-')
+    for interval in dic:
+        aux = interval.split('-')
         v1 = float(aux[0])
         if (v1 == 0.0):
             v1 += 0.01
         v2 = float(aux[1])
-        dic[d] = sum((float(num) >= v1) and (float(num) < v2) for num in iras)
+        dic[interval] = sum((float(num) >= v1) and (float(num) < v2) for num in iras)
 
     return dic
 
+
+
+def generate_intervals():
+    intervals = {}
+
+
+def build_dict_ira_medio_certo(iras):
+    icount = IntervalCount(1, 0, 0.05)
+
+    #
+    # dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0,
+    #         "25-29.9":0, "30-34.9":0, "35-39.9":0, "40-44.9":0, "45-49.9":0,
+    #         "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0, "70-74.9":0,
+    #         "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
+    print(iras)
+    for interval in icount.dict:
+        aux = interval.split('-')
+        v1 = float(aux[0])
+        if (v1 == 0.0):
+            v1 += 0.01
+        v2 = float(aux[1])
+
+
+        for grr in iras:
+            if (float(iras[grr]) >= v1) and (float(iras[grr]) < v2):
+                dic[interval] += 1
+
+                icount.do_count(grade)
+        # dic[interval] = sum((float(iras[grr]) >= v1) and (float(iras[grr]) < v2) for grr in iras)
+
+    return icount.to_dict()
 
 def merge_dicts(dict1, dict2, dict3):
     """
     Makes a dict for the STUDENTS per IRA GRAPH.
 
-    Takes 3 dictionaries whose keys are IRA ranges and merge them.
-    Each IRA range (dict_out's keys) got as value a dictionary with 3 itens:
-    number of all students with the IRA range;
-    number of students attending University with the IRA range;
-    number of graduated students with with the IRA range;
+    Takes 3 dictionaries whose keys are IRA intervals and merge them.
+    Each IRA interval (dict_out's keys) got as value another dictionary with 3 itens:
+    number of all students with that IRA range;
+    number of students attending University with that IRA range;
+    number of graduated students with with that IRA range;
 
     Parameters
     ----------
@@ -303,13 +335,12 @@ def merge_dicts(dict1, dict2, dict3):
             'sem_evasao': v2,
             'formatura': v3
         }
-    print (dict_out)
     return dict_out
 
 
-def build_degree_json(path,df):
+def build_degree_json(path,df,student_analysis):
     dic = merge_dicts(
-        average_ira_graph(df),
+        average_ira_graph(student_analysis),
         current_students_average_ira_graph(df),
         graduates_average_ira_graph(df)
     )
