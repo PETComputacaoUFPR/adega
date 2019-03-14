@@ -40,7 +40,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                        </table>
+                    </table>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="formados">
                     <table class="table table-striped table-bordered" id="formados_table">
@@ -146,9 +146,8 @@
         $("#outros_table")
     ];
     $(table_names).each(function(i,x){
-        x.dataTable({
+        var t = x.dataTable({
             "bPaginate": true,
-            "bInfo": false,
             "aaSorting": [[ 1, "desc" ]],
             "responsive": true
         });

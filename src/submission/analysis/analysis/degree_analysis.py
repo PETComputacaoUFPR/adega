@@ -300,7 +300,7 @@ def merge_dicts(dict1, dict2, dict3):
         v2 = dict2[key] if key in dict2 else None
         v3 = dict3[key] if key in dict3 else None
         dict_out[key] = {
-            'ira_medio': value,
+            'total': value,
             'sem_evasao': v2,
             'formatura': v3
         }

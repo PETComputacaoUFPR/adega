@@ -35,3 +35,6 @@ def get_list_students(session, degree, list_name, submission_id=None):
 
 def get_student_detail(session, degree, student_id, submission_id=None):
     return get_data(session,degree,"students/"+student_id+".json", submission_id=submission_id)
+
+def get_cepe9615_information(session, degree, submission_id=None):
+    return get_data(session,degree,"cepe9615.json", submission_id=submission_id)

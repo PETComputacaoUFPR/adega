@@ -76,6 +76,7 @@
                 <ul class="nav navbar-nav hidden-md hidden-lg">
                     <li><a href="{% url 'student:index' submission_id=submission.id%}">Alunos</a></li>
                     <li><a href="{% url 'course:index' submission_id=submission.id%}">Turmas de Ingresso</a></li>
+                    <li><a href="{% url 'cepe9615:index' submission_id=submission.id%}">Cepe 96/15</a></li>
                     <li class="dropdown">
                             <a href="{% url 'course:index' submission_id=submission.id%}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             Disciplinas <span class="caret"></span></a>

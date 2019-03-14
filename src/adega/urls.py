@@ -21,6 +21,8 @@ urlpatterns = [
 
     url(r'^degree/(?P<submission_id>\w*)/', include('degree.urls', namespace='degree')),
 
+    url(r'^adega/cepe9615/(?P<submission_id>\w*)/', include('cepe9615.urls', namespace='cepe9615')),
+
     url(r'^public/', include('public.urls', namespace='public')),
 
     url(r'^logout/$', views.logout, name='logout'),
