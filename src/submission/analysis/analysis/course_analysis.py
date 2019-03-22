@@ -383,5 +383,4 @@ class Course(Analysis):
             course_dict["grafico_qtd_cursada_aprov"] = self.analysis["coursed_count"][course]
             course_dict["aprovacao_semestral"] = aprovacao_d[course]
             courses.append(course_dict)
-
         return courses

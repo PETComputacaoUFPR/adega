@@ -2,6 +2,7 @@ coverage
 ipython
 Django==1.11.10
 django-widget-tweaks
+django-guardian
 pandas==0.22
 xlrd
 django-extensions

@@ -9,15 +9,16 @@ from submission.analysis.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
 
-CURRENT_YEAR = 2017
-CURRENT_SEMESTER = 1
+
 
 
 class StudentAnalysis:
     data_frame = None
 
-    def __init__(self, df):
+    def __init__(self, df, current_year, current_semester):
         self.data_frame = df
+        self.current_year = current_year
+        self.current_semester = current_semester
 
     @memoize
     def student_info(self, df=None):

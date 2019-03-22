@@ -9,14 +9,16 @@ from report_api.views import get_list_students, get_student_detail
 import json
 
 from submission.models import Submission
+from guardian.decorators import permission_required_or_403
 
+from student.grid import DegreeGrid
+
+@permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def detail(request, submission_id, grr):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
     cache_j = get_student_detail(
         request.session,
@@ -25,7 +27,10 @@ def detail(request, submission_id, grr):
         submission_id
     )
 
-
+    hist = cache_j["aluno_turmas"]
+    dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
+    
+    grid_info, grid_info_extra = dg.get_situation(hist)
     analysis_result = {
         'indice_aprovacao' : cache_j['taxa_aprovacao'],
         'periodo_real': cache_j['periodo_real'],
@@ -35,7 +40,9 @@ def detail(request, submission_id, grr):
         'posicao_turmaIngresso_semestral': json.dumps(cache_j['posicao_turmaIngresso_semestral']),
         'ira_por_quantidade_disciplinas': json.dumps(cache_j['ira_por_quantidade_disciplinas']),
         'student': cache_j['student'],
-        'aluno_turmas': cache_j["aluno_turmas"],
+        'aluno_turmas': hist,
+        'grid': grid_info,
+        'grid_extra': grid_info_extra
     }
 
     return render(request, 'student/detail.html', {
@@ -46,13 +53,12 @@ def detail(request, submission_id, grr):
 
 
 
+@permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def index(request, submission_id):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
 
     sem_evasao = get_list_students(

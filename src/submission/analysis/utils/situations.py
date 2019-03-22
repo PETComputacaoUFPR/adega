@@ -73,9 +73,9 @@ class EvasionForm:
         return ""
 
     @staticmethod
-    def str_to_code(str):
+    def str_to_code(name):
         for ef in EvasionForm.EVASION_FORM:
-            if(ef[1] == str):
+            if(ef[1] == name):
                 return ef[0]
         return -1
 
@@ -195,3 +195,17 @@ class Situation:
             SIT_TRANCAMENTO_ADMINISTRATIVO,
             SIT_CANCELADO
     )
+
+    @staticmethod
+    def code_to_str(code):
+        for sit in Situation.SITUATIONS:
+            if(sit[0] == code):
+                return sit[1].replace("'","").replace("\"","")
+        return ""
+    
+    @staticmethod
+    def str_to_code(name):
+        for sit in Situation.SITUATIONS:
+            if(sit[1] == name):
+                return sit[0]
+        return -1

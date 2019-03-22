@@ -3,6 +3,14 @@ SITE-OWNER-GROUP = www-data
 
 all:
 
+# The follows commands permit to use manage.py and
+# docker-compose up with make. Examples:
+# make docker-manage migrate
+# make docker-manage makemigrations uploads
+# make docker-up --build
+%:
+	@:
+args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
 clean:
 	@rm -rf *~ *.pyc *.backup
@@ -55,15 +63,6 @@ docker-remove-all:
 docker-install:
 	apt-get install docker
 	apt-get install docker-compose
-
-
-# The follows commands permit to use manage.py with make. Examples:
-# make docker-manage migrate
-# make docker-manage makemigrations uploads
-
-%:
-	@:
-args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
 
 docker-manage:

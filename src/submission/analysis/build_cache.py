@@ -24,18 +24,20 @@ except NameError:
 
 student_analysis = None
 
+CURRENT_YEAR = 2016
+CURRENT_SEMESTER = 1
 
-def build_cache(dataframe, path):
+def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester = CURRENT_SEMESTER):
     #   os.chdir("../src")
     ensure_path_exists(path)
 
-    student_analysis = StudentAnalysis(dataframe)
+    student_analysis = StudentAnalysis(dataframe, current_year, current_semester)
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
         generate_degree_data(path, df, student_analysis)
         generate_student_data(path + 'students/', df, student_analysis)
-        generate_admission_data(path + 'admissions/', df)
+        generate_admission_data(path + 'admissions/', df, student_analysis)
         generate_course_data(path + 'courses/', dataframe)
         generate_cepe_data(path + '/others/', df)
 
@@ -43,7 +45,6 @@ def build_cache(dataframe, path):
 def generate_cepe_data(path, df):
     cepe_dict = {}
     cepe_dict["student_fails_course"] = student_fails_course(df)
-    cepe_dict["student_fails_2_courses"] = student_fails_2_courses(df)
     cepe_dict["fails_semester"] = fails_semester(df)
     cepe_dict["fails_by_freq_semester"] = fails_by_freq_semester(df)
     cepe_dict["fails_by_freq"] = fails_by_freq(df)
@@ -151,7 +152,7 @@ def generate_student_list(path):
     pass
 
 
-def generate_admission_data(path, df):
+def generate_admission_data(path, df, student_analysis):
 
     listagem = []
     a = Admission(df)
@@ -163,8 +164,8 @@ def generate_admission_data(path, df):
 
     evasion_count = a.build_cache_evasion_count()
     analises = [
-        ("ira", media_ira_turma_ingresso(df)),
-        ("std", desvio_padrao_turma_ingresso(df)),
+        ("ira", media_ira_turma_ingresso(df, student_analysis)),
+        ("std", desvio_padrao_turma_ingresso(df, student_analysis)),
         ("ira_per_semester", admission_class_ira_per_semester(df)),
         ("evasion_per_semester", evasion_per_semester(df)),
         ("students_per_semester", students_per_semester(df)),
