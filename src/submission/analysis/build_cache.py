@@ -38,7 +38,7 @@ def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester =
         generate_degree_data(path, df, student_analysis)
         generate_student_data(path + 'students/', df, student_analysis)
         generate_admission_data(path + 'admissions/', df, student_analysis)
-        generate_course_data(path + 'courses/', dataframe)
+        generate_course_data(path + 'courses/',current_year, dataframe)
         generate_cepe_data(path + '/others/', df)
 
 
@@ -204,8 +204,8 @@ def generate_admission_list(path, df):
     pass
 
 
-def generate_course_data(path, df):
-    course = Course(df)
+def generate_course_data(path, current_year, df):
+    course = Course(current_year,df)
     course.build_analysis()
     courses = course.build_general_course()
     save_json(path + "disciplinas.json", courses)
