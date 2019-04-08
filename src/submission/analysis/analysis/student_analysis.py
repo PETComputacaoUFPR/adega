@@ -195,8 +195,8 @@ class StudentAnalysis:
         aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO"])
         students = {}
         for x in aux:
-            students[x[0][0]] = (CURRENT_YEAR - int(x[0][1])) * \
-                2 + CURRENT_SEMESTER - int(x[0][2]) + 1
+            students[x[0][0]] = (self.current_year - int(x[0][1])) * \
+                2 + self.current_semester - int(x[0][2]) + 1
         return students
 
     @memoize
