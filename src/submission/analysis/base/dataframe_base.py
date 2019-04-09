@@ -90,6 +90,8 @@ def clean_register(df):
     df_split = df['PERIODO_EVASAO'].str.split('/')
     df['ANO_EVASAO'] = df_split.str[0]
     df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
+    df['ANO_EVASAO'].fillna(0, inplace=True)
+    df['SEMESTRE_EVASAO'].fillna(0, inplace=True)
 
     drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE', 'COD_CURSO',
                     'PERIODO_INGRESSO', 'PERIODO_EVASAO']
@@ -124,13 +126,14 @@ def fix_admission(df):
 
 
 def fix_carga(df):
-    df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    #df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    df["CH_TOTAL"] = df["TOTAL_CARGA_HORARIA"]
 
 
 def fix_evasion(df):
     df.rename(columns={'FORMA_EVASAO': 'FORMA_EVASAO2'}, inplace=True)
+    df.FORMA_EVASAO2 = df.FORMA_EVASAO2.str.replace(u"ă","ã")
 
     df['FORMA_EVASAO'] = df.FORMA_EVASAO2.apply(get_situation(EvasionForm.EVASION_FORM,
                                                               EvasionForm.EF_OUTROS))
-
     df.drop(['FORMA_EVASAO2'], axis=1, inplace=True)
