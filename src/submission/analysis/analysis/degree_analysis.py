@@ -1,6 +1,7 @@
 import math
 import json
 import pandas as pd
+import numpy as np
 from submission.analysis.utils.situations import Situation, EvasionForm
 from submission.analysis.utils.utils import IntervalCount, save_json
 from submission.analysis.analysis.student_analysis import *
@@ -20,8 +21,9 @@ def average_graduation(df):
     --------
     13.395865237366003
     """
-    total_student = df['MATR_ALUNO'].drop_duplicates().shape[0]
-    total_graduate = df[df.FORMA_EVASAO == EvasionForm.EF_FORMATURA].shape[0]
+    students = df['MATR_ALUNO'].drop_duplicates()
+    total_student = students.shape[0]
+    total_graduate = students.loc[df.FORMA_EVASAO == EvasionForm.EF_FORMATURA].shape[0]
     return total_graduate / total_student
 
 
@@ -72,23 +74,23 @@ def current_students_failure(df):
     standard_deviation = math.sqrt(variance)
     return (average, standard_deviation)
 
-def general_ira(df):
-    fixed = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
-    fixed = fixed[fixed.MEDIA_FINAL <= 100]
-    return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
+def general_ira(student_analysis):
+    iras = np.array(list(student_analysis.ira_alunos().values()))
 
-def current_ira(df):
+    return (iras.mean(), iras.std())
+
+def current_ira(df, student_analysis):
     ano_grade = int(df.loc[df['NUM_VERSAO'].idxmax()]['NUM_VERSAO'])
     fixed = df.loc[(df['NUM_VERSAO'] == ano_grade)]
-    fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
-    fixed = fixed[fixed.MEDIA_FINAL <= 100]
-    return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
+    iras = np.array(list(student_analysis.ira_alunos(df = fixed).values()))
+ 
+    return (iras.mean(), iras.std())
 
-def current_students_ira(df):
+def current_students_ira(df, student_analysis):
     fixed = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
-    fixed = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
-    fixed = fixed[fixed.MEDIA_FINAL <= 100]
-    return (fixed.MEDIA_FINAL.mean(), fixed.MEDIA_FINAL.std())
+    iras = np.array(list(student_analysis.ira_alunos(df = fixed).values()))
+
+    return (iras.mean(), iras.std())
 
 def general_evasion_rate(df):
     students = df['MATR_ALUNO'].drop_duplicates()
@@ -118,7 +120,8 @@ def average_graduation_time(df):
     --------
     5.3741640468705345 (years?)
     """
-    graduates = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
+    students = df.drop_duplicates('MATR_ALUNO')
+    graduates = students.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
     total_graduate = graduates.shape[0]
     average_time = 0
     year_end = int(df['ANO'].max())
@@ -126,15 +129,15 @@ def average_graduation_time(df):
         if pd.notnull(row['ANO_EVASAO']):
             year_end = int(row['ANO_EVASAO'])
             try:
-                semester_end = int(row['SEMESTRE_EVASAO'])
-            except ValueError:
+                evasion_dt = int(row["DT_EVASAO"].split("/")[1])
+                if(evasion_dt > 7):
+                    semester_end = 2
+                else:
+                    semester_end = 1
+            except (ValueError, AttributeError):
                 try:
-                    evasion_dt = int(row["DT_EVASAO"].split("/")[1])
-                    if(evasion_dt > 7):
-                        semester_end = 2
-                    else:
-                        semester_end = 1
-                except ValueError:
+                    semester_end = int(row['SEMESTRE_EVASAO'])
+                except (ValueError, AttributeError):
                     # TODO: Some students will be not considered
                     # The interface must inform the user this information
                     # and how many students wasnt considered
@@ -314,8 +317,8 @@ def build_degree_json(path,df,student_analysis):
     degree_json = {
         "ira_medio_grafico": sorted(dic.items()),
         "evasao_grafico": json.dumps(sorted(period_evasion_graph(df).items())),
-        "ira_atual": current_students_ira(df),
-        "ira_medio": general_ira(df),
+        "ira_atual": current_students_ira(df, student_analysis),
+        "ira_medio": general_ira(student_analysis),
         "qtd_alunos": total_students(df),
         "qtd_alunos_atuais": current_total_students(df),
         "taxa_evasao": general_evasion_rate(df),
