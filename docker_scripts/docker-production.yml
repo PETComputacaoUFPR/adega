@@ -3,6 +3,8 @@ services:
     db:
         restart: always
         image: postgres
+        volumes:
+            - ~/.docker-volumes/adega_db/db:/var/lib/postgresql/data
         environment:
             - POSTGRES_USER=${pg_user}
             - POSTGRES_PASSWORD=${pg_password}
