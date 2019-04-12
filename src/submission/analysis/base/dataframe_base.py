@@ -64,9 +64,18 @@ def fix_dataframes(dataframes):
     fix_admission(merged)
     fix_evasion(merged)
     fix_carga(merged)
+    fix_datatype(merged)
 
     return merged
 
+# convert NaN to 0 and cast float to integer os list collumns
+def fix_datatype(df):
+    collums = ["ANO", "ANO_INGRESSO"]
+    df["ANO_EVASAO"].fillna(0, inplace=True)
+    for i in collums:
+        df[i].fillna(0, inplace=True)
+        df[i] = df[i].astype(int)
+        print(df[i].drop_duplicates())
 
 def clean_history(df):
     print(df.columns)
@@ -90,8 +99,11 @@ def clean_register(df):
     df_split = df['PERIODO_EVASAO'].str.split('/')
     df['ANO_EVASAO'] = df_split.str[0]
     df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
-    df['ANO_EVASAO'].fillna(0, inplace=True)
+
+    # replace nan cell to 0, ANO_INGRESSO and ANO_EVASAO is trated in function
+    # fix_dataype
     df['SEMESTRE_EVASAO'].fillna(0, inplace=True)
+    df['SEMESTRE_INGRESSO'].fillna(0, inplace=True)
 
     drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE', 'COD_CURSO',
                     'PERIODO_INGRESSO', 'PERIODO_EVASAO']
