@@ -64,9 +64,18 @@ def fix_dataframes(dataframes):
     fix_admission(merged)
     fix_evasion(merged)
     fix_carga(merged)
+    fix_datatype(merged)
 
     return merged
 
+# convert NaN to 0 and cast float to integer os list collumns
+def fix_datatype(df):
+    collums = ["ANO", "ANO_INGRESSO"]
+    df["ANO_EVASAO"].fillna(0, inplace=True)
+    for i in collums:
+        df[i].fillna(0, inplace=True)
+        df[i] = df[i].astype(int)
+        print(df[i].drop_duplicates())
 
 def clean_history(df):
     print(df.columns)
@@ -90,6 +99,11 @@ def clean_register(df):
     df_split = df['PERIODO_EVASAO'].str.split('/')
     df['ANO_EVASAO'] = df_split.str[0]
     df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
+
+    # replace nan cell to 0, ANO_INGRESSO and ANO_EVASAO is trated in function
+    # fix_dataype
+    df['SEMESTRE_EVASAO'].fillna(0, inplace=True)
+    df['SEMESTRE_INGRESSO'].fillna(0, inplace=True)
 
     drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE', 'COD_CURSO',
                     'PERIODO_INGRESSO', 'PERIODO_EVASAO']
@@ -124,13 +138,14 @@ def fix_admission(df):
 
 
 def fix_carga(df):
-    df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    #df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    df["CH_TOTAL"] = df["TOTAL_CARGA_HORARIA"]
 
 
 def fix_evasion(df):
     df.rename(columns={'FORMA_EVASAO': 'FORMA_EVASAO2'}, inplace=True)
+    df.FORMA_EVASAO2 = df.FORMA_EVASAO2.str.replace(u"ă","ã")
 
     df['FORMA_EVASAO'] = df.FORMA_EVASAO2.apply(get_situation(EvasionForm.EVASION_FORM,
                                                               EvasionForm.EF_OUTROS))
-
     df.drop(['FORMA_EVASAO2'], axis=1, inplace=True)

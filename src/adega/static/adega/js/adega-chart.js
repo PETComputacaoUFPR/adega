@@ -128,14 +128,23 @@ class AdegaChart{
         }
 
         var layout = {
+            legend: {
+                orientation: "h",
+                yanchor: "top",
+                valign: "top",
+                y: 1.1,
+                x: 0
+            },
             title: this.title,
             showlegend: true,
             xaxis:{
-                title:this.xaxis_title
+                title:this.xaxis_title,
+                automargin: true
             },
             yaxis: {
                 title: this.yaxis_title,
-                rangemode: 'tozero'
+                rangemode: 'tozero',
+                automargin: true
                 // overlaying: 'y'
             },
             yaxis2: {
@@ -146,6 +155,7 @@ class AdegaChart{
                 side: 'right',
                 rangemode: 'tozero',
                 title: this.yaxis2_title,
+                automargin: true
             },
             barmode: this.barmode
         };

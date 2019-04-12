@@ -9,15 +9,16 @@ from submission.analysis.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
 
-CURRENT_YEAR = 2017
-CURRENT_SEMESTER = 1
+
 
 class StudentAnalysis:
     data_frame = None
 
-    def __init__(self, df):
+    def __init__(self, df, current_year, current_semester):
         self.data_frame = df
-    
+        self.current_year = current_year
+        self.current_semester = current_semester
+
     @memoize
     def student_info(self, df=None):
         df = df if df is not None else self.data_frame
@@ -176,7 +177,7 @@ class StudentAnalysis:
         aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO"])
         students = {}
         for x in aux:
-            students[x[0][0]] = (CURRENT_YEAR - int(x[0][1])) * 2 + CURRENT_SEMESTER - int(x[0][2]) + 1
+            students[x[0][0]] = (self.current_year - int(x[0][1])) * 2 + self.current_semester - int(x[0][2]) + 1
         return students
 
     @memoize

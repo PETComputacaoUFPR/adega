@@ -12,7 +12,7 @@ def analyze(submission, debug=True):
         path = submission.path()
         dataframe = load_dataframes(path)
 
-        build_cache(dataframe, path)
+        build_cache(dataframe, path, submission.relative_year, submission.relative_semester)
 
         submission.set_done(round(time.clock() - start_time))
 
@@ -29,9 +29,6 @@ def analyze(submission, debug=True):
 
         submission.set_fail(round(time.clock() - start_time), error_message=str(e))
 
-def main():
-    print("Não pra você estar fazendo isso")
-
 
 if __name__ == "__main__":
-    main()
+    pass

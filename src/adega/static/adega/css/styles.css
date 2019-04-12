@@ -55,10 +55,10 @@ h1#title {
 /* =========================================  FOOTER */
 
 footer {
-    background-color: #263646;
-    border-top: 4px solid #31c2e4;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    background-color: #132940;
+    /* border-top: 1px solid #001a2054; */
+    padding-top: 10px;
+    padding-bottom: 10px;
     color: #FFF;
 }
 
@@ -83,9 +83,21 @@ footer h3 {
 .sidebar {
     transition: all 0.5s ease-in-out;
     padding: 0;
-    background-color: #2f4861;
+    background-color: #132940;
     min-height: 100%;
 }
+
+.navbar {
+    transition: all 0.5s ease-in-out;
+    background-color: #132940;
+}
+
+.sidebar > li > .dropdown-menu { background-color:#1a2c3f;
+ }
+.sidebar > li > a { background-color:#1a2c3f;
+ }
+.sidebar > li > button { background-color:#1a2c3f;
+ }
 
 .sidebar ul {
     list-style:none;
@@ -173,3 +185,170 @@ footer h3 {
     margin-right:10px;
     cursor: pointer;
 }
+
+
+
+
+/* =========================== PAINEIS ============= */
+
+/* ===============================================   PANEL  */
+
+.panel-container {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+}
+
+.data-panel {
+    padding: 10px 10px 20px;
+    margin: 10px;
+    border-bottom: 2px solid #3c3c3c;
+    font-size: 1.3em;
+    flex: 1;
+
+    box-shadow: 0 0 1px #DDD;
+}
+
+span.data {
+    margin: 0 1.5em;
+}
+
+.panel-line {
+    display: flex;
+}
+
+.data-panel .data-panel {
+    margin: 2px;
+    font-size: 1em;
+    border-bottom: 1px solid #3c3c3c;
+    box-shadow: none;
+}
+
+
+/* =================================================== GRADE */
+
+
+/* ==============================================  GRADE  */
+.grade {
+  /* width: 100%; */
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.grade-head {
+  padding: 5px;
+  text-align: center;
+  font-weight: bold; }
+
+.grade .code,
+.grade .name {
+  display: block; }
+
+/* ==============================================  MATERIA  */
+.materia {
+  background-color: #FFF;
+  padding: 6px 6px 0px;
+  margin: 1px 1px 2px;
+  font-size: small;
+  border-bottom: 4px solid white; }
+
+.materia.approved {
+    border-color: #6B8E23;
+}
+.materia.equivalence {
+    border-color: rgb(138, 64, 207);
+}
+
+.materia.failed {
+    border-color: #B22222;
+}
+
+.materia.cancelled {
+    border-color: #FFD700;
+}
+
+.materia.registered {
+    border-color: #ADD8E6;
+}
+
+.materia .info {
+  margin: 2px;
+  text-align: center;
+}
+
+.materia .details {
+  margin: 2px;
+  text-align: center;
+}
+
+.materia .code {
+  display: none; }
+
+.materia .cursadas {
+  display: none; }
+
+.materia .detail-name {
+  font-variant: small-caps; }
+
+.materia .details {
+  border-top: 1px solid #F4F4F4;
+  padding-top: 4px;
+  margin-top: 3px;
+  display: flex;
+  height: 4em;
+}
+
+.materia .code {
+  color: #444; }
+
+.materia .detail-name {
+  font-size: x-small; }
+
+.materia .detail {
+  padding: 0 3px; }
+
+.materia .detail span {
+  display: block;
+  width: 100%;
+  text-align: center; }
+
+#materias-atuais {
+  display: flex;
+  background-color: #EEE; }
+
+#materias-atuais .materia {
+  min-width: 170px; }
+
+/* ==============================================  SEMESTRE  */
+.semestre {
+  min-width: 100px;
+  /* max-width: 250px; */
+  margin: 1px;
+  background-color: #EEE;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: stretch; }
+
+/* ==============================================  HISTORICO  */
+#desenvolvimento {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex; }
+
+#desenvolvimento .desc {
+  padding: 6px 8px; }
+
+#desenvolvimento .res {
+  padding: 6px 8px;
+  display: absolute;
+  bottom: 0; }
+
+.desc .periodo {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 10px; }
+

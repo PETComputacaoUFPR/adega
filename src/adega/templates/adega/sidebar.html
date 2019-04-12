@@ -1,13 +1,13 @@
-  <ul class="navbar-nav">
+  <ul class="sidebar">
     <!-- <li class="nav-item"><a class="btn-primary text-left" href="{% url 'submission:SubmissionListView' %}">Gerenciar relatórios</a></li class="nav-item"> -->
     <li class="nav-item"><a class="btn-primary text-left" href="{% url 'degree:index' submission_id=submission.id%}">Informações gerais do curso</a></li class="nav-item">
     <li class="nav-item"><a class="btn-primary text-left" href="{% url 'student:index' submission_id=submission.id%}">Alunos</a></li class="nav-item">
       
     <li class="nav-item dropdown dropright">
         <a type="button" class="btn-primary" href="{% url 'course:index' submission_id=submission.id%}">Disciplinas</a>
-        <button type="button" class="left btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+        <button id="dropdown_compare" type="button" class="left btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
         </button>
-        <dropdown class="dropdown-menu">
+        <dropdown class="dropdown-menu" aria-labelledby="dropdown_compare">
             <a class="dropdown-item" href="{% url 'course:compare' submission_id=submission.id %}">
               Comparação
             </a>

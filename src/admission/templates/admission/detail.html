@@ -2,6 +2,7 @@
 
 {% load static %}
 
+{% load adega_templatetag %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
@@ -25,11 +26,11 @@
           </tr>
           <tr>
             <td>Índice de Reprovação</td>
-            <td> {{admission_info.taxa_reprovacao|floatformat:2}} </td>
+            <td> {{admission_info.taxa_reprovacao|to_percent}} </td>
           </tr>
           <tr>
             <td>Indice de Evasão</td>
-            <td> {{admission_info.taxa_evasao|floatformat:2}} </td>
+            <td> {{admission_info.taxa_evasao|to_percent}} </td>
           </tr>
           <tr>
             <td>Quantidade de Evadidos</td>
@@ -126,7 +127,9 @@
       div_target: "ira_semestral",
       type: "scatter",
       legend: "IRA",
-      title: "IRA/Semestre"
+      title: "Relação entre IRA médio da turma e períodos",
+      xaxis_title: "Período",
+      yaxis_title: "IRA médio da turma",
     });
     
     var sorted = AdegaChart.sort_object_by_key(admission_info.students_per_semester);
@@ -138,8 +141,10 @@
       data_y: students_per_semester_y,
       div_target: "students_per_semester",
       type:["scatter"],
-      title: "Quantidade de alunos/Semestre",
-      legend: "Quantidade de alunos"
+      title: "Quantidade de alunos que se matricularam em ao menos uma disciplina em diferentes período",
+      legend: "Quantidade de alunos",
+      xaxis_title: "Período",
+      yaxis_title: "Quantidade de alunos",
     });
     
   </script>
