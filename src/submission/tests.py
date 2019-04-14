@@ -3,12 +3,14 @@ from django.contrib.auth.models import User
 from submission.models import Submission
 from educator.models import Educator
 from degree.models import Degree
+import os
 
 class SubmissionMixin(object):
     def createSubmission(self, degree_id):
         # trying to submit data for analysis
-        historico_path = '/adega/src/submission/analysis/test/historico.xls'
-        matricula_path = '/adega/src/submission/analysis/test/matricula.xls'
+        basePath = os.path.dirname(os.path.abspath(__file__))
+        historico_path = basePath + '/analysis/test/historico.xls'
+        matricula_path = basePath + '/analysis/test/matricula.xls'
 
         historico = open(historico_path, 'rb') 
         matricula = open(matricula_path, 'rb')
