@@ -11,6 +11,8 @@ import json
 from submission.models import Submission
 from guardian.decorators import permission_required_or_403
 
+from student.grid import DegreeGrid
+
 @permission_required_or_403('view_student', (Submission, 'id', 'submission_id'))
 def detail(request, submission_id, grr):
     submission_id = int(submission_id)
@@ -25,7 +27,10 @@ def detail(request, submission_id, grr):
         submission_id
     )
 
-
+    hist = cache_j["aluno_turmas"]
+    dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
+    
+    grid_info, grid_info_extra = dg.get_situation(hist)
     analysis_result = {
         'indice_aprovacao' : cache_j['taxa_aprovacao'],
         'periodo_real': cache_j['periodo_real'],
@@ -35,7 +40,9 @@ def detail(request, submission_id, grr):
         'posicao_turmaIngresso_semestral': json.dumps(cache_j['posicao_turmaIngresso_semestral']),
         'ira_por_quantidade_disciplinas': json.dumps(cache_j['ira_por_quantidade_disciplinas']),
         'student': cache_j['student'],
-        'aluno_turmas': cache_j["aluno_turmas"],
+        'aluno_turmas': hist,
+        'grid': grid_info,
+        'grid_extra': grid_info_extra
     }
 
     return render(request, 'student/detail.html', {
