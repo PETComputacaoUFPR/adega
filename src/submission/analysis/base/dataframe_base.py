@@ -124,7 +124,10 @@ def fix_admission(df):
 
 
 def fix_carga(df):
-    df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    # Some rows on dataframe doesnt respect the sum of  theorical and pratice
+    # classes, and only specify the total hours
+    # df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    df["CH_TOTAL"] = df["TOTAL_CARGA_HORARIA"]
 
 
 def fix_evasion(df):
