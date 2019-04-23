@@ -8,28 +8,48 @@
         <h1>Informações Gerais</h1>
         <table class="table">
                 <tr>
-                    <td>Quantidade de alunos ativos</td>
+                    <td>Quantidade de alunos ativos 
+                        <i class="fas fa-question-circle" 
+                        title="Número que representa o valor total de estudantes sem evasão."></i>
+                    </td>
                     <td>{{degree_data.qtd_alunos_atuais}}</td>
+                    <td><i class="fas fa-info-circle" title="Info and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc."></i></td>
                 </tr>
                 <tr>
-                    <td>IRA médio desde o inicio do curso</td>
+                    <td>IRA médio desde o inicio do curso 
+                        <i class="fas fa-question-circle" 
+                        title="Número que representa o IRA médio dos estudantes, levando em consideração todos os estudantes que passaram pelo curso."></i>
+                    </td>
                     <td>{{degree_data.ira_medio.0|floatformat:2}} &#177;
                         {{degree_data.ira_medio.1|floatformat:2}}</td>
+                    <td><i class="fas fa-info-circle" title="Info and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc."></i></td>
                 </tr>
                 <tr>
-                    <td> IRA médio dos alunos atualmente no curso</td>
+                    <td> IRA médio dos alunos atualmente no curso 
+                        <i class="fas fa-question-circle" 
+                        title="Número que representa o IRA médio dos estudantes, levando em consideração apenas os estudantes que atualmente estão no curso."></i>
+                    </td>
                     <td>{{degree_data.ira_atual.0|floatformat:2}} &#177; {{degree_data.ira_atual.1|floatformat:2}}</td>
+                    <td><i class="fas fa-info-circle" title="Info and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc."></i></td>
                 </tr>
                 <tr>
-                    <td>Taxa de reprovação desde o inicio do curso</td>
+                    <td>Taxa de reprovação desde o inicio do curso 
+                        <i class="fas fa-question-circle" 
+                        title="Número que representa a taxa de reprovação dos estudantes, levando em consideração todos os estudantes que passaram pelo curso."></i>
+                    </td>
                     <td>{{ degree_data.taxa_reprovacao.0 | to_percent }}
                         &#177; {{degree_data.taxa_reprovacao.1 | to_percent }}</td>
+                    <td><i class="fas fa-info-circle" title="Info and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc."></i></td>
                 </tr>
                 <tr>
-                    <td>Taxa de reprovação dos alunos atualmente no curso</td>
+                    <td>Taxa de reprovação dos alunos atualmente no curso 
+                        <i class="fas fa-question-circle" 
+                        title="Número que representa a taxa de reprovação dos estudantes, levando em consideração apenas os estudantes que atualmente estão no curso."></i>
+                    </td>
 
                     <td>{{ degree_data.taxa_reprovacao_atual.0|to_percent }}
                          &#177; {{degree_data.taxa_reprovacao_atual.1|to_percent}}</td>
+                    <td><i class="fas fa-info-circle" title="Info and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc, and more info, etc."></i></td>
                 </tr>
                 <tr>
                 {% comment %}
@@ -165,9 +185,9 @@
       title: "Distribuição de alunos por faixas de IRA",
       fill: "none",
       legend: [
-          "Quantidade total de alunos",
-          "Quantidade total de alunos sem evasão",
-          "Quantidade total de alunos formados"
+          "Total de alunos",
+          "Alunos ativos",
+          "Alunos formados"
       ],
       xaxis_title: "Faixa de IRA",
       yaxis_title: "Quantidade de alunos",
