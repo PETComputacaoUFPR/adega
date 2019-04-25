@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as process_logout
-from report_api.views import get_cepe9615_information
-from cepe9615.models import Cepe9615
+from report_api.views import get_degree_information
+from degree.models import Degree
 from submission.models import Submission
 import json
 from guardian.decorators import permission_required_or_403
-
-
 
 @permission_required_or_403('view_cepe9615', (Submission, 'id', 'submission_id'))
 def index(request, submission_id):
