@@ -3,6 +3,7 @@ from submission.analysis.base.dataframe_base import load_dataframes
 from submission.analysis.build_cache import build_cache
 
 from datetime import timedelta
+import traceback
 
 
 def analyze(submission, debug=True):
@@ -24,10 +25,12 @@ def analyze(submission, debug=True):
 
 
     except Exception as e:
+        error = traceback.format_exc()
+        print(error)
         if(debug):
-            print("Error on submission analysis:", e)
+            print("Error on submission analysis:", error)
 
-        submission.set_fail(round(time.clock() - start_time), error_message=str(e))
+        submission.set_fail(round(time.clock() - start_time), error_message=str(error))
 
 
 if __name__ == "__main__":
