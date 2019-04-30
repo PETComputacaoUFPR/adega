@@ -194,7 +194,7 @@ class StudentAnalysis:
         students = {}
         for x in aux:
             students[x[0][0]] = ((self.current_year - int(x[0][1])) * 2 +
-                                 self.current_semester - int(x[0][2]) + 1)
+                                  self.current_semester - int(x[0][2]) + 1)
         return students
 
     @memoize
