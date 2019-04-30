@@ -28,6 +28,7 @@ def load_dataframes(cwd='.'):
 
     dataframe = fix_dataframes(dataframes)
     dh = DataframeHolder(dataframe)
+
     return dataframe
 
 
@@ -49,7 +50,7 @@ def fix_dataframes(dataframes):
     clean_register(register)
     #~ df.dropna(axis=0, how='all')
     history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
-    history = history[np.isfinite(history['MEDIA_FINAL'])]
+    # history = history[np.isfinite(history['MEDIA_FINAL'])]
 
     # inner = exste nos dois relatórios, é o que a gente quer
     # o que fazer com quem não está em um dos dois é um questão em aberto
@@ -60,6 +61,8 @@ def fix_dataframes(dataframes):
         "FORMA_INGRESSO_x": "FORMA_INGRESSO"
         })
 
+    
+    print(merged)
     fix_situation(merged)
     fix_admission(merged)
     fix_evasion(merged)
@@ -75,10 +78,8 @@ def fix_datatype(df):
     for i in collums:
         df[i].fillna(0, inplace=True)
         df[i] = df[i].astype(int)
-        print(df[i].drop_duplicates())
 
 def clean_history(df):
-    print(df.columns)
 
     drop_columns = ['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
                     'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',

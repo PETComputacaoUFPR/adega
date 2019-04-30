@@ -34,6 +34,7 @@ class IntervalCount:
         self.inf = inf
         self.gap = gap
         self.dict = {key:0 for key in range(self.get_total_slices())}
+        print(self.dict)
         self.digit = "{:."+str(digit)+"f}"  # number of digits after .
         # for interval in zip( np.arange(inf,sup,gap, dtype=np.float), np.arange(inf+gap,sup+gap,gap, dtype=np.float)):
         #     self.dict[interval] = 0
@@ -76,10 +77,10 @@ class IntervalCount:
 # Use this class as decorator to save functions returns
 def memoize(f):
     memo = {}
-    def helper(x):
-        if str(x) not in memo:
-            memo[str(x)] = f(x)
-        return copy.deepcopy(memo[str(x)])
+    def helper(x, df=None):
+        if str(df) not in memo:
+            memo[str(df)] = f(x, df)
+        return copy.deepcopy(memo[str(df)])
     return helper
 
 
@@ -105,7 +106,8 @@ def save_json(path, data):
 
     ensure_path_exists(os.path.dirname(path))
 
-    params = {} if not DEBUG else {'indent': 4}
+    # params = {} if not DEBUG else {'indent': 4}
+    params = {'indent': 4}
     with open(path, 'w') as f:
         json.dump(data, f, **params, ensure_ascii=False)
 

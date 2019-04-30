@@ -1,13 +1,14 @@
 import numpy as np
 
-#~ TODO:
-#~ FAZER CACHE DE TUDO
-#~ AO CHAMAR A FUNCAO VERIFICAR SE TEM ALGO NA CACHE
+# TODO:
+# FAZER CACHE DE TUDO
+# AO CHAMAR A FUNCAO VERIFICAR SE TEM ALGO NA CACHE
 
 from submission.analysis.utils.situations import *
 from submission.analysis.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
+
 
 
 
@@ -33,13 +34,12 @@ class StudentAnalysis:
         ])
 
         students = students.groups.keys()
-        iras = self.ira_alunos()
+        iras = self.ira_alunos(df=df)
         info = {}
 
         for stnd in students:
             grr = stnd[0]
-            if(stnd[0][-1] == 1):
-                print(stnd[0])
+            
             info[grr] = {
                 "grr": grr,
                 "name": str(stnd[1]),
@@ -52,15 +52,14 @@ class StudentAnalysis:
             }
         return info
 
-
     @memoize
     def list_students(self, df=None):
         df = df if df is not None else self.data_frame
-
         situations = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
-        situations = list(pd.DataFrame({'count' : situations.size()}).reset_index().groupby(["FORMA_EVASAO"]))
+        situations = list(pd.DataFrame(
+            {'count': situations.size()}).reset_index().groupby(["FORMA_EVASAO"]))
 
-        iras = self.ira_alunos()
+        iras = self.ira_alunos(df=df)
         list_situations = defaultdict(list)
         for sit in situations:
             grrs = list(sit[1]["MATR_ALUNO"])
@@ -72,16 +71,17 @@ class StudentAnalysis:
                 list_situations[sit[0]].append({
                     "forma_evasao": evasion_form_name,
                     "grr": grrs[i],
-                    "ira": iras[ grrs[i] ],
+                    "ira": iras[grrs[i]],
                     "nome": people_names[i]
                 })
-
 
         return list_situations
 
     @memoize
     def ira_alunos(self, df=None):
         """
+        Calculates the average IRA per student
+        IRA = Sum (grades X coursetime)/ (total course time X 100)
 
         Parameters
         ----------
@@ -92,12 +92,12 @@ class StudentAnalysis:
         dict
 
         Example
-        iras = { GRR: number, ...}
         --------
+        iras = { GRR: number, ...}
         """
         df = df if df is not None else self.data_frame
 
-        iras = self.ira_por_quantidade_disciplinas()
+        iras = self.ira_por_quantidade_disciplinas(df=df)
         ira_per_student = {}
         for i in iras:
             ira_total = 0
@@ -117,11 +117,13 @@ class StudentAnalysis:
     def taxa_aprovacao(self, df=None):
         df = df if df is not None else self.data_frame
 
-        aprovacoes_semestres = self.indice_aprovacao_semestral()
+        aprovacoes_semestres = self.indice_aprovacao_semestral(df=df)
 
         for aluno in aprovacoes_semestres:
-            total = sum([aprovacoes_semestres[aluno][s][1] for s in aprovacoes_semestres[aluno]])
-            aprovacoes = sum([aprovacoes_semestres[aluno][s][0] for s in aprovacoes_semestres[aluno]])
+            total = sum([aprovacoes_semestres[aluno][s][1]
+                         for s in aprovacoes_semestres[aluno]])
+            aprovacoes = sum([aprovacoes_semestres[aluno][s][0]
+                              for s in aprovacoes_semestres[aluno]])
             total = float(total)
             aprovacoes = float(aprovacoes)
             if(total != 0):
@@ -131,21 +133,20 @@ class StudentAnalysis:
 
         return aprovacoes_semestres
 
-
     def turma_ingresso(self, df=None):
         df = df if df is not None else self.data_frame
         df = df.drop_duplicates(subset="MATR_ALUNO", keep="first")
         admissions = {}
-        for i,std in df.iterrows():
-            admissions[std["MATR_ALUNO"]] = std["ANO_INGRESSO_y"]+"/"+std["SEMESTRE_INGRESSO"]
+        for i, std in df.iterrows():
+            admissions[std["MATR_ALUNO"]] = std["ANO_INGRESSO_y"] + \
+                "/"+std["SEMESTRE_INGRESSO"]
         return admissions
 
     @memoize
     def posicao_turmaIngresso_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
-        grr_to_admissions = self.turma_ingresso()
-
+        grr_to_admissions = self.turma_ingresso(df=df)
 
         admissions = defaultdict(list)
 
@@ -156,21 +157,21 @@ class StudentAnalysis:
             admissions[grr_to_admissions[grr]].append(grr)
 
 
-        iras_by_semester = self.ira_semestral()
+        iras_by_semester = self.ira_semestral(df=df)
         positions = defaultdict(dict)
         for grr in iras_by_semester:
             for semester in iras_by_semester[grr]:
                 student_admission = admissions[grr_to_admissions[grr]]
 
-                competition = [matr for matr in student_admission if semester in iras_by_semester[matr]]
+                competition = [
+                    matr for matr in student_admission if semester in iras_by_semester[matr]]
 
                 classifications = sorted(
                     competition,
-                    key = lambda matr: iras_by_semester[matr][semester]
+                    key=lambda matr: iras_by_semester[matr][semester]
                 )
-                positions[grr][semester] = (1+classifications.index(grr))/len(competition)
-
-
+                positions[grr][semester] = (
+                    1+classifications.index(grr))/len(competition)
 
         return positions
 
@@ -180,7 +181,7 @@ class StudentAnalysis:
 
         aux = df.groupby(["MATR_ALUNO"])
         students = {}
-        #TODO: Calculate the real value
+        # TODO: Calculate the real value
         for x in aux:
             students[x[0]] = None
         return students
@@ -192,14 +193,15 @@ class StudentAnalysis:
         aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO"])
         students = {}
         for x in aux:
-            students[x[0][0]] = (self.current_year - int(x[0][1])) * 2 + self.current_semester - int(x[0][2]) + 1
+            students[x[0][0]] = ((self.current_year - int(x[0][1])) * 2 +
+                                 self.current_semester - int(x[0][2]) + 1)
         return students
 
     @memoize
     def ira_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
-        aux = self.ira_por_quantidade_disciplinas()
+        aux = self.ira_por_quantidade_disciplinas(df=df)
         for matr in aux:
             for periodo in aux[matr]:
                 aux[matr][periodo] = aux[matr][periodo][0]
@@ -241,7 +243,6 @@ class StudentAnalysis:
             nota = float(df["MEDIA_FINAL"][i])
             carga = float(df["CH_TOTAL"][i])
 
-
             if (situacao in Situation.SITUATION_AFFECT_IRA):
                 if not (ano + "/" + semestre in students[matr]):
                     students[matr][ano + "/" + semestre] = [0, 0, 0]
@@ -256,7 +257,6 @@ class StudentAnalysis:
                     students[matr][periodo][0] /= students[matr][periodo][2] * 100
 
         return students
-
 
     @memoize
     def indice_aprovacao_semestral(self, df=None):
@@ -285,9 +285,17 @@ class StudentAnalysis:
 
         return (students)
 
-
     @memoize
     def aluno_turmas(self, df=None):
+        """
+
+        Returns
+        -------
+        dict of
+
+        Example
+        --------
+        """
         df = df if df is not None else self.data_frame
 
         students = {}

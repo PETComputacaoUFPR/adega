@@ -35,7 +35,7 @@ def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester =
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
-        generate_degree_data(path, df)
+        generate_degree_data(path, df, student_analysis)
         generate_student_data(path + 'students/', df, student_analysis)
         generate_admission_data(path + 'admissions/', df, student_analysis)
         generate_course_data(path + 'courses/', dataframe)
@@ -51,12 +51,10 @@ def generate_cepe_data(path, df):
     save_json(path + "cepe9615.json", cepe_dict)
 
 
-def generate_degree_data(path, dataframe):
+def generate_degree_data(path, dataframe, student_analysis):
     ensure_path_exists(path)
-    ensure_path_exists(path + 'students')
 
-    students = dataframe[['MATR_ALUNO', 'FORMA_EVASAO']].drop_duplicates()
-    build_degree_json(path, dataframe)
+    build_degree_json(path, dataframe, student_analysis)
 
 
 def historico(dataframe):

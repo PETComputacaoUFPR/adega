@@ -2,17 +2,15 @@ import math
 import json
 import pandas as pd
 from submission.analysis.utils.situations import Situation, EvasionForm
-from submission.analysis.utils import IntervalCount
+from submission.analysis.utils.utils import IntervalCount, save_json
 from submission.analysis.analysis.student_analysis import *
+
+
 
 def average_graduation(df):
     """
-    This function calculates the ratio of students who have already graduated
+    Calculates the ratio of students who have already graduated
     to number of students on the original dataframe.
-
-    Parameters
-    ----------
-    df : DataFrame
 
     Returns
     -------
@@ -29,19 +27,12 @@ def average_graduation(df):
 
 def general_failure(df):
     """
-    This function
-
-    Parameters
-    ----------
-    df : DataFrame
 
     Returns
     -------
-    float
 
     Examples
     --------
-    13.395865237366003
     """
     affect_ira = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     failures = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_FAIL)]
@@ -161,22 +152,21 @@ def taxa_abandono(df):
     return total_abandono / total_student
 
 def average_ira_graph(student_analysis):
-    dic = build_dict_ira_medio_certo(student_analysis.ira_alunos())
+    dic = build_dict_ira_medio(student_analysis.ira_alunos())
     return dic
 
-def current_students_average_ira_graph(df):
+def current_students_average_ira_graph(df, student_analysis):
     alunos_se = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
-    alunos_se = alunos_se.drop_duplicates('MATR_ALUNO')
 
-    dic_se = build_dict_ira_medio(alunos_se)
+    
+    dic_se = build_dict_ira_medio(student_analysis.ira_alunos(df = alunos_se))
 
     return dic_se
 
-def graduates_average_ira_graph(df):
+def graduates_average_ira_graph(df, student_analysis):
     alunos_for = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
-    alunos_for = alunos_for.drop_duplicates('MATR_ALUNO')
 
-    dic_for = build_dict_ira_medio(alunos_for)
+    dic_for = build_dict_ira_medio(student_analysis.ira_alunos(df = alunos_for))
 
     return dic_for
 
@@ -195,7 +185,7 @@ def period_evasion_graph(df):
     # Iterate between all semester/year possible
     for year in range(year_start, year_end):
         for semester in range(1, 3):
-
+            
             # Filter the rows and mantain only the registers
             # that match with year and semester of this iteration
             evasions = students.loc[
@@ -208,7 +198,7 @@ def period_evasion_graph(df):
             # and keeping the first row founded
             # Than, get the number of rows computed
             evasions = evasions.drop_duplicates(
-                subset="MATR_ALUNO",
+                subset= "MATR_ALUNO",
                 keep='first'
             ).shape[0]
 
@@ -230,73 +220,59 @@ def period_evasion_graph(df):
 
     return dic
 
-def build_dict_ira_medio(alunos):
+
+
+
+def build_dict_ira_medio(iras):
     """
-    Cretes a dict with IRA intevals as keys
-
-    Parameters
-    ----------
-    df : alunos (df with one line per student)
-
+    Calculates
     Returns
     -------
-    dic : {string: integer}
+    float
 
-    Example
+    Parameters
+    -------
+    dict
+
+    Examples
     --------
-    {'80-84.9': 64, '25-29.9': 41, ...}
     """
-    dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0,
-            "25-29.9":0, "30-34.9":0, "35-39.9":0, "40-44.9":0, "45-49.9":0,
-            "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0, "70-74.9":0,
-            "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
+    iras_values = list(iras.values())
 
-    iras = []
-    for index, row in alunos.iterrows():
-        if(row['MEDIA_FINAL'] is not None):
-            iras.append(row['MEDIA_FINAL'])
-
-    for interval in dic:
-        aux = interval.split('-')
-        v1 = float(aux[0])
-        if (v1 == 0.0):
-            v1 += 0.01
-        v2 = float(aux[1])
-        dic[interval] = sum((float(num) >= v1) and (float(num) < v2) for num in iras)
-
-    return dic
+    # keys = ira intervals borders
+    # values = quantity of students in the interval
+    values, keys = np.histogram(iras_values, bins=20, range=(0,1))
+    dict = {}
+    for i, count in enumerate(values):
+        inf = keys[i]
+        sup = keys[i+1]
+        convert_key = "{:.2f}".format(inf) + "-" + "{:.2f}".format(sup)
+        dict[convert_key] = int(count)
 
 
+    # icount = IntervalCount(1, 0, 0.05)
 
-def generate_intervals():
-    intervals = {}
-
-
-def build_dict_ira_medio_certo(iras):
-    icount = IntervalCount(1, 0, 0.05)
-
-    #
     # dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0,
     #         "25-29.9":0, "30-34.9":0, "35-39.9":0, "40-44.9":0, "45-49.9":0,
     #         "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0, "70-74.9":0,
     #         "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
-    print(iras)
-    for interval in icount.dict:
-        aux = interval.split('-')
-        v1 = float(aux[0])
-        if (v1 == 0.0):
-            v1 += 0.01
-        v2 = float(aux[1])
 
-
-        for grr in iras:
-            if (float(iras[grr]) >= v1) and (float(iras[grr]) < v2):
-                dic[interval] += 1
-
-                icount.do_count(grade)
+    # for interval in icount.dict:
+    #     aux = interval.split('-')
+    #     v1 = float(aux[0])
+    #     if (v1 == 0.0):
+    #         v1 += 0.01
+    #     v2 = float(aux[1])
+    #
+    #
+    #     for grr in iras:
+    #         if (float(iras[grr]) >= v1) and (float(iras[grr]) < v2):
+    #             dic[interval] += 1
+    #
+    #             icount.do_count(grade)
         # dic[interval] = sum((float(iras[grr]) >= v1) and (float(iras[grr]) < v2) for grr in iras)
 
-    return icount.to_dict()
+    return dict
 
 def merge_dicts(dict1, dict2, dict3):
     """
@@ -341,12 +317,13 @@ def merge_dicts(dict1, dict2, dict3):
 def build_degree_json(path,df,student_analysis):
     dic = merge_dicts(
         average_ira_graph(student_analysis),
-        current_students_average_ira_graph(df),
-        graduates_average_ira_graph(df)
+        current_students_average_ira_graph(df, student_analysis),
+        graduates_average_ira_graph(df, student_analysis)
     )
-
+    
+    
     degree_json = {
-        "ira_medio_grafico": json.dumps(sorted(dic.items())),
+        "ira_medio_grafico": sorted(dic.items()),
         "evasao_grafico": json.dumps(sorted(period_evasion_graph(df).items())),
         "ira_atual": current_students_ira(df),
         "ira_medio": general_ira(df),
@@ -358,5 +335,9 @@ def build_degree_json(path,df,student_analysis):
         "taxa_reprovacao_atual": current_students_failure(df),
         "tempo_formatura": average_graduation_time(df),
     }
-    with open(path+"/degree.json",'w') as f:
-        f.write(json.dumps(degree_json,indent=4))
+
+
+    save_json(path+"/degree.json", degree_json)
+
+    # with open(path+"/degree.json",'w') as f:
+    #     f.write(json.dumps(degree_json,indent=4))
