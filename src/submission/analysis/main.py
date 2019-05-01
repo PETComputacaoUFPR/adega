@@ -26,9 +26,9 @@ def analyze(submission, debug=True):
 
     except Exception as e:
         error = traceback.format_exc()
-        print(error)
-        if(debug):
-            print("Error on submission analysis:", error)
+        # if(debug):
+        #     print("Error on submission analysis:", error)
+        print("Error on submission analysis:", error)
 
         submission.set_fail(round(time.clock() - start_time), error_message=str(error))
 

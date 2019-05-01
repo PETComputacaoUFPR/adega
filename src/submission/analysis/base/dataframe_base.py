@@ -46,10 +46,16 @@ def fix_dataframes(dataframes):
         if df['name'] == 'matricula.xls' or df['name'] == 'matricula.csv':
             register = df['dataframe']
 
+    # Remove empty lines
+    history = history[history['MATR_ALUNO'].notnull()]
+    register = register[register['MATR_ALUNO'].notnull()]
+
     #~ clean_history(history)
     clean_register(register)
     #~ df.dropna(axis=0, how='all')
-    history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
+    history = history.fillna({"MEDIA_FINAL":0.0})
+    # history.loc[history['MEDIA_FINAL'].isnull(),"MEDIA_FINAL"] = 0.0
+    # history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
     # history = history[np.isfinite(history['MEDIA_FINAL'])]
 
     # inner = exste nos dois relatórios, é o que a gente quer
@@ -60,9 +66,8 @@ def fix_dataframes(dataframes):
         "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO",
         "FORMA_INGRESSO_x": "FORMA_INGRESSO"
         })
-
     
-    print(merged)
+
     fix_situation(merged)
     fix_admission(merged)
     fix_evasion(merged)
