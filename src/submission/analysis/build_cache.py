@@ -35,10 +35,10 @@ def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester =
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
-        generate_degree_data(path, df)
+        generate_degree_data(path, df, student_analysis)
         generate_student_data(path + 'students/', df, student_analysis)
         generate_admission_data(path + 'admissions/', df, student_analysis)
-        generate_course_data(path + 'courses/', dataframe)
+        generate_course_data(path + 'courses/',current_year, dataframe)
         generate_cepe_data(path + '/others/', df)
 
 
@@ -51,12 +51,10 @@ def generate_cepe_data(path, df):
     save_json(path + "cepe9615.json", cepe_dict)
 
 
-def generate_degree_data(path, dataframe):
+def generate_degree_data(path, dataframe, student_analysis):
     ensure_path_exists(path)
-    ensure_path_exists(path + 'students')
 
-    students = dataframe[['MATR_ALUNO', 'FORMA_EVASAO']].drop_duplicates()
-    build_degree_json(path, dataframe)
+    build_degree_json(path, dataframe, student_analysis)
 
 
 def historico(dataframe):
@@ -206,8 +204,8 @@ def generate_admission_list(path, df):
     pass
 
 
-def generate_course_data(path, df):
-    course = Course(df)
+def generate_course_data(path, current_year, df):
+    course = Course(current_year,df)
     course.build_analysis()
     courses = course.build_general_course()
     save_json(path + "disciplinas.json", courses)
