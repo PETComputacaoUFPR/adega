@@ -64,12 +64,13 @@
 
     <div class="row">
         <div class="col-12">
-            <div id="compara_aprov"></div>
+            <div id="approvation_rate"></div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
-            <div id="approvation_rate"></div>
+            <div id="compara_aprov"></div>
         </div>
     </div>
     
@@ -154,6 +155,15 @@
         var approvation_rate_y2 = approvation_rate_2[1].map(function(x){
             return x[0];
         });
+        
+        
+        var approvation_rate_text1 = approvation_rate_1[1].map(function(x){
+            // Quantity of student that register on course on each semester
+            return "<br>" + x[1] + " Matrículas";
+        });
+        var approvation_rate_text2 = approvation_rate_2[1].map(function(x){
+            return "<br>" + x[1] + " Matrículas";
+        });
 
         var chart2 = new AdegaChart({
             data_x: approvation_rate_x,
@@ -162,6 +172,7 @@
             title: "Taxa de aprovação por semestre",
             fill: "none",
             type: ["scatter", "scatter"],
+            text: [approvation_rate_text1, approvation_rate_text2],
             mode: ["lines+markers", "lines+markers"],
             legend: [codeCourse1,codeCourse2],
             xaxis_title: "Período",
@@ -169,7 +180,7 @@
             marker: {
                 opacity:0.6,
                 size: 13
-            }
+            },
         });
     }
 

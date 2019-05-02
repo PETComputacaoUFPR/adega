@@ -71,7 +71,7 @@ class EvasionForm:
             if(ef[0] == code):
                 return ef[1].replace("'","").replace("\"","")
         return ""
-    
+
     @staticmethod
     def str_to_code(name):
         for ef in EvasionForm.EVASION_FORM:
@@ -84,7 +84,7 @@ class EvasionForm:
 # reprovacao,reprovacao_freq,dispensa_com_nota aparecem em algumas linha como
 # 9999, o valor 9999 é o valor definido pelo sie para ser o 'null' na tabela
 # .33, na tabela .18 o 'null' é o zero e não ocorre problema de calculo de
-# nota/ira  
+# nota/ira
 # orientaçao: verificar se media_final é maior que 100 se sim atribua 0 se nao
 # atribua media_final
 
@@ -95,7 +95,7 @@ class Situation:
     SIT_APROVADO = 1
     SIT_REPROVADO = 2
     SIT_MATRICULA = 3
-    
+
     SIT_REPROVADO_FREQ = 4
     SIT_EQUIVALENCIA = 5
     SIT_CANCELADO = 6
@@ -113,7 +113,7 @@ class Situation:
 
     SIT_APROV_ADIANTAMENTO = 15
     SIT_INCOMPLETO = 16
-    
+
     SIT_REPROVADO_ADIAN = 17
 
     SIT_OUTROS = 100
@@ -174,9 +174,9 @@ class Situation:
 
     """
     isso deve ser pra filtrar fora coisas que não são disciplinas cumpridas
-    
+
     como "trancamento administrativo" e "horas"
-    
+
     importante pra saber quantas matérias um aluno REALMENTE fez em um semestre
     """
     SITUATION_COURSED = (
