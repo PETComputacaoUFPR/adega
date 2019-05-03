@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12">
+        <div class="col-md-12 row">
+            {% for numero_disciplinas, alunos in analysys_result.alunos_mais_que_x_reprovacoes_na_mesma_disciplina.items %}
+            <div  class="col-md-4 p-md-2">
+                <div class="list-group">
+                    <span class="list-group-item "><h3>Alunos com {{numero_disciplinas}} ou mais reprovações na mesma disciplina</h3></span>
+                    {% for s, v in alunos.items %}
+                        <a href="{%url 'student:detail' grr=v submission_id=submission.id %}" class="list-group-item ">{{s}}</a>
+                        {% empty %}
+                        <span class="list-group-item">
+                        <center>
+                            <span ><center>Nenhum aluno</center></span>
+                        </center>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% for numero_disciplinas, alunos in analysys_result.alunos_mais_que_x_reprovacoes_em_duas_ou_mais_disciplinas_distintas.items %}
+            <div  class="col-md-4 p-md-2">
+                <div class="list-group">
+                    <span class="list-group-item "><h3>Alunos com {{numero_disciplinas}} ou mais reprovações em duas disciplinas distintas</h3></span>
+                    {% for s, v in alunos.items %}
+                        <a href="{%url 'student:detail' grr=v submission_id=submission.id %}" class="list-group-item ">{{s}}</a>
+                        {% empty %}
+                        <span class="list-group-item">
+                        <center>
+                            <span ><center>Nenhum aluno</center></span>
+                        </center>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% for numero_disciplinas, alunos in analysys_result.alunos_mais_que_x_reprovacoes_na_mesma_disciplina_por_freq.items %}
+            <div  class="col-md-4 p-md-2">
+                <div class="list-group">
+                    <span class="list-group-item "><h3>Alunos com {{numero_disciplinas}} ou mais reprovações na mesma disciplina por frequência </h3></span>
+                    {% for s, v in alunos.items %}
+                        <a href="{%url 'student:detail' grr=v submission_id=submission.id %}" class="list-group-item ">{{s}}</a>
+                        {% empty %}
+                        <span class="list-group-item">
+                        <center>
+                            <span ><center>Nenhum aluno</center></span>
+                        </center>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% for numero_disciplinas, anos_semestres in analysys_result.alunos_que_reprovaram_em_x_materias_no_semestre.items %}
+                {% for ano_semestre, alunos in anos_semestres.items %}
+                {% if ano_semestre == year_semester %}
+                <div  class="col-md-4 p-md-2">
+                    <div class="list-group">
+                        <span class="list-group-item "><h3>Alunos que reprovaram em {{numero_disciplinas}} ou mais materias no semestre anterior</h3></span>
+                        {% for s, v in alunos %}
+                            <a href="{%url 'student:detail' grr=v submission_id=submission.id %}" class="list-group-item ">{{s}}</a>
+                            {% empty %}
+                            <span class="list-group-item">
+                            <center>
+                                <span ><center>Nenhum aluno</center></span>
+                            </center>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            {% endfor %}
+            {% for ano_semestre, alunos in analysys_result.alunos_que_reprovaram_por_falta_em_todas_as_materias_do_semestre.items %}
+            {% if ano_semestre == year_semester %}
+            <div  class="col-md-4 p-md-2">
+                <div class="list-group">
+                    <span class="list-group-item "><h3>Alunos que reprovaram por falta em todas as materias do semestre anterior</h3></span>
+                    {% for s, v in alunos %}
+                        <a href="{%url 'student:detail' grr=v submission_id=submission.id %}" class="list-group-item ">{{s}}</a>
+                        {% empty %}
+                        <span class="list-group-item">
+                        <center>
+                            <span ><center>Nenhum aluno</center></span>
+                        </center>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+	    </div>
+    </div>
+</div>
+{% endblock content %}

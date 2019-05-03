@@ -39,12 +39,13 @@ def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester =
         generate_student_data(path + 'students/', df, student_analysis)
         generate_admission_data(path + 'admissions/', df, student_analysis)
         generate_course_data(path + 'courses/',current_year, dataframe)
-        generate_cepe_data(path + '/others/', df)
+        generate_cepe_data(path, df)
 
 
 def generate_cepe_data(path, df):
     cepe_dict = {}
     cepe_dict["student_fails_course"] = student_fails_course(df)
+    cepe_dict["student_fails_2_courses"] = student_fails_2_courses(df)
     cepe_dict["fails_semester"] = fails_semester(df)
     cepe_dict["fails_by_freq_semester"] = fails_by_freq_semester(df)
     cepe_dict["fails_by_freq"] = fails_by_freq(df)
