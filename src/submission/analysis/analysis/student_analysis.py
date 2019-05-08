@@ -20,7 +20,7 @@ class StudentAnalysis:
         self.current_year = current_year
         self.current_semester = current_semester
 
-    @memoize
+    
     def student_info(self, df=None):
         df = df if df is not None else self.data_frame
         students = df.groupby([
@@ -52,7 +52,7 @@ class StudentAnalysis:
             }
         return info
 
-    @memoize
+    
     def list_students(self, df=None):
         df = df if df is not None else self.data_frame
         situations = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
@@ -77,7 +77,7 @@ class StudentAnalysis:
 
         return list_situations
 
-    @memoize
+    
     def ira_alunos(self, df=None):
         """
         Calculates the average IRA per student
@@ -113,7 +113,7 @@ class StudentAnalysis:
                 ira_per_student[i] = 0
         return ira_per_student
 
-    @memoize
+    
     def taxa_aprovacao(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -142,7 +142,7 @@ class StudentAnalysis:
                 "/"+std["SEMESTRE_INGRESSO"]
         return admissions
 
-    @memoize
+    
     def posicao_turmaIngresso_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -175,7 +175,7 @@ class StudentAnalysis:
 
         return positions
 
-    @memoize
+    
     def periodo_real(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -186,7 +186,7 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-    @memoize
+    
     def periodo_pretendido(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -197,7 +197,7 @@ class StudentAnalysis:
                                   self.current_semester - int(x[0][2]) + 1)
         return students
 
-    @memoize
+    
     def ira_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -207,7 +207,7 @@ class StudentAnalysis:
                 aux[matr][periodo] = aux[matr][periodo][0]
         return aux
 
-    @memoize
+    
     def ira_por_quantidade_disciplinas(self, df=None):
         """
         Calculates the ira per year/semester
@@ -258,7 +258,7 @@ class StudentAnalysis:
 
         return students
 
-    @memoize
+    
     def indice_aprovacao_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -285,7 +285,7 @@ class StudentAnalysis:
 
         return (students)
 
-    @memoize
+    
     def aluno_turmas(self, df=None):
         """
 
