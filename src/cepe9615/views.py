@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth import logout as process_logout
-from report_api.views import get_degree_information
+from report_api.views import get_cepe9615_information
 from degree.models import Degree
 from submission.models import Submission
 import json

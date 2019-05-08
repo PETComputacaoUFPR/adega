@@ -121,6 +121,9 @@ class AdegaChart{
                 }
             }
             if(this.mode && this.mode[i]){
+                data[i].mode = this.mode[i];
+            }
+            if(this.text && this.text[i]){
                 data[i].text = this.text[i];
             }
             if(this.marker != undefined){
