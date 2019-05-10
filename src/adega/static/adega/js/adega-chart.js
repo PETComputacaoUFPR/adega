@@ -18,6 +18,7 @@ class AdegaChart{
         this.xaxis_title = config.xaxis_title || "";
         
         this.mode = config.mode;
+        this.text = config.text;
         
         this.marker = config.marker;
 
@@ -122,9 +123,13 @@ class AdegaChart{
             if(this.mode && this.mode[i]){
                 data[i].mode = this.mode[i];
             }
+            if(this.text && this.text[i]){
+                data[i].text = this.text[i];
+            }
             if(this.marker != undefined){
                 data[i].marker = this.marker;
             }
+            data[i].connectgaps = true;
         }
 
         var layout = {

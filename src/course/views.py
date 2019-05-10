@@ -74,7 +74,10 @@ def compare(request, submission_id):
     
     chart_approvation_rate = {}
     for course_name in courses_list:
-        course_detail = get_course_detail(request.session, degree, course_name, submission_id)
+        course_detail = get_course_detail(request.session,
+                                          degree, course_name,
+                                          submission_id)
+        
         chart_approvation_rate[course_name] = course_detail["aprovacao_semestral"]
     
     charts["approvation_rate"] = chart_approvation_rate

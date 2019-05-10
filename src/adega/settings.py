@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'admission',
     'course',
     'student',
+    'cepe9615',
     'report_api',
     'submission'
 ]
