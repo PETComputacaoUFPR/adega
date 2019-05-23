@@ -37,9 +37,9 @@ def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester =
         path = path + '/'
         generate_degree_data(path, df, student_analysis)
         generate_student_data(path + 'students/', df, student_analysis)
-        generate_admission_data(path + 'admissions/', df, student_analysis)
-        generate_course_data(path + 'courses/',current_year, dataframe)
-        generate_cepe_data(path, df)
+        # generate_admission_data(path + 'admissions/', df, student_analysis)
+        # generate_course_data(path + 'courses/',current_year, dataframe)
+        # generate_cepe_data(path, df)
 
 
 def generate_cepe_data(path, df):
@@ -122,6 +122,10 @@ def generate_student_data(path, dataframe, student_analysis):
 
         (student_analysis.student_info(),
          "student"),
+
+        (student_analysis.current_period(),
+         "current_period"),
+
     ]
 
     for x in student_data:

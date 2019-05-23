@@ -4,6 +4,7 @@ from submission.analysis.utils.situations import *
 from submission.analysis.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
+from student.grid import DegreeGrid
 
 
 
@@ -182,7 +183,46 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
+    # def current_period(self, df=None): 
+    def current_period(student_df): 
+    """
+        Calculate someone's current period
+        MUST receive as parameter the person's df already grouped
+
+        Filter df for approved courses
+        [to do] Check what grid the student follows
+        Checks if courses of period p are completed, 
+        stops when a period is incompleted
+        (the current period is the first incompleted one)
     
+        Returns: int (1..8)
+    """   
+    # verificar a grade que a pessoa segue
+    # if student_df.["ID_VERSAO_CURSO"] == grade 2011
+
+    # só matérias aprovadas
+    # student_df.loc(student_lines.SITUACAO != Situation.SITUATION_PASS)
+    print("aaaaaaaaaaaaaaaaaaaaaaaa")
+
+    # grid is a list of list from src/student/grid.py        
+    # grid = DegreeGrid(grid_detail).
+    
+    p = 0
+    period_completed = 1
+    while ( (p <= 8) | (period_completed == 1)):
+        p += 1
+        for course in grid[p-1]:
+            if course not in student_df.['COD_ATIV_CURRIC'].values:
+                period_completed = 0
+                break            
+
+    print ("periodo atual:", p)  
+
+    # return p 
+
+
+
+    @memoize
     def periodo_pretendido(self, df=None):
         df = df if df is not None else self.data_frame
 
