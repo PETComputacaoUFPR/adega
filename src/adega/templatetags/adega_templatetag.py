@@ -4,18 +4,21 @@ register = template.Library()
 
 @register.filter
 def to_percent(value):
-    if type(value) == int or type(value) == float:
+    try:
         return "{:.2f}".format(float(value)*100) + "%"
-    
-    return ""
+    except:
+        return ""
+
 @register.filter
 def fix_2digit(value):
-    if type(value) == int or type(value) == float:
+    try:
         return "{:.2f}".format(float(value))
-    return ""
+    except e:
+        return ""
 
 @register.filter
 def remove_spaces(value):
-    if type(value) == str:
+    try:
         return value.replace(' ', '')
-    return value
+    except:
+        return value

@@ -1,3 +1,11 @@
+.fa{
+  color:#132940;
+}
+
+.popover{
+  max-width:30%;
+}
+
 
 html {
     height: 100%;
