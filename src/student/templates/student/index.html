@@ -9,7 +9,22 @@
 <div class="row">
     <div class="col-md-12">
 
-        <h1>Listagem dos Alunos</h1>
+        <h1>
+            Listagem dos Alunos
+            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true" 
+            data-content="Para o cálculo do IRA, somente as situações consideradas como <b>Aprovação</b> ou <b>Reprovação</b> são consideradas.<br>
+            <br>
+            Situações consideradas como <b>Aprovação:</b><br>
+            {% for x in situations_pass %}
+            {{x}}<br>
+            {% endfor %}
+            <br>
+            Situações consideradas como <b>Reprovação:</b><br>
+            {% for x in situations_fail %}
+            {{x}}<br>
+            {% endfor %}
+            "></a>
+        </h1>
         <div class="nav nav-tabs" role="tablist">
             <a class="nav-item nav-link active" href="#sem_evasao" aria-controls="sem_evasao" data-toggle="tab">Sem Evasão</a>
             <a class="nav-item nav-link" href="#formados" aria-controls="formados" data-toggle="tab">Formados</a>

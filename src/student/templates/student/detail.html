@@ -9,6 +9,19 @@
     <div class="col-md-12">
         <h1>{{ analysis_result.student.name }}
         <small>{{ analysis_result.student.grr }}</small>
+        <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true" 
+        data-content="Para o cálculo do IRA, somente as situações consideradas como <b>Aprovação</b> ou <b>Reprovação</b> são consideradas.<br>
+        <br>
+        Situações consideradas como <b>Aprovação:</b><br>
+        {% for x in situations_pass %}
+        {{x}}<br>
+        {% endfor %}
+        <br>
+        Situações consideradas como <b>Reprovação:</b><br>
+        {% for x in situations_fail %}
+        {{x}}<br>
+        {% endfor %}
+        "></a>
         </h1>
         <div>
             <!-- Nav tabs -->
@@ -89,6 +102,10 @@
                                 <span class="data">{{ analysis_result.student.ano_evasao }}/{{analysis_result.student.semestre_evasao}}</span>
                             {% endif %}
                         </td>
+                        <td>
+                            <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Código especificado no relatório original. Representa a modalidade de evasão do aluno ou especifica se o aluno é ativo (Sem evasão)."></a>
+                        </td>
                     </tr>
                     
                     <tr>
@@ -102,6 +119,10 @@
                         <td>Taxa de Aprovação</td>
                         <td>
                             <span class="data">{{ analysis_result.indice_aprovacao|to_percent }}</span>
+                        </td>
+                        <td>
+                            <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Valor que representa a taxa de reprovação do estudante. São apenas consideradas as disciplinas cujas situações são classificadas como <b>Reprovação</b> ou <b>Aprovação</b>."></a>
                         </td>
                     </tr>
                     
