@@ -50,7 +50,7 @@ class Course(Analysis):
             "SITUACAO",
             [sit.SIT_CONHECIMENTO_APROVADO],
             list(sit.SITUATION_KNOWLDGE),
-            1
+            2
         ),
         rate(
             "taxa_reprovacao_frequencia",
@@ -69,7 +69,8 @@ class Course(Analysis):
     __semestral_rate = [__rates[1]]
     last_rate = [__rates[0], __rates[4]]
 
-    def __init__(self, df):
+    def __init__(self, current_year, df):
+        self.current_year = current_year
         df_filted = df[df['SITUACAO'].isin(sit.SITUATION_COURSED)]
         dict_df = {
             "normal_dataframe": df,
@@ -138,7 +139,7 @@ class Course(Analysis):
         last_rates = self.last_rate
 
         def f(x, rate):
-            x1 = x.loc[x.ANO == x.ANO.max()]
+            x1 = x.loc[x.ANO == x.ANO.max() - 1]
             x_num = x1[x1[rate.collumn_name].isin(rate.fields_x)].shape[0]
             x_deno = x1[x1[rate.collumn_name].isin(rate.fields_X)].shape[0]
             return x_num / x_deno if x_deno > 0 else 0
@@ -199,9 +200,9 @@ class Course(Analysis):
         serie_mean = group.apply(lambda x: x["MEDIA_FINAL"].mean())
         serie_std = group.apply(lambda x: x["MEDIA_FINAL"].std())
         last_year_mean = group.apply(
-            lambda x: x.loc[x.ANO == x.ANO.max()].MEDIA_FINAL.mean())
+            lambda x: x.loc[x.ANO == x.ANO.max() - 1].MEDIA_FINAL.mean())
         last_year_std = group.apply(
-            lambda x: x.loc[x.ANO == x.ANO.max()].MEDIA_FINAL.std())
+            lambda x: x.loc[x.ANO == x.ANO.max() - 1].MEDIA_FINAL.std())
         # caso tenha algum nan, troque por 0.0
         serie_mean[np.isnan(serie_mean)] = 0.0
         serie_std[np.isnan(serie_std)] = 0.0
@@ -383,5 +384,4 @@ class Course(Analysis):
             course_dict["grafico_qtd_cursada_aprov"] = self.analysis["coursed_count"][course]
             course_dict["aprovacao_semestral"] = aprovacao_d[course]
             courses.append(course_dict)
-
         return courses

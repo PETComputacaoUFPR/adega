@@ -28,6 +28,7 @@ def load_dataframes(cwd='.'):
 
     dataframe = fix_dataframes(dataframes)
     dh = DataframeHolder(dataframe)
+
     return dataframe
 
 
@@ -45,11 +46,17 @@ def fix_dataframes(dataframes):
         if df['name'] == 'matricula.xls' or df['name'] == 'matricula.csv':
             register = df['dataframe']
 
+    # Remove empty lines
+    history = history[history['MATR_ALUNO'].notnull()]
+    register = register[register['MATR_ALUNO'].notnull()]
+
     #~ clean_history(history)
     clean_register(register)
     #~ df.dropna(axis=0, how='all')
-    history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
-    history = history[np.isfinite(history['MEDIA_FINAL'])]
+    history = history.fillna({"MEDIA_FINAL":0.0})
+    # history.loc[history['MEDIA_FINAL'].isnull(),"MEDIA_FINAL"] = 0.0
+    # history["MEDIA_FINAL"] = pd.to_numeric(history["MEDIA_FINAL"], errors='coerce')
+    # history = history[np.isfinite(history['MEDIA_FINAL'])]
 
     # inner = exste nos dois relatórios, é o que a gente quer
     # o que fazer com quem não está em um dos dois é um questão em aberto
@@ -59,17 +66,25 @@ def fix_dataframes(dataframes):
         "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO",
         "FORMA_INGRESSO_x": "FORMA_INGRESSO"
         })
+    
 
     fix_situation(merged)
     fix_admission(merged)
     fix_evasion(merged)
     fix_carga(merged)
+    fix_datatype(merged)
 
     return merged
 
+# convert NaN to 0 and cast float to integer os list collumns
+def fix_datatype(df):
+    collums = ["ANO", "ANO_INGRESSO"]
+    df["ANO_EVASAO"].fillna(0, inplace=True)
+    for i in collums:
+        df[i].fillna(0, inplace=True)
+        df[i] = df[i].astype(int)
 
 def clean_history(df):
-    print(df.columns)
 
     drop_columns = ['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
                     'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
@@ -80,7 +95,7 @@ def clean_history(df):
 
     df.drop(drop_columns, axis=1, inplace=True)
 
-    df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
+    # df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
 
 
 def clean_register(df):
@@ -90,6 +105,11 @@ def clean_register(df):
     df_split = df['PERIODO_EVASAO'].str.split('/')
     df['ANO_EVASAO'] = df_split.str[0]
     df['SEMESTRE_EVASAO'] = df_split.str[1].str.split('o').str[0]
+
+    # replace nan cell to 0, ANO_INGRESSO and ANO_EVASAO is trated in function
+    # fix_dataype
+    df['SEMESTRE_EVASAO'].fillna(0, inplace=True)
+    df['SEMESTRE_INGRESSO'].fillna(0, inplace=True)
 
     drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE', 'COD_CURSO',
                     'PERIODO_INGRESSO', 'PERIODO_EVASAO']
@@ -124,13 +144,16 @@ def fix_admission(df):
 
 
 def fix_carga(df):
-    df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    # Some rows on dataframe doesnt respect the sum of  theorical and pratice
+    # classes, and only specify the total hours
+    # df["CH_TOTAL"] = df["CH_TEORICA"]+df["CH_PRATICA"]
+    df["CH_TOTAL"] = df["TOTAL_CARGA_HORARIA"]
 
 
 def fix_evasion(df):
     df.rename(columns={'FORMA_EVASAO': 'FORMA_EVASAO2'}, inplace=True)
+    df.FORMA_EVASAO2 = df.FORMA_EVASAO2.str.replace(u"ă","ã")
 
     df['FORMA_EVASAO'] = df.FORMA_EVASAO2.apply(get_situation(EvasionForm.EVASION_FORM,
                                                               EvasionForm.EF_OUTROS))
-
     df.drop(['FORMA_EVASAO2'], axis=1, inplace=True)

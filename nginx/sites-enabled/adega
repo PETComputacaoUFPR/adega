@@ -1,7 +1,18 @@
 server {
+    listen 80 default_server;
+    server_name adega.c3sl.ufpr.br;
+    return 301 https://$host$request_uri;
+}
 
-    listen 80;
-    server_name localhost;
+server {
+
+    listen 443;
+    ssl on;
+    server_name adega.c3sl.ufpr.br;
+
+    ssl_certicate       /ssl/certs/c3sl.pem;
+    ssl_certificate_key /ssl/private/c3sl.pem;
+
     charset utf-8;
 
     client_max_body_size 100M;

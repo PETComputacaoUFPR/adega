@@ -1,3 +1,6 @@
+*/.vscode/
+.vscode/
+
 # info de contas criadas no sistema
 login_info
 # base de dados

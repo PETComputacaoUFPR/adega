@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <div id="info" data-data='{{ analysis_result.cache|safe }}' class="tab-content row">
+        
+        <div id="disc-1" class="col-md-6">
+            <select id="selectCourse1" data-live-search="true" data-placeholder="Selecione uma disciplina..." class="selectpicker col-sm-12" tabindex="1">
+                {% for key, value in course_names.items %}
+                    <option  data-tokens="{{key}}" value="{{ key }}">{{ key }} - {{ value }}</option>
+                {% endfor %}
+            </select>
+            <table class="table">
+                <tr>
+                    <td>Nota Média</td>
+                    <td id="grade_mean_1">0</td>
+                </tr>
+                <tr>
+                    <td>Taxa Reprovação</td>
+                    <td id="fail_rate_1">0</td>
+                </tr>
+                <tr>
+                    <td>Taxa Reprovação Frequência</td>
+                    <td id="fail_rate_presence_1">0</td>
+                </tr>
+                <tr>
+                    <td>Taxa Trancamento</td>
+                    <td id="lock_rate_1">0</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="disc-2" class="col-md-6">
+            <select id="selectCourse2" data-live-search="true" data-placeholder="Selecione uma disciplina..." class="selectpicker col-sm-12" tabindex="2">
+                {% for key, value in course_names.items %}
+                    <option value="{{ key }}">{{ key }} - {{ value }}</option>
+                {% endfor %}
+            </select>
+            <table class="table">
+                <tr>
+                    <td>Nota Média</td>
+                    <td id="grade_mean_2">0</td>
+                </tr>
+                <tr>
+                    <td>Taxa Reprovação</td>
+                    <td id="fail_rate_2">0</td>
+                </tr>
+                <tr>
+                    <td>Taxa Reprovação Frequência</td>
+                    <td id="fail_rate_presence_2">0</td>
+                </tr>
+                <tr>
+                    <td>Taxa Trancamento</td>
+                    <td id="lock_rate_2">0</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div id="approvation_rate"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div id="compara_aprov"></div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock content %}
+
+
+{% block js-foot %}
+<script>
+    var charts_data = {{charts|safe}};
+    var course_names = {{course_names|safe}};
+    var courses_info = {{courses_info|safe}};
+    var codeCourse1;
+    var codeCourse2;
+
+    function updateCharts(courseCode1, courseCode2){
+        // compara_aprov must be changed to compare_grade in every file
+
+        var compara_aprov_1 =  charts_data.compara_aprov[codeCourse1];
+        var compara_aprov_2 =  charts_data.compara_aprov[codeCourse2];
+        
+        // The x axis of codeCourse1 and codeCourse2 is the same
+        // This represent an interval of grade 
+        compara_aprov_x = compara_aprov_1.map(function(x){
+            return x[0];
+        });
+
+        // Transform the data to list of numbers, that represent the percentage
+        // of students that get a grade in specific interval
+        compara_aprov_y1 = compara_aprov_1.map(function(x){
+            return x[1];
+        });
+        compara_aprov_y2 = compara_aprov_2.map(function(x){
+            return x[1];
+        });
+        
+        var chart1 = new AdegaChart({
+            data_x: compara_aprov_x,
+            data_y: [compara_aprov_y1,compara_aprov_y2],
+            div_target: "compara_aprov",
+            title: "Distribuição de alunos por faixas de notas",
+            type:["bar", "bar"],
+            barmode: "grouped",
+            legend: [codeCourse1,codeCourse2],
+            xaxis_title: "Nota (Média final)",
+            yaxis_title: "Porcentagem de alunos",
+        });
+        
+        
+        // approvation_rate is an dictionary that each key represents a
+        // semester, and the values represents a
+        var approvation_rate_1 = charts_data.approvation_rate[codeCourse1];
+        var approvation_rate_2 = charts_data.approvation_rate[codeCourse2];
+
+        for(var key in approvation_rate_1){
+            if(approvation_rate_2[key] == undefined){
+                approvation_rate_2[key] = [null, null];
+            }
+        }
+        for(var key in approvation_rate_2){
+            if(approvation_rate_1[key] == undefined){
+                approvation_rate_1[key] = [null, null];
+            }
+        }
+        
+        // AdegaChart.sort_object_by_key Return a tuple that the first element
+        // is the list of keys sorted, and the second element is the values
+        
+        approvation_rate_1 =  AdegaChart.sort_object_by_key(
+            approvation_rate_1
+        );
+        approvation_rate_2 =  AdegaChart.sort_object_by_key(
+            approvation_rate_2
+        );
+
+        var approvation_rate_x = approvation_rate_1[0];
+
+        var approvation_rate_y1 = approvation_rate_1[1].map(function(x){
+            return x[0];
+        });
+        var approvation_rate_y2 = approvation_rate_2[1].map(function(x){
+            return x[0];
+        });
+        
+        
+        var approvation_rate_text1 = approvation_rate_1[1].map(function(x){
+            // Quantity of student that register on course on each semester
+            return "<br>" + x[1] + " Matrículas";
+        });
+        var approvation_rate_text2 = approvation_rate_2[1].map(function(x){
+            return "<br>" + x[1] + " Matrículas";
+        });
+
+        var chart2 = new AdegaChart({
+            data_x: approvation_rate_x,
+            data_y: [approvation_rate_y1,approvation_rate_y2],
+            div_target: "approvation_rate",
+            title: "Taxa de aprovação por semestre",
+            fill: "none",
+            type: ["scatter", "scatter"],
+            text: [approvation_rate_text1, approvation_rate_text2],
+            mode: ["lines+markers", "lines+markers"],
+            legend: [codeCourse1,codeCourse2],
+            xaxis_title: "Período",
+            yaxis_title: "Taxa de aprovação",
+            marker: {
+                opacity:0.6,
+                size: 13
+            },
+        });
+    }
+
+    function to_percent(value){
+        return ((value*100).toFixed(2)) + "%";
+    }
+    function updateCourseInfo(){
+        var grade_mean_1 = courses_info[codeCourse1].grade_mean;
+        $("#grade_mean_1").html(grade_mean_1[0].toFixed(2)+" &plusmn "+grade_mean_1[1]);
+        $("#fail_rate_1").html(to_percent(courses_info[codeCourse1].fail_rate));
+        $("#fail_rate_presence_1").html(to_percent(courses_info[codeCourse1].fail_rate_presence));
+        $("#lock_rate_1").html(to_percent(courses_info[codeCourse1].lock_rate));
+        
+        var grade_mean_2 = courses_info[codeCourse2].grade_mean;
+        $("#grade_mean_2").html(grade_mean_2[0].toFixed(2)+" &plusmn "+grade_mean_2[1]);
+        $("#fail_rate_2").html(to_percent(courses_info[codeCourse2].fail_rate));
+        $("#fail_rate_presence_2").html(to_percent(courses_info[codeCourse2].fail_rate_presence));
+        $("#lock_rate_2").html(to_percent(courses_info[codeCourse2].lock_rate));
+    }
+    $("#selectCourse1").change(function(){
+        codeCourse1 = $(this).val();
+        if(codeCourse1==undefined || codeCourse2==undefined) return;
+        updateCharts();
+        updateCourseInfo();
+    });
+    $("#selectCourse2").change(function(){
+        codeCourse2 = $(this).val();
+        if(codeCourse1==undefined || codeCourse2==undefined) return;
+        updateCharts();
+        updateCourseInfo();
+    });
+    
+    codeCourse1 = $("#selectCourse1").children("option:selected").val();
+    codeCourse2 = $("#selectCourse2").children("option:selected").val();
+    updateCharts();
+    updateCourseInfo();
+</script>
+
+{% endblock js-foot %}
+
+

@@ -8,8 +8,6 @@ from collections import defaultdict
 
 import numpy as np
 
-ANO_ATUAL = 2017
-SEMESTRE_ATUAL = 2
 
 
 class Admission(object):
@@ -110,10 +108,12 @@ class Admission(object):
         Sao dois .apply, um dentro do outro, sendo que um intera sobre a turma
         ingresso e ai faz o agrupamento de alunos e o outro intera sobre os
         alunos da turma ingresso para calcular o ira. """
+        
         ira_medio = submission_groupby.apply(lambda x:\
             x.groupby(["MATR_ALUNO"]).apply(lambda y:\
             (y.MEDIA_FINAL * y.TOTAL_CARGA_HORARIA).sum() /\
             (y.TOTAL_CARGA_HORARIA.sum()*100)).mean())
+
         self.analysis["ira_medio"] = ira_medio
 
     def admission_list(self):
@@ -136,6 +136,13 @@ class Admission(object):
             # This will create an directory when build_cache create the json
             # By instance: The files and directories admission/2010/1.json will
             # be created
+            
+            # The ira_medio can be undefined for some admissions
+            # Then, we need to verify if it was computed 
+            ira_medio = 0
+            if i in self.analysis["ira_medio"].keys():
+                ira_medio = self.analysis["ira_medio"][i]
+
             admission_dict["ano"] = i[0]
             admission_dict["semestre"] = i[1]
             admission_dict["abandono"] = int(self.analysis["qtd_abandono"][i])
@@ -145,7 +152,7 @@ class Admission(object):
             admission_dict["outras_formas_evasao"] = int(self.analysis["outras_formas_evasao"][i])
             admission_dict["formatura_media"] = float(formatura_medio[i]) if i in formatura_medio.index else -1
             admission_dict["quantidade_alunos"] =  int(self.analysis["qtd_alunos_ingresso"][i])
-            admission_dict["ira_medio"] = float(self.analysis["ira_medio"][i])
+            admission_dict["ira_medio"] = float(ira_medio)
             admission_dict["taxa_evasao"] = float(self.analysis["taxa_evasao"][i])
             admission_dict["taxa_reprovacao"] = float(self.analysis["taxa_reprovacao"][i])
             admissions.append(admission_dict)
@@ -237,8 +244,7 @@ def admission_class_ira_per_semester(df):
         dict_admission.update({admission[0]:dict_ira_semester})
     return dict_admission
 
-def iras_alunos_turmas_ingressos(df):
-    student_analysis = StudentAnalysis(df)
+def iras_alunos_turmas_ingressos(df, student_analysis):
     iras = student_analysis.ira_alunos()
 
     turmas_ingresso_grr = df.groupby([
@@ -264,8 +270,8 @@ def iras_alunos_turmas_ingressos(df):
 
 
 
-def media_ira_turma_ingresso(df):
-    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df)
+def media_ira_turma_ingresso(df, student_analysis):
+    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df, student_analysis)
     # Calcula a média do ira para cada turma_ingresso
     resultados = {}
     for r in iras_alunos_por_turma:
@@ -274,8 +280,8 @@ def media_ira_turma_ingresso(df):
 
     return resultados
 
-def desvio_padrao_turma_ingresso(df):
-    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df)
+def desvio_padrao_turma_ingresso(df, student_analysis):
+    iras_alunos_por_turma = iras_alunos_turmas_ingressos(df, student_analysis)
     # Calcula o desvio padrão para cada turma_ingresso
     resultados = {}
     for r in iras_alunos_por_turma:

@@ -18,8 +18,8 @@
 	
 	As linhas em vermelho indicam as submissões que não puderam ser processadas.
 	Caso este problema aconteça, verifique novamente na etapa de que pode ser causado
-	pela incompatibilidade das planilhas submetidas em <a href="{% url
-        'submission:SubmissionCreateView' %}">Submeter relatório</a>
+	pela incompatibilidade das planilhas submetidas em
+	<a href="{% url 'submission:SubmissionCreateView' %}">Submeter relatório</a>
 	(colunas faltando, ordem errada da submissão de matrícula e histórico).<br><br>
 
 	Também, ao submeter, verifique o Status da submissão que caso esteja em
@@ -53,8 +53,10 @@
 							<td>{{sub.timestamp}}</td>
 							<td class="table-primary bg-primary bg-white">
 								<!-- <a href="{% url 'submission:SubmissionDetailView' sub.pk %}">Detalhes </a><br> -->
-								<a href="{% url 'submission:SubmissionUpdateView' sub.pk %}">Editar </a><br>
-								<a href="{% url 'submission:SubmissionDeleteView' sub.pk %}">Remover </a><br>
+								<!-- <a href="{% url 'submission:SubmissionUpdateView' sub.pk %}">Editar </a><br> -->
+								{% if sub.get_analysis_status_display != 'Executando' %}
+									<a href="{% url 'submission:SubmissionDeleteView' sub.pk %}">Remover </a><br>
+								{% endif %}
 								{% if sub.get_analysis_status_display == 'Terminado' %}
 									<a href="{% url 'degree:index' submission_id=sub.id %}"> Visualizar relatório (gráficos e taxas) </a>
 								{% endif %}

@@ -2,74 +2,158 @@
 
 {% load static %}
 
-{% load math_tags %}
+{% load adega_templatetag %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1>{{ analysis_result.student.name }}
         <small>{{ analysis_result.student.grr }}</small>
+        <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true" 
+        data-content="Para o cálculo do IRA, somente as situações consideradas como <b>Aprovação</b> ou <b>Reprovação</b> são consideradas.<br>
+        <br>
+        Situações consideradas como <b>Aprovação:</b><br>
+        {% for x in situations_pass %}
+        {{x}}<br>
+        {% endfor %}
+        <br>
+        Situações consideradas como <b>Reprovação:</b><br>
+        {% for x in situations_fail %}
+        {{x}}<br>
+        {% endfor %}
+        "></a>
         </h1>
         <div>
             <!-- Nav tabs -->
             <div class="nav nav-tabs" role="tablist">
              <a class="nav-item nav-link active" href="#resumo" aria-controls="resumo" data-toggle="tab">Resumo</a>
              <a class="nav-item nav-link" href="#disciplinas" aria-controls="disciplinas" data-toggle="tab">Lista de Disciplinas</a>
+             <a class="nav-item nav-link" href="#grid" aria-controls="grid" data-toggle="tab">Grade</a>
             </div>
         </div>
+        
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="resumo">
-                <div class="panel-container">
-                    <div class="data-panel">
-                        <h3>Entrada</h3>
-                        <span class="data">{{ analysis_result.student.ano_ingresso }}/{{ analysis_result.student.semestre_ingresso }}</span>
+            <!-- TODO: Add dynamic grid for each degree -->
+            <div role="tabpanel" class="tab-pane" id="grid">
+                <br>
+                <div class="grade">
+                    {% for semester in analysis_result.grid%}
+                    <div class="semestre">
+                        <div class="grade-head">{{forloop.counter}}º</div>
+                            {% for course in semester %}
+                                <div data-toggle="tooltip" data-placement="top" title="{{course.name}}" class="materia {{ course.situation}}">
+                                    <div class="info">
+                                        {% if course.is_real_code %}
+                                        <span class="name">
+                                            <a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=course.code|remove_spaces %}">
+                                                {{ course.code }}</a>
+                                        </span>
+                                        {% else %}
+                                            <span class="name">{{ course.code }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="details">
+                                        {% if course.detail %}
+                                        <div class="detail">
+                                            <span class="detail-name">Matrículas</span>
+                                            <span class="detail-value">{{course.detail.count}}</span>
+                                        </div>
+                                        <div class="detail">
+                                            <span class="detail-name">Nota média</span>
+                                            <span class="detail-value">{{course.detail.mean_grade|fix_2digit}}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
                     </div>
-
-                    {% if analysis_result.student.ano_evasao %}
-
-                    <div class="data-panel">
-                        <h3>Saida</h3>
-                        <span class="data">{{ analysis_result.student.forma_evasao }}</span><br>
-                        {% if analysis_result.student.forma_evasao != "Sem evasão" %}
-                            <span class="data">{{ analysis_result.student.ano_evasao }}/{{analysis_result.student.semestre_evasao}}</span>
-                        {% endif %}
-                    </div>
-                    {% endif %}
+                    {% endfor %}
                 </div>
 
-                <div class="panel-container">
-                    <div class="data-panel">
-                        <h3>Ira</h3>
-                        <span class="data">{{ analysis_result.student.ira|floatformat:2 }}</span>
+                <br>
+                
+                <div class="grade">
+                    {% for course in analysis_result.grid_extra %}
+                    <div class="semestre">
+                        <div class="info semestre">
+                            <div class="materia">
+                                {{course.code}} - {{course.name}}
+                                <br>
+                                <b>Necessário: {{course.necessary}}</b>
+                            </div>
+                            <div class="materia"> Nota média: {{course.grade|fix_2digit}}</div>
+                            <div class="materia approved">Aprovações <br> {{course.approves}}</div>
+                            <div class="materia equivalence">Equivalências <br> {{course.equivalences}}</div>
+                            <div class="materia registered">Matrículas (semestre atual) <br> {{course.registered}}</div>
+                            <div class="materia failed"> Reprovações <br> {{course.fails}}</div>
+                            <div class="materia cancelled"> Cancelamentos <br> {{course.cancelled}}</div>
+                        </div>
                     </div>
-
-                    <div class="data-panel">
-                        <h3>Taxa de Aprovação</h3>
-                        <span class="data">{{ analysis_result.indice_aprovacao|multiply:100|floatformat:2 }}%</span>
-                    </div>
-
-                    <div class="data-panel">
-                        <h3>Periodo real</h3>
-                        {% if analysis_result.periodo_real %}
-                            <span class="data">{{ analysis_result.periodo_real }}</span>
-                        {% elif analysis_result.student.forma_evasao == 'Formatura' %}
-                            <span class="data">Formado</span>
-                        {% else %}
-                            <span class="data">Desconhecido</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="data-panel">
-                        <h3>Periodo pretendido</h3>
-                        {% if analysis_result.periodo_pretendido %}
-                        <span class="data">{{ analysis_result.periodo_pretendido }}</span>
-                        {% else %}
-                        <span class="data">Formado</span>                            
-                        {% endif %}
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane active" id="resumo">
+                <table class="table">
+                    <tr>
+                        <td>Saída do curso</td>
+                        <td>
+                            <span class="data">{{ analysis_result.student.forma_evasao }}</span><br>
+                            {% if analysis_result.student.forma_evasao != "Sem evasão" %}
+                                <span class="data">{{ analysis_result.student.ano_evasao }}/{{analysis_result.student.semestre_evasao}}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Código especificado no relatório original. Representa a modalidade de evasão do aluno ou especifica se o aluno é ativo (Sem evasão)."></a>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>IRA</td>
+                        <td>
+                            <span class="data">{{ analysis_result.student.ira|floatformat:2 }}</span>
+                        </td>
+                    </tr>
+        
+                    <tr>
+                        <td>Taxa de Aprovação</td>
+                        <td>
+                            <span class="data">{{ analysis_result.indice_aprovacao|to_percent }}</span>
+                        </td>
+                        <td>
+                            <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Valor que representa a taxa de reprovação do estudante. São apenas consideradas as disciplinas cujas situações são classificadas como <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+                        </td>
+                    </tr>
+                    
+                    <!-- This analysis was not implemented yet -->
+                    <!-- <tr>
+                        <td>Período real</td>
+                        <td>
+                            {% if analysis_result.periodo_real %}
+                                <span class="data">{{ analysis_result.periodo_real }}</span>
+                            {% elif analysis_result.student.forma_evasao == 'Formatura' %}
+                                <span class="data">Formado</span>
+                            {% else %}
+                                <span class="data">Desconhecido</span>
+                            {% endif %}
+                        </td>
+                    </tr> -->
+        
+                    <tr>
+                        <td>Período pretendido</td>
+                        <td>
+                            {% if analysis_result.periodo_pretendido %}
+                            <span class="data">{{ analysis_result.periodo_pretendido }}</span>
+                            {% else %}
+                            <span class="data">Formado</span>                            
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
             
+            <br>
             <br>
 
             <div role="tabpanel" class="tab-pane" id="disciplinas">
@@ -122,7 +206,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Aprovações Acumulada</h3>
+                        <h3>Aprovações Acumuladas</h3>
                         <div id="aprovacao_acumulada"></div>
                     </div>
                 </div>
@@ -142,8 +226,10 @@
       data: {{analysis_result.ira_semestral|safe}},
       div_target: "ira_semestral",
       //type: "bar",
-      title: "IRA/Semestre",
-      legend: "IRA"
+      title: "Relação entre IRA e período",
+      legend: "IRA semestral",
+      xaxis_title: "Período",
+      yaxis_title: "IRA semestral",
     });
     
     var chart2 = new AdegaChart({
@@ -152,15 +238,19 @@
         type: ["bar","bar"],
         title: "Índice de aprovação/Semestre",
         legend: ["Aprovações em disciplinas","Quantidade disciplinas cursadas"],
-        barmode: "grouped"
+        barmode: "grouped",
+        xaxis_title: "Período",
+        yaxis_title: "Quantidade de disciplinas",
     });
     
     var chart3 = new AdegaChart({
       data: {{analysis_result.posicao_turmaIngresso_semestral|safe}},
       div_target: "posicao_turma_ingresso_semestral",
       fill: "none",
-      title: "Posição do aluno em relação a turma de ingresso/Semestre(%)",
-      legend: "Posição relativa"
+      title: "Posição do aluno em relação à turma de ingresso em cada período (1.0 representa o melhor desempenho)",
+      legend: "Posição relativa",
+      xaxis_title: "Período",
+      yaxis_title: "Posição relativa em relação à turma ingresso",
     });
     
 
@@ -170,10 +260,13 @@
       div_target: "ira_disciplinas_semestre",
       type: ["scatter","bar","scatter"],
       title: "Relação entre IRA e a quantidade de disciplinas por semestre",
-      legend: ["IRA","Quantidade disciplinas","Carga horária"],
+      legend: ["IRA semestral","Quantidade disciplinas","Carga horária"],
       hide_charts: [false,false,true],
       fill: "none",
-      data_axis_y: ["y2", "y"]
+      data_axis_y: ["y2", "y"],
+      xaxis_title: "Período",
+      yaxis_title: "Quantidade de disciplinas cursadas",
+      yaxis2_title: "IRA semestral",
     });
 
     var aprovacao_semestral = {{analysis_result.indice_aprovacao_semestral|safe}} ;
@@ -183,9 +276,11 @@
       data: aprovacao_semestral,
       div_target: "aprovacao_acumulada",
       type: ["bar","bar"],
-      title: "Aprovações Acumulada",
+      title: "Relação entre quantidade de disciplinas cursadas e aprovadas",
       legend: ["Aprovações acumuladas","Disciplinas cursadas acumuladas"],
-      barmode: "grouped"
+      barmode: "grouped",
+      xaxis_title: "Período",
+      yaxis_title: "Quantidade de disciplinas",
     });
 
     chart5.transformToAcumulation();

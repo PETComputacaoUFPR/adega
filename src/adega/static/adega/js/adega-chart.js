@@ -12,7 +12,15 @@ class AdegaChart{
         this.legend = config.legend || null;
 
         this.barmode = config.barmode || "stack";
-
+        
+        this.yaxis_title = config.yaxis_title || "";
+        this.yaxis2_title = config.yaxis2_title || "";
+        this.xaxis_title = config.xaxis_title || "";
+        
+        this.mode = config.mode;
+        this.text = config.text;
+        
+        this.marker = config.marker;
 
         if(config.data == null){
             this.data_x = config.data_x;
@@ -75,8 +83,6 @@ class AdegaChart{
 
     transformToAcumulation(){
         var number_lines = this.data_y.length;
-        
-        
 
         for(var i in this.data_y){
             var acumulation = 0;
@@ -99,7 +105,7 @@ class AdegaChart{
                     y: this.data_y[i],
                     type: this.type[i],
                     fill: this.fill,
-                    yaxis: this.data_axis_y[i]
+                    yaxis: this.data_axis_y[i],
                 }
             );
             
@@ -114,14 +120,36 @@ class AdegaChart{
                     visible: true,
                 }
             }
+            if(this.mode && this.mode[i]){
+                data[i].mode = this.mode[i];
+            }
+            if(this.text && this.text[i]){
+                data[i].text = this.text[i];
+            }
+            if(this.marker != undefined){
+                data[i].marker = this.marker;
+            }
+            data[i].connectgaps = true;
         }
 
         var layout = {
+            legend: {
+                orientation: "h",
+                yanchor: "top",
+                valign: "top",
+                y: 1.1,
+                x: 0
+            },
             title: this.title,
             showlegend: true,
+            xaxis:{
+                title:this.xaxis_title,
+                automargin: true
+            },
             yaxis: {
-                // title: 'yaxis title',
-                rangemode: 'tozero'
+                title: this.yaxis_title,
+                rangemode: 'tozero',
+                automargin: true
                 // overlaying: 'y'
             },
             yaxis2: {
@@ -130,7 +158,9 @@ class AdegaChart{
                 // tickfont: {color: 'rgb(148, 103, 189)'},
                 overlaying: 'y1',
                 side: 'right',
-                rangemode: 'tozero'
+                rangemode: 'tozero',
+                title: this.yaxis2_title,
+                automargin: true
             },
             barmode: this.barmode
         };

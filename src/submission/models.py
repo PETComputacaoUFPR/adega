@@ -37,28 +37,29 @@ class Submission(models.Model):
     historico = models.FileField(upload_to=get_path)
     matricula = models.FileField(upload_to=get_path)
 
-    
     degree = models.ForeignKey(Degree)
-
     timestamp = models.DateTimeField(default=timezone.now)
-
     last = models.BooleanField(default=True)
-
     processed = models.BooleanField(default=False)
-    
     process_time = models.IntegerField(null=True)
-
-    analysis_status = models.IntegerField(default=0, choices=ANALYSIS_STATUS_CHOICES)
-    
+    analysis_status = models.IntegerField(
+            default=0,
+            choices=ANALYSIS_STATUS_CHOICES
+            )
     last_error = models.CharField(default="", max_length=4096)
-
     relative_year = models.IntegerField(null=True)
-
     relative_semester = models.IntegerField(null=True)
-
     semester_status = models.IntegerField(null=True, choices=STATUS_CHOICES)
-
     done_in = models.DateTimeField(null=True)
+
+    class Meta:
+        permissions = (
+            # ('view_submission', 'Visualizar Relatórios'),
+            ('view_course', 'Visualizar disciplinas'),
+            ('view_student', 'Visualizar alunos'),
+            ('view_degree', 'Visualizar curso'),
+            ('view_admission', 'Visualizar turma ingresso'),
+            )
 
     def save(self, *args, **kwargs):
         """
@@ -101,10 +102,3 @@ class Submission(models.Model):
         self.analysis_status = 2
         self.last_error = error_message
         self.save()
-
-# @receiver(models.signals.post_save, sender=Submission)
-# def execute_after_save(sender, instance, created, *args, **kwargs):
-#     if created:
-#         print(sender,instance,created)
-#         # submission_analysis.analyze(instance, debug=False)
-#         submission_analysis.analyze(sender)
