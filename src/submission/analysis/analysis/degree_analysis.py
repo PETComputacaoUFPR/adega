@@ -269,8 +269,8 @@ def evasion_per_period_graph(df):
     
     evasions_period = {}
     for student, dataframe in evaded_students:   
-        print( dataframe, student)  
-        current_period(dataframe)  
+        # print( dataframe, student)  
+        StudentAnalysis.current_period(dataframe)
         # evasions_period[ current_period(dataframe) ] += 1; 
         break   
     # print(evasions_period)
