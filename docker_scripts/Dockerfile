@@ -1,14 +1,11 @@
 FROM python:3.5
-RUN apt-get update -qq
-RUN apt-get install -y \
-	python3-pip libpq-dev \ 
+RUN apt-get update -qq && apt-get install -y \
+	python3-pip libpq-dev \
 	postgresql-client 
 
 RUN mkdir /adega
 WORKDIR /adega
 
-# Not necessary (only do the build slow)
-# ADD . /adega
 
 ADD ./requirements.txt /adega/requirements.txt
 

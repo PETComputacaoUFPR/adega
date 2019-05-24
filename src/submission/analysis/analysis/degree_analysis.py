@@ -39,20 +39,21 @@ def general_failure(df):
     affect_ira = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
     failures = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_FAIL)]
 
-    # average = reprovados/
     average = failures.shape[0] / affect_ira.shape[0]
 
-    student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
-                                .aggregate({'SITUACAO': 'count'})
-    student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
-                               .aggregate({'SITUACAO': 'count'})
+    return average
+    # student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
+    #                             .aggregate({'SITUACAO': 'count'})
+    # student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
+    #                            .aggregate({'SITUACAO': 'count'})
 
-    merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
-    merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
-    variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
-                                      .pow(2).sum() / merged.shape[0]
-    standard_deviation = math.sqrt(variance)
-    return (average, standard_deviation)
+    # merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
+    # merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
+    # variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
+    #                                   .pow(2).sum() / merged.shape[0]
+    # standard_deviation = math.sqrt(variance)
+
+    # return (average, standard_deviation)
 
 
 def current_students_failure(df):
@@ -62,17 +63,18 @@ def current_students_failure(df):
 
     average = failures.shape[0] / affect_ira.shape[0]
 
-    student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
-                                .aggregate({'SITUACAO': 'count'})
-    student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
-                               .aggregate({'SITUACAO': 'count'})
+    return average
+    # student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
+    #                             .aggregate({'SITUACAO': 'count'})
+    # student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
+    #                            .aggregate({'SITUACAO': 'count'})
 
-    merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
-    merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
-    variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
-                                      .pow(2).sum() / merged.shape[0]
-    standard_deviation = math.sqrt(variance)
-    return (average, standard_deviation)
+    # merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
+    # merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
+    # variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
+    #                                   .pow(2).sum() / merged.shape[0]
+    # standard_deviation = math.sqrt(variance)
+    # return (average, standard_deviation)
 
 def general_ira(student_analysis):
     iras = np.array(list(student_analysis.ira_alunos().values()))

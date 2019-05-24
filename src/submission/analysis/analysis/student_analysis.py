@@ -109,7 +109,7 @@ class StudentAnalysis:
 
             if(carga_total != 0):
                 ira_per_student[i] = ira_total/carga_total
-            else:
+            else: # There is no register of courses for this student
                 ira_per_student[i] = 0
         return ira_per_student
 

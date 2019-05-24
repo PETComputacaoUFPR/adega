@@ -8,6 +8,7 @@
 
     
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js">
     
     <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}"/>
     
@@ -106,6 +107,14 @@
     $.fn.selectpicker.Constructor.BootstrapVersion = '4';
   </script>
 
+  <script charset="utf-8">
+      $(function () {
+       $('.fa-info-circle').popover({
+       placement: 'top',
+       trigger: 'hover'
+       })
+  })
+  </script>
   {% block js-foot %}
     
   {% endblock js-foot %}
