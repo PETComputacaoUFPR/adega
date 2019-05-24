@@ -93,7 +93,13 @@ class Submission(models.Model):
         self.process_time = time
         self.done_in = timezone.now()
         self.analysis_status = 1
-        self.save()
+        try:
+            self.save()
+        except Exception as e:
+            if (e.__class__.__name__ == 'OperationalError'):
+                self.save()
+            else:
+                raise e
 
     def set_fail(self,time, error_message):
         self.processed = False
