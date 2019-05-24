@@ -243,7 +243,12 @@ class DegreeGrid:
     def get_situation(self, hist):
         cgc = self.compute_cgc(hist)
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
-
+    
+    @staticmethod
+    def get_degree_grid(code):
+        if code == "21A":
+            return DegreeGrid.bcc_grid_2011
+    
     bcc_grid_2011 = DegreeGridDescription({
         "year": 2011,
         "grid": [
