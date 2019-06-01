@@ -185,6 +185,19 @@
 
             <div id="graficos">
                 <div class="row">
+                    <h3>Relação entre IRA e a quantidade de disciplinas por semestre
+                        <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                        data-content="IRA médio do estudante e quantidade de disciplinas cursadas em cada semestre. O valor do IRA é calculado individualmente
+                                        para cada semestre, ou seja, os valores apresentados não são acumulados.
+                                        São apenas consideradas as disciplinas cujas situações são classificadas como
+                                        <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+                    </h3>
+                    <div class="col-md-11">
+                        <div id="ira_disciplinas_semestre"></div>
+                    </div>
+                </div>
+                <br>
+                <!-- <div class="row">
                     <h3>IRA/Semestre</h3>
                     <div class="col-md-11">
                         <div id="ira_semestral"></div>
@@ -197,55 +210,51 @@
                                       <b>Reprovação</b> ou <b>Aprovação</b>."></a>
                     </div>
                 </div>
-                <br>
+                <br> -->
                 <div class="row">
                     <div class="col-md-11">
-                        <h3>Índice de aprovação/Semestre</h3>
-                        <div id="aprovacao_semestral"></div>
-                    </div>
-                    <div class="col-md-1">
-                        <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                        <h3>Índice de aprovação por Semestre
+                            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
                             data-content="Quantidade de disciplinas cursadas e aprovadas em cada semestre.
                                         São apenas consideradas as disciplinas cujas situações são classificadas como
                                         <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+                        </h3>
+                        <div id="aprovacao_semestral"></div>
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-md-11">
-                        <h3>Posição do aluno em relação a turma de ingresso/Semestre(%)</h3>
+                        <h3>Posição do aluno em relação a Turma de Ingresso por Semestre
+                            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Posição do aluno em relação à própria turma de ingresso em cada semestre.
+                                            A posição é calculada considerando o IRA médio em cada semestre de forma individual.
+                                            Portanto, o IRA não é acumulado.<br><br>
+
+
+                                            O valor máximo é 1 quando o aluno obteve o melhor IRA dentre os alunos de sua turma que
+                                            cursaram ao menos uma disciplina em um determinado semestre, e 0 quando o aluno obteve o pior
+                                            desempenho. O valor é calculado de forma que se o aluno obteve a N-esima melhor
+                                            média de nota (IRA semestral) em um semestre, sua posição neste semestre é (1+N)/TOTAL,
+                                            onde TOTAL representa o total de alunos de sua turma que cursaram ao menos uma disciplina
+                                            no semestre em questão.<br><br>
+
+
+                                            São apenas consideradas as disciplinas cujas situações são classificadas como
+                                            <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+                        </h3>
                         <div id="posicao_turma_ingresso_semestral"></div>
                     </div>
-                    <div class="col-md-1">
-                        <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
-                            data-content="Posição do aluno em relação à própria turma de ingresso em cada semestre.
-                                          A posição é calculada considerando o IRA médio em cada semestre de forma individual.
-                                          Portanto, o IRA não é acumulado.<br><br>
-
-
-                                          O valor máximo é 1 quando o aluno obteve o melhor IRA dentre os alunos de sua turma que
-                                          cursaram ao menos uma disciplina em um determinado semestre, e 0 quando o aluno obteve o pior
-                                          desempenho. O valor é calculado de forma que se o aluno obteve a N-esima melhor
-                                          média de nota (IRA semestral) em um semestre, sua posição neste semestre é (1+N)/TOTAL,
-                                          onde TOTAL representa o total de alunos de sua turma que cursaram ao menos uma disciplina
-                                          no semestre em questão.<br><br>
-
-
-                                          São apenas consideradas as disciplinas cujas situações são classificadas como
-                                          <b>Reprovação</b> ou <b>Aprovação</b>."></a>
-                    </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Relação entre IRA e a quantidade de disciplinas por semestre</h3>
-                        <div id="ira_disciplinas_semestre"></div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Aprovações Acumuladas</h3>
+                        <h3>Aprovações Acumuladas
+                            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Acumulo de aprovações (azul) e total de disciplinas cursadas (laranja) em cada período. 
+                                            São apenas consideradas as disciplinas cujas situações são classificadas como
+                                            <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+                        </h3>
                         <div id="aprovacao_acumulada"></div>
                     </div>
                 </div>
@@ -261,15 +270,15 @@
 {% block js-foot %}
   <script>
     
-    var chart1 = new AdegaChart({
-      data: {{analysis_result.ira_semestral|safe}},
-      div_target: "ira_semestral",
-      //type: "bar",
-      title: "Relação entre IRA e período",
-      legend: "IRA semestral",
-      xaxis_title: "Período",
-      yaxis_title: "IRA semestral",
-    });
+    // var chart1 = new AdegaChart({
+    //   data: {{analysis_result.ira_semestral|safe}},
+    //   div_target: "ira_semestral",
+    //   //type: "bar",
+    //   title: "Relação entre IRA e período",
+    //   legend: "IRA semestral",
+    //   xaxis_title: "Período",
+    //   yaxis_title: "IRA semestral",
+    // });
     
     var chart2 = new AdegaChart({
         data: {{analysis_result.indice_aprovacao_semestral|safe}},
