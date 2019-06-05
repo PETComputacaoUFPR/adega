@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+<base href="https://launchpad.net/%7Ekritalime/+archive/ubuntu/ppa/+index" />
+
+    <meta charset="UTF-8" />
+    <title>Krita Lime PPA : “Krita Lime” team</title>
+    <link rel="shortcut icon" href="/@@/launchpad.png" />
+    
+    
+    
+
+    
+  
+  <link type="text/css" rel="stylesheet" media="screen, print" href="/+icing/rev18968/combo.css" />
+
+
+    
+
+    
+      <meta name="description" content="----------------------------------------------------------------------------
+Krita Lime PPA                                              http://krita.org
+----------------------------------------------------------------------------
+
+Welcome to Krita Lime PPA!
+
+This PPA delivers the freshest Krita packages for Ubuntu, directly picked
+by the developers from the source tree.
+
+If you have Ubuntu 16.10 or newer, please use Krita from this repository, this is an officially recommended way alongside ..." />
+    
+
+    
+  
+
+  
+  
+  <script type="text/javascript">
+    var LP = {
+        cache: {},
+        links: {}
+    };
+  </script>
+
+  
+
+  <script type="text/javascript">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>
+
+   <script type="text/javascript" src="/+combo/rev18968/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js"></script>
+   <script type="text/javascript">
+        var raw = null;
+        if (LP.devmode) {
+           raw = 'raw';
+        }
+        YUI.GlobalConfig = {
+            combine: true,
+            comboBase: '/+combo/rev18968/?',
+            root: 'yui/',
+            filter: raw,
+            debug: false,
+            fetchCSS: false,
+            maxURLLength: 2000,
+            groups: {
+                lp: {
+                    combine: true,
+                    base: '/+combo/rev18968/?lp/',
+                    comboBase: '/+combo/rev18968/?',
+                    root: 'lp/',
+                    // comes from including lp/meta.js
+                    modules: LP_MODULES,
+                    fetchCSS: false
+                }
+            }
+        }</script>
+
+  <script type="text/javascript">
+      // we need this to create a single YUI instance all events and code
+      // talks across. All instances of YUI().use should be based off of
+      // LPJS instead.
+      var LPJS = new YUI();
+  </script>
+
+
+
+    <script id="base-layout-load-scripts" type="text/javascript">
+        //<![CDATA[
+        LPJS.use('base', 'node', 'console', 'event',
+            'oop', 'lp', 'lp.app.foldables','lp.app.sorttable',
+            'lp.app.inlinehelp', 'lp.app.links',
+            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',
+            'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',
+            'lp.views.global',
+             function(Y) {
+
+            Y.on("domready", function () {
+                var global_view = new Y.lp.views.Global();
+                global_view.render();
+
+                Y.lp.app.sorttable.SortTable.init();
+                Y.lp.app.inlinehelp.init_help();
+                Y.lp.activate_collapsibles();
+                Y.lp.app.foldables.activate();
+                Y.lp.app.links.check_valid_lp_links();
+            });
+
+            Y.on('lp:context:web_link:changed', function(e) {
+                  window.location = e.new_value;
+            });
+        });
+        //]]>
+    </script>
+    <script id="base-helper-functions" type="text/javascript">
+         //<![CDATA[
+        // This code is pulled from lp.js that needs to be available on every
+        // request. Pulling here to get it outside the scope of the YUI block.
+        function setFocusByName(name) {
+            // Focus the first element matching the given name which can be focused.
+            var nodes = document.getElementsByName(name);
+            var i, node;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.focus) {
+                    try {
+                        // Trying to focus a hidden element throws an error in IE8.
+                        if (node.offsetHeight !== 0) {
+                            node.focus();
+                        }
+                    } catch (e) {
+                        LPJS.use('console', function(Y) {
+                            Y.log('In setFocusByName(<' +
+                                node.tagName + ' type=' + node.type + '>): ' + e);
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function selectWidget(widget_name, event) {
+          if (event && (event.keyCode === 9 || event.keyCode === 13)) {
+              // Avoid firing if user is tabbing through or simply pressing
+              // enter to submit the form.
+              return;
+          }
+          document.getElementById(widget_name).checked = true;
+        }
+        //]]>
+    </script>
+
+    
+      
+    
+  </head>
+
+  <body id="document" itemscope="" itemtype="http://schema.org/WebPage" class="tab-overview
+      main_side
+      public
+      yui3-skin-sam">
+          
+          
+    <div class="yui-d0">
+      <div id="locationbar" class="login-logout">
+        
+
+<div id="logincontrol"><a href="https://launchpad.net/~kritalime/+archive/ubuntu/ppa/+login">Log in / Register</a></div>
+
+
+
+      </div><!--id="locationbar"-->
+
+      <div id="watermark" class="watermark-apps-portlet">
+        <div>
+          <a href="https://launchpad.net/~kritalime"><img alt="" width="64" height="64" src="/@@/team-logo" /></a>
+        </div>
+        <div class="wide">
+          <h2 id="watermark-heading"><a href="https://launchpad.net/~kritalime">“Krita Lime” team</a></h2>
+        </div>
+        
+  <!-- Application Menu -->
+  <ul class="facetmenu">
+    
+      <li class="overview active"><a href="https://launchpad.net/~kritalime">Overview</a></li>
+      
+      
+    
+    
+      
+      <li class="branches"><a href="https://code.launchpad.net/~kritalime">Code</a></li>
+      
+    
+    
+      
+      <li class="bugs"><a href="https://bugs.launchpad.net/~kritalime">Bugs</a></li>
+      
+    
+    
+      
+      <li class="specifications"><a href="https://blueprints.launchpad.net/~kritalime">Blueprints</a></li>
+      
+    
+    
+      
+      <li class="translations"><a href="https://translations.launchpad.net/~kritalime">Translations</a></li>
+      
+    
+    
+      
+      <li class="answers"><a href="https://answers.launchpad.net/~kritalime">Answers</a></li>
+      
+    
+  </ul>
+
+      </div>
+
+      <div class="yui-t4">
+        <div id="maincontent" class="yui-main">
+          <div class="yui-b" dir="ltr">
+            <div class="context-publication">
+              
+    <meta itemprop="name" content="Krita Lime PPA" />
+    <h1 id="edit-displayname">
+<span class="yui3-editable_text-text ellipsis single-line" style="max-width: 95%;">
+    Krita Lime PPA
+</span>
+  
+</h1>
+
+
+
+    
+  
+              
+
+              <div id="registration" class="registering">
+                
+              </div>
+            </div>
+
+            
+            <div id="request-notifications">
+              
+            </div>
+
+            
+              
+
+    <div class="top-portlet" style="padding-top:0.5em;">
+      
+
+      <div>
+  <div class="lazr-multiline-edit" id="edit-description">
+  <div class="clearfix">
+    
+
+    <h3>PPA description</h3>
+  </div>
+
+  <div class="yui3-editable_text-text"><p>-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />------<br />
+Krita Lime PPA                                              <a rel="nofollow" href="http://krita.org">http://<wbr />krita.org</a><br />
+-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />-------<wbr />------</p>
+<p>Welcome to Krita Lime PPA!</p>
+<p>This PPA delivers the freshest Krita packages for Ubuntu, directly picked<br />
+by the developers from the source tree.</p>
+<p>If you have Ubuntu 16.10 or newer, please use Krita from this repository, this is an officially recommended way alongside AppImage builds.</p>
+<p>To install Krita just type:</p>
+<p>sudo add-apt-repository ppa:kritalime/ppa<br />
+sudo apt-get update<br />
+sudo apt-get install krita</p>
+<p>If you also want to install translations:</p>
+<p>sudo apt-get install krita-l10n</p>
+<p>If would also like to download debugging symbols for Krita:</p>
+<p>sudo add-apt-repository \<br />
+&quot;<a rel="nofollow" href="http://ppa.launchpad.net/kritalime/ppa/ubuntu">http://<wbr />ppa.launchpad.<wbr />net/kritalime/<wbr />ppa/ubuntu</a> main/debug&quot;</p>
+<p>sudo apt-get update<br />
+sudo apt-get install krita-dbgsym</p>
+<p>Note: older versions of Ubuntu (including 16.04) are not supported by this repository due to outdated version of Qt library provided. Please use AppImage builds instead [0]</p>
+<p>[0] - <a rel="nofollow" href="https://krita.org/en/download/krita-desktop/">https:/<wbr />/krita.<wbr />org/en/<wbr />download/<wbr />krita-desktop/</a></p></div>
+  </div>
+
+  
+</div>
+
+    </div>
+
+    
+      
+    
+    
+  
+    
+
+    <div class="yui-gc">
+
+      <div class="yui-u first">
+        
+          
+    
+
+    <div id="ppa-install" class="portlet">
+      <h2>Adding this PPA to your system</h2>
+
+      
+
+        <p>You can update your system with unsupported packages from
+          this untrusted PPA by adding <strong class="ppa-reference">ppa:kritalime/ppa</strong>
+          to your system's Software Sources.
+          (<a href="/+help-soyuz/ppa-sources-list.html" target="help">Read about installing</a>)
+        </p>
+
+        <pre class="command subordinate">
+sudo add-apt-repository ppa:kritalime/ppa
+sudo apt-get update
+        </pre>
+
+        <div class="widget-header">
+          Technical details about this PPA
+        </div>
+
+        <div class="widget-body">
+          <p>This PPA can be added to your system manually by copying
+             the lines below and adding them to your system's software
+             sources. </p>
+          
+
+  <script>
+  <!--
+      function updateSeries(select) {
+          var deb = document.getElementById('series-deb');
+          deb.innerHTML = select.value;
+          var deb_src = document.getElementById('series-deb-src');
+          deb_src.innerHTML = select.value;
+      }
+  //-->
+  </script>
+
+  <div id="series-widget-div">
+    <form style="display: inline">
+    Display sources.list entries for: <select id="field.series" name="field.series" size="1" onChange='updateSeries(this);'>
+<option selected="selected" value="YOUR_UBUNTU_VERSION_HERE">Choose your Ubuntu version</option>
+<option value="eoan">Eoan (19.10)</option>
+<option value="disco">Disco (19.04)</option>
+<option value="cosmic">Cosmic (18.10)</option>
+<option value="bionic">Bionic (18.04)</option>
+<option value="artful">Artful (17.10)</option>
+<option value="zesty">Zesty (17.04)</option>
+<option value="yakkety">Yakkety (16.10)</option>
+<option value="xenial">Xenial (16.04)</option>
+<option value="vivid">Vivid (15.04)</option>
+<option value="trusty">Trusty (14.04)</option>
+<option value="precise">Precise (12.04)</option>
+</select>
+    </form>
+  </div>
+
+  
+
+  <pre id="sources-list-entries" class="wrap">
+deb <a href="http://ppa.launchpad.net/kritalime/ppa/ubuntu">http://ppa.launchpad.net/kritalime/ppa/ubuntu</a> <span id="series-deb">YOUR_UBUNTU_VERSION_HERE</span> main 
+deb-src <a href="http://ppa.launchpad.net/kritalime/ppa/ubuntu">http://ppa.launchpad.net/kritalime/ppa/ubuntu</a> <span id="series-deb-src">YOUR_UBUNTU_VERSION_HERE</span> main </pre>
+
+
+
+          <dl id="signing-key">
+            <dt>Signing key:</dt>
+            <dd>
+              <a href="https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&amp;op=index&amp;search=0x709901D8205BF7EC06062E0F78F9887001CEE17F">
+                <code>4096R/709901D8205BF7EC06062E0F78F9887001CEE17F</code>
+              </a>
+              (<a href="/+help-soyuz/ppa-sources-list.html" target="help">What is this?</a>)
+            </dd>
+            <dt>Fingerprint:</dt>
+            <dd>709901D8205BF7EC06062E0F78F9887001CEE17F</dd>
+          </dl>
+           <!--archive-dependencies -->
+        </div> <!-- widget-body -->
+
+        <p>For questions and bugs with software in this PPA please contact
+          <a href="/~kritalime" class="sprite team">Krita Lime</a>.</p>
+
+        <script type="text/javascript">
+          LPJS.use('lp.app.widgets.expander', function(Y) {
+              var widget_header = Y.one('#ppa-install .widget-header');
+              var content = Y.one('.widget-body');
+              var expander = new Y.lp.app.widgets.expander.Expander(
+                  widget_header, content);
+              expander.setUp(true);
+          });
+        </script>
+      
+
+      
+
+    </div> <!-- ppa-install -->
+  
+        
+        
+      </div>
+
+      <div class="yui-u">
+        
+    
+    <div class="portlet">
+      <h2>PPA statistics</h2>
+      <dl>
+        <dt>Activity</dt>
+        <dd>60
+          updates
+          added during the past month.</dd>
+        
+      </dl>
+    </div>
+  
+      </div>
+    </div><!-- yui-gc -->
+
+    
+    
+    <div class="portlet" id="packages">
+      <span class="see-all"><a class="menu-link-packages sprite info" href="https://launchpad.net/~kritalime/+archive/ubuntu/ppa/+packages">View package details</a></span>
+      <h2>Overview of published packages</h2>
+
+      <form class="package-search-filter" action="" method="GET">
+        <label for="field.series_filter">Published in:</label>
+        <select id="field.series_filter" name="field.series_filter" size="1" >
+<option value="">Any series</option>
+<option value="eoan">Eoan</option>
+<option value="disco">Disco</option>
+<option value="cosmic">Cosmic</option>
+<option value="bionic">Bionic</option>
+<option value="artful">Artful</option>
+<option value="zesty">Zesty</option>
+<option value="yakkety">Yakkety</option>
+<option value="xenial">Xenial</option>
+<option value="vivid">Vivid</option>
+<option value="trusty">Trusty</option>
+<option value="precise">Precise</option>
+</select>
+        <input type="submit" value="Filter" />
+      </form>
+
+      <div>
+
+        <table style="width: 100%;" class="upper-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>23</strong>
+            
+            of
+            23
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <table class="listing sortable" id="packages_list">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Uploaded by</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita
+              </td>
+              <td>
+                2:4.1.7-1~cosmic
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2018-12-14)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita
+              </td>
+              <td>
+                2:4.1.7-1~bionic
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2018-12-14)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita
+              </td>
+              <td>
+                2:4.0.3-1~artful
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2018-05-12)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita
+              </td>
+              <td>
+                2:3.3.3-1~zesty
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2018-01-08)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita
+              </td>
+              <td>
+                1:3.1.4-2~yakkety
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2017-06-19)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu18.10.1
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2018-07-27)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2018-07-27)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu17.10.1
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu17.04.1
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu16.10.1
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu16.04.1
+                
+              </td>
+              <td>
+                  <a href="/~dimula73" class="sprite person">Dmitry Kazakov</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu15.04.1
+                
+              </td>
+              <td>
+                  <a href="/~dimula73" class="sprite person">Dmitry Kazakov</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu14.04.1
+                
+              </td>
+              <td>
+                  <a href="/~dimula73" class="sprite person">Dmitry Kazakov</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-nautilus-thumbnailer
+              </td>
+              <td>
+                1.0-0~14~ubuntu12.04.1
+                
+              </td>
+              <td>
+                  <a href="/~dimula73" class="sprite person">Dmitry Kazakov</a>
+                  
+                  (2017-05-02)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                2:4.1.0-0~201905270934~ubuntu18.10.1
+                
+              </td>
+              <td>
+                  <a href="/~kritalime" class="sprite team">Krita Lime</a>
+                  
+                  (25 minutes ago)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                2:4.1.0-0~201905270934~ubuntu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~kritalime" class="sprite team">Krita Lime</a>
+                  
+                  (25 minutes ago)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                2:4.1.0-0~201905130435~ubuntu19.10.1
+                
+              </td>
+              <td>
+                  <a href="/~dimula73" class="sprite person">Dmitry Kazakov</a>
+                  
+                  (2019-05-13)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                2:4.1.0-0~201905130435~ubuntu19.04.1
+                
+              </td>
+              <td>
+                  <a href="/~dimula73" class="sprite person">Dmitry Kazakov</a>
+                  
+                  (2019-05-13)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                2:4.1.0-0~201807191056~ubuntu17.10.1
+                
+              </td>
+              <td>
+                  <a href="/~kritalime" class="sprite team">Krita Lime</a>
+                  
+                  (2018-07-19)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                1:4.0.0-0~201801141529~ubuntu17.04.1
+                
+              </td>
+              <td>
+                  <a href="/~kritalime" class="sprite team">Krita Lime</a>
+                  
+                  (2018-01-15)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                krita-testing
+              </td>
+              <td>
+                1:4.0.0-0~201707191433~ubuntu16.10.1
+                
+              </td>
+              <td>
+                  <a href="/~kritalime" class="sprite team">Krita Lime</a>
+                  
+                  (2017-07-20)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vc
+              </td>
+              <td>
+                1.3.0-2~zesty
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2016-12-16)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vc
+              </td>
+              <td>
+                1.3.0-2~yakkety
+                
+              </td>
+              <td>
+                  <a href="/~samoilov-lex" class="sprite person">Sunderland93</a>
+                  
+                  (2016-12-16)
+                  
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+
+        <table style="width: 100%;" class="lower-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>23</strong>
+            
+            of
+            23
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        
+
+      </div>
+    </div>
+  
+ 
+            
+            
+          </div><!-- yui-b -->
+        </div><!-- yui-main -->
+
+        
+          <div id="side-portlets" class="yui-b side">
+            
+    <div id="global-actions" class="portlet vertical">
+  <ul>
+    <li>
+      <a class="menu-link-packages sprite info" href="https://launchpad.net/~kritalime/+archive/ubuntu/ppa/+packages">View package details</a>
+    </li>
+  </ul>
+</div>
+
+    
+  
+
+  
+  <div id="portlet-latest-updates" class="portlet">
+    <h2>Latest updates</h2>
+
+    
+    
+      <ul class="latest-ppa-updates">
+        <li class="FULLYBUILT_PENDING">
+          <strong>krita-testing</strong>
+          <span class="duration">
+            26 minutes
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT_PENDING">
+          <strong>krita-testing</strong>
+          <span class="duration">
+            26 minutes
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>krita-testing</strong>
+          <span class="duration">
+            2 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>krita-testing</strong>
+          <span class="duration">
+            2 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>krita</strong>
+          <span class="duration">
+            23 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+      </ul>
+    
+    </div>
+  
+
+  
+          </div><!-- yui-b side -->
+        
+      </div><!-- yui-t4 -->
+
+      
+  <div id="footer" class="footer">
+    <div class="lp-arcana">
+        <div class="lp-branding">
+          <a href="https://launchpad.net/"><img src="/@@/launchpad-logo-and-name-hierarchy.png" alt="Launchpad" /></a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://launchpad.net/+tour">Take the tour</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://help.launchpad.net/">Read the guide</a>
+          &nbsp;
+          <form id="globalsearch" method="get" accept-charset="UTF-8" action="https://launchpad.net/+search">
+            <input type="search" id="search-text" name="field.text" />
+            <input type="image" src="/@@/search" style="vertical-align:5%" alt="Search Launchpad" />
+          </form>
+        </div>
+        
+  
+
+    </div>
+
+    <div class="colophon">
+      &copy; 2004-2019
+      <a href="http://canonical.com/">Canonical&nbsp;Ltd.</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://launchpad.net/legal">Terms of use</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://www.ubuntu.com/legal/dataprivacy">Data privacy</a>
+      &nbsp;&bull;&nbsp;
+      <a href="/feedback">Contact Launchpad Support</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://blog.launchpad.net/">Blog</a>
+      
+	&nbsp;&bull;&nbsp;
+	<a href="http://www.canonical.com/about-canonical/careers">Careers</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://twitter.com/launchpadstatus">System status</a>
+      <span id="lp-version">
+      &nbsp;&bull;&nbsp;
+        r18968
+        
+        
+        (<a href="https://dev.launchpad.net/">Get the code!</a>)
+      </span>
+    </div>
+  </div>
+
+    </div><!-- yui-d0-->
+
+    
+  
+  
+  <script id="json-cache-script">LP.cache = {"related_features": {}, "context": {"external_dependencies": null, "reference": "~kritalime/ubuntu/ppa", "build_debug_symbols": true, "private": false, "processors_collection_link": "https://launchpad.net/api/devel/~kritalime/+archive/ubuntu/ppa/processors", "require_virtualized": true, "suppress_subscription_notifications": false, "enabled_restricted_processors_collection_link": "https://launchpad.net/api/devel/~kritalime/+archive/ubuntu/ppa/enabled_restricted_processors", "publish_debug_symbols": true, "http_etag": "\"19fc10d85e6e5df0686fc9714792ee033854b782-cf5b24857584fb2a0158294a9f4ade1d96e653ac\"", "self_link": "https://launchpad.net/api/devel/~kritalime/+archive/ubuntu/ppa", "resource_type_link": "https://launchpad.net/api/devel/#archive", "status": "Active", "dependencies_collection_link": "https://launchpad.net/api/devel/~kritalime/+archive/ubuntu/ppa/dependencies", "authorized_size": 16384, "displayname": "Krita Lime PPA", "description": "----------------------------------------------------------------------------\nKrita Lime PPA                                              http://krita.org\n----------------------------------------------------------------------------\n\nWelcome to Krita Lime PPA!\n\nThis PPA delivers the freshest Krita packages for Ubuntu, directly picked\nby the developers from the source tree.\n\nIf you have Ubuntu 16.10 or newer, please use Krita from this repository, this is an officially recommended way alongside AppImage builds.\n\nTo install Krita just type:\n\nsudo add-apt-repository ppa:kritalime/ppa\nsudo apt-get update\nsudo apt-get install krita\n\nIf you also want to install translations:\n\nsudo apt-get install krita-l10n\n\nIf would also like to download debugging symbols for Krita:\n\nsudo add-apt-repository \\\n\"http://ppa.launchpad.net/kritalime/ppa/ubuntu main/debug\"\n\nsudo apt-get update\nsudo apt-get install krita-dbgsym\n\nNote: older versions of Ubuntu (including 16.04) are not supported by this repository due to outdated version of Qt library provided. Please use AppImage builds instead [0]\n\n[0] - https://krita.org/en/download/krita-desktop/", "permit_obsolete_series_uploads": false, "relative_build_score": 0, "name": "ppa", "distribution_link": "https://launchpad.net/api/devel/ubuntu", "web_link": "https://launchpad.net/~kritalime/+archive/ubuntu/ppa", "owner_link": "https://launchpad.net/api/devel/~kritalime", "signing_key_fingerprint": "709901D8205BF7EC06062E0F78F9887001CEE17F"}};</script>
+
+    
+  
+
+    
+  </body>
+
+
+  <!--
+    Facet name: overview
+    Page type: main_side
+    Has global search: True
+    Has application tabs: True
+    Has side portlets: True
+
+    At least 63 queries/external actions issued in 0.82 seconds
+
+    Features: {'app.mainsite_only.canonical_url': None, 'baselayout.careers_link.disabled': None, 'hard_timeout': u'5000', 'profiling.enabled': None, 'js.yui_version': None, 'visible_render_time': None}
+
+    r18968
+
+    -->
+
+</html>
+
