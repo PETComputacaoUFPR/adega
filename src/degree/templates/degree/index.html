@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <h1>
             Informações Gerais
-            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true" 
+            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
             data-content="Para o cálculo do IRA, somente as situações consideradas como <b>Aprovação</b> ou <b>Reprovação</b> são consideradas.<br>
             <br>
             Situações consideradas como <b>Aprovação:</b><br>
@@ -127,7 +127,7 @@
                     alunos que estão no curso e dos alunos que já se formaram.<br>
                     <br>
                     <b>Atenção:</b> Alunos que possuem data de evasão indeterminada são desconsiderados."></a>
-                    
+
                 </div>
             </div>
 
@@ -178,10 +178,10 @@
 
 {% block js-foot %}
   <script>
-    
+
     // TODO: Refactor the analyzes to avoid this pretreatment
-    
-    
+
+
     // Assure that the keys is in order and convert the data
     // to a format that AdegaChart will accept
     function convert_degree_chart_data(data, y_keys_sorted){
@@ -197,14 +197,14 @@
             y_keys_sorted.map((y,i) => {
                 elements_tick[i] = x[1][y];
             });
-            
+
             // For add a new line in the plot data
             var index = x[0];
             new_data[index] = elements_tick;
         });
         return new_data;
     }
-    
+
     var y_keys_sorted;
     var ira_medio = {{degree_data.ira_medio_grafico|safe}};
     y_keys_sorted = ["total","sem_evasao","formatura"];
@@ -223,6 +223,8 @@
       div_target: "ira_semestral",
       title: "Distribuição de alunos por faixas de IRA",
       fill: "none",
+      type: ["bar","bar","bar"],
+      barmode:"group",
       legend: [
           "Total de alunos",
           "Alunos ativos",
@@ -246,7 +248,7 @@
         opacity:0.6,
         size: 13
       },
-    }); 
-    
+    });
+
   </script>
 {% endblock js-foot %}
