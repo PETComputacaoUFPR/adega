@@ -134,7 +134,8 @@ def generate_student_data(path, dataframe, student_analysis):
         EvasionForm.EF_DESISTENCIA,
         EvasionForm.EF_FORMATURA,
         EvasionForm.EF_ATIVO,
-        EvasionForm.EF_OUTROS
+        EvasionForm.EF_OUTROS,
+        EvasionForm.EF_REOPCAO
     ]
 
     list_situations = student_analysis.list_students()

@@ -102,6 +102,12 @@ def index(request, submission_id):
         "Outro",
         submission_id
     )
+    reopcao = get_list_students(
+        request.session,
+        degree,
+        "Reopção",
+        submission_id
+    )
 
     return render(request, 'student/index.html', {
         'degree': degree,
@@ -110,6 +116,7 @@ def index(request, submission_id):
         'abandono': abandono,
         'desistencia': desistencia,
         'outros': outros,
+        'reopcao': reopcao,
         "submission": submission,
         "situations_pass": situations_pass,
         "situations_fail": situations_fail,

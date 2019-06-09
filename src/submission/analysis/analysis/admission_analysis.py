@@ -331,3 +331,22 @@ def students_per_semester(df):
     for t_i_s, value in aux.items():
         dict_students.setdefault(t_i_s[0], {})[t_i_s[1]] = value
     return dict_students
+
+def taxa_aprovacao(self, df=None):
+    df = df if df is not None else self.data_frame
+
+    aprovacoes_semestres = self.indice_aprovacao_semestral(df=df)
+
+    for aluno in aprovacoes_semestres:
+        total = sum([aprovacoes_semestres[aluno][s][1]
+                        for s in aprovacoes_semestres[aluno]])
+        aprovacoes = sum([aprovacoes_semestres[aluno][s][0]
+                            for s in aprovacoes_semestres[aluno]])
+        total = float(total)
+        aprovacoes = float(aprovacoes)
+        if(total != 0):
+            aprovacoes_semestres[aluno] = aprovacoes/total
+        else:
+            aprovacoes_semestres[aluno] = None
+
+    return aprovacoes_semestres

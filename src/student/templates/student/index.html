@@ -30,6 +30,7 @@
             <a class="nav-item nav-link" href="#formados" aria-controls="formados" data-toggle="tab">Formados</a>
             <a class="nav-item nav-link" href="#abandono" aria-controls="abandono" data-toggle="tab">Abandono</a>
             <a class="nav-item nav-link" href="#desistencia" aria-controls="desistencia" data-toggle="tab">Desistência</a>
+            <a class="nav-item nav-link" href="#reopcao" aria-controls="reopcao" data-toggle="tab">Reopção (PROVAR)</a>
             <a class="nav-item nav-link" href="#outras" aria-controls="outras" data-toggle="tab">Outras Formas de Evasão</a>
         </div>
         <br>
@@ -123,6 +124,28 @@
                         </tbody>
                     </table>
                 </div>
+                <div role="tabpanel" class="tab-pane" id="reopcao">
+                    <table class="table table-striped table-bordered" id="reopcao_table">
+                        <thead>
+                            <tr>
+                                <th class="col-md-2">GRR</th>
+                                <th class="col-md-4">Nome</th>
+                                <th class="col-md-2">IRA</th>
+                                <th class="col-md-2">Forma evasão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for l in reopcao %}
+                            <tr>
+                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
+                                <td class="col-md-4">{{ l.nome }}</td>
+                                <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+                                <td class="col-md-2">{{ l.forma_evasao }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 <div role="tabpanel" class="tab-pane" id="outras">
                     <table class="table table-striped table-bordered" id="outros_table">
                         <thead>
@@ -158,6 +181,7 @@
         $("#formados_table"),
         $("#abandono_table"),
         $("#desistencia_table"),
+        $("#reopcao_table"),
         $("#outros_table")
     ];
     $(table_names).each(function(i,x){
