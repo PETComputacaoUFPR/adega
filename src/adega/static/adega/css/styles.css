@@ -57,6 +57,28 @@ h1#title {
   transform: rotate(15deg);
 }
 
+.bg-upload{
+  background-color: rgb(44, 62, 80);
+}
+
+.bg-mananger{
+  background-color: rgb(52, 152, 219);
+}
+
+.bg-upload:hover{
+  background-color: rgba(44, 62, 80, 0.9);
+
+}
+
+.bg-mananger:hover{
+  background-color: rgba(52, 152, 219, 0.9);
+
+}
+
+.button-adega a{
+  text-decoration: none;
+}
+
 .alert a:visited {
  color:blue;
 }
