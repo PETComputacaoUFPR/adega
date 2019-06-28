@@ -254,27 +254,31 @@ def evasion_per_period_graph(df):
 
     Returns 
     -------
-        dict of {int: int}
-        dict of {period: number of people evaded}
+    dict of {int: int}
+
+        evasions_period = {
+            period 1: number of people evaded,
+            period 2: number of people evaded,
+            ...
+            }
 
     Examples
     --------
         {1:56, 2:63, ..., 8:2}
-    """
-    
-    # Filter df for evaded people and the needed columns
-    rows = (df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA)  & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)
-    cols = ["MATR_ALUNO", "ID_VERSAO_CURSO", "COD_ATIV_CURRIC", "SITUACAO"]
-    evaded_students = df.loc[rows, cols].groupby("MATR_ALUNO") 
-    
-    evasions_period = {}
-    for student, dataframe in evaded_students:   
-        # print( dataframe, student)  
-        StudentAnalysis.current_period(dataframe)
-        # evasions_period[ current_period(dataframe) ] += 1; 
-        break   
-    # print(evasions_period)
 
+    """
+    # Filter df for evaded people 
+    rows = (df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA)  & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)
+    cols = ["MATR_ALUNO", "NUM_VERSAO_x", "COD_ATIV_CURRIC", "SITUACAO"]
+    evaded_students = df.loc[rows, cols] 
+
+    # print (evaded_students)
+    StudentAnalysis.current_period(evaded_students)
+
+    evasions_period = defaultdict(int)
+
+    # print(evasions_period)
+    return evasions_period
 
 def build_dict_ira_medio(alunos):
     dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0, "25-29.9":0, "30-34.9":0,

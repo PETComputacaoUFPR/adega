@@ -187,50 +187,71 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-
     @staticmethod
-    def current_period(student_df): 
+    def current_period(df): 
         """
             Calculate someone's current period
-            MUST receive as parameter the person's df already grouped
 
             Filter df for approved courses
+            Group the df per student
             [to do] Check what grid the student follows
             Checks if courses of period p are completed, 
             stops when a period is incompleted
             (the current period is the first incompleted one)
-        
-            Parameter:
+ 
+            Returns:
+            ---------
+            dict of {string: int} 
 
-            Returns: int (1..max_periods)
+                {"GRR": current period}
         """   
-        max_periods = 8
-        # verificar a grade que a pessoa segue
-        # if student_df.["ID_VERSAO_CURSO"] == grade 2011
 
-        # só matérias aprovadas
-        print(student_df['SITUACAO'], Situation.SITUATION_PASS)
+        # filtra matérias aprovadas
+        df = df[df['SITUACAO'].isin(Situation.SITUATION_PASS)]
 
-        student_df = student_df[student_df['SITUACAO'] != Situation.SITUATION_FAIL]
+        # gets individuals dataframes
+        students_df = df.groupby("MATR_ALUNO") 
 
-        # arrumar isso !!!!!!!!!!!!!!!!!!!!!
-        # student_df = student_df.loc[student_df.SITUACAO != Situation.SITUATION_PASS]
+        student_period = {}
+        for student, dataframe in students_df:   
+            
+            # TO DO: grid recebe a grade que a pessoa segue
+            if dataframe.iloc[0]["NUM_VERSAO_x"] == 1998:
+                print ('sem grade irmão')
+                continue
+            else:
+                # the academic grid is a list of lists from src/student/grid.py        
+                grid = DegreeGrid.get_degree_grid("BCC").grid
 
-        # grid is a list of list from src/student/grid.py        
-        # grid = DegreeGrid.get_degree_grid("BCC").grid
-        
-        p = 0
-        period_completed = 1
-        # while ( (p <= max_periods) | (period_completed == 1)):
-        #     p += 1
-            # for course in grid[p-1]:
-                # if course not in student_df['COD_ATIV_CURRIC'].values:
-                    # period_completed = 0
-                    # break       
+            max_period = 8
 
-        print ("periodo atual:", p)  
+            # TO DO: get list of the course's optatives classes 
+            # opt = ?
 
-        # return p 
+            p = 0
+            period_completed = 1
+            while ( (p < max_period) and period_completed):
+                for course in grid[p]:
+                    if course == "OPT":
+                        print("optativa")   
+                        # TO DO: looks for course in optative classes
+                        # for i in opt_list:
+                        #     if opt_list[i] in approved_df['COD_ATIV_CURRIC'].values:
+                        #         drop 
+                        #     else
+                        #         period_completed = 0                         
+                    elif (course == "TG I" or course == "TG II"):
+                        print("tegê")
+                    elif course not in dataframe['COD_ATIV_CURRIC'].values:
+                        period_completed = 0  
+                if period_completed:
+                    p += 1
+
+            print ('periodo:', p+1)
+            # p actually stands for number of completed periods
+            # current period is the first incompleted one
+            student_period[student] = p+1
+        return student_period 
 
 
 
