@@ -183,15 +183,17 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-    @staticmethod
-    def current_period(df): 
+    def current_period(df=None): 
+        # df = df if df is not None else self.data_frame
         """
             Calculate someone's current period
 
-            Filter df for approved courses
-            Group the df per student
-            [to do] Check what grid the student follows
-            Checks if courses of period p are completed, 
+            Filter df for approved courses and group by student
+            For every student:
+            Attribute the followed grid  
+            Checks if courses of period p are completed:
+            do this for obligatory and optatives 
+            TO DO check for equivalents courses too
             stops when a period is incompleted
             (the current period is the first incompleted one)
  
@@ -199,51 +201,63 @@ class StudentAnalysis:
             ---------
             dict of {string: int} 
 
-                {"GRR": current period}
+                {"GRR": current period, "GRR": current period, ...}
         """   
-
-        # filtra matérias aprovadas
+        # filter for approved situtations and group df by student
         df = df[df['SITUACAO'].isin(Situation.SITUATION_PASS)]
-
-        # gets individuals dataframes
         students_df = df.groupby("MATR_ALUNO") 
 
         student_period = {}
-        for student, dataframe in students_df:   
-            
-            # TO DO: grid recebe a grade que a pessoa segue
+        for student, dataframe in students_df:     
+            # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
             if dataframe.iloc[0]["NUM_VERSAO_x"] == 1998:
-                print ('sem grade irmão')
+                # print ('sem grade irmão')
                 continue
-            else:
+            elif dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
                 # the academic grid is a list of lists from src/student/grid.py        
                 grid = DegreeGrid.get_degree_grid("BCC").grid
+                fake_codes = DegreeGrid.get_degree_grid("BCC").fake_codes    
+                opts_tgs = list(DegreeGrid.get_degree_grid("BCC").equiv_codes)
 
-            max_period = 8
-
-            # TO DO: get list of the course's optatives classes 
-            # opt = ?
-
+            max_period = len(grid)-1
             p = 0
             period_completed = 1
-            while ( (p < max_period) and period_completed):
-                for course in grid[p]:
-                    if course == "OPT":
-                        print("optativa")   
-                        # TO DO: looks for course in optative classes
-                        # for i in opt_list:
-                        #     if opt_list[i] in approved_df['COD_ATIV_CURRIC'].values:
-                        #         drop 
-                        #     else
-                        #         period_completed = 0                         
-                    elif (course == "TG I" or course == "TG II"):
-                        print("tegê")
-                    elif course not in dataframe['COD_ATIV_CURRIC'].values:
-                        period_completed = 0  
+            checked = []
+            while (p < max_period):
+                c = 0
+                while c < len(grid[p]):
+                    course = grid[p][c]
+                    coursed = 0
+
+                    # course is a normal obligatory code 
+                    if course in dataframe['COD_ATIV_CURRIC'].values:
+                        coursed = 1
+                    # course is a optative or tg
+                    elif course in fake_codes:
+                        for item in opts_tgs:
+                            if item not in checked:
+                                if item in dataframe['COD_ATIV_CURRIC'].values:
+                                    checked.append(item)
+                                    coursed = 1
+                                    break
+                    # to do: caso em que recebeu equivalencia na disciplina
+                    # equivs = 
+                    # for equiv in equivs:
+                    #   if equiv in dataframe['COD_ATIV_CURRIC'].values:
+                    #       checked.append(item)
+                    #       coursed = 1
+                
+                    if coursed:
+                        c += 1
+                    else:
+                        period_completed = 0
+                        break
+
                 if period_completed:
                     p += 1
-
-            print ('periodo:', p+1)
+                else:
+                    break
+            
             # p actually stands for number of completed periods
             # current period is the first incompleted one
             student_period[student] = p+1
