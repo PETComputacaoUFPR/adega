@@ -240,44 +240,32 @@ def period_evasion_graph(df):
 
 def evasion_per_period_graph(df):
     """
-    Build the dict for the graph 
-    that displays how many people evades in each period (1-8)
+    Build the dict for the graph that displays how many people evaded in each period of the grid
     
     Filter df for evaded people and the needed columns
-    Divide df per student 
-    and apply current_period() to each student's dataframe 
-    Calculates the times current_period() returns period x
-    
-    Parameters
-    ----------
-    df : DataFrame
+    apply current_period() and counts how many times each period is returned 
 
     Returns 
     -------
     dict of {int: int}
 
         evasions_period = {
-            period 1: number of people evaded,
-            period 2: number of people evaded,
-            ...
+            period: number of people evaded,
+           ...
             }
 
     Examples
     --------
-        {1:56, 2:63, ..., 8:2}
+        {8: 3, 1: 69, 2: 48, 3: 21, 4: 14}
 
     """
-    # Filter df for evaded people 
     rows = (df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA)  & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)
     cols = ["MATR_ALUNO", "NUM_VERSAO_x", "COD_ATIV_CURRIC", "SITUACAO"]
     evaded_students = df.loc[rows, cols] 
-
-    # print (evaded_students)
-    StudentAnalysis.current_period(evaded_students)
-
+    periods = StudentAnalysis.current_period(evaded_students).values()
     evasions_period = defaultdict(int)
-
-    # print(evasions_period)
+    for number in periods:
+        evasions_period[number] += 1
     return evasions_period
 
 def build_dict_ira_medio(alunos):
