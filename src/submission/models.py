@@ -59,6 +59,7 @@ class Submission(models.Model):
             ('view_student', 'Visualizar alunos'),
             ('view_degree', 'Visualizar curso'),
             ('view_admission', 'Visualizar turma ingresso'),
+            ('view_cepe9615', 'Visualizar  cepe9615')
             )
 
     def save(self, *args, **kwargs):
