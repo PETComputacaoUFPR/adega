@@ -9,13 +9,13 @@
 	<div class="col-offset-8">
 		<a href="{% url 'submission:SubmissionCreateView' %}"> <button type="button" class="btn btn-primary">Submeter relatório</button></a>
 	</div>
-	
+
 </div>
 
-<div class="alert alert-warning" role="alert">
+<div class="alert alert-light" role="alert">
 	Esta página contém as submissões realizadas por diferentes usuários que você
 	possui acesso para gerenciar.<br><br>
-	
+
 	As linhas em vermelho indicam as submissões que não puderam ser processadas.
 	Caso este problema aconteça, verifique novamente na etapa de que pode ser causado
 	pela incompatibilidade das planilhas submetidas em
@@ -96,10 +96,10 @@
 			$(data[7]).removeClass("table-warning");
 			$(data[7]).removeClass("table-success");
 			$(data[7]).addClass("table-primary");
-			
+
 		}
 	});
 
-	
+
 </script>
 {% endblock js-foot %}
