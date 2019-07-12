@@ -37,9 +37,9 @@ def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester =
         path = path + '/'
         generate_degree_data(path, df, student_analysis)
         generate_student_data(path + 'students/', df, student_analysis)
-        # generate_admission_data(path + 'admissions/', df, student_analysis)
-        # generate_course_data(path + 'courses/',current_year, dataframe)
-        # generate_cepe_data(path, df)
+        generate_admission_data(path + 'admissions/', df, student_analysis)
+        generate_course_data(path + 'courses/',current_year, dataframe)
+        generate_cepe_data(path, df)
 
 
 def generate_cepe_data(path, df):
@@ -96,32 +96,32 @@ def generate_student_data(path, dataframe, student_analysis):
         # dictionary with {"GRR": value} and in the second position the name
         # that this analysis will have in json
 
-        # (student_analysis.posicao_turmaIngresso_semestral(),
-        #  "posicao_turmaIngresso_semestral"),
+        (student_analysis.posicao_turmaIngresso_semestral(),
+         "posicao_turmaIngresso_semestral"),
 
-        # (student_analysis.periodo_real(),
-        #  "periodo_real"),
+        (student_analysis.periodo_real(),
+         "periodo_real"),
 
-        # (student_analysis.periodo_pretendido(),
-        #  "periodo_pretendido"),
+        (student_analysis.periodo_pretendido(),
+         "periodo_pretendido"),
 
-        # (student_analysis.ira_semestral(),
-        #  "ira_semestral"),
+        (student_analysis.ira_semestral(),
+         "ira_semestral"),
 
-        # (student_analysis.ira_por_quantidade_disciplinas(),
-        #  "ira_por_quantidade_disciplinas"),
+        (student_analysis.ira_por_quantidade_disciplinas(),
+         "ira_por_quantidade_disciplinas"),
 
-        # (student_analysis.indice_aprovacao_semestral(),
-        #  "indice_aprovacao_semestral"),
+        (student_analysis.indice_aprovacao_semestral(),
+         "indice_aprovacao_semestral"),
 
-        # (student_analysis.aluno_turmas(),
-        #  "aluno_turmas"),
+        (student_analysis.aluno_turmas(),
+         "aluno_turmas"),
 
-        # (student_analysis.taxa_aprovacao(),
-        #  "taxa_aprovacao"),
+        (student_analysis.taxa_aprovacao(),
+         "taxa_aprovacao"),
 
-        # (student_analysis.student_info(),
-        #  "student"),
+        (student_analysis.student_info(),
+         "student"),
 
         (student_analysis.current_period(),
          "current_period"),
