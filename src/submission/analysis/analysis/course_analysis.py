@@ -269,7 +269,7 @@ class Course(Analysis):
 
     def coursed_count(self):
         """
-        Calcula a quandidade de vezes que cada aluno cursou a disciplina.
+        Calcula a quantidade de vezes que cada aluno cursou a disciplina.
         """
         dict_name = "filted_course_student_groupby"
         self.__data[dict_name] = self.__data["normal_dataframe"].groupby([

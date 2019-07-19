@@ -1,9 +1,5 @@
 import numpy as np
 
-# TODO:
-# FAZER CACHE DE TUDO
-# AO CHAMAR A FUNCAO VERIFICAR SE TEM ALGO NA CACHE
-
 from submission.analysis.utils.situations import *
 from submission.analysis.utils.utils import memoize
 import pandas as pd
@@ -163,15 +159,15 @@ class StudentAnalysis:
             for semester in iras_by_semester[grr]:
                 student_admission = admissions[grr_to_admissions[grr]]
 
-                competition = [
-                    matr for matr in student_admission if semester in iras_by_semester[matr]]
+                competition = [matr for matr in student_admission
+                               if semester in iras_by_semester[matr]]
 
                 classifications = sorted(
                     competition,
                     key=lambda matr: iras_by_semester[matr][semester]
                 )
-                positions[grr][semester] = (
-                    1+classifications.index(grr))/len(competition)
+                positions[grr][semester] = ((1+classifications.index(grr))/
+                                             len(competition))
 
         return positions
 
@@ -246,7 +242,7 @@ class StudentAnalysis:
             if (situacao in Situation.SITUATION_AFFECT_IRA):
                 if not (ano + "/" + semestre in students[matr]):
                     students[matr][ano + "/" + semestre] = [0, 0, 0]
-
+                
                 students[matr][ano + "/" + semestre][0] += nota*carga
                 students[matr][ano + "/" + semestre][1] += 1
                 students[matr][ano + "/" + semestre][2] += carga
