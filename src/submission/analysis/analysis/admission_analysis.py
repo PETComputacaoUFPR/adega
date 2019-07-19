@@ -20,6 +20,7 @@ class Admission(object):
         self.__dataframes["df_filted"] = df.drop_duplicates(["MATR_ALUNO"])
         self.__groupbys["groupby_original"] = df.groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
         self.__groupbys["groupby_filted"] = self.__dataframes["df_filted"].groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
+    
     def count_evasion_form(self, g, evasion_form):
         return g.apply(lambda x: x.loc[(x.FORMA_EVASAO == evasion_form)].shape[0])
 
@@ -41,7 +42,7 @@ class Admission(object):
             ("qtd_abandono", ef.EF_ABANDONO),
             ("qtd_formatura", ef.EF_FORMATURA),
             ("qtd_ativos", ef.EF_ATIVO)
-            ]
+        ]
         # calcula a quantidade de alunos qtd_ativos, qtd_abandono e qtd_formatura
         for i in evasions:
             self.analysis[i[0]] = self.count_evasion_form(self.__groupbys["groupby_filted"], i[1])
@@ -85,6 +86,7 @@ class Admission(object):
         media_formatura = admission_g.apply(lambda x:\
                 ((x.ANO_EVASAO.astype(float)+x.SEMESTRE_EVASAO.astype(float))-\
                 (x.ANO_INGRESSO_y.astype(float)+x.SEMESTRE_INGRESSO.astype(float))).mean())
+        
         self.analysis["media_formatura"] = media_formatura.rename({0.0: '1', 0.5:'2'})
 
     def taxa_reprovacao(self):
@@ -118,7 +120,6 @@ class Admission(object):
 
     def admission_list(self):
         self.analysis["admission_list"] = list(self.__groupbys["groupby_filted"].groups.keys())
-
 
     def build_analysis(self):
         self.counts()
@@ -292,28 +293,35 @@ def desvio_padrao_turma_ingresso(df, student_analysis):
 def evasion_per_semester(df):
     # filtra a planilha, deixando apenas 1 linha por estudante por periodo que ele passou desde que entrou no curso
     turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO','PERIODO', 'MATR_ALUNO'], keep='last')
+    
     # agrupa as linhas do dataframe resultante da filtragem pela tupla (ano de entrada, periodo de entrada, ano, periodo)
     t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO','PERIODO'])['MATR_ALUNO']
+    
     # filtra o dataframe, deixando apenas 1 linha por estudante que evadiu
     t_i_evasions = turmas_ingresso.loc[(turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)]
+    
     # agrupa as linhas do dataframe de evadidos indexados pela tupla (ano de entrada, periodo de entrada, ano, periodo), conta o numero de linhas e transforma isso em um dicionario
     t_i_evasions_semestral_size = t_i_evasions.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO_EVASAO','SEMESTRE_EVASAO'])['MATR_ALUNO'].nunique().to_dict()
     dict_evasion = {}
     aux = {}
+    
     # transforma o groupby em um dicionario que contem a evasao dividida pelo numero de linhas de cada grupo do agrupamento, indexado pela tupla de tuplas ((ano de entrada, periodo de entrada), (ano, periodo))
     for t_i_s in t_i_semestral_size:
         # trata os campos 2 e 3 da tupla (ano de entrada, periodo de entrada, ano, periodo) para que fique no mesmo formato que as chaves do dicionario t_i_evasions_semestral_size
         t_i_s_aux = (t_i_s[0][0], t_i_s[0][1], str(t_i_s[0][2]), t_i_s[0][3].split("o")[0])
+        
         # pega o numero de evasoes de acordo com a tupla (ano de entrada, periodo de entrada, ano, periodo)
         if t_i_s_aux in t_i_evasions_semestral_size:
             evasions = t_i_evasions_semestral_size[t_i_s_aux]
         else:
             evasions = 0
         aux.update({((t_i_s[0][0], t_i_s[0][1]), (t_i_s[0][2], t_i_s[0][3])):(evasions/t_i_s[1].size)})
+    
     # transforma o dicionario anterior em um outro dicionario, indexado pela tupla (ano de entrada, periodo de entrada), tendo como elementos outros dicionarios.
     # cada dicionario contido no dicionario e indexado pela tupla (ano, periodo) e contem a evasao dividida pelo numero de linhas de cada grupo do agrupamento
     for t_i_s, value in aux.items():
         dict_evasion.setdefault(t_i_s[0], {})[t_i_s[1]] = value
+    
     return dict_evasion
 
 def students_per_semester(df):
