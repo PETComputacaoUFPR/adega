@@ -9,6 +9,7 @@ import traceback
 def analyze(submission, debug=True):
     start_time = time.clock()
     start_time_exec = time.time()
+    submission.set_executing()
     try:
         path = submission.path()
         dataframe = load_dataframes(path)
