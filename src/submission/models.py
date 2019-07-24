@@ -37,7 +37,7 @@ class Submission(models.Model):
     historico = models.FileField(upload_to=get_path)
     matricula = models.FileField(upload_to=get_path)
 
-    degree = models.ForeignKey(Degree)
+    degree = models.ForeignKey(Degree, related_name='submissions')
     timestamp = models.DateTimeField(default=timezone.now)
     last = models.BooleanField(default=True)
     processed = models.BooleanField(default=False)
@@ -88,6 +88,13 @@ class Submission(models.Model):
         return 'Submission (from: {}, to: {}, on: {})'.format(self.author.user.first_name,
                                                               self.degree.name,
                                                               self.timestamp)
+
+    def set_executing(self):
+        self.processed = False
+        self.process_time = None
+        self.done_in = timezone.now()
+        self.analysis_status = 0
+        self.save()
 
     def set_done(self, time):
         self.processed = True
