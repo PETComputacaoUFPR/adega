@@ -187,8 +187,8 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-    def current_period(df=None): 
-        # df = df if df is not None else self.data_frame
+    def current_period(self, df=None): 
+        df = df if df is not None else self.data_frame
         """
             Calculate someone's current period
 
@@ -265,8 +265,6 @@ class StudentAnalysis:
             # p actually stands for number of completed periods
             # current period is the first incompleted one
             student_period[student] = p+1
-
-        print(student_period)
         return student_period 
 
 
