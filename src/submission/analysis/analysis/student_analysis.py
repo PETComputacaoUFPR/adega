@@ -183,8 +183,7 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-    def current_period(self, df=None): 
-        df = df if df is not None else self.data_frame
+    def current_period(df): 
         """
             Calculate someone's current period
 
@@ -215,9 +214,9 @@ class StudentAnalysis:
                 continue
             elif dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
                 # the academic grid is a list of lists from src/student/grid.py        
-                grid = DegreeGrid.get_degree_grid("BCC").grid
-                fake_codes = DegreeGrid.get_degree_grid("BCC").fake_codes    
-                opts_tgs = list(DegreeGrid.get_degree_grid("BCC").equiv_codes)
+                grid = DegreeGrid.get_degree_grid("25A").grid
+                fake_codes = DegreeGrid.get_degree_grid("25A").fake_codes    
+                opts_tgs = list(DegreeGrid.get_degree_grid("25A").equiv_codes)
 
             max_period = len(grid)-1
             p = 0

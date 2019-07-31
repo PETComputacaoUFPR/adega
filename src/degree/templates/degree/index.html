@@ -168,6 +168,25 @@
                 {% endcomment %}
                 <!-- fim analise sa02 -->
             </div>
+
+
+            <div class="row">
+                <div class="col-md-11">
+                    <div id="evasao_periodo"></div>
+                </div>
+                <!-- <div class="col-md-1">
+                    <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                    data-content="Distribuição dos IRA dos alunos do curso. O
+                    gráfico mostra a distribuição de todos os alunos que fizeram ao menos uma disciplina, dos
+                    alunos que estão no curso e dos alunos que já se formaram.<br>
+                    <br>
+                    <b>Atenção:</b> Alunos que possuem data de evasão indeterminada são desconsiderados."></a>
+                    
+                </div> -->
+            </div>
+            <p>
+                   
+            </p>
         </div>
     </div>
 </div>
@@ -212,6 +231,7 @@
     var evasao_semestre_data = convert_degree_chart_data(evasao_semestre,
                                                          y_keys_sorted);
 
+    var evasao_periodo_data = {{degree_data.evasao_grafico2|safe}};
     // ira_semestral_data will be in format of:
     // {"00-4.9": [10,20,30], "05-9.9": [11,21,31], ...}
 
@@ -245,7 +265,20 @@
         opacity:0.6,
         size: 13
       },
-    });
-
+    }); 
+    var chart3 = new AdegaChart({
+      data: evasao_periodo_data,
+      div_target: "evasao_periodo",
+      title: "Quantidade de evasão em cada período do curso",
+      type: "bar",
+      legend: "Alunos",
+      xaxis_title: "Período do curso",
+      yaxis_title: "Quantidade de evasões",
+      marker: {
+        opacity:0.6,
+        size: 13
+      },
+    }); 
+    
   </script>
 {% endblock js-foot %}
