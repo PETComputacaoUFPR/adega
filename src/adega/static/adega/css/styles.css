@@ -287,6 +287,23 @@ span.data {
 .grade .name {
   display: block; }
 
+
+.materia_selected {
+    outline-style:solid;
+    outline-color:rgb(138, 64, 207);
+    outline-width:1px;
+}
+.materia_prerequisite {
+    outline-style:solid;
+    outline-color:#FFD700;
+    outline-width:1px;
+}
+.materia_posrequisite {
+    outline-style:solid;
+    outline-color:#6B8E23;
+    outline-width:1px;
+}
+
 /* ==============================================  MATERIA  */
 .materia {
   background-color: #FFF;

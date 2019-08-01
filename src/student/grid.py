@@ -244,6 +244,33 @@ class DegreeGrid:
         cgc = self.compute_cgc(hist)
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
 
+    def get_degree_situation(self, courses_hist):
+        '''
+        Computes the degree grid with courses analysis summaries.
+        The informations are the same that index course page.
+
+
+        Parameters:
+        courses_hist: Cache object with each course description. Same instance
+                      used into index course page.
+        
+        Returns:
+        A matrix of objects. Each row represents a semester.
+        '''
+        
+        # Create an empty grid with instances of Grid Collection
+        cgc = self.compute_cgc([])
+        grid = self.get_grid(cgc)
+
+        # Uses courses analysis summary to populate details
+        for code in courses_hist:
+            for semester in grid:
+                for course in semester:
+                    if code == course["code"]:
+                        course["detail"] = courses_hist[code]
+        
+        return grid
+
     bcc_grid_2011 = DegreeGridDescription({
         "year": 2011,
         "grid": [
