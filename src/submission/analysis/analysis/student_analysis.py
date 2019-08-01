@@ -11,11 +11,13 @@ from collections import defaultdict
 class StudentAnalysis:
     data_frame = None
 
-    def __init__(self, df, current_year, current_semester):
+    def __init__(self, df, current_year, current_semester, dg):
         self.data_frame = df
         self.current_year = current_year
         self.current_semester = current_semester
+        self.dg = dg
 
+        self._ira_alunos_last_result = None
     
     def student_info(self, df=None):
         df = df if df is not None else self.data_frame
@@ -49,30 +51,73 @@ class StudentAnalysis:
         return info
 
     
-    def list_students(self, df=None):
+    def list_students_situation(self, df=None):
         df = df if df is not None else self.data_frame
         situations = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
         situations = list(pd.DataFrame(
             {'count': situations.size()}).reset_index().groupby(["FORMA_EVASAO"]))
 
-        iras = self.ira_alunos(df=df)
-        list_situations = defaultdict(list)
+        iras = self.ira_alunos()
+        list_situations = defaultdict(dict)
         for sit in situations:
             grrs = list(sit[1]["MATR_ALUNO"])
             people_names = list(sit[1]["NOME_PESSOA"])
 
             evasion_form_name = EvasionForm.code_to_str(sit[0])
 
+            student_list = [] 
             for i, student in enumerate(grrs):
-                list_situations[sit[0]].append({
-                    "forma_evasao": evasion_form_name,
+                student_list.append({
+                    "description_value": evasion_form_name,
                     "grr": grrs[i],
                     "ira": iras[grrs[i]],
                     "nome": people_names[i]
                 })
-
+            list_situations[sit[0]]["student_list"] = student_list
+            list_situations[sit[0]]["description_name"] = "Forma de evasão"
+            
         return list_situations
+    
+    def list_students_phases(self, df=None, only_actives=False):
+        df = df if df is not None else self.data_frame
+        iras = self.ira_alunos()
 
+        if only_actives:
+            df = df[df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO]
+        
+        groups = df.groupby("MATR_ALUNO")
+        
+        # Parse phases lists to sets before start the checkage
+        phases = self.dg.grid_detail.phases
+        set_phases = {p:set(phases[p]) for p in phases}
+
+        list_phases = defaultdict(dict)
+        for s in set_phases:
+            phase_name = s
+            if only_actives:
+                phase_name+=" - "+EvasionForm.code_to_str(EvasionForm.EF_ATIVO)
+            
+            student_list = []
+            for grr,group in groups:
+                # Each row of sub dataframe have the same "NOME_PESSOA" value
+                people_name = group["NOME_PESSOA"][0]
+                
+                group = group[group['SITUACAO'].isin(Situation.SITUATION_PASS)]
+                approved_courses = set(group["COD_ATIV_CURRIC"].values)
+                # Total if courses needed fot a student complete a phase
+                debpt = len(set_phases[s] - approved_courses)
+                student_list.append({
+                    "grr":grr,
+                    "nome": people_name,
+                    "ira": iras[grr],
+                    "description_value":debpt,
+                })
+
+            list_phases[phase_name]["student_list"] = student_list
+            list_phases[phase_name]["description_name"] = "Disciplinas restantes"
+
+        return list_phases
+        
     
     def ira_alunos(self, df=None):
         """
@@ -91,7 +136,13 @@ class StudentAnalysis:
         --------
         iras = { GRR: number, ...}
         """
+
+        
         df = df if df is not None else self.data_frame
+
+        # Verify if exist cache for default dataframe result
+        if not (self._ira_alunos_last_result is None) and df.equals(self.data_frame):
+            return self._ira_alunos_last_result
 
         iras = self.ira_por_quantidade_disciplinas(df=df)
         ira_per_student = {}
@@ -107,6 +158,11 @@ class StudentAnalysis:
                 ira_per_student[i] = ira_total/carga_total
             else: # There is no register of courses for this student
                 ira_per_student[i] = 0
+
+        # Save the result if the dataframe is default
+        if df.equals(self.data_frame):
+            self._ira_alunos_last_result = ira_per_student
+
         return ira_per_student
 
     

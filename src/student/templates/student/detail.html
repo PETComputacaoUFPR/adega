@@ -144,12 +144,21 @@
                         <td>Período pretendido</td>
                         <td>
                             {% if analysis_result.periodo_pretendido %}
-                            <span class="data">{{ analysis_result.periodo_pretendido }}</span>
+                                <span class="data">
+                                    {{ analysis_result.periodo_pretendido }}
+                                </span>
                             {% else %}
-                            <span class="data">Formado</span>                            
+                                <span class="data">Formado</span>                            
                             {% endif %}
                         </td>
                     </tr>
+                    
+                    {% for phase_name, phase_value in grid_phases %}
+                    <tr>
+                        <td>{{phase_value.description_name}} ({{phase_name}})</td>
+                        <td><span class="data">{{phase_value.description_value}}</span></td>
+                    </tr>
+                    {% endfor %}
                 </table>
             </div>
             
