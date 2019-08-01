@@ -6,7 +6,28 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-      <h1>Informações Gerais - Turma Ingresso</h1>
+      <h1>
+        Informações Gerais - Turma Ingresso
+        <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true" 
+        data-content="Para o cálculo do IRA, somente as situações consideradas como <b>Aprovação</b> ou <b>Reprovação</b> são consideradas.<br>
+                      Também, alguns casos como o cálculo do índice de reprovação utilizam o conceito de disciplians cursadas.
+                      <br>
+                      Situações consideradas como <b>Aprovação:</b><br>
+                      {% for x in situations_pass %}
+                      {{x}}<br>
+                      {% endfor %}
+                      <br>
+                      Situações consideradas como <b>Reprovação:</b><br>
+                      {% for x in situations_fail %}
+                      {{x}}<br>
+                      {% endfor %}
+                      <br>
+                      Situações consideradas como <b>Cursada:</b><br>
+                      {% for x in situations_coursed %}
+                      {{x}}<br>
+                      {% endfor %}
+        "></a>
+      </h1>
       <table class="table">
           <tr>
             <td>Ano/Semestre</td>
@@ -15,22 +36,42 @@
           <tr>
             <td>Quantidade de alunos</td>
             <td> {{admission_info.quantidade_alunos}} </td>
+            <td>
+                <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                data-content="Quantidade de alunos que possuem ano e semestre de matrícula referente a esta turma ingresso."></a>
+            </td>
           </tr>
           <tr>
             <td>IRA Médio</td>
             <td> {{admission_info.ira|floatformat:2}} &plusmn {{admission_info.std|floatformat:2}} </td>
+            <td>
+                <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                data-content="IRA médio e desvio padrão dos alunos desta turma. São apenas consideradas as disciplinas cujas situações são classificadas como <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+            </td>
           </tr>
           <tr>
             <td>Tempo médio de formatura em anos <b>atual</b></td>
             <td> {{admission_info.formatura_media}} </td>
+            <td>
+                <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                data-content="Tempo médio de formatura em anos (dentre aqueles que se formaram)."></a>
+            </td>
           </tr>
           <tr>
             <td>Índice de Reprovação</td>
             <td> {{admission_info.taxa_reprovacao|to_percent}} </td>
+            <td>
+                <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                data-content="Valor que representa a taxa de reprovação de disciplinas cursadas pelos alunos desta turma. É calculado a partir da razão entre disciplinas consideradas como <b>Reprovação</b> e disciplinas consideradas como <b>Cursada</b>."></a>
+            </td>
           </tr>
           <tr>
             <td>Indice de Evasão</td>
             <td> {{admission_info.taxa_evasao|to_percent}} </td>
+            <td>
+                <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                data-content="Valor que representa a taxa de de evasão desta turma. É calculado a partir da razão entre alunos ativos e a quantidade total de alunos da turma."></a>
+            </td>
           </tr>
           <tr>
             <td>Quantidade de Evadidos</td>
@@ -83,11 +124,23 @@
       <div id="graficos">
         <div class="row">
             <div class="col-md-12">
-              <h3>IRA/Semestre</h3>
+              <h3>
+                IRA por Semestre
+                <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                   data-content="Média e desvio padrão do IRA semestral dos alunos desta turma em diferentes períodos. O valor do IRA é calculado individualmente
+                                 para cada semestre, ou seja, os valores das notas não são acumulados.
+                                 São apenas consideradas as disciplinas cujas situações são classificadas como
+                                 <b>Reprovação</b> ou <b>Aprovação</b>."></a>
+              </h3>
               <div id="ira_semestral"></div>
             </div>
             <div class="col-md-12">
-              <h3>Quantidade de alunos/Semestre</h3>
+              <h3>
+                Quantidade de alunos por Semestre
+                <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                   data-content="Calcula, para cada período, o número de alunos desta turma que realizaram ao menos uma matrícula em alguma disciplina.">
+                </a>
+              </h3>
               <div id="students_per_semester"></div>
             </div>
         </div>

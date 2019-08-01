@@ -158,6 +158,8 @@ class DegreeGridDescription:
         self.code_to_name = obj["code_to_name"]
         self.equiv_codes = obj["equiv_codes"]
         self.fake_codes = obj["fake_codes"]
+        self.prerequisites = obj["prerequisites"]
+        self.phases = obj["phases"]
 
         # Codes that show more then one time on grid, like OPT
         self.repeated_codes = obj["repeated_codes"]
@@ -242,6 +244,33 @@ class DegreeGrid:
     def get_situation(self, hist):
         cgc = self.compute_cgc(hist)
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
+
+    def get_degree_situation(self, courses_hist):
+        '''
+        Computes the degree grid with courses analysis summaries.
+        The informations are the same that index course page.
+
+
+        Parameters:
+        courses_hist: Cache object with each course description. Same instance
+                      used into index course page.
+        
+        Returns:
+        A matrix of objects. Each row represents a semester.
+        '''
+        
+        # Create an empty grid with instances of Grid Collection
+        cgc = self.compute_cgc([])
+        grid = self.get_grid(cgc)
+
+        # Uses courses analysis summary to populate details
+        for code in courses_hist:
+            for semester in grid:
+                for course in semester:
+                    if code == course["code"]:
+                        course["detail"] = courses_hist[code]
+        
+        return grid
 
     bcc_grid_2011 = DegreeGridDescription({
         "year": 2011,
@@ -495,5 +524,71 @@ class DegreeGrid:
             "CI259": ["TG II"],
             "CI260": ["TG I"],
             "CI261": ["TG II"],
-        }
+        },
+
+        "prerequisites":{
+            # Pre-barreira
+            "CI057": ["CI056", "CI055"],
+            "CI056": ["CI055"],
+
+            "CI212": ["CI210", "CI068"],
+            "CI210": ["CI068"],
+
+            "CI064": ["CI055"],
+            "CI067": ["CI055"],
+            "CI237": ["CM046"],
+            "CM005": ["CI045"],
+            "CM202": ["CM201"],
+            ##
+
+
+            # Pos-Barreira
+            "CI215": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI162": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI163": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI221": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI062": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI065": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI165": ["CI065", "CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI211": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CE003": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI059": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI209": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI058": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI061": ["CI058", "CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI218": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI164": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "SA214": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "CI220": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "OPT": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "TG I": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+            "TG II": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
+            "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
+        },
+
+        "phases":{
+            "Barreira": ["CI068", "CI055", "CM046", "CM045", "CM201",
+                         "CI210", "CI056", "CI067", "CM005", "CM202",
+                         "CI212", "CI057", "CI064", "CI237", "CI166",]
+        },
+        
     })

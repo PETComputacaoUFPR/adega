@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <h1>
             Informações Gerais
-            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true" 
+            <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
             data-content="Para o cálculo do IRA, somente as situações consideradas como <b>Aprovação</b> ou <b>Reprovação</b> são consideradas.<br>
             <br>
             Situações consideradas como <b>Aprovação:</b><br>
@@ -116,31 +116,28 @@
 
         <div id="graficos container">
             <div class="row">
-                <div class="col-md-11">
-                    <!-- <h3>Quantidade alunos/IRA</h3> -->
+                <div class="col-md-12">
+                    <h3>Distribuição de alunos por faixas de IRA
+                            <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Distribuição dos IRA dos alunos do curso. O
+                            gráfico mostra a distribuição de todos os alunos que fizeram ao menos uma disciplina, dos
+                            alunos que estão no curso e dos alunos que já se formaram.<br>
+                            <br>
+                            <b>Atenção:</b> Alunos que possuem data de evasão indeterminada são desconsiderados."></a>
+                    </h3>
                     <div id="ira_semestral"></div>
-                </div>
-                <div class="col-md-1">
-                    <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
-                    data-content="Distribuição dos IRA dos alunos do curso. O
-                    gráfico mostra a distribuição de todos os alunos que fizeram ao menos uma disciplina, dos
-                    alunos que estão no curso e dos alunos que já se formaram.<br>
-                    <br>
-                    <b>Atenção:</b> Alunos que possuem data de evasão indeterminada são desconsiderados."></a>
-                    
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-11">
-                    <!-- <h3>Quantidade evasão/período</h3> -->
+                <div class="col-md-12">
+                    <h3>Histórico de evasão
+                        <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                        data-content="Gráfico com a quantidade de evasão de cada
+                        semestre e cada ano desde o inicio do curso.<br>
+                        No gráfico, para cada quantidade de evasão é mostrada sua respectiva razão entre seu valor e a quantidade total de evasão."></a>
+                    </h3>
                     <div id="evasao_semestre"></div>
-                </div>
-                <div class="col-md-1">
-                    <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
-                    data-content="Gráfico com a quantidade de evasão de cada
-                    semestre e cada ano desde o inicio do curso.<br>
-                    No gráfico, para cada quantidade de evasão é mostrada sua respectiva razão entre seu valor e a quantidade total de evasão."></a>
                 </div>
                 <!--
                 <div class="col-md-6">
@@ -171,17 +168,111 @@
                 {% endcomment %}
                 <!-- fim analise sa02 -->
             </div>
+            <br>
+            <!-- TODO: Add dynamic grid for each degree -->
+            <div class="col-md-12">
+                    <h3>Grade curricular
+                            <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Informações gerais sobres as disciplinas do curso de graduação.<br>
+                                          Passe o mouse sobre os códigos para verificar os nomes completos
+                                          e os pré-requisitos associados.<br>
+                                          Também é possível verificar o desvio padrão das notas médias
+                                          passando o mouse sobre o valor da nota."></a>
+                    </h3>
+                <div class="row" id="grid">
+                    <br>
+                    <div class="grade col-md-10">
+                        {% for semester in grid_info %}
+                        <div class="semestre">
+                            <div class="grade-head">{{forloop.counter}}º</div>
+                                {% for course in semester %}
+                                    <div id="grid_course_course_{{course.code}}" code={{course.code}}
+                                        data-toggle="tooltip" data-placement="top" title="{{course.name}}" class="materia {{ course.situation }}">
+                                        <div class="info">
+                                            {% if course.is_real_code %}
+                                            <span class="name">
+                                                <a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=course.code|remove_spaces %}">
+                                                    {{ course.code }}</a>
+                                            </span>
+                                            {% else %}
+                                                <span class="name">{{ course.code }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="details">
+                                            {% if course.detail %}
+                                            <div class="detail">
+                                                <span class="detail-name">Taxa de aprovação</span>
+                                                <span class="detail-value">{{course.detail.taxa_aprovacao|fix_2digit}}</span>
+                                            </div>
+                                            <div class="detail"
+                                                data-toggle="tooltip" data-placement="top" title="Desvio Padrão: &#177 {{course.detail.nota.1|fix_2digit}}">
+                                                <span class="detail-name">Nota média</span>
+                                                <span class="detail-value">{{course.detail.nota.0|fix_2digit}}
+                                                </span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-center materia_prerequisite">Disciplina Pré-Requisitada</div><br>
+                        <div class="text-center materia_posrequisite">Disciplina que possui a matéria como Pré-Requisito</div><br>
+                        <div class="text-center materia_selected">Disciplina selecionada</div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
 {% endblock content %}
 
 {% block js-foot %}
-  <script>
+<script>
     
+    var grid_info = {{grid_info|safe_js}};
+    var prerequisites = {{prerequisites|safe_js}};
+    var prerequisites_rev = {{prerequisites_rev|safe_js}};
+
+    // Add mouseenter and mouseleave events to grid cells
+    // The style are defined in the static styles.css file
+    // OBS: The grid cells must have the id name started with grid_course_course_
+    $( document ).ready(function() {
+        // Mouse Enter event
+        $(".materia").hover(function(){
+                var code = $(this).attr("code");
+                for(var i in prerequisites[code]){
+                    var code2 = prerequisites[code][i];
+                    $("#grid_course_course_"+code2).addClass('materia_prerequisite');
+                }
+                for(var i in prerequisites_rev[code]){
+                    var code2 = prerequisites_rev[code][i];
+                    $("#grid_course_course_"+code2).addClass('materia_posrequisite');
+                }
+                $(this).addClass('materia_selected');
+            },
+            // Mouse Leave event
+            function(){
+                var code = $(this).attr("code");
+                for(var i in prerequisites[code]){
+                    var code2 = prerequisites[code][i];
+                    $("#grid_course_course_"+code2).removeClass('materia_prerequisite');
+                }
+                for(var i in prerequisites_rev[code]){
+                    var code2 = prerequisites_rev[code][i];
+                    $("#grid_course_course_"+code2).removeClass('materia_posrequisite');
+                }
+                $(this).removeClass('materia_selected');
+            }
+        );
+    });
+
+
+
     // TODO: Refactor the analyzes to avoid this pretreatment
-    
-    
     // Assure that the keys is in order and convert the data
     // to a format that AdegaChart will accept
     function convert_degree_chart_data(data, y_keys_sorted){
@@ -197,14 +288,14 @@
             y_keys_sorted.map((y,i) => {
                 elements_tick[i] = x[1][y];
             });
-            
+
             // For add a new line in the plot data
             var index = x[0];
             new_data[index] = elements_tick;
         });
         return new_data;
     }
-    
+
     var y_keys_sorted;
     var ira_medio = {{degree_data.ira_medio_grafico|safe}};
     y_keys_sorted = ["total","sem_evasao","formatura"];
@@ -223,6 +314,8 @@
       div_target: "ira_semestral",
       title: "Distribuição de alunos por faixas de IRA",
       fill: "none",
+      type: ["bar","bar","bar"],
+      barmode:"group",
       legend: [
           "Total de alunos",
           "Alunos ativos",
@@ -246,7 +339,7 @@
         opacity:0.6,
         size: 13
       },
-    }); 
-    
+    });
+
   </script>
 {% endblock js-foot %}
