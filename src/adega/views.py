@@ -25,9 +25,15 @@ def dashboard(request):
                                                     "hide_navbar": True
                                                     })
 
-
 @login_required
 def logout(request):
     process_logout(request)
 
     return redirect('public:index')
+
+@login_required
+def faq(request):
+    
+    return render(request, 'adega/faq.html', {"title": "FAQ",
+                                                     "hide_navbar": True
+                                                    })
