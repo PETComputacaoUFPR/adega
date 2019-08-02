@@ -214,9 +214,9 @@ class StudentAnalysis:
                 continue
             elif dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
                 # the academic grid is a list of lists from src/student/grid.py        
-                grid = DegreeGrid.get_degree_grid("25A").grid
-                fake_codes = DegreeGrid.get_degree_grid("25A").fake_codes    
-                opts_tgs = list(DegreeGrid.get_degree_grid("25A").equiv_codes)
+                grid = DegreeGrid.get_degree_grid("21A").grid
+                fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes    
+                opts_tgs = list(DegreeGrid.get_degree_grid("21A").equiv_codes)
 
             max_period = len(grid)-1
             p = 0

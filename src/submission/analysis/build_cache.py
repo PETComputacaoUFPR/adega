@@ -123,9 +123,6 @@ def generate_student_data(path, dataframe, student_analysis):
         (student_analysis.student_info(),
          "student"),
 
-        (student_analysis.current_period(),
-         "current_period"),
-
     ]
 
     for x in student_data:
