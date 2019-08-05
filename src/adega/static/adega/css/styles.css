@@ -418,6 +418,16 @@ span.data {
   font-size: 1.6em;
 }
 
+/*@media only screen and (max-width: 600px){
+  #accordion a{
+    font-size: 1.3em;
+  } 
+}*/
+
 #accordion p{
   color: #444;
+}
+
+#accordion .card{
+  margin-top: 0.4em;  
 }
