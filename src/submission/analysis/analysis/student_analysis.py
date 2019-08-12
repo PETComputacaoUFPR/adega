@@ -209,15 +209,15 @@ class StudentAnalysis:
         student_period = {}
         for student, dataframe in students_df:     
             # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
-            if dataframe.iloc[0]["NUM_VERSAO_x"] == 1998:
-                # print ('sem grade irmão')
-                continue
-            elif dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
+            if dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
                 # the academic grid is a list of lists from src/student/grid.py        
                 grid = DegreeGrid.get_degree_grid("21A").grid
                 fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes    
                 opts_tgs = list(DegreeGrid.get_degree_grid("21A").equiv_codes)
-
+            else:
+                # print ('sem grade irmão')
+                continue
+            
             max_period = len(grid)-1
             p = 0
             period_completed = 1
