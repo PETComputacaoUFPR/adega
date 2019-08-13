@@ -159,6 +159,7 @@ class DegreeGridDescription:
         self.equiv_codes = obj["equiv_codes"]
         self.fake_codes = obj["fake_codes"]
         self.prerequisites = obj["prerequisites"]
+        self.phases = obj["phases"]
 
         # Codes that show more then one time on grid, like OPT
         self.repeated_codes = obj["repeated_codes"]
@@ -249,6 +250,34 @@ class DegreeGrid:
         if code == "21A":
             return DegreeGrid.bcc_grid_2011
     
+
+    def get_degree_situation(self, courses_hist):
+        '''
+        Computes the degree grid with courses analysis summaries.
+        The informations are the same that index course page.
+
+
+        Parameters:
+        courses_hist: Cache object with each course description. Same instance
+                      used into index course page.
+        
+        Returns:
+        A matrix of objects. Each row represents a semester.
+        '''
+        
+        # Create an empty grid with instances of Grid Collection
+        cgc = self.compute_cgc([])
+        grid = self.get_grid(cgc)
+
+        # Uses courses analysis summary to populate details
+        for code in courses_hist:
+            for semester in grid:
+                for course in semester:
+                    if code == course["code"]:
+                        course["detail"] = courses_hist[code]
+        
+        return grid
+
     bcc_grid_2011 = DegreeGridDescription({
         "year": 2011,
         "grid": [
@@ -560,9 +589,12 @@ class DegreeGrid:
             "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
             "TG II": ["CI068", "CI210", "CI212", "CI055", "CI056", "CI057", "CM046", "CI067",
             "CI064", "CM045", "CM005", "CI237", "CM201", "CM202", "CI166"],
-            
-        }
+        },
 
-        
+        "phases":{
+            "Barreira": ["CI068", "CI055", "CM046", "CM045", "CM201",
+                         "CI210", "CI056", "CI067", "CM005", "CM202",
+                         "CI212", "CI057", "CI064", "CI237", "CI166",]
+        },
         
     })
