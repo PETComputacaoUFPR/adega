@@ -127,6 +127,7 @@ def generate_student_data(path, dataframe, student_analysis):
 
         (student_analysis.student_info(),
          "student"),
+
     ]
 
     for x in student_data:
