@@ -4,6 +4,7 @@ from submission.analysis.utils.situations import *
 from submission.analysis.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
+from student.grid import DegreeGrid
 
 
 
@@ -238,7 +239,87 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-    
+    def current_period(df): 
+        """
+            Calculate someone's current period
+
+            Filter df for approved courses and group by student
+            For every student:
+            Attribute the followed grid  
+            Checks if courses of period p are completed:
+            do this for obligatory and optatives 
+            TO DO check for equivalents courses too
+            stops when a period is incompleted
+            (the current period is the first incompleted one)
+ 
+            Returns:
+            ---------
+            dict of {string: int} 
+
+                {"GRR": current period, "GRR": current period, ...}
+        """   
+        # filter for approved situtations and group df by student
+        df = df[df['SITUACAO'].isin(Situation.SITUATION_PASS)]
+        students_df = df.groupby("MATR_ALUNO") 
+
+        student_period = {}
+        for student, dataframe in students_df:     
+            # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
+            if dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
+                # the academic grid is a list of lists from src/student/grid.py        
+                grid = DegreeGrid.get_degree_grid("21A").grid
+                fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes    
+                opts_tgs = list(DegreeGrid.get_degree_grid("21A").equiv_codes)
+            else:
+                # print ('sem grade irmão')
+                continue
+            
+            max_period = len(grid)-1
+            p = 0
+            period_completed = 1
+            checked = []
+            while (p < max_period):
+                c = 0
+                while c < len(grid[p]):
+                    course = grid[p][c]
+                    coursed = 0
+
+                    # course is a normal obligatory code 
+                    if course in dataframe['COD_ATIV_CURRIC'].values:
+                        coursed = 1
+                    # course is a optative or tg
+                    elif course in fake_codes:
+                        for item in opts_tgs:
+                            if item not in checked:
+                                if item in dataframe['COD_ATIV_CURRIC'].values:
+                                    checked.append(item)
+                                    coursed = 1
+                                    break
+                    # to do: caso em que recebeu equivalencia na disciplina
+                    # equivs = 
+                    # for equiv in equivs:
+                    #   if equiv in dataframe['COD_ATIV_CURRIC'].values:
+                    #       checked.append(item)
+                    #       coursed = 1
+                
+                    if coursed:
+                        c += 1
+                    else:
+                        period_completed = 0
+                        break
+
+                if period_completed:
+                    p += 1
+                else:
+                    break
+            
+            # p actually stands for number of completed periods
+            # current period is the first incompleted one
+            student_period[student] = p+1
+        return student_period 
+
+
+
     def periodo_pretendido(self, df=None):
         df = df if df is not None else self.data_frame
 

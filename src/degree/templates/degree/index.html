@@ -113,62 +113,8 @@
         {% endcomment %}
         <br><br>
 
-
+        
         <div id="graficos container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Distribuição de alunos por faixas de IRA
-                            <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
-                            data-content="Distribuição dos IRA dos alunos do curso. O
-                            gráfico mostra a distribuição de todos os alunos que fizeram ao menos uma disciplina, dos
-                            alunos que estão no curso e dos alunos que já se formaram.<br>
-                            <br>
-                            <b>Atenção:</b> Alunos que possuem data de evasão indeterminada são desconsiderados."></a>
-                    </h3>
-                    <div id="ira_semestral"></div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Histórico de evasão
-                        <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
-                        data-content="Gráfico com a quantidade de evasão de cada
-                        semestre e cada ano desde o inicio do curso.<br>
-                        No gráfico, para cada quantidade de evasão é mostrada sua respectiva razão entre seu valor e a quantidade total de evasão."></a>
-                    </h3>
-                    <div id="evasao_semestre"></div>
-                </div>
-                <!--
-                <div class="col-md-6">
-                    <h3>Nota Média/Periodo</h3>
-                    <canvas id="nota_media_semestre"
-                            data-data='{{ degree_data.media_disc|safe }}'></canvas>
-                </div> essa analise foi feita de uma maneira ruim no adega
-                antigo -->
-                <!-- analises sa02 -->
-                {% comment %}
-                <div class="col-md-6">
-                    <h3>Alunos/Periodo</h3>
-                    <canvas id="aluno_periodo"
-                            data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
-                </div>
-                <br>
-                <div class="col-md-6">
-                    <h3>Nota Média/Periodo</h3>
-                    <canvas id="nota_media_periodo"
-                            data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
-                </div>
-                <br>
-                <div class="col-md-6">
-                    <h3>Taxa Aprovação/Periodo</h3>
-                    <canvas id="taxa_aprovacao_periodo"
-                            data-data='{{ degree_data.taxa_aprovacao_periodo|safe }}'></canvas>
-                </div>
-                {% endcomment %}
-                <!-- fim analise sa02 -->
-            </div>
-            <br>
             <!-- TODO: Add dynamic grid for each degree -->
             <div class="col-md-12">
                     <h3>Grade curricular
@@ -222,6 +168,74 @@
                         <div class="text-center materia_posrequisite">Disciplina que possui a matéria como Pré-Requisito</div><br>
                         <div class="text-center materia_selected">Disciplina selecionada</div>
                     </div>
+                </div>
+            </div>
+            <br>
+            
+            <div class="row py-3">
+                <div class="col-md-12">
+                    <h3>Distribuição de alunos por faixas de IRA
+                            <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Distribuição dos IRA dos alunos do curso. O
+                            gráfico mostra a distribuição de todos os alunos que fizeram ao menos uma disciplina, dos
+                            alunos que estão no curso e dos alunos que já se formaram.<br>
+                            <br>
+                            <b>Atenção:</b> Alunos que possuem data de evasão indeterminada são desconsiderados."></a>
+                    </h3>
+                    <div id="ira_semestral"></div>
+                </div>
+            </div>
+
+            <div class="row py-3">
+                <div class="col-md-12">
+                    <h3>Histórico de evasão
+                        <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                        data-content="Gráfico com a quantidade de evasão de cada
+                        semestre e cada ano desde o inicio do curso.<br>
+                        No gráfico, para cada quantidade de evasão é mostrada sua respectiva razão entre seu valor e a quantidade total de evasão."></a>
+                    </h3>
+                    <div id="evasao_semestre"></div>
+                </div>
+                <!--
+                <div class="col-md-6">
+                    <h3>Nota Média/Periodo</h3>
+                    <canvas id="nota_media_semestre"
+                            data-data='{{ degree_data.media_disc|safe }}'></canvas>
+                </div> essa analise foi feita de uma maneira ruim no adega
+                antigo -->
+                <!-- analises sa02 -->
+                {% comment %}
+                <div class="col-md-6">
+                    <h3>Alunos/Periodo</h3>
+                    <canvas id="aluno_periodo"
+                            data-data='{{ degree_data.aluno_periodo|safe }}'></canvas>
+                </div>
+                <br>
+                <div class="col-md-6">
+                    <h3>Nota Média/Periodo</h3>
+                    <canvas id="nota_media_periodo"
+                            data-data='{{ degree_data.nota_media_periodo|safe }}'></canvas>
+                </div>
+                <br>
+                <div class="col-md-6">
+                    <h3>Taxa Aprovação/Periodo</h3>
+                    <canvas id="taxa_aprovacao_periodo"
+                            data-data='{{ degree_data.taxa_aprovacao_periodo|safe }}'></canvas>
+                </div>
+                {% endcomment %}
+                <!-- fim analise sa02 -->
+            </div>
+
+<!-- SÓ ESTA CONSIDERANDO AS PESSOAS QUE SEGUEM GRADE DE 2011. NÃO ESTÁ CALCULANDO EQUIVALENCIAS de mudança de grade. -->
+            <div class="row py-3">
+                <div class="col-md-12">
+                    <h3> Período em que ocorrem as evasões
+                        <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                        data-content="Distribuição das evasões no curso.<br>
+                        O gráfico mostra em que período os alunos evadiram do curso. 
+                        O período de evasão é definido como o primeiro a não ter todas as matérias cursadas."></a>
+                    </h3>
+                    <div id="evasao_periodo"></div>
                 </div>
             </div>
             
@@ -306,6 +320,7 @@
     var evasao_semestre_data = convert_degree_chart_data(evasao_semestre,
                                                          y_keys_sorted);
 
+    var evasao_periodo_data = {{degree_data.evasao_grafico2|safe}};
     // ira_semestral_data will be in format of:
     // {"00-4.9": [10,20,30], "05-9.9": [11,21,31], ...}
 
@@ -339,7 +354,20 @@
         opacity:0.6,
         size: 13
       },
-    });
-
+    }); 
+    var chart3 = new AdegaChart({
+      data: evasao_periodo_data,
+      div_target: "evasao_periodo",
+      title: "Quantidade de evasão em cada período do curso",
+      type: "bar",
+      legend: "Alunos",
+      xaxis_title: "Período de evasão do curso",
+      yaxis_title: "Quantidade de evasões",
+      marker: {
+        opacity:0.6,
+        size: 13
+      },
+    }); 
+    
   </script>
 {% endblock js-foot %}
