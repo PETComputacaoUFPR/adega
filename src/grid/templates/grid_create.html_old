@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <h3>Carregar planilhas</h3>
+    <br></br>
+</div>
+<div class="formBox form-group ">
+    <form id="form_sub" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+		{% csrf_token %}
+        <!-- Uploads files -->
+        <div class="form-row">
+            <div class="col-lg-5 col-md-5 col-sm-4">
+                <input type="file" name="disciplinas"
+                class="custom-file-input" id="disciplinas"/>
+                <label for="disciplinas" type="file"
+                    class="custom-file-label">Disciplinas</label>
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-4 offset-lg-1 offset-md-1">
+                <input type="file" name="equivalencias" id="equivalencias"
+                class="custom-file-input"/>
+                <label for="equivalencias" class="custom-file-label">Equivalencias</label>
+            </div>
+            
+        </div>
+
+        <!-- Integer field -->
+        <div class="form-row">
+            <div class="col-lg-5 col-md-5">
+                <label for="relative_year">Versão da grade</label>
+                <input type="number" class="form-control" name="version"
+                id="version" value="{{form.version.field.initial}}" />
+            </div>
+            
+            <div class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
+               <label>Selecione o curso de graduação</label>
+               <select name="degree" class="browser-default custom-select" id="degree">
+                    {% for i in degree_options %}
+                        <option value="{{i.id}}">{{i.name}}</option>
+                    {% endfor %}
+               </select> 
+            </div>
+
+        </div>
+
+    <br></br>
+		<div class="row">
+
+			<div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
+				<button class="btn btn-success btn-block" type="submit">Gerar grade</button>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-4">
+				<button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+			</div>
+
+		</div>
+    </form>
+</div>
+
+
+{% endblock content %}
+{% block js-foot %}
+    <script>
+        // Change the file input to add its name
+        $('.custom-file-input').on('change',function(e){
+            //get the file name
+            // var fileName = $(this).val();
+            var fileName = e.target.files[0].name;
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(fileName);
+        })
+    </script>
+{% endblock js-foot %}

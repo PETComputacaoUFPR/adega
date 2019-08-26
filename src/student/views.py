@@ -27,7 +27,6 @@ def detail(request, submission_id, grr):
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
 
-
     cache_j = get_student_detail(
         request.session,
         degree,
@@ -36,8 +35,7 @@ def detail(request, submission_id, grr):
     )
 
     hist = cache_j["aluno_turmas"]
-    dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
-    
+    dg = DegreeGrid(DegreeGrid.grid)
     grid_info, grid_info_extra = dg.get_situation(hist)
     
     analysis_result = {
