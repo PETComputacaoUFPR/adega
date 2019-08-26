@@ -2,7 +2,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from . import views
+from adega import views
 
 from django.views.generic import RedirectView
 
@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^course/(?P<submission_id>\w*)/', include('course.urls', namespace='course')),
 
     url(r'^submission/', include('submission.urls', namespace='submission')),
+
+    url(r'^grid/(?P<degree_code>\w+)/', include('grid.urls', namespace='grid')),
 
     url(r'^student/(?P<submission_id>\w*)/', include('student.urls', namespace='student')),
 
