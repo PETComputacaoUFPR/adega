@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'student',
     'cepe9615',
     'report_api',
-    'submission'
+    'submission',
+    'faq'
 ]
 
 MIDDLEWARE_CLASSES = [

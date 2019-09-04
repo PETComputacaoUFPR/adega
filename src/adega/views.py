@@ -31,9 +31,4 @@ def logout(request):
 
     return redirect('public:index')
 
-@login_required
-def faq(request):
-    
-    return render(request, 'adega/faq.html', {"title": "FAQ",
-                                                     "hide_navbar": True
-                                                    })
+

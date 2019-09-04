@@ -11,7 +11,7 @@ urlpatterns = [
 
     url(r'^$', views.dashboard, name='dashboard'),
 
-    url(r'^faq/$', views.faq, name='faq'),
+    url(r'^faq', include('faq.urls', namespace='faq')),
 
     url(r'^admission/(?P<submission_id>\w*)/', include('admission.urls', namespace='admission')),
 
