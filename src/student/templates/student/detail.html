@@ -40,17 +40,20 @@
                     {% for semester in analysis_result.grid%}
                     <div class="semestre">
                         <div class="grade-head">{{forloop.counter}}º</div>
-                            {% for course in semester %}
-                                <div data-toggle="tooltip" data-placement="top" title="{{course.name}}" class="materia {{ course.situation}}">
-                                    <div class="info">
-                                        {% if course.is_real_code %}
-                                        <span class="name">
-                                            <a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=course.code|remove_spaces %}">
-                                                {{ course.code }}</a>
+                        {% for course in semester %}
+                        <div data-toggle="tooltip" data-placement="top" title="{{course.name}}" class="materia {{ course.situation}}">
+                            <div class="info">
+                                <span class="name">
+                                    {% if course.is_real_code %}
+                                    <a href="{% url 'course:detail' submission_id=submission.id codigo_disciplina=course.code|remove_spaces %}">
+                                        {{ course.code }}</a>
+                                    {% else %}
+                                        {{ course.code }}
+                                    {% endif %}
+                                    {% if course.is_blocked %}                                        
+                                        <i class="fa fa-lock pl-3" title="Faltando pré-requisitos. Disciplina bloqueada."></i>
+                                    {% endif %}
                                         </span>
-                                        {% else %}
-                                            <span class="name">{{ course.code }}</span>
-                                        {% endif %}
                                     </div>
                                     <div class="details">
                                         {% if course.detail %}
@@ -59,16 +62,16 @@
                                             <span class="detail-value">{{course.detail.count}}</span>
                                         </div>
                                         <div class="detail">
-                                            <span class="detail-name">Nota média</span>
-                                            <span class="detail-value">{{course.detail.mean_grade|fix_2digit}}</span>
+                                            <span class="detail-name">Última nota</span>
+                                            <span class="detail-value">{{course.detail.last_grade|fix_2digit}}</span>
                                         </div>
                                         {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
 
                 <br>
                 
