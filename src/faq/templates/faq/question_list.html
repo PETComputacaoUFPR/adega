@@ -8,8 +8,24 @@
 <br>
 <div style="background-color:#fff; color:#000; text-align:justify;">
 
-<div id="accordion">
+    {% for question in questions %}
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" href="{{ question.author }}">
+            {{ question.question }}
+          </a>
+        </div>
+        <div id="{{ question.author }}" class="collapse hide" data-parent="#accordion">
+          <div class="card-body">
+            <p>{{ question.answer|linebreaksbr }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
 
+<div id="accordion">
   <div class="card">
     <div class="card-header">
       <a class="card-link" data-toggle="collapse" href="#collapse1">
