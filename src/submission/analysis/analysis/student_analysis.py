@@ -19,7 +19,7 @@ class StudentAnalysis:
         self.dg = dg
 
         self._ira_alunos_last_result = None
-    
+
     def student_info(self, df=None):
         df = df if df is not None else self.data_frame
         students = df.groupby([
@@ -38,7 +38,7 @@ class StudentAnalysis:
 
         for stnd in students:
             grr = stnd[0]
-            
+
             info[grr] = {
                 "grr": grr,
                 "name": str(stnd[1]),
@@ -51,7 +51,7 @@ class StudentAnalysis:
             }
         return info
 
-    
+
     def list_students_situation(self, df=None):
         df = df if df is not None else self.data_frame
         situations = df.groupby(["MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO"])
@@ -66,7 +66,7 @@ class StudentAnalysis:
 
             evasion_form_name = EvasionForm.code_to_str(sit[0])
 
-            student_list = [] 
+            student_list = []
             for i, student in enumerate(grrs):
                 student_list.append({
                     "description_value": evasion_form_name,
@@ -76,18 +76,18 @@ class StudentAnalysis:
                 })
             list_situations[sit[0]]["student_list"] = student_list
             list_situations[sit[0]]["description_name"] = "Forma de evasão"
-            
+
         return list_situations
-    
+
     def list_students_phases(self, df=None, only_actives=False):
         df = df if df is not None else self.data_frame
         iras = self.ira_alunos()
 
         if only_actives:
             df = df[df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO]
-        
+
         groups = df.groupby("MATR_ALUNO")
-        
+
         # Parse phases lists to sets before start the checkage
         phases = self.dg.grid_detail.phases
         set_phases = {p:set(phases[p]) for p in phases}
@@ -97,13 +97,13 @@ class StudentAnalysis:
             phase_name = s
             if only_actives:
                 phase_name+=" - "+EvasionForm.code_to_str(EvasionForm.EF_ATIVO)
-            
+
             student_list = []
             for grr,group in groups:
                 # Each row of sub dataframe have the same "NOME_PESSOA" value
                 people_name = group["NOME_PESSOA"][0]
-                
-                group = group[group['SITUACAO'].isin(Situation.SITUATION_PASS)]
+
+                group = group[group['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_PASS)]
                 approved_courses = set(group["COD_ATIV_CURRIC"].values)
                 # Total if courses needed fot a student complete a phase
                 debpt = len(set_phases[s] - approved_courses)
@@ -118,8 +118,8 @@ class StudentAnalysis:
             list_phases[phase_name]["description_name"] = "Disciplinas restantes"
 
         return list_phases
-        
-    
+
+
     def ira_alunos(self, df=None):
         """
         Calculates the average IRA per student
@@ -138,7 +138,7 @@ class StudentAnalysis:
         iras = { GRR: number, ...}
         """
 
-        
+
         df = df if df is not None else self.data_frame
 
         # Verify if exist cache for default dataframe result
@@ -166,7 +166,7 @@ class StudentAnalysis:
 
         return ira_per_student
 
-    
+
     def taxa_aprovacao(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -191,11 +191,10 @@ class StudentAnalysis:
         df = df.drop_duplicates(subset="MATR_ALUNO", keep="first")
         admissions = {}
         for i, std in df.iterrows():
-            admissions[std["MATR_ALUNO"]] = std["ANO_INGRESSO_y"] + \
+            admissions[std["MATR_ALUNO"]] = str(std["ANO_INGRESSO"]) + \
                 "/"+std["SEMESTRE_INGRESSO"]
         return admissions
 
-    
     def posicao_turmaIngresso_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -228,7 +227,7 @@ class StudentAnalysis:
 
         return positions
 
-    
+
     def periodo_real(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -239,41 +238,41 @@ class StudentAnalysis:
             students[x[0]] = None
         return students
 
-    def current_period(df): 
+    def current_period(df):
         """
             Calculate someone's current period
 
             Filter df for approved courses and group by student
             For every student:
-            Attribute the followed grid  
+            Attribute the followed grid
             Checks if courses of period p are completed:
-            do this for obligatory and optatives 
+            do this for obligatory and optatives
             TO DO check for equivalents courses too
             stops when a period is incompleted
             (the current period is the first incompleted one)
- 
+
             Returns:
             ---------
-            dict of {string: int} 
+            dict of {string: int}
 
                 {"GRR": current period, "GRR": current period, ...}
-        """   
+        """
         # filter for approved situtations and group df by student
-        df = df[df['SITUACAO'].isin(Situation.SITUATION_PASS)]
-        students_df = df.groupby("MATR_ALUNO") 
+        df = df[df['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_PASS)]
+        students_df = df.groupby("MATR_ALUNO")
 
         student_period = {}
-        for student, dataframe in students_df:     
+        for student, dataframe in students_df:
             # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
-            if dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
-                # the academic grid is a list of lists from src/student/grid.py        
+            if dataframe.iloc[0]["NUM_VERSAO"] == 2011:
+                # the academic grid is a list of lists from src/student/grid.py
                 grid = DegreeGrid.get_degree_grid("21A").grid
-                fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes    
+                fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes
                 opts_tgs = list(DegreeGrid.get_degree_grid("21A").equiv_codes)
             else:
                 # print ('sem grade irmão')
                 continue
-            
+
             max_period = len(grid)-1
             p = 0
             period_completed = 1
@@ -284,7 +283,7 @@ class StudentAnalysis:
                     course = grid[p][c]
                     coursed = 0
 
-                    # course is a normal obligatory code 
+                    # course is a normal obligatory code
                     if course in dataframe['COD_ATIV_CURRIC'].values:
                         coursed = 1
                     # course is a optative or tg
@@ -296,12 +295,12 @@ class StudentAnalysis:
                                     coursed = 1
                                     break
                     # to do: caso em que recebeu equivalencia na disciplina
-                    # equivs = 
+                    # equivs =
                     # for equiv in equivs:
                     #   if equiv in dataframe['COD_ATIV_CURRIC'].values:
                     #       checked.append(item)
                     #       coursed = 1
-                
+
                     if coursed:
                         c += 1
                     else:
@@ -312,11 +311,11 @@ class StudentAnalysis:
                     p += 1
                 else:
                     break
-            
+
             # p actually stands for number of completed periods
             # current period is the first incompleted one
             student_period[student] = p+1
-        return student_period 
+        return student_period
 
 
 
@@ -330,7 +329,7 @@ class StudentAnalysis:
                                   self.current_semester - int(x[0][2]) + 1)
         return students
 
-    
+
     def ira_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -340,7 +339,7 @@ class StudentAnalysis:
                 aux[matr][periodo] = aux[matr][periodo][0]
         return aux
 
-    
+
     def ira_por_quantidade_disciplinas(self, df=None):
         """
         Calculates the ira per year/semester
@@ -370,16 +369,16 @@ class StudentAnalysis:
             if (not (matr in students)):
                 students[matr] = {}
 
-            ano = str(int(df["ANO"][i]))
-            semestre = str(df["PERIODO"][i])
-            situacao = int(df["SITUACAO"][i])
+            ano = str(int(df["ANO_ATIV_CURRIC"][i]))
+            semestre = str(df["PERIODO_ATIV_CURRIC"][i])
+            situacao = int(df["SITUACAO_ATIV_CURRIC"][i])
             nota = float(df["MEDIA_FINAL"][i])
             carga = float(df["CH_TOTAL"][i])
 
             if (situacao in Situation.SITUATION_AFFECT_IRA):
                 if not (ano + "/" + semestre in students[matr]):
                     students[matr][ano + "/" + semestre] = [0, 0, 0]
-                
+
                 students[matr][ano + "/" + semestre][0] += nota*carga
                 students[matr][ano + "/" + semestre][1] += 1
                 students[matr][ano + "/" + semestre][2] += carga
@@ -391,7 +390,7 @@ class StudentAnalysis:
 
         return students
 
-    
+
     def indice_aprovacao_semestral(self, df=None):
         df = df if df is not None else self.data_frame
 
@@ -403,9 +402,9 @@ class StudentAnalysis:
             if (not (matr in students)):
                 students[matr] = {}
 
-            ano = str(int(df["ANO"][i]))
-            semestre = str(df["PERIODO"][i])
-            situacao = int(df["SITUACAO"][i])
+            ano = str(int(df["ANO_ATIV_CURRIC"][i]))
+            semestre = str(df["PERIODO_ATIV_CURRIC"][i])
+            situacao = int(df["SITUACAO_ATIV_CURRIC"][i])
 
             if not (ano + "/" + semestre in students[matr]):
                 students[matr][ano + "/" + semestre] = [0, 0]
@@ -418,7 +417,7 @@ class StudentAnalysis:
 
         return (students)
 
-    
+
     def aluno_turmas(self, df=None):
         """
 
@@ -441,12 +440,12 @@ class StudentAnalysis:
 
             for _, row in hist.iterrows():
                 data = {
-                    'ano': str(int(row["ANO"])),
+                    'ano': str(int(row["ANO_ATIV_CURRIC"])),
                     'codigo': row["COD_ATIV_CURRIC"],
                     'nome': row["NOME_ATIV_CURRIC"],
                     'nota': row["MEDIA_FINAL"],
-                    'semestre': row["PERIODO"],
-                    'situacao': situations.get(row["SITUACAO"], Situation.SIT_OUTROS)
+                    'semestre': row["PERIODO_ATIV_CURRIC"],
+                    'situacao': situations.get(row["SITUACAO_ATIV_CURRIC"], Situation.SIT_OUTROS)
                 }
 
                 students[matr].append(data)

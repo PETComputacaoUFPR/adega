@@ -27,7 +27,15 @@ def load_dataframes(cwd='.'):
                 dataframes.append(dh)
 
     dataframe = fix_dataframes(dataframes)
-    dh = DataframeHolder(dataframe)
+    dataframe.drop(['ANO_INGRESSO_y'], axis=1, inplace=True)
+
+    dataframe.rename(index=str, columns={
+        "NUM_VERSAO_x": "NUM_VERSAO",
+        "ANO": "ANO_ATIV_CURRIC",
+        "DT_EVASAO" : "DATA_EVASAO",
+        "PERIODO" : "PERIODO_ATIV_CURRIC",
+    }, inplace=True)
+
 
     return dataframe
 
@@ -42,15 +50,17 @@ def fix_dataframes(dataframes):
     for df in dataframes:
         if df['name'] == 'historico.xls' or df['name'] == 'historico.csv':
             history = df['dataframe']
-            history.rename(columns={'DESCR_SITUACAO': 'SITUACAO'}, inplace=True)
+            history.rename(columns={'DESCR_SITUACAO': 'SITUACAO_ATIV_CURRIC'}, inplace=True)
         if df['name'] == 'matricula.xls' or df['name'] == 'matricula.csv':
             register = df['dataframe']
 
     # Remove empty lines
     history = history[history['MATR_ALUNO'].notnull()]
+
+
+
     register = register[register['MATR_ALUNO'].notnull()]
 
-    #~ clean_history(history)
     clean_register(register)
     #~ df.dropna(axis=0, how='all')
     history = history.fillna({"MEDIA_FINAL":0.0})
@@ -66,7 +76,7 @@ def fix_dataframes(dataframes):
         "SEMESTRE_INGRESSO_x": "SEMESTRE_INGRESSO",
         "FORMA_INGRESSO_x": "FORMA_INGRESSO"
         })
-    
+
 
     fix_situation(merged)
     fix_admission(merged)
@@ -84,23 +94,10 @@ def fix_datatype(df):
         df[i].fillna(0, inplace=True)
         df[i] = df[i].astype(int)
 
-def clean_history(df):
-
-    drop_columns = ['ID_NOTA', 'CONCEITO', 'ID_LOCAL_DISPENSA', 'SITUACAO_CURRICULO',
-                    'ID_CURSO_ALUNO', 'ID_VERSAO_CURSO', 'ID_CURRIC_ALUNO',
-                    'ID_ATIV_CURRIC', 'SITUACAO_ITEM', 'ID_ESTRUTURA_CUR'
-                    ]
-
-    drop_columns = [x for x in drop_columns if x in df.columns]
-
-    df.drop(drop_columns, axis=1, inplace=True)
-
-    # df['PERIODO'] = df['PERIODO'].str.split('o').str[0]
-
 
 def clean_register(df):
     df_split = df['PERIODO_INGRESSO'].str.split('/')
-    df['ANO_INGRESSO'] = df_split.str[0]
+    df['ANO_INGRESSO'] = pd.to_numeric(df_split.str[0])
     df['SEMESTRE_INGRESSO'] = df_split.str[1].str.split('o').str[0]
     df_split = df['PERIODO_EVASAO'].str.split('/')
     df['ANO_EVASAO'] = df_split.str[0]
@@ -111,8 +108,8 @@ def clean_register(df):
     df['SEMESTRE_EVASAO'].fillna(0, inplace=True)
     df['SEMESTRE_INGRESSO'].fillna(0, inplace=True)
 
-    drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE', 'COD_CURSO',
-                    'PERIODO_INGRESSO', 'PERIODO_EVASAO']
+    drop_columns = ['ID_PESSOA', 'NOME_PESSOA', 'DT_NASCIMENTO', 'NOME_UNIDADE',
+                    'COD_CURSO','PERIODO_INGRESSO', 'PERIODO_EVASAO']
 
     drop_columns = [x for x in drop_columns if x in df.columns]
 
@@ -127,9 +124,9 @@ def get_situation(d, default):
 
 
 def fix_situation(df):
-    df.rename(columns={"SITUACAO": "SITUACAO2"}, inplace=True)
+    df.rename(columns={"SITUACAO_ATIV_CURRIC": "SITUACAO2"}, inplace=True)
 
-    df['SITUACAO'] = df.SITUACAO2.apply(get_situation(Situation.SITUATIONS, Situation.SIT_OUTROS))
+    df['SITUACAO_ATIV_CURRIC'] = df.SITUACAO2.apply(get_situation(Situation.SITUATIONS, Situation.SIT_OUTROS))
 
     df.drop(['SITUACAO2'], axis=1, inplace=True)
 
