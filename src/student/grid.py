@@ -196,6 +196,7 @@ class DegreeGrid:
     def compute_cgc(self, hist):
         # Create an instance for each cell in grid
         cgc = {}
+        print(self.grid_detail)
         for semester in self.grid_detail.grid:
             for code in semester:
                 cgc[code] = CourseGridCollection(code, self.grid_detail)
@@ -225,8 +226,8 @@ class DegreeGrid:
                 __import__('pprint').pprint(new_grid)
 
 
-                # new_grid[i][j] = cgc[course_code].get_info()
-                new_grid[i, j] = cgc[course_code].get_info()
+                new_grid[i][j] = cgc[course_code].get_info()
+                #new_grid[i, j] = cgc[course_code].get_info()
         return new_grid
 
 
@@ -250,6 +251,5 @@ class DegreeGrid:
         cgc = self.compute_cgc(hist)
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
 
-    #grid_ibm = Grid.objects.get(id=190)
-    #print(grid_ibm)
+    #grid_ibm = Grid.objects.get(id=3)
     #grid = DegreeGridDescription(grid_ibm.get_grid())
