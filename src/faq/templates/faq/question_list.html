@@ -7,80 +7,25 @@
 <h4>Perguntas frequentes sobre o projeto A.D.E.G.A.</h4>
 <br>
 <div style="background-color:#fff; color:#000; text-align:justify;">
-
+ 
+  <div id="accordion">
     {% for question in questions %}
-    <div id="accordion">
+    
       <div class="card">
         <div class="card-header">
-          <a class="card-link" data-toggle="collapse" href="{{ question.author }}">
+          <a class="card-link" data-toggle="collapse" href="#collapse{{ question.id }}">
             {{ question.question }}
           </a>
         </div>
-        <div id="{{ question.author }}" class="collapse hide" data-parent="#accordion">
+        <div id="collapse{{ question.id }}" class="collapse hide" data-parent="#accordion">
           <div class="card-body">
             <p>{{ question.answer|linebreaksbr }}</p>
           </div>
         </div>
       </div>
-    </div>
+    
     {% endfor %}
-
-<div id="accordion">
-  <div class="card">
-    <div class="card-header">
-      <a class="card-link" data-toggle="collapse" href="#collapse1">
-        Quem é responsável pelo upload de dados?
-      </a>
-    </div>
-    <div id="collapse1" class="collapse hide" data-parent="#accordion">
-      <div class="card-body">
-        <p>Lorem ipsum..</p>
-      </div>
-    </div>
   </div>
-
-  <div class="card">
-    <div class="card-header">
-      <a class="card-link" data-toggle="collapse" href="#collapse2">
-        Como funcionam as permissões?
-      </a>
-    </div>
-    <div id="collapse2" class="collapse hide" data-parent="#accordion">
-      <div class="card-body">
-        <p>Lorem ipsum..</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <a class="card-link" data-toggle="collapse" href="#collapse3">
-        Qual a definição de evasão?
-      </a>
-    </div>
-    <div id="collapse3" class="collapse hide" data-parent="#accordion">
-      <div class="card-body">
-        <p>Lorem ipsum..</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <a class="card-link" data-toggle="collapse" href="#collapse4">
-        É possível baixar o gráfico gerado pelas análises?
-      </a>
-    </div>
-    <div id="collapse4" class="collapse hide" data-parent="#accordion">
-      <div class="card-body">
-        <p>Lorem ipsum..</p>
-      </div>
-    </div>
-  </div>
-
-  
-
-
 
 </div>  
 
