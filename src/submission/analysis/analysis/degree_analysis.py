@@ -6,6 +6,7 @@ from submission.analysis.utils.situations import Situation, EvasionForm
 from submission.analysis.utils.utils import IntervalCount, save_json
 from submission.analysis.analysis.student_analysis import *
 
+from submission.analysis.analysis.student_analysis import StudentAnalysis 
 
 
 def average_graduation(df):
@@ -234,6 +235,56 @@ def period_evasion_graph(df):
         for di in di_qtd:
             qtd = di_qtd[di]
             dic[di] = {'qtd': qtd, 'taxa': (float(qtd)/evasions_total)*100}
+    
+    return dic
+
+def evasion_per_period_graph(df):
+    """
+    Build the dict for the graph that displays how many people evaded in each period of the grid
+    
+    Filter df for evaded people and the needed columns
+    apply current_period() and counts how many times each period is returned 
+
+    Returns 
+    -------
+    dict of {int: int}
+
+        evasions_period = {
+            period: number of people evaded,
+           ...
+            }
+
+    Examples
+    --------
+        {8: 3, 1: 69, 2: 48, 3: 21, 4: 14}
+
+    """
+    rows = (df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA)  & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)
+    cols = ["MATR_ALUNO", "NUM_VERSAO_x", "COD_ATIV_CURRIC", "SITUACAO"]
+    evaded_students = df.loc[rows, cols] 
+    periods = StudentAnalysis.current_period(evaded_students).values()
+    evasions_period = defaultdict(int)
+    for number in periods:
+        evasions_period[number] += 1
+    return evasions_period
+
+def build_dict_ira_medio(alunos):
+    dic = {"00-4.9":0, "05-9.9":0, "10-14.9":0, "15-19.9":0, "20-24.9":0, "25-29.9":0, "30-34.9":0,
+           "35-39.9":0, "40-44.9":0, "45-49.9":0, "50-54.9":0, "55-59.9":0, "60-64.9":0, "65-69.9":0,
+           "70-74.9":0, "75-79.9":0, "80-84.9":0, "85-89.9":0, "90-94.9": 0,"95-100":0}
+
+    iras = []
+    for index, row in alunos.iterrows():
+        if(row['MEDIA_FINAL'] is not None):
+            iras.append(row['MEDIA_FINAL'])
+
+    for d in dic:
+        aux = d.split('-')
+        v1 = float(aux[0])
+        if (v1 == 0.0):
+            v1 += 0.01
+        v2 = float(aux[1])
+        dic[d] = sum((float(num) >= v1) and (float(num) < v2) for num in iras)
 
     return dic
 
@@ -328,6 +379,7 @@ def build_degree_json(path,df,student_analysis):
         "taxa_reprovacao": general_failure(df),
         "taxa_reprovacao_atual": current_students_failure(df),
         "tempo_formatura": average_graduation_time(df),
+        "evasao_grafico2": evasion_per_period_graph(df),
     }
 
     save_json(path+"/degree.json", degree_json)

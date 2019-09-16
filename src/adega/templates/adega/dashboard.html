@@ -5,19 +5,68 @@
 {% block content%}
 <h2>Dashboard</h2>
 
-<div class="alert alert-warning" role="alert">
-    Os links a seguir exibirão os resumos (gráficos e taxas) dos <b>últimos relatórios
+<div style="background-color:#fff; color:#000; text-align:justify;">
+
+    <!-- Os links a seguir exibirão os resumos (gráficos e taxas) dos <b>últimos relatórios
     submetidos e processados</b> referentes aos cursos registrados no sistema. Caso não exista nenhum
     relatório processado relacionado aos cursos, o sistema acusará um erro.
 
-    <a href="{% url 'submission:SubmissionCreateView' %}">Submeter relatório</a></a>,
+    <a href="{% url 'submission:SubmissionCreateView' %}">Upload de relatórios</a>,
     que podem ser gerenciados na página <a href="{% url 'submission:SubmissionListView' %}"> Gerenciar relatórios</a>.
+    -->
+
+
+    <br>Para começar a utilizar o ADEGA, você precisa enviar um relatório do SIE com os dados que você gostaria de analisar.
+
+
     <br><br>
 
 
+
+    <div class="row button-adega" >
+      <div class="col-xl-3 mb-4 ">
+        <a href="{% url 'submission:SubmissionCreateView' %}">
+          <div class="card text-white bg-upload o-hidden h-100">
+            <div class="card-body pt-4 pb-4">
+              <div class="card-body-icon">
+                <i class="fas fa-upload">
+                </i>
+              </div>
+              <div class="mr-5" style="font-size: 145%">Upload de Dados
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-xl-3 mb-4">
+        <a href="{% url 'submission:SubmissionListView' %}">
+          <div class="card text-white bg-mananger o-hidden h-100">
+            <div class="card-body pt-4 pb-4" >
+              <div class="card-body-icon">
+                <i class="fas fa-cog">
+                </i>
+              </div>
+              <div class="mr-5" style="font-size: 145%">Listar Relatórios
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+    {% if degrees_last_submissions|length > 0 %}
+      <p> Para acessar dados já enviados, clique nos links a seguir.</p>
+    {% endif %}
+
 </div>
 
+
+
+<br>
 {% for degree in degrees_last_submissions %}
+
 <a href="{% url 'degree:index' submission_id=degree.last_submission.id %}">{{degree.name}} ({{degree.code}})</a><br>
 {% endfor %}
 

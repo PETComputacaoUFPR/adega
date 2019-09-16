@@ -269,7 +269,7 @@ class Course(Analysis):
 
     def coursed_count(self):
         """
-        Calcula a quandidade de vezes que cada aluno cursou a disciplina.
+        Calcula a quantidade de vezes que cada aluno cursou a disciplina.
         """
         dict_name = "filted_course_student_groupby"
         self.__data[dict_name] = self.__data["normal_dataframe"].groupby([
@@ -344,11 +344,12 @@ class Course(Analysis):
             for i in rate_data[0].index:
                 if i[0] not in aprovacao_d:
                     aprovacao_d[i[0]] = {}
-
+                
                 periodo = str(i[1]) + "/" + str(i[2])
                 aprovacao_d[i[0]][periodo] = [
                     float(rate_data[0][i]),
-                    int(rate_data[rate_it.count_sel][i])]
+                    int(rate_data[1][i]),
+                    int(rate_data[2][i]),]
 
         note = self.analysis["general_note_statistic"]
         note_last_year = self.analysis["last_year_statistic"]

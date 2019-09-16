@@ -14,6 +14,8 @@ from submission.analysis.analysis.admission_analysis import evasion_per_semester
 
 from submission.analysis.analysis.cepe9615_analysis import *
 
+from student.grid import DegreeGrid
+
 from collections import defaultdict
 
 try:
@@ -27,11 +29,14 @@ student_analysis = None
 CURRENT_YEAR = 2016
 CURRENT_SEMESTER = 1
 
-def build_cache(dataframe, path, current_year = CURRENT_YEAR, current_semester = CURRENT_SEMESTER):
+def build_cache(dataframe, path, current_year = CURRENT_YEAR,
+                current_semester = CURRENT_SEMESTER):
     #   os.chdir("../src")
     ensure_path_exists(path)
 
-    student_analysis = StudentAnalysis(dataframe, current_year, current_semester)
+    dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
+    student_analysis = StudentAnalysis(dataframe, current_year,
+                                       current_semester, dg)
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
@@ -122,6 +127,7 @@ def generate_student_data(path, dataframe, student_analysis):
 
         (student_analysis.student_info(),
          "student"),
+
     ]
 
     for x in student_data:
@@ -138,17 +144,27 @@ def generate_student_data(path, dataframe, student_analysis):
         EvasionForm.EF_REOPCAO
     ]
 
-    list_situations = student_analysis.list_students()
+    list_situations = student_analysis.list_students_situation()
     for fl in files_list:
         list_name = EvasionForm.code_to_str(int(fl))
-        list_content = []
+        list_content = {"description_name":"", "description_value":""}
         if(fl in list_situations):
             list_content = list_situations[fl]
-
         save_json(path + "list/" + list_name + ".json", list_content)
 
-    # Falta verificar se alguem nao recebeu algumas analises
+    # TODO: Check if all students receive analysis
 
+    # All students
+    list_phases = student_analysis.list_students_phases()
+    for phase_name in list_phases:
+        list_content = list_phases[phase_name]
+        save_json(path + "list/" + phase_name + ".json", list_content)
+
+    # Only students without evasion
+    list_phases = student_analysis.list_students_phases(only_actives=True)
+    for phase_name in list_phases:
+        list_content = list_phases[phase_name]
+        save_json(path + "list/" + phase_name + ".json", list_content)
 
 def generate_student_list(path):
     pass

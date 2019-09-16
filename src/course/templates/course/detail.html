@@ -126,7 +126,11 @@
             <div id="aprovacao_semestre"></div>
         </div>
         <div class="col-md-12">
-            <!-- <h3>Quantidade de Alunos/Vezes Cursadas</h3> -->
+            <h3>
+                Reincidência de matrículas
+                <a tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
+                data-content="Contagem de alunos que cursaram a disciplina X vezes."></a>
+            </h3>
             <div id="qtd_cursada_aprov"></div>
         </div>
     </div>
@@ -152,11 +156,12 @@
       div_target: "aprovacao_semestre",
       title: "Relação entre quantidade de alunos matriculados e taxa de aprovação",
       fill: "none",
-      legend: ["Taxa de aprovação","Quantidade de alunos"],
-      type:["scatter", "bar"],
-      data_axis_y: ["y2", "y"],
+      legend: ["Taxa de aprovação", "Quantidade de alunos aprovados", "Quantidade de alunos matriculados"],
+      type:["scatter", "bar", "bar"],
+      data_axis_y: ["y2", "y", "y"],
+      barmode:"group",
       xaxis_title: "Período",
-      yaxis_title: "Quantidade de matrículas",
+      yaxis_title: "Quantidade de alunos",
       yaxis2_title: "Taxa de aprovação",
     });
     

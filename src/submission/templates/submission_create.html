@@ -17,7 +17,7 @@
 	É possível, caso o processamento demore muito tempo, que a página perca o 
 	status de ociosa, perdendo a indicação de que o processamento está sendo realizado.
 	Caso isso aconteça, verifique a página de <a href="{% url 'submission:SubmissionListView' %}">Gerenciamento de relatórios</a>
-	e visualize o status do processamento da submissão dos relatórios,
+	e visualize o status do processamento do upload dos relatórios (planilhas do SIE),
 	que pode ser "Terminado", "Executando" ou "Falha".<br>
 	Em caso de falha, verifique se as planilhas de Matrícula e Histórico
 	são válidas e estão em ordem correta. <br>
@@ -177,7 +177,7 @@
 				<button class="btn btn-success btn-block" type="submit">Enviar relatório</button>
 			</div>
 			<div class="col-lg-3 col-md-4 col-sm-4">
-				<button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+        <a class="btn btn-danger btn-block" style="text-decoration: none!important;" href="{% url 'submission:SubmissionListView' %}">Cancelar</a>
 			</div>
 		</div>
     </form>
