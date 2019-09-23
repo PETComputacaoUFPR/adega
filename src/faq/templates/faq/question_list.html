@@ -2,11 +2,17 @@
 
 
 {% block content%}
-<h2>FAQ</h2>
+<h2>F.A.Q.</h2>
 <br>
 <h4>Perguntas frequentes sobre o projeto A.D.E.G.A.</h4>
-<br>
-<div style="background-color:#fff; color:#000; text-align:justify;">
+
+<div class="form-group row my-3">
+  <label for="exampleInputEmail1" class="col-sm-2 m-0">
+    <a href="#"> <button type="button" class="btn btn-primary px-3 py-2">Faça uma pergunta</button></a>
+  </label>
+  <!-- <input type="question" class="form-control col-sm-10" id="inputQuestion" placeholder="Enter email"> -->
+</div>
+<div >
  
   <div id="accordion">
     {% for question in questions %}
