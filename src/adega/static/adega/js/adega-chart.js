@@ -21,6 +21,7 @@ class AdegaChart{
         this.text = config.text;
         
         this.marker = config.marker;
+        this.formatura = config.formatura;
 
         if(config.data == null){
             this.data_x = config.data_x;
@@ -164,6 +165,23 @@ class AdegaChart{
             },
             barmode: this.barmode
         };
+        
+        if (this.formatura) {
+            layout = {
+                shapes: [{
+                    type: 'line',
+                    x0: this.formatura,
+                    y0: 0,
+                    x1: this.formatura,
+                    y1: 60, // como enontrar este valor - altura da?
+                    line: {
+                        color: 'rgb(220,20,60)',
+                        width: 3,
+                        dash: 'dashdot'
+                    }
+                }]
+            };
+        }
         
         Plotly.newPlot(this.div_target, data, layout);
     }

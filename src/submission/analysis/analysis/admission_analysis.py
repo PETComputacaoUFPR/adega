@@ -86,8 +86,29 @@ class Admission(object):
         media_formatura = admission_g.apply(lambda x:\
                 ((x.ANO_EVASAO.astype(float)+x.SEMESTRE_EVASAO.astype(float))-\
                 (x.ANO_INGRESSO_y.astype(float)+x.SEMESTRE_INGRESSO.astype(float))).mean())
-        
+
         self.analysis["media_formatura"] = media_formatura.rename({0.0: '1', 0.5:'2'})
+
+    def formatura_ideal(self):
+        """
+            Calcula o semestre em que os alunos de cada turma idealmente devem se formar
+        """
+        # uma linha por turma ingresso
+        df = self.__dataframes["df_original"].drop_duplicates(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
+        
+        dict_convert = {"1":0.0, "2":0.5, "Anual":0.0}
+        df["SEMESTRE_INGRESSO"] = df["SEMESTRE_INGRESSO"].map(dict_convert)
+        
+        df = df.groupby(["ANO_INGRESSO_y", "SEMESTRE_INGRESSO"])
+        
+        s_finish = df.apply(lambda x:
+                x["ANO_INGRESSO_y"].astype(float) 
+                + x.SEMESTRE_INGRESSO.astype(float) 
+                + 4)
+        
+        # formatar como (2009, '1o. Semestre')
+        
+        self.analysis["formatura_ideal"] = s_finish.rename({0.0: '1', 0.5:'2'})
 
     def taxa_reprovacao(self):
         if(not self.__counts):
@@ -128,6 +149,7 @@ class Admission(object):
         self.taxa_evasao()
         self.taxa_reprovacao()
         self.formatura_medio()
+        self.formatura_ideal()
 
     def build_cache(self):
         admissions = []
@@ -149,7 +171,8 @@ class Admission(object):
             admission_dict["abandono"] = int(self.analysis["qtd_abandono"][i])
             admission_dict["ativos"] = int(self.analysis["qtd_ativos"][i])
             admission_dict["formatura"] = int(self.analysis["qtd_formatura"][i])
-            admission_dict["alunos_evadidos"] = int(self.analysis["alunos_evadidos"][i])
+            admission_dict["semestre_ideal_formatura"] = self.analysis["formatura_ideal"][i]
+            admission_dict["alunos_evadidos"] = self.analysis["alunos_evadidos"][i]
             admission_dict["outras_formas_evasao"] = int(self.analysis["outras_formas_evasao"][i])
             admission_dict["formatura_media"] = float(formatura_medio[i]) if i in formatura_medio.index else -1
             admission_dict["quantidade_alunos"] =  int(self.analysis["qtd_alunos_ingresso"][i])
