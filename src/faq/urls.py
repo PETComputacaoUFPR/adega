@@ -5,5 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', views.question_list, name='question_list'),
+   
+    url(r'^/question_new', views.question_new, name='question_new'),
+
 ]
 
