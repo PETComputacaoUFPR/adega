@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Question 
 from django.utils import timezone
@@ -15,5 +15,16 @@ def question_list(request):
                                                     })
 
 def question_new(request):
-    form = QuestionForm()
-    return render(request, 'faq/question_new.html', {'form': form})
+    if request.method == "POST":
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.author = request.user
+            question.save()
+            return redirect('faq:question_list')
+    else:
+        form = QuestionForm()
+        return render(request, 'faq/question_new.html', {"title" : "FAQ",
+                                                        "hide_navbar" : True,
+                                                        'form': form
+                                                        })

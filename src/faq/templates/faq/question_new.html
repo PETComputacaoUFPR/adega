@@ -4,13 +4,16 @@
 {% block content%}
 <h2>F.A.Q.</h2>
 <br>
-<h4>Faça uma pergunta: </h4>
 
-<div class="form-group row my-3">
-  <label for="exampleInputEmail1" class="col-sm-2 m-0">
-    <a href="#"> <button type="button" class="btn btn-primary px-3 py-2">Faça uma pergunta</button></a>
-  </label>
-  <!-- <input type="question" class="form-control col-sm-10" id="inputQuestion" placeholder="Enter email"> -->
+<h5>Essa pergunta será enviada para um email, e eventualmente será respondida</h5>
+
+<div class="form-group row my-3 faq_form">
+  <h4 class="col-sm-2">Pergunta: </h4>
+  <form method="POST" class="post-form col-sm-10">
+    {% csrf_token %}
+    {{ form.question }}
+    <button type="submit" class="save btn btn-primary px-3 py-2">Enviar pergunta</button>
+  </form>
 </div>
 
 </div>

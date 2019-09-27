@@ -418,6 +418,26 @@ span.data {
   font-size: 1.6em;
 }
 
+.faq_form input{
+  margin-bottom: 18px;
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #7b8a8b;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
 /*@media only screen and (max-width: 600px){
   #accordion a{
     font-size: 1.3em;
