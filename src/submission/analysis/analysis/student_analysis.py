@@ -101,7 +101,7 @@ class StudentAnalysis:
             student_list = []
             for grr,group in groups:
                 # Each row of sub dataframe have the same "NOME_PESSOA" value
-                people_name = group["NOME_PESSOA"][0]
+                people_name = group["NOME_PESSOA"].iloc[0]
 
                 group = group[group['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_PASS)]
                 approved_courses = set(group["COD_ATIV_CURRIC"].values)
@@ -192,7 +192,7 @@ class StudentAnalysis:
         admissions = {}
         for i, std in df.iterrows():
             admissions[std["MATR_ALUNO"]] = str(std["ANO_INGRESSO"]) + \
-                "/"+std["SEMESTRE_INGRESSO"]
+                "/"+str(std["SEMESTRE_INGRESSO"])
         return admissions
 
     def posicao_turmaIngresso_semestral(self, df=None):
@@ -365,15 +365,15 @@ class StudentAnalysis:
 
         total_students = len(df["MATR_ALUNO"])
         for i in range(total_students):
-            matr = df["MATR_ALUNO"][i]
+            matr = df["MATR_ALUNO"].iloc[i]
             if (not (matr in students)):
                 students[matr] = {}
 
-            ano = str(int(df["ANO_ATIV_CURRIC"][i]))
-            semestre = str(df["PERIODO_ATIV_CURRIC"][i])
-            situacao = int(df["SITUACAO_ATIV_CURRIC"][i])
-            nota = float(df["MEDIA_FINAL"][i])
-            carga = float(df["CH_TOTAL"][i])
+            ano = str(int(df["ANO_ATIV_CURRIC"].iloc[i]))
+            semestre = str(df["PERIODO_ATIV_CURRIC"].iloc[i])
+            situacao = int(df["SITUACAO_ATIV_CURRIC"].iloc[i])
+            nota = float(df["MEDIA_FINAL"].iloc[i])
+            carga = float(df["CH_TOTAL"].iloc[i])
 
             if (situacao in Situation.SITUATION_AFFECT_IRA):
                 if not (ano + "/" + semestre in students[matr]):

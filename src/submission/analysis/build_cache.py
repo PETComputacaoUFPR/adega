@@ -168,7 +168,7 @@ def generate_admission_data(path, df, student_analysis):
     admissions = a.build_cache()
 
     for i in admissions:
-        save_json(path + str(i["ano"]) + "/" + i["semestre"] + ".json", i)
+        save_json(path + str(i["ano"]) + "/" + str(i["semestre"]) + ".json", i)
 
     evasion_count = a.build_cache_evasion_count()
     analises = [

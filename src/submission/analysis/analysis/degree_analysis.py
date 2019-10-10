@@ -183,8 +183,8 @@ def period_evasion_graph(df):
             # Filter the rows and mantain only the registers
             # that match with year and semester of this iteration
             evasions = students.loc[
-                (df['ANO_EVASAO'] == str(year)) &
-                (df['SEMESTRE_EVASAO'] == str(semester))
+                (df['ANO_EVASAO'] == year) &
+                (df['SEMESTRE_EVASAO'] == semester)
             ]
 
             # Count only one row per student by removing

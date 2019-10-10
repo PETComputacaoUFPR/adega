@@ -9,14 +9,9 @@ class SubmissionMixin(object):
     def createSubmission(self, degree_id):
         # trying to submit data for analysis
         basePath = os.path.dirname(os.path.abspath(__file__))
-        historico_path = basePath + '/analysis/test/historico.xls'
-        matricula_path = basePath + '/analysis/test/matricula.xls'
-
-        historico = open(historico_path, 'rb') 
-        matricula = open(matricula_path, 'rb')
+        csv_data_file_path = basePath + '/analysis/test/csv_data_file.csv'
         report_data = {
-                        'historico': historico,
-                        'matricula': matricula,
+                        'csv_data_file': csv_data_file,
                         'relative_year': '2019',
                         'relative_semester': '1',
                         'semester_status': '0',
@@ -25,22 +20,22 @@ class SubmissionMixin(object):
         response = self.client.post('/submission/create/', report_data, follow=True)
 
         self.assertEqual(response.status_code, 200) # if ne, failed to submit report to /submission/create/
-    
+
         return response
 
     def deleteSubmission(self, a_id):
         # get number of objects
         count = len(Submission.objects.all())
-        
+
         # destroying submission via /submission/delete/id
         response = self.client.post('/submission/delete/' + a_id, follow=True)
         self.assertEqual(len(Submission.objects.all()), count-1) # if ne, failed to delete submission
-        
+
         return response
 
     def getSubmissionId(self):
         analysis = Submission.objects.first()
-        self.assertEqual(analysis.analysis_status, 1) # if ne, failed to analyze submission 
+        self.assertEqual(analysis.analysis_status, 1) # if ne, failed to analyze submission
 
         return str(analysis.id)
 
@@ -58,7 +53,7 @@ class SubmissionTest(TestCase, SubmissionMixin):
         # create a degree
         cls.degree = Degree.objects.create(name="Curso ficticio", code="00A", manager_id=cls.user.id)
         cls.degree.save()
-        
+
         # create an educator
         cls.educator = Educator.objects.create(user_id=cls.user.id)
         cls.educator.save()
@@ -67,22 +62,22 @@ class SubmissionTest(TestCase, SubmissionMixin):
 
         # login data
         cls.login_data = {
-                'email': 'testuser@user.com', 
+                'email': 'testuser@user.com',
                 'password': 'secret'
                }
 
-    def testSubmissionRoutes(self): 
+    def testSubmissionRoutes(self):
         # logging in
         response = self.client.post('/public/', self.login_data, follow=True)
 
         # trying to access /submission/ after logging in
         response = self.client.get('/submission/')
         self.assertEqual(response.status_code, 200) # if ne, failed to access /submission/
-        
+
         # trying to access /submission/create
         response = self.client.get('/submission/create/')
         self.assertEqual(response.status_code, 200) # if ne, failed to access /submission/create
-        
+
         # trying to submit data for analysis
         response = self.createSubmission(self.degree.id)
         self.assertEqual(response.status_code, 200) # if ne, failed to submit report to /submission/create/
