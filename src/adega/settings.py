@@ -11,9 +11,17 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import json
 from django.contrib import messages
 env = os.environ.copy()
 
+with open('config.json') as json_file:
+    data = json.load(json_file)
+    EMAIL_BACKEND = data['support_email']
+
+print(EMAIL_BACKEND)
+
+    
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
