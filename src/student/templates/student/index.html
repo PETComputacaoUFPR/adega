@@ -2,7 +2,7 @@
 
 {% load static %}
 
-
+{% load adega_templatetag %}
 
 {% block content %}
 
@@ -31,120 +31,149 @@
             <a class="nav-item nav-link" href="#abandono" aria-controls="abandono" data-toggle="tab">Abandono</a>
             <a class="nav-item nav-link" href="#desistencia" aria-controls="desistencia" data-toggle="tab">Desistência</a>
             <a class="nav-item nav-link" href="#outras" aria-controls="outras" data-toggle="tab">Outras Formas de Evasão</a>
+            {% for phase_name, phase_value in grid_phases %}
+                <a class="nav-item nav-link" href="#phase_{{phase_name|remove_spaces}}" aria-controls="{{phase_name}}" data-toggle="tab">{{phase_name}}</a>
+            {% endfor %}
         </div>
         <br>
         
         <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="sem_evasao">
-                    <table class="table table-striped table-bordered" id="sem_evasao_table">
-                        <thead>
-                            <tr>
-                                <th class="col-md-2">GRR</th>
-                                <th class="col-md-4">Nome</th>
-                                <th class="col-md-2">IRA</th>
-                                <th class="col-md-2">Forma evasão</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for l in sem_evasao %}
-                            <tr>
+            <div role="tabpanel" class="tab-pane active" id="sem_evasao">
+                <table class="table table-striped table-bordered" id="sem_evasao_table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">GRR</th>
+                            <th class="col-md-4">Nome</th>
+                            <th class="col-md-2">IRA</th>
+                            <th class="col-md-2">{{sem_evasao.description_name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in sem_evasao.student_list %}
+                        <tr>
+                        <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
+                        <td class="col-md-4">{{ l.nome }}</td>
+                        <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+                        <td class="col-md-2">{{ l.description_value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="formados">
+                <table class="table table-striped table-bordered" id="formados_table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">GRR</th>
+                            <th class="col-md-4">Nome</th>
+                            <th class="col-md-2">IRA</th>
+                            <th class="col-md-2">{{formatura.description_name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in formatura.student_list %}
+                        <tr>
+                        <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
+                        <td class="col-md-4">{{ l.nome }}</td>
+                        <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+                        <td class="col-md-2">{{ l.description_value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="abandono">
+                <table class="table table-striped table-bordered" id="abandono_table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">GRR</th>
+                            <th class="col-md-4">Nome</th>
+                            <th class="col-md-2">IRA</th>
+                            <th class="col-md-2">{{abandono.description_name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in abandono.student_list %}
+                        <tr>
                             <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                             <td class="col-md-4">{{ l.nome }}</td>
                             <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
-                            <td class="col-md-2">{{ l.forma_evasao }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="formados">
-                    <table class="table table-striped table-bordered" id="formados_table">
-                        <thead>
-                            <tr>
-                                <th class="col-md-2">GRR</th>
-                                <th class="col-md-4">Nome</th>
-                                <th class="col-md-2">IRA</th>
-                                <th class="col-md-2">Forma evasão</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for l in formatura %}
-                            <tr>
+                            <td class="col-md-2">{{ l.description_value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="desistencia">
+                <table class="table table-striped table-bordered" id="desistencia_table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">GRR</th>
+                            <th class="col-md-4">Nome</th>
+                            <th class="col-md-2">IRA</th>
+                            <th class="col-md-2">{{desistencia.description_name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in desistencia.student_list %}
+                        <tr>
                             <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                             <td class="col-md-4">{{ l.nome }}</td>
                             <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
-                            <td class="col-md-2">{{ l.forma_evasao }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="abandono">
-                    <table class="table table-striped table-bordered" id="abandono_table">
+                            <td class="col-md-2">{{ l.description_value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="outras">
+                <table class="table table-striped table-bordered" id="outros_table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">GRR</th>
+                            <th class="col-md-4">Nome</th>
+                            <th class="col-md-2">IRA</th>
+                            <th class="col-md-2">{{outros.description_name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in outros.student_list %}
+                        <tr>
+                            <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
+                            <td class="col-md-4">{{ l.nome }}</td>
+                            <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+                            <td class="col-md-2">{{ l.description_value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            {% for phase_name, phase_value in grid_phases %}
+                <div role="tabpanel" class="tab-pane" id="phase_{{phase_name|remove_spaces}}">
+                    <table class="table table-striped table-bordered" id="phase_{{phase_name|remove_spaces}}_table">
                         <thead>
                             <tr>
                                 <th class="col-md-2">GRR</th>
                                 <th class="col-md-4">Nome</th>
                                 <th class="col-md-2">IRA</th>
-                                <th class="col-md-2">Forma evasão</th>
+                                <th class="col-md-2">{{phase_value.description_name}}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for l in abandono %}
+                            {% for l in phase_value.student_list %}
                             <tr>
                                 <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
                                 <td class="col-md-4">{{ l.nome }}</td>
                                 <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
-                                <td class="col-md-2">{{ l.forma_evasao }}</td>
+                                <td class="col-md-2">{{ l.description_value }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="desistencia">
-                    <table class="table table-striped table-bordered" id="desistencia_table">
-                        <thead>
-                            <tr>
-                                <th class="col-md-2">GRR</th>
-                                <th class="col-md-4">Nome</th>
-                                <th class="col-md-2">IRA</th>
-                                <th class="col-md-2">Forma evasão</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for l in desistencia %}
-                            <tr>
-                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
-                                <td class="col-md-4">{{ l.nome }}</td>
-                                <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
-                                <td class="col-md-2">{{ l.forma_evasao }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="outras">
-                    <table class="table table-striped table-bordered" id="outros_table">
-                        <thead>
-                            <tr>
-                                <th class="col-md-2">GRR</th>
-                                <th class="col-md-4">Nome</th>
-                                <th class="col-md-2">IRA</th>
-                                <th class="col-md-2">Forma evasão</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for l in outros %}
-                            <tr>
-                                <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
-                                <td class="col-md-4">{{ l.nome }}</td>
-                                <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
-                                <td class="col-md-2">{{ l.forma_evasao }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -158,7 +187,10 @@
         $("#formados_table"),
         $("#abandono_table"),
         $("#desistencia_table"),
-        $("#outros_table")
+        $("#outros_table"),
+        {% for phase_name, phase_value in grid_phases %}
+            $("#phase_{{phase_name|remove_spaces}}_table"),
+        {% endfor %}
     ];
     $(table_names).each(function(i,x){
         var t = x.dataTable({

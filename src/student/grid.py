@@ -8,8 +8,9 @@ class CourseGrid:
         self.situation = obj["situacao"]
         self.code = obj["codigo"]
         self.name = obj["nome"]
-        self.year = obj["ano"]
-        self.semester = obj["semestre"]
+        self.year = int(obj["ano"])
+        # the code that subtitutes the strings are sorting the period types by time (look situations.py) 
+        self.semester_code = PeriodType.str_to_code(obj["semestre"])
         self.grade = obj["nota"]
 
     def is_approved(self):
@@ -37,6 +38,22 @@ class CourseGrid:
     def is_coursed(self):
         return self.is_approved() or self.is_failed()
 
+    def __gt__(self, other):
+        if self.year == other.year:
+            return self.semester_code > other.semester_code
+        else: 
+            return self.year > other.year
+
+    def __lt__(self, other):
+        if self.year == other.year:
+            return self.semester_code < other.semester_code
+        else: 
+            return self.year < other.year
+
+
+    def __eq__(self, other):
+        return (self.year == other.year) and (self.semester_code == other.semester_code)
+         
 
 class CourseGridCollection:
     def __init__(self, code, grid):
@@ -103,7 +120,11 @@ class CourseGridCollection:
     def mean_grade(self):
         grades = [x.grade for x in self.get_coursed_historic()]
         return np.mean(grades)
-    
+
+    def last_grade(self):
+        courses =  self.get_coursed_historic()
+        courses = sorted(courses)
+        return courses[-1].grade
 
     def get_prevalent_situation(self):
         # If this is an course that repeat on grid, then this doesnt have any
@@ -141,12 +162,12 @@ class CourseGridCollection:
             "name": self.name,
             "code": self.code,
             "situation": p_sit,
-            "is_real_code": self.is_real_code
+            "is_real_code": self.is_real_code,
         }
         if self.has_detail():
             info["detail"] = {
                 "count": self.count_coursed(),
-                "mean_grade": self.mean_grade(),
+                "last_grade": self.last_grade(),
             }
 
         return info
@@ -159,6 +180,8 @@ class DegreeGridDescription:
         self.code_to_name = obj["code_to_name"]
         self.equiv_codes = obj["equiv_codes"]
         self.fake_codes = obj["fake_codes"]
+        self.prerequisites = obj["prerequisites"]
+        self.phases = obj["phases"]
 
         # Codes that show more then one time on grid, like OPT
         self.repeated_codes = obj["repeated_codes"]
@@ -175,7 +198,7 @@ class DegreeGridDescription:
 
     def is_repeated_code(self, code):
         return code in self.repeated_codes
-    
+
     def is_real_code(self, code):
         return not code in self.fake_codes
 
@@ -192,7 +215,7 @@ class DegreeGrid:
     def __init__(self, grid_detail):
         self.grid_detail = grid_detail
         self.cgc = {}
-    
+        
     def compute_cgc(self, hist):
         # Create an instance for each cell in grid
         cgc = {}
@@ -217,6 +240,40 @@ class DegreeGrid:
 
         return cgc
 
+    def get_prerequisites(self, code):
+        if code in self.bcc_grid_2011.prerequisites.keys():
+            return [x for x in self.bcc_grid_2011.prerequisites[code]]
+        else:
+            return ['none']
+
+    def get_list_approvations(self, grid):
+        approvations=[]
+        for period in grid:
+            for course in period:
+                if course['situation'] == "approved" or course['situation'] == "equivalence":
+                    approvations.append(course['code'])
+        return approvations 
+
+    def is_blocked(self, code, prerequisites, approvations):
+        if code in approvations:
+            return False
+        prerequisites_completed = True
+        for prerequisite in prerequisites:
+            if prerequisite == 'none':
+                return False
+            if prerequisite not in approvations:
+                prerequisites_completed = False            
+        return not prerequisites_completed
+
+    def get_blocked_courses(self, grid):
+        approvations = self.get_list_approvations(grid)
+        for i, period in enumerate(grid):
+            for j, course in enumerate(period):
+                code = course['code']   
+                prerequisites = self.get_prerequisites(code)
+                grid[i][j]["is_blocked"] = self.is_blocked(code, prerequisites, approvations); 
+        return grid
+        
     def get_grid(self, cgc):
         new_grid = np.array(self.grid_detail.grid, dtype=np.dtype(object))
         for i, line in enumerate(self.grid_detail.grid):
@@ -250,6 +307,39 @@ class DegreeGrid:
     def get_situation(self, hist):
         cgc = self.compute_cgc(hist)
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
+    
+    @staticmethod
+    def get_degree_grid(code):
+        if code == "21A":
+            return DegreeGrid.bcc_grid_2011
+    
+
+    def get_degree_situation(self, courses_hist):
+        '''
+        Computes the degree grid with courses analysis summaries.
+        The informations are the same that index course page.
+
+
+        Parameters:
+        courses_hist: Cache object with each course description. Same instance
+                      used into index course page.
+        
+        Returns:
+        A matrix of objects. Each row represents a semester.
+        '''
+        
+        # Create an empty grid with instances of Grid Collection
+        cgc = self.compute_cgc([])
+        grid = self.get_grid(cgc)
+
+        # Uses courses analysis summary to populate details
+        for code in courses_hist:
+            for semester in grid:
+                for course in semester:
+                    if code == course["code"]:
+                        course["detail"] = courses_hist[code]
+        
+        return grid
 
     #grid_ibm = Grid.objects.get(id=3)
     #grid = DegreeGridDescription(grid_ibm.get_grid())

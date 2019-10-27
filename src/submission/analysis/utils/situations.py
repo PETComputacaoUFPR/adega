@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # == Admission Form == #
+
 class PeriodType:
     # The numbers are supposedly sorting by time 
     
@@ -27,6 +28,7 @@ class PeriodType:
             if(pt[1] == name):
                 return pt[0]
         return -1
+
 class AdmissionType:
     AT_DESCONHECIDO = 0
     AT_VESTIBULAR = 1
@@ -52,6 +54,7 @@ class AdmissionType:
         (AT_OUTROS, 'Outro'),
     )
 
+    
 # == Evasion Form == #
 class EvasionForm:
     EF_DESCONHECIDO = 0
@@ -184,7 +187,9 @@ class Situation:
     SITUATION_PASS = (
         SIT_APROVADO,
         SIT_CONHECIMENTO_APROVADO,
-        SIT_DISPENSA_COM_NOTA
+        SIT_DISPENSA_COM_NOTA,
+        SIT_APROV_ADIANTAMENTO,
+        SIT_EQUIVALENCIA,
     )
 
     SITUATION_KNOWLDGE = (

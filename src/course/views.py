@@ -49,6 +49,7 @@ def index(request, submission_id):
         "submission": submission
     })
 
+@permission_required_or_403('view_course', (Submission, 'id', 'submission_id'))
 def compare(request, submission_id):
     print(request,submission_id)
     submission_id = int(submission_id)
@@ -56,9 +57,6 @@ def compare(request, submission_id):
 
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
-
-    if not (degree in request.user.educator.degree.all()):
-        return redirect("adega:dashboard")
 
     analysis_result = get_list_courses(request.session, degree, submission_id)
     courses_list = analysis_result["cache"]

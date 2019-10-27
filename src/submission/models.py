@@ -37,7 +37,7 @@ class Submission(models.Model):
     historico = models.FileField(upload_to=get_path)
     matricula = models.FileField(upload_to=get_path)
 
-    degree = models.ForeignKey(Degree)
+    degree = models.ForeignKey(Degree, related_name='submissions')
     timestamp = models.DateTimeField(default=timezone.now)
     last = models.BooleanField(default=True)
     processed = models.BooleanField(default=False)
@@ -59,6 +59,7 @@ class Submission(models.Model):
             ('view_student', 'Visualizar alunos'),
             ('view_degree', 'Visualizar curso'),
             ('view_admission', 'Visualizar turma ingresso'),
+            ('view_cepe9615', 'Visualizar  cepe9615')
             )
 
     def save(self, *args, **kwargs):
@@ -87,6 +88,13 @@ class Submission(models.Model):
         return 'Submission (from: {}, to: {}, on: {})'.format(self.author.user.first_name,
                                                               self.degree.name,
                                                               self.timestamp)
+
+    def set_executing(self):
+        self.processed = False
+        self.process_time = None
+        self.done_in = timezone.now()
+        self.analysis_status = 0
+        self.save()
 
     def set_done(self, time):
         self.processed = True

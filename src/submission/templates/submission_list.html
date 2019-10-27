@@ -4,25 +4,25 @@
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
-		<h2>Relatórios Submetidos</h2>
+		<h2>Relatórios enviados</h2>
 	</div>
 	<div class="col-offset-8">
-		<a href="{% url 'submission:SubmissionCreateView' %}"> <button type="button" class="btn btn-primary">Submeter relatório</button></a>
+		<a href="{% url 'submission:SubmissionCreateView' %}"> <button type="button" class="btn btn-primary">Upload de novos dados</button></a>
 	</div>
-	
+
 </div>
 
-<div class="alert alert-warning" role="alert">
-	Esta página contém as submissões realizadas por diferentes usuários que você
-	possui acesso para gerenciar.<br><br>
-	
-	As linhas em vermelho indicam as submissões que não puderam ser processadas.
+<div class="alert alert-light" role="alert">
+	Esta página contém os uploads de relatórios realizados por diferentes usuários
+	que você possui acesso para gerenciar.<br><br>
+
+	As linhas em vermelho indicam os relatórios (planilhas) que não puderam ser processados.
 	Caso este problema aconteça, verifique novamente na etapa de que pode ser causado
 	pela incompatibilidade das planilhas submetidas em
-	<a href="{% url 'submission:SubmissionCreateView' %}">Submeter relatório</a>
-	(colunas faltando, ordem errada da submissão de matrícula e histórico).<br><br>
+	<a href="{% url 'submission:SubmissionCreateView' %}">Upload de dados (relatório do SIE)</a>
+	(colunas faltando, ordem errada do upload das planilhas de matrícula e histórico).<br><br>
 
-	Também, ao submeter, verifique o Status da submissão que caso esteja em
+	Também, ao realizar o upload verifique o Status do upload que, caso esteja em
 	estado de processamento, terá coloração amarela na tabela a seguir.
 </div>
 
@@ -31,13 +31,13 @@
 		<table id="submission_table" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th>Identificador de submissão</th>
+					<th>Identificador do upload do relatório</th>
 					<th>Curso</th>
 					<th>Autor</th>
 					<th>Ano</th>
 					<th>Semestre</th>
 					<th>Status do processamento</th>
-					<th>Data de submissão</th>
+					<th>Data do upload</th>
 					<th>Ações</th>
 				</tr>
 			</thead>
@@ -96,10 +96,10 @@
 			$(data[7]).removeClass("table-warning");
 			$(data[7]).removeClass("table-success");
 			$(data[7]).addClass("table-primary");
-			
+
 		}
 	});
 
-	
+
 </script>
 {% endblock js-foot %}
