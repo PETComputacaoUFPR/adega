@@ -152,6 +152,8 @@ def generate_student_data(path, dataframe, student_analysis):
         save_json(path + "list/" + list_name + ".json", list_content)
 
     # TODO: Check if all students receive analysis
+    list_students_trainees = student_analysis.list_students_trainees()
+    save_json(path + "list/Formandos.json", list_students_trainees)
 
     # All students
     list_phases = student_analysis.list_students_phases()
