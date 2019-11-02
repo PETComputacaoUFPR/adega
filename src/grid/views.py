@@ -11,6 +11,22 @@ from degree.models import Degree
 from grid.forms import GridForm
 from grid.generate_grid import generate_grid
 
+from django.urls import reverse
+from django.shortcuts import redirect
+
+def create_course_from_json(json_data, degree_code):
+    grid_version = json_data["version"]
+    courses = {}
+    for period in json_data["courses"].keys():
+        for course in json_data["courses"][period]:
+            courses[course["course_code"]] = course
+    __import__('pprint').pprint(courses)
+
+    # course_codes = 
+    dg = Degree.objects.get(code=degree_code)
+    new_grid = Grid(degree=dg, version=grid_version)
+    new_grid.save()
+    return new_grid
 
 class GridList(ListView):
     model = Grid
@@ -49,6 +65,7 @@ class GridDelete(DeleteView):
     model = Grid
 
 
+
 class GridCreate(View):
     model = Grid
     template_name = 'grid_create.html'
@@ -57,17 +74,17 @@ class GridCreate(View):
 
     def post(self, request, *args, **kwargs):
         grid_json = request.POST.copy()["grid"]
+        degree_code = kwargs["degree_code"]
         grid = json.loads(grid_json)
-        courses = {}
+        new_grid = create_course_from_json(grid,degree_code)
 
-        for period in grid["courses"].keys():
-            for course in grid["courses"][period]:
-                courses[course["course_code"]] = course
-        __import__('pprint').pprint(courses)
-        return HttpResponseRedirect(self.success_url)
+        # return HttpResponseRedirect(self.success_url)
+        return redirect('/grid/{}'.format(degree_code))
+        # return HttpResponseRedirect(reverse('grids', args=[degree_code]))
+
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {})
+        return render(request, self.template_name, kwargs)
     # para arquivos
     #def form_valid(self, form):
 

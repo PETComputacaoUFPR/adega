@@ -79,33 +79,30 @@
         </table>
     </div>
 </div>
-    
-    <h2>Informações gerais da grade</h2>
+
+<br>
+<h2>Informações gerais da grade</h2>
 
 <div class="col-8">
-    
-<form id="genGrid">
-    {% csrf_token %}
-    <div class="form-row">
-        <div class="col-lg-8 col-md-8">
-            <label for="relative_year">Versão da grade</label>
-            <input type="number" class="form-control" name="version" id="version" value="{{form.version.field.initial}}" />
-    
-        </div>
-    </div>
-            <div class="row">
-
-                <div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
-                    <button class="btn btn-success btn-block" type="submit" >Gerar grade</button>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-4">
-                    <button class="btn btn-danger btn-block" type="submit">Cancelar</button>
-                </div>
-
+    <form id="genGrid">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col-lg-8 col-m-12 form-group">
+                <label for="relative_year">Versão da grade</label>
+                <input type="text" class="form-control" name="version" id="version" />
             </div>
-</form>
-    
+        </div>
+        <div class="form-row">
+            <div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
+                <button class="btn btn-success btn-block" type="submit" >Gerar grade</button>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-4">
+                <button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
@@ -138,8 +135,6 @@ function grid_table() {
            var course = courses[period][j];
            var td = document.createElement("TD");
            td.innerHTML = course["course_code"];
-           console.log(course["course_code"]);
-           console.log("oi");
            tr.appendChild(td);
        }
        console.log(period)
@@ -201,20 +196,22 @@ function add_course() {
 
 }
 function send_grid() {
-    var grid_version = document.getElementById("version");
+    var grid_version = $("#version").val();
     var grid = {"courses":courses,"version":grid_version}
     var grid_json = JSON.stringify(grid);
-    console.log(grid_json);
     $.ajax({
         type:"POST",
-        url: "{% url 'grid:GridCreateView' degree_code='21A' %}",
+        url: "{% url 'grid:GridCreateView' degree_code=degree_code %}",
         data: {
             grid: grid_json,
             csrfmiddlewaretoken: '{{ csrf_token }}'
-
         },
-    
-    })
+        success: function(data, status){
+            window.location.href = "/grid/{{degree_code}}";
+        }
+    });
+
+
 
 }
 
