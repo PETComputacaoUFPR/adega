@@ -3,7 +3,6 @@ from degree.models import Degree
 from os import path
 from django.conf import settings
 
-from student.grid import DegreeGridDescription
 import json
 
 def get_path(instance, filename):
@@ -22,12 +21,6 @@ class Grid(models.Model):
             related_query_name="grids",
             )
 
-    def get_grid_degree_desc(self):
-        '''
-        Returns: Instance of DegreeGridDescription
-        '''
-
-        return DegreeGridDescription(json.loads(self.data_as_string))
     
     def __str__(self):
         return "Curso: {} Versão: {}".format(self.degree, self.version)

@@ -1,7 +1,8 @@
-from submission.analysis.utils.situations import Situation
-# from grid.models import Grid
+from submission.analysis.utils.situations import Situation, PeriodType
 import numpy as np
-
+from degree.models import Degree
+from grid.models import Grid
+import json
 
 class CourseGrid:
     def __init__(self, obj):
@@ -240,8 +241,8 @@ class DegreeGrid:
         return cgc
 
     def get_prerequisites(self, code):
-        if code in self.bcc_grid_2011.prerequisites.keys():
-            return [x for x in self.bcc_grid_2011.prerequisites[code]]
+        if code in self.grid_detail.self.prerequisites.keys():
+            return [x for x in self.grid_detail.self.prerequisites[code]]
         else:
             return ['none']
 
@@ -308,9 +309,36 @@ class DegreeGrid:
     def get_degree_grid(degree_code, version):
         # if code == "21A":
         #     return DegreeGrid.bcc_grid_2011
+        
         dg = Degree.objects.get(code=degree_code)
-        grid_django_model = Grid.objects.get(degree=degree, version=version)
-        return DegreeGridDescription(grid_django_model.data_as_string)
+        grid_django_model = Grid.objects.filter(degree=dg, version=version)
+        if len(grid_django_model) == 0:
+            return None
+        
+        if len(grid_django_model) > 1:
+            raise NameError("Duplicated degree grid version")
+
+        grid_django_model = grid_django_model[0]
+
+        data_as_dict = json.loads(grid_django_model.data_as_string)
+
+        return DegreeGridDescription(data_as_dict)
+
+    @staticmethod
+    def get_degree_grid_list(degree_code):
+        # if code == "21A":
+        #     return DegreeGrid.bcc_grid_2011
+        
+        dg = Degree.objects.get(code=degree_code)
+        dg_list = Grid.objects.filter(degree=dg)
+        data_as_dict_list = []
+        data_as_dict_list = [
+            DegreeGridDescription(json.loads(instance.data_as_string))
+            for instance in dg_list
+        ]
+        
+
+        return data_as_dict_list
 
     def get_degree_situation(self, courses_hist):
         '''

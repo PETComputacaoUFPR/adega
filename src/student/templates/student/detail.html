@@ -28,16 +28,20 @@
             <div class="nav nav-tabs" role="tablist">
              <a class="nav-item nav-link active" href="#resumo" aria-controls="resumo" data-toggle="tab">Resumo</a>
              <a class="nav-item nav-link" href="#disciplinas" aria-controls="disciplinas" data-toggle="tab">Lista de Disciplinas</a>
-             <a class="nav-item nav-link" href="#grid" aria-controls="grid" data-toggle="tab">Grade</a>
+             {% for grid_info, grid_extra, version in analysis_result.grid_list %}
+             <a class="nav-item nav-link" href="#grid_{{version}}" aria-controls="grid" data-toggle="tab">Grade - Versão: {{version}}</a>
+             {% endfor %}
             </div>
         </div>
         
+        
         <div class="tab-content">
             <!-- TODO: Add dynamic grid for each degree -->
-            <div role="tabpanel" class="tab-pane" id="grid">
+            {% for grid_info, grid_extra, version in analysis_result.grid_list %}
+            <div role="tabpanel" class="tab-pane" id="grid_{{version}}">
                 <br>
                 <div class="grade">
-                    {% for semester in analysis_result.grid%}
+                    {% for semester in grid_info%}
                     <div class="semestre">
                         <div class="grade-head">{{forloop.counter}}º</div>
                         {% for course in semester %}
@@ -76,7 +80,7 @@
                 <br>
                 
                 <div class="grade">
-                    {% for course in analysis_result.grid_extra %}
+                    {% for course in grid_extra %}
                     <div class="semestre">
                         <div class="info semestre">
                             <div class="materia">
@@ -95,8 +99,20 @@
                     {% endfor %}
                 </div>
             </div>
+            {% endfor %}
+
             <div role="tabpanel" class="tab-pane active" id="resumo">
                 <table class="table">
+                    <tr>
+                        <td>Versão da grade</td>
+                        <td>
+                            <span class="data">{{ analysis_result.student.num_versao }}</span><br>
+                        </td>
+                        <td>
+                            <a  tabindex="0" class=" fa fa-info-circle" data-toggler="popover" data-html="true"
+                            data-content="Versão atual da grade que o aluno está cursando. O aluno pode ter trocado de grade durante o curso."></a>
+                        </td>
+                    </tr>
                     <tr>
                         <td>Saída do curso</td>
                         <td>
@@ -157,10 +173,12 @@
                     </tr>
                     
                     {% for phase_name, phase_value in grid_phases %}
+                    {% if phase_value.description_value != None %}
                     <tr>
                         <td>{{phase_value.description_name}} ({{phase_name}})</td>
                         <td><span class="data">{{phase_value.description_value}}</span></td>
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </table>
             </div>

@@ -14,7 +14,7 @@ from grid.generate_grid import generate_grid
 from django.urls import reverse
 from django.shortcuts import redirect
 
-import json
+from student.grid import DegreeGrid
 
 def create_course_from_json(json_data, degree_code):
     grid_version = json_data["version"]
@@ -116,6 +116,7 @@ class GridList(ListView):
         context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
         context["degree"] = self.degree
+
         return context
 
     def get_queryset(self):

@@ -116,8 +116,9 @@
         
         <div id="graficos container">
             <!-- TODO: Add dynamic grid for each degree -->
+            {% for dg in dg_list %}
             <div class="col-md-12">
-                    <h3>Grade curricular
+                    <h3>Grade curricular - Versão: {{dg.version}}
                             <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
                             data-content="Informações gerais sobres as disciplinas do curso de graduação.<br>
                                           Passe o mouse sobre os códigos para verificar os nomes completos
@@ -125,14 +126,15 @@
                                           Também é possível verificar o desvio padrão das notas médias
                                           passando o mouse sobre o valor da nota."></a>
                     </h3>
-                <div class="row" id="grid">
+                
+                <div class="row" id="grid_{{dg.version}}">
                     <br>
                     <div class="grade col-md-10">
-                        {% for semester in grid_info %}
+                        {% for semester in dg.grid_info %}
                         <div class="semestre">
                             <div class="grade-head">{{forloop.counter}}º</div>
                                 {% for course in semester %}
-                                    <div id="grid_course_course_{{course.code}}" code={{course.code}}
+                                    <div id="grid_{{dg.version}}_course_course_{{course.code}}" code={{course.code}}
                                         data-toggle="tooltip" data-placement="top" title="{{course.name}}" class="materia {{ course.situation }}">
                                         <div class="info">
                                             {% if course.is_real_code %}
@@ -171,6 +173,7 @@
                 </div>
             </div>
             <br>
+            {% endfor %}
             
             <div class="row py-3">
                 <div class="col-md-12">
@@ -247,9 +250,17 @@
 {% block js-foot %}
 <script>
     
-    var grid_info = {{grid_info|safe_js}};
-    var prerequisites = {{prerequisites|safe_js}};
-    var prerequisites_rev = {{prerequisites_rev|safe_js}};
+    var grid_list = {{grid_list|safe_js}};
+    var prerequisites = { 
+        {% for dg in dg_list %}
+        "{{dg.version}}": {{dg.prerequisites|safe_js}},
+        {% endfor %}
+    };
+    var prerequisites_rev = { 
+        {% for dg in dg_list %}
+        "{{dg.version}}": {{dg.prerequisites_rev|safe_js}},
+        {% endfor %}
+    };
 
     // Add mouseenter and mouseleave events to grid cells
     // The style are defined in the static styles.css file
@@ -258,26 +269,36 @@
         // Mouse Enter event
         $(".materia").hover(function(){
                 var code = $(this).attr("code");
-                for(var i in prerequisites[code]){
-                    var code2 = prerequisites[code][i];
-                    $("#grid_course_course_"+code2).addClass('materia_prerequisite');
+                for(var version in prerequisites){
+                    for(var i in prerequisites[version][code]){
+                        var code2 = prerequisites[version][code][i];
+                        $("#grid_"+version+"_course_course_"+code2).addClass('materia_prerequisite');
+                    }
                 }
-                for(var i in prerequisites_rev[code]){
-                    var code2 = prerequisites_rev[code][i];
-                    $("#grid_course_course_"+code2).addClass('materia_posrequisite');
+
+                for(var version in prerequisites_rev){
+                    for(var i in prerequisites_rev[version][code]){
+                        var code2 = prerequisites_rev[version][code][i];
+                        $("#grid_"+version+"_course_course_"+code2).addClass('materia_posrequisite');
+                    }
                 }
+
                 $(this).addClass('materia_selected');
             },
             // Mouse Leave event
             function(){
                 var code = $(this).attr("code");
-                for(var i in prerequisites[code]){
-                    var code2 = prerequisites[code][i];
-                    $("#grid_course_course_"+code2).removeClass('materia_prerequisite');
+                for(var version in prerequisites){
+                    for(var i in prerequisites[version][code]){
+                        var code2 = prerequisites[version][code][i];
+                        $("#grid_"+version+"_course_course_"+code2).removeClass('materia_prerequisite');
+                    }
                 }
-                for(var i in prerequisites_rev[code]){
-                    var code2 = prerequisites_rev[code][i];
-                    $("#grid_course_course_"+code2).removeClass('materia_posrequisite');
+                for(var version in prerequisites_rev){
+                    for(var i in prerequisites_rev[version][code]){
+                        var code2 = prerequisites_rev[version][code][i];
+                        $("#grid_"+version+"_course_course_"+code2).removeClass('materia_posrequisite');
+                    }
                 }
                 $(this).removeClass('materia_selected');
             }

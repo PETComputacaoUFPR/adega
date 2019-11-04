@@ -260,7 +260,7 @@ def evasion_per_period_graph(df):
 
     """
     rows = (df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA)  & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)
-    cols = ["MATR_ALUNO", "NUM_VERSAO_x", "COD_ATIV_CURRIC", "SITUACAO"]
+    cols = ["MATR_ALUNO", "NUM_VERSAO_x", "COD_ATIV_CURRIC", "SITUACAO", "COD_CURSO"]
     evaded_students = df.loc[rows, cols] 
     periods = StudentAnalysis.current_period(evaded_students).values()
     evasions_period = defaultdict(int)

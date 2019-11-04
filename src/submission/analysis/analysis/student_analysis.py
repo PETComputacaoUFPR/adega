@@ -12,11 +12,11 @@ from student.grid import DegreeGrid
 class StudentAnalysis:
     data_frame = None
 
-    def __init__(self, df, current_year, current_semester, dg):
+    def __init__(self, df, current_year, current_semester, grid_list):
         self.data_frame = df
         self.current_year = current_year
         self.current_semester = current_semester
-        self.dg = dg
+        self.grid_list = grid_list
 
         self._ira_alunos_last_result = None
     
@@ -30,6 +30,7 @@ class StudentAnalysis:
             "ANO_EVASAO",
             "SEMESTRE_EVASAO",
             "FORMA_EVASAO",
+            "NUM_VERSAO_x",
         ])
 
         students = students.groups.keys()
@@ -47,6 +48,7 @@ class StudentAnalysis:
                 "ano_evasao": str(stnd[4]),
                 "semestre_evasao": str(stnd[5]),
                 "forma_evasao": EvasionForm.code_to_str(stnd[6]),
+                "num_versao": str(stnd[7]),
                 "ira": iras[grr],
             }
         return info
@@ -89,7 +91,12 @@ class StudentAnalysis:
         groups = df.groupby("MATR_ALUNO")
         
         # Parse phases lists to sets before start the checkage
-        phases = self.dg.grid_detail.phases
+        # Obs: Phases of different grids with same name will be overwrited
+        phases = {}
+        for grid in self.grid_list:
+            for phase in grid.phases:
+                 phases[phase] = grid.phases[phase]
+        
         set_phases = {p:set(phases[p]) for p in phases}
 
         list_phases = defaultdict(dict)
@@ -265,14 +272,20 @@ class StudentAnalysis:
         student_period = {}
         for student, dataframe in students_df:     
             # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
-            if dataframe.iloc[0]["NUM_VERSAO_x"] == 2011:
-                # the academic grid is a list of lists from src/student/grid.py        
-                grid = DegreeGrid.get_degree_grid("21A").grid
-                fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes    
-                opts_tgs = list(DegreeGrid.get_degree_grid("21A").equiv_codes)
-            else:
-                # print ('sem grade irmão')
+            # the academic grid is a list of lists from src/student/grid.py
+
+            num_versao = str(dataframe.iloc[0]["NUM_VERSAO_x"])
+            cod_curso = str(dataframe.iloc[0]["COD_CURSO"])
+            # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
+            degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
+            
+            # If there is none grid to this student, ignore it
+            if degree_grid is None:
                 continue
+            
+            grid = degree_grid.grid
+            fake_codes = degree_grid.fake_codes    
+            opts_tgs = list(degree_grid.equiv_codes)
             
             max_period = len(grid)-1
             p = 0
