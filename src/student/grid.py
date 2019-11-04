@@ -1,5 +1,5 @@
 from submission.analysis.utils.situations import Situation
-from grid.models import Grid
+# from grid.models import Grid
 import numpy as np
 
 
@@ -175,7 +175,7 @@ class CourseGridCollection:
 
 class DegreeGridDescription:
     def __init__(self, obj):
-        self.year = obj["year"]
+        self.version = obj["version"]
         self.grid = obj["grid"]
         self.code_to_name = obj["code_to_name"]
         self.equiv_codes = obj["equiv_codes"]
@@ -219,7 +219,6 @@ class DegreeGrid:
     def compute_cgc(self, hist):
         # Create an instance for each cell in grid
         cgc = {}
-        print(self.grid_detail)
         for semester in self.grid_detail.grid:
             for code in semester:
                 cgc[code] = CourseGridCollection(code, self.grid_detail)
@@ -279,9 +278,6 @@ class DegreeGrid:
         for i, line in enumerate(self.grid_detail.grid):
             for j, course_code in enumerate(line):
                 # TODO: Add possibility to insert others grids
-                __import__('pprint').pprint(cgc[course_code].get_info())
-                __import__('pprint').pprint(new_grid)
-
 
                 new_grid[i][j] = cgc[course_code].get_info()
                 #new_grid[i, j] = cgc[course_code].get_info()
@@ -309,10 +305,12 @@ class DegreeGrid:
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
     
     @staticmethod
-    def get_degree_grid(code):
-        if code == "21A":
-            return DegreeGrid.bcc_grid_2011
-    
+    def get_degree_grid(degree_code, version):
+        # if code == "21A":
+        #     return DegreeGrid.bcc_grid_2011
+        dg = Degree.objects.get(code=degree_code)
+        grid_django_model = Grid.objects.get(degree=degree, version=version)
+        return DegreeGridDescription(grid_django_model.data_as_string)
 
     def get_degree_situation(self, courses_hist):
         '''

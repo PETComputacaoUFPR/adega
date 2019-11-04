@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from grid.models import Grid, GridCourse, GridPeriod
+from grid.models import Grid #, GridCourse, GridPeriod
 
 
 def create_periods(disciplinas, grid):

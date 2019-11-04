@@ -5,6 +5,12 @@
 <h1>Grade curricular do curso {{degree.name}}</h1>
 </div>
 <div class="row">
+    <a href="{% url 'grid:GridCreateView' degree.code %}">
+    <button type="button" class="btn btn-dark">Nova grade</button>
+    </a>
+</div>
+<br>
+<div class="row">
     <div class="table-responsive">
         <table id="grid_table" class="table table-striped table-bordered">
             <thead>
@@ -19,7 +25,6 @@
                         <td>{{grid.version}}</td>
                         <td class="table-primary bg-primary bg-white">
                             <a href="{% url 'grid:GridDetailView' degree.code grid.pk %}">Detalhes </a>
-                            <a href="{% url 'grid:GridUpdateView' degree.code grid.pk %}">Editar </a>
                             <a href="{% url 'grid:GridDeleteView' degree.code grid.pk %}">Remover </a>
                         </td>
                     </tr>
