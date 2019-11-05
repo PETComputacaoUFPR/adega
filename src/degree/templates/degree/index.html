@@ -113,7 +113,7 @@
         {% endcomment %}
         <br><br>
 
-        
+
         <div id="graficos container">
             <!-- TODO: Add dynamic grid for each degree -->
             <div class="col-md-12">
@@ -171,7 +171,7 @@
                 </div>
             </div>
             <br>
-            
+
             <div class="row py-3">
                 <div class="col-md-12">
                     <h3>Distribuição de alunos por faixas de IRA
@@ -232,13 +232,13 @@
                     <h3> Período em que ocorrem as evasões
                         <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
                         data-content="Distribuição das evasões no curso.<br>
-                        O gráfico mostra em que período os alunos evadiram do curso. 
+                        O gráfico mostra em que período os alunos evadiram do curso.
                         O período de evasão é definido como o primeiro a não ter todas as matérias cursadas."></a>
                     </h3>
                     <div id="evasao_periodo"></div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -246,7 +246,7 @@
 
 {% block js-foot %}
 <script>
-    
+
     var grid_info = {{grid_info|safe_js}};
     var prerequisites = {{prerequisites|safe_js}};
     var prerequisites_rev = {{prerequisites_rev|safe_js}};
@@ -354,7 +354,7 @@
         opacity:0.6,
         size: 13
       },
-    }); 
+    });
     var chart3 = new AdegaChart({
       data: evasao_periodo_data,
       div_target: "evasao_periodo",
@@ -367,7 +367,7 @@
         opacity:0.6,
         size: 13
       },
-    }); 
-    
+    });
+
   </script>
 {% endblock js-foot %}

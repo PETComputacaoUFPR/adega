@@ -175,18 +175,19 @@ def period_evasion_graph(df):
 
     students = df.drop_duplicates()
 
-
     # Iterate between all semester/year possible
     for year in range(year_start, year_end):
         for semester in range(1, 3):
 
             # Filter the rows and mantain only the registers
             # that match with year and semester of this iteration
+
             evasions = students.loc[
                 (df['ANO_EVASAO'] == year) &
-                (df['SEMESTRE_EVASAO'] == semester)
-            ]
-
+                (df['SEMESTRE_EVASAO'] == str(semester))
+                ]
+            #  & (df['SEMESTRE_EVASAO'] == semester) -> causa do erro, provavel
+            # que seja porque os tipos nao batem na comparacao
             # Count only one row per student by removing
             # all duplicate rows with same MATR_ALUNO
             # and keeping the first row founded
