@@ -31,6 +31,7 @@
             <a class="nav-item nav-link" href="#abandono" aria-controls="abandono" data-toggle="tab">Abandono</a>
             <a class="nav-item nav-link" href="#desistencia" aria-controls="desistencia" data-toggle="tab">Desistência</a>
             <a class="nav-item nav-link" href="#outras" aria-controls="outras" data-toggle="tab">Outras Formas de Evasão</a>
+            <a class="nav-item nav-link" href="#formandos" aria-controls="formandos" data-toggle="tab">Possíveis Formandos</a>
             {% for phase_name, phase_value in grid_phases %}
                 <a class="nav-item nav-link" href="#phase_{{phase_name|remove_spaces}}" aria-controls="{{phase_name}}" data-toggle="tab">{{phase_name}}</a>
             {% endfor %}
@@ -148,7 +149,28 @@
                     </tbody>
                 </table>
             </div>
-            
+            <div role="tabpanel" class="tab-pane" id="formandos">
+                <table class="table table-striped table-bordered" id="formandos_table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">GRR</th>
+                            <th class="col-md-4">Nome</th>
+                            <th class="col-md-2">IRA</th>
+                            <th class="col-md-2">{{formandos.description_name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in formandos.student_list %}
+                        <tr>
+                            <td class="col-md-2"><a href="{% url 'student:detail' grr=l.grr submission_id=submission.id %}">{{ l.grr }}</a></td>
+                            <td class="col-md-4">{{ l.nome }}</td>
+                            <td class="col-md-2">{{ l.ira|floatformat:2 }}</td>
+                            <td class="col-md-2">{{ l.description_value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             
             {% for phase_name, phase_value in grid_phases %}
                 <div role="tabpanel" class="tab-pane" id="phase_{{phase_name|remove_spaces}}">
@@ -188,6 +210,7 @@
         $("#abandono_table"),
         $("#desistencia_table"),
         $("#outros_table"),
+        $("#formandos_table"),
         {% for phase_name, phase_value in grid_phases %}
             $("#phase_{{phase_name|remove_spaces}}_table"),
         {% endfor %}
