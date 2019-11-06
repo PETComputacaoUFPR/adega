@@ -10,6 +10,7 @@ class SubmissionMixin(object):
         # trying to submit data for analysis
         basePath = os.path.dirname(os.path.abspath(__file__))
         csv_data_file_path = basePath + '/analysis/test/csv_data_file.csv'
+        csv_data_file = open(csv_data_file_path, 'rb')
         report_data = {
                         'csv_data_file': csv_data_file,
                         'relative_year': '2019',

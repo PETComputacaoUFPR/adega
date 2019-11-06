@@ -186,8 +186,7 @@ def period_evasion_graph(df):
                 (df['ANO_EVASAO'] == year) &
                 (df['SEMESTRE_EVASAO'] == str(semester))
                 ]
-            #  & (df['SEMESTRE_EVASAO'] == semester) -> causa do erro, provavel
-            # que seja porque os tipos nao batem na comparacao
+
             # Count only one row per student by removing
             # all duplicate rows with same MATR_ALUNO
             # and keeping the first row founded
