@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
 from submission.analysis.analysis.analysis import Analysis, rate, mean
 import numpy as np
 

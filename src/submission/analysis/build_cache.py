@@ -1,5 +1,5 @@
-from submission.analysis.utils.utils import save_json, ensure_path_exists
-from submission.analysis.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.utils import save_json, ensure_path_exists
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
 from submission.analysis.analysis.degree_analysis import *
 from submission.analysis.analysis.student_analysis import *
 from submission.analysis.analysis.course_analysis import Course

@@ -1,8 +1,8 @@
-from submission.analysis.utils.situations import Situation as sit
-from submission.analysis.utils.situations import EvasionForm as ef
-from submission.analysis.utils.situations import *
-from submission.analysis.utils.situations import Situation as sit
-from submission.analysis.utils.situations import EvasionForm as ef
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import EvasionForm as ef
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import EvasionForm as ef
 from submission.analysis.analysis.student_analysis import StudentAnalysis
 from collections import defaultdict
 

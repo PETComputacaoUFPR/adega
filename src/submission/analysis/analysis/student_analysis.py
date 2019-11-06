@@ -1,7 +1,7 @@
 import numpy as np
 
-from submission.analysis.utils.situations import *
-from submission.analysis.utils.utils import memoize
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.utils import memoize
 import pandas as pd
 from collections import defaultdict
 from student.grid import DegreeGrid

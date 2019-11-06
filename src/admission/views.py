@@ -8,7 +8,7 @@ from report_api.views import get_list_admission, get_admission_detail
 from submission.models import Submission
 from guardian.decorators import permission_required_or_403
 
-from submission.analysis.utils.situations import Situation
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation
 situations_pass = Situation.SITUATION_PASS
 situations_pass = [Situation.code_to_str(c) for c in situations_pass]
 
@@ -24,12 +24,12 @@ def detail(request, submission_id, ano, semestre):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree
-    
+
     for admission in get_list_admission(request.session, degree, submission_id):
         if(admission["ano"] == ano and admission["semestre"] == semestre):
             admission_info = admission
             break
-    
+
     admission_detail = get_admission_detail(
         request.session,
         degree,
@@ -45,7 +45,7 @@ def detail(request, submission_id, ano, semestre):
         admission_info["formatura_media"] = "Não há alunos formados nesta turma"
     else:
         admission_info["formatura_media"] = str(admission_info["formatura_media"]) + " anos"
-    
+
     return render(request, 'admission/detail.html',{
         "degree": degree,
         "admission_info": admission_info,

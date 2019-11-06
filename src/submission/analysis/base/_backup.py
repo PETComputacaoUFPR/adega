@@ -1,8 +1,8 @@
 import os
 import pandas as pd
 import numpy as np
-from submission.analysis.utils.situations import *
-from submission.analysis.utils.utils import invert_dict
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.utils import invert_dict
 
 
 class DataframeHolder:

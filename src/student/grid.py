@@ -1,4 +1,4 @@
-from submission.analysis.utils.situations import Situation, PeriodType
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation, PeriodType
 import numpy as np
 
 
@@ -8,7 +8,7 @@ class CourseGrid:
         self.code = obj["codigo"]
         self.name = obj["nome"]
         self.year = int(obj["ano"])
-        # the code that subtitutes the strings are sorting the period types by time (look situations.py) 
+        # the code that subtitutes the strings are sorting the period types by time (look situations.py)
         self.semester_code = PeriodType.str_to_code(obj["semestre"])
         self.grade = obj["nota"]
 
@@ -40,19 +40,19 @@ class CourseGrid:
     def __gt__(self, other):
         if self.year == other.year:
             return self.semester_code > other.semester_code
-        else: 
+        else:
             return self.year > other.year
 
     def __lt__(self, other):
         if self.year == other.year:
             return self.semester_code < other.semester_code
-        else: 
+        else:
             return self.year < other.year
 
 
     def __eq__(self, other):
         return (self.year == other.year) and (self.semester_code == other.semester_code)
-         
+
 
 class CourseGridCollection:
     def __init__(self, code, grid):
@@ -62,7 +62,7 @@ class CourseGridCollection:
         self.historic = []
         self.is_real_code = grid.is_real_code(code)
         self.is_repeated_code = grid.is_repeated_code(code)
-    
+
     def add(self, course_obj):
         code = course_obj["codigo"]
 
@@ -70,10 +70,10 @@ class CourseGridCollection:
         if self.grid.is_equivalence(code, self.code):
             cg = CourseGrid(course_obj)
             self.historic.append(cg)
-    
+
     def reset(self):
         self.historic = []
-    
+
     def get_failed_historic(self):
         return [x for x in self.historic if x.is_failed()]
 
@@ -115,7 +115,7 @@ class CourseGridCollection:
     def count_cancelled(self):
         hist = self.get_cancelled_historic()
         return len(hist)
-    
+
     def mean_grade(self):
         grades = [x.grade for x in self.get_coursed_historic()]
         return np.mean(grades)
@@ -187,12 +187,12 @@ class DegreeGridDescription:
 
     def count_code_on_grid(self, code):
         count = 0
-        
+
         for line in self.grid:
             for code2 in line:
                 if(code2 == code):
                     count+=1
-        
+
         return count
 
     def is_repeated_code(self, code):
@@ -214,7 +214,7 @@ class DegreeGrid:
     def __init__(self, grid_detail):
         self.grid_detail = grid_detail
         self.cgc = {}
-        
+
     def compute_cgc(self, hist):
         # Create an instance for each cell in grid
         cgc = {}
@@ -250,7 +250,7 @@ class DegreeGrid:
             for course in period:
                 if course['situation'] == "approved" or course['situation'] == "equivalence":
                     approvations.append(course['code'])
-        return approvations 
+        return approvations
 
     def is_blocked(self, code, prerequisites, approvations):
         if code in approvations:
@@ -260,18 +260,18 @@ class DegreeGrid:
             if prerequisite == 'none':
                 return False
             if prerequisite not in approvations:
-                prerequisites_completed = False            
+                prerequisites_completed = False
         return not prerequisites_completed
 
     def get_blocked_courses(self, grid):
         approvations = self.get_list_approvations(grid)
         for i, period in enumerate(grid):
             for j, course in enumerate(period):
-                code = course['code']   
+                code = course['code']
                 prerequisites = self.get_prerequisites(code)
-                grid[i][j]["is_blocked"] = self.is_blocked(code, prerequisites, approvations); 
+                grid[i][j]["is_blocked"] = self.is_blocked(code, prerequisites, approvations);
         return grid
-        
+
     def get_grid(self, cgc):
         new_grid = np.array(self.grid_detail.grid, dtype=np.dtype(object))
         for i, line in enumerate(self.grid_detail.grid):
@@ -280,7 +280,7 @@ class DegreeGrid:
                 new_grid[i, j] = cgc[course_code].get_info()
         new_grid = self.get_blocked_courses(new_grid)
         return new_grid
-    
+
     def get_repeated_course_info(self, cgc):
         info = []
         for code in self.grid_detail.repeated_codes:
@@ -296,16 +296,16 @@ class DegreeGrid:
                 "grade": cgc[code].mean_grade(),
             })
         return info
-    
+
     def get_situation(self, hist):
         cgc = self.compute_cgc(hist)
         return self.get_grid(cgc), self.get_repeated_course_info(cgc)
-    
+
     @staticmethod
     def get_degree_grid(code):
         if code == "21A":
             return DegreeGrid.bcc_grid_2011
-    
+
 
     def get_degree_situation(self, courses_hist):
         '''
@@ -316,11 +316,11 @@ class DegreeGrid:
         Parameters:
         courses_hist: Cache object with each course description. Same instance
                       used into index course page.
-        
+
         Returns:
         A matrix of objects. Each row represents a semester.
         '''
-        
+
         # Create an empty grid with instances of Grid Collection
         cgc = self.compute_cgc([])
         grid = self.get_grid(cgc)
@@ -331,7 +331,7 @@ class DegreeGrid:
                 for course in semester:
                     if code == course["code"]:
                         course["detail"] = courses_hist[code]
-        
+
         return grid
 
     bcc_grid_2011 = DegreeGridDescription({
@@ -652,5 +652,5 @@ class DegreeGrid:
                          "CI210", "CI056", "CI067", "CM005", "CM202",
                          "CI212", "CI057", "CI064", "CI237", "CI166",]
         },
-        
+
     })

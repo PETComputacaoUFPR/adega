@@ -9,7 +9,7 @@ from student.grid import DegreeGrid
 
 from guardian.decorators import permission_required_or_403
 
-from submission.analysis.utils.situations import Situation
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation
 situations_pass = Situation.SITUATION_PASS
 situations_pass = [Situation.code_to_str(c) for c in situations_pass]
 
@@ -23,13 +23,13 @@ def index(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
 
     degree = submission.degree
-    
+
     analysis_result = get_list_courses(request.session, degree, submission_id)
     courses_list = analysis_result["cache"]
 
     dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
     grid_info = dg.get_degree_situation(courses_list)
-    
+
     prerequisites = dg.grid_detail.prerequisites
     prerequisites_rev = {}
     for c1 in prerequisites:
@@ -49,4 +49,3 @@ def index(request, submission_id):
         "prerequisites": prerequisites,
         "prerequisites_rev": prerequisites_rev,
     })
-

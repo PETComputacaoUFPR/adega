@@ -2,8 +2,8 @@ import math
 import json
 import pandas as pd
 import numpy as np
-from submission.analysis.utils.situations import Situation, EvasionForm
-from submission.analysis.utils.utils import IntervalCount, save_json
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation, EvasionForm
+from submission.analysis.conversor_de_dados_adega.utils.utils import IntervalCount, save_json
 from submission.analysis.analysis.student_analysis import *
 
 from submission.analysis.analysis.student_analysis import StudentAnalysis

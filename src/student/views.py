@@ -13,7 +13,7 @@ from guardian.decorators import permission_required_or_403
 
 from student.grid import DegreeGrid
 
-from submission.analysis.utils.situations import Situation, EvasionForm
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation, EvasionForm
 
 situations_pass = Situation.SITUATION_PASS
 situations_pass = [Situation.code_to_str(c) for c in situations_pass]
@@ -37,9 +37,9 @@ def detail(request, submission_id, grr):
 
     hist = cache_j["aluno_turmas"]
     dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
-    
+
     grid_info, grid_info_extra = dg.get_situation(hist)
-    
+
     grid_phases = dg.grid_detail.phases # Dictionary
     # Parse to list of tuples
 
@@ -64,7 +64,7 @@ def detail(request, submission_id, grr):
         })
 
     grid_phases = list(zip(grid_phases.keys(), grid_phases_values))
-    
+
     analysis_result = {
         'indice_aprovacao' : cache_j['taxa_aprovacao'],
         'periodo_real': cache_j['periodo_real'],
@@ -133,7 +133,7 @@ def index(request, submission_id):
 
     grid_phases = dg.grid_detail.phases # Dictionary
     # Parse to list of tuples
-    
+
     grid_phases_names = list(grid_phases.keys())
     active_name = EvasionForm.code_to_str(EvasionForm.EF_ATIVO)
     # Collect the phases list only for active students (see student analysis)
@@ -159,6 +159,5 @@ def index(request, submission_id):
         "submission": submission,
         "situations_pass": situations_pass,
         "situations_fail": situations_fail,
-        "grid_phases": grid_phases, 
+        "grid_phases": grid_phases,
     })
-
