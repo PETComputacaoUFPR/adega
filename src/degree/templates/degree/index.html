@@ -172,6 +172,13 @@
                         {% endfor %}
                     </div>
                     <div class="col-md-2">
+                        <div class="my-4">
+                            <label class="p-0 switch mt-1">
+                                <input type="checkbox" class="toggleheat invisible" onchange="toggleHeatmap(this)">
+                                <span class="slider round"></span>
+                            </label>    
+                            <span id="statusHM">Heatmap off</span>
+                        </div> 
                         <div class="text-center materia_prerequisite">Disciplina Pré-Requisitada</div><br>
                         <div class="text-center materia_posrequisite">Disciplina que possui a matéria como Pré-Requisito</div><br>
                         <div class="text-center materia_selected">Disciplina selecionada</div>
@@ -259,6 +266,38 @@
     var prerequisites = {{prerequisites|safe_js}};
     var prerequisites_rev = {{prerequisites_rev|safe_js}};
 
+    // ------------------------------- CALCULA gradiente do HEATMAP 
+    var taxas = [];
+    console.log('interando grid:', grid_info);
+    for (s in grid_info)
+        for (c in grid_info[s])
+            if (grid_info[s][c].detail)
+                taxas.push( grid_info[s][c].detail.taxa_aprovacao );
+
+    gradiente = chroma
+                .scale(['#FF6666', '#FFFF99', '#CCFF99']) // red, yellow, green
+                .domain([Math.min(...taxas), Math.max(...taxas)]);
+
+
+    function toggleHeatmap(fecho) {
+        for (s in grid_info)
+            for (c in grid_info[s]) {
+                course = grid_info[s][c];
+                if (course.detail) {
+                    if($(fecho).is(":checked")) {
+                        $('#statusHM').text("Heatmap on");
+                        $("#grid_course_course_"+course.code)
+                        .css("backgroundColor", gradiente(course.detail.taxa_aprovacao));
+                    }
+                    else {
+                        $('#statusHM').text("Heatmap off");
+                        $("#grid_course_course_"+course.code).css("backgroundColor", "white");
+                    }
+                } 
+            }
+    }
+
+
     // Add mouseenter and mouseleave events to grid cells
     // The style are defined in the static styles.css file
     // OBS: The grid cells must have the id name started with grid_course_course_
@@ -292,27 +331,8 @@
         );
     });
 
-    // ------------------------------- HEATMAP STUFF
-    var taxas = [];
-    console.log('interando grid:', grid_info);
-    for (s in grid_info)
-        for (c in grid_info[s])
-            if (grid_info[s][c].detail)
-                taxas.push( grid_info[s][c].detail.taxa_aprovacao );
 
-    gradiente = chroma
-                .scale(['#FF6666', '#FFFF99', '#CCFF99']) // red, yellow, green
-                .domain([Math.min(...taxas), Math.max(...taxas)]);
 
-    for (s in grid_info)
-        for (c in grid_info[s])
-            if (grid_info[s][c].detail)
-                document.getElementById("grid_course_course_" + grid_info[s][c].code)
-                        .style.backgroundColor = gradiente(grid_info[s][c].detail.taxa_aprovacao);
-
-    function taxaToHeatmapColor(taxa){
-        return this.gradiente(taxa);
-    }
 
     // TODO: Refactor the analyzes to avoid this pretreatment
     // Assure that the keys is in order and convert the data
