@@ -17,9 +17,13 @@ env = os.environ.copy()
 
 with open('config.json') as json_file:
     data = json.load(json_file)
-    EMAIL_BACKEND = data['support_email']
+    EMAIL_HOST = data['email_host']
+    EMAIL_PORT = data['email_port']
+    # EMAIL_HOST_USER = data['email_host_user']
+    # EMAIL_HOST_PASSWORD = data['email_host_password']
+    # EMAIL_USE_TLS = data['email_use_lts']
 
-print(EMAIL_BACKEND)
+# print(EMAIL_HOST)
 
     
 
