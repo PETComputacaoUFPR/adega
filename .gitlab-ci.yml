@@ -7,15 +7,14 @@ variables:
     POSTGRES_HOST: "postgres"
     POSTGRES_PORT: "5432"
     VERSION: "DEVELOPMENT"
-
+    GIT_SUBMODULE_STRATEGY: recursive
 
 services:
     - postgres:9.6
 before_script:
+  
   - export LC_ALL=C.UTF-8
   - export LANG=C.UTF-8
-  - git submodule sync --recursive
-  - git submodule update --init --recursive
 # apt-get --quiet=2 não é efetivo, com >> /dev/null só mostra erros da saída
 # stderr
   - apt-get update --assume-yes >> /dev/null
@@ -23,7 +22,8 @@ before_script:
 
   - pip3 install --quiet -r requirements.txt
   - pip3 show django | grep Version
-
+  
+  
 django-tests:
       tags:
         - ubuntu
