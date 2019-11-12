@@ -290,18 +290,18 @@ span.data {
 
 .materia_selected {
     outline-style:solid;
-    outline-color:rgb(138, 64, 207);
-    outline-width:1px;
+    outline-color:#c657e9;
+    outline-width:3px;
 }
 .materia_prerequisite {
     outline-style:solid;
-    outline-color:#FFD700;
-    outline-width:1px;
+    outline-color:#0867b8;
+    outline-width:2px;
 }
 .materia_posrequisite {
     outline-style:solid;
-    outline-color:#6B8E23;
-    outline-width:1px;
+    outline-color:#f11de0;
+    outline-width:2px;
 }
 
 /* ==============================================  MATERIA  */
@@ -390,6 +390,59 @@ span.data {
   align-content: flex-start;
   align-items: stretch; }
 
+  /* =======================================  TOGGLE HEATMAP  */
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 17px;
+    margin-right: 7px;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .toggleheat:checked + .slider {
+    background-color: #18bc9c;
+  }
+  
+  .toggleheat:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 17px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
 /* ==============================================  HISTORICO  */
 #desenvolvimento {
   overflow-x: auto;
