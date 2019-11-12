@@ -41,8 +41,8 @@ def detail(request, submission_id, grr):
     grid_info, grid_info_extra = dg.get_situation(hist)
     
     grid_phases = dg.grid_detail.phases # Dictionary
-    # Parse to list of tuples
-
+    # Parse to list of tuple
+    
     grid_phases_values = []
     for phase_name in grid_phases:
         list_phase_val = get_list_students(
@@ -128,6 +128,13 @@ def index(request, submission_id):
         "Outro",
         submission_id
     )
+    formandos = get_list_students(
+        request.session,
+        degree,
+        "Formandos",
+        submission_id
+    )
+
 
     dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
 
@@ -156,6 +163,7 @@ def index(request, submission_id):
         'abandono': abandono,
         'desistencia': desistencia,
         'outros': outros,
+        'formandos': formandos,
         "submission": submission,
         "situations_pass": situations_pass,
         "situations_fail": situations_fail,

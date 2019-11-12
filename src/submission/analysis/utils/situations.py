@@ -1,5 +1,34 @@
 # -*- coding: utf-8 -*-
 # == Admission Form == #
+
+class PeriodType:
+    # The numbers are supposedly sorting by time 
+    
+    # the earlier period type 
+    PT_1S = 0
+    PT_1T = 1
+    PT_2S = 2
+    PT_A = 3
+    PT_SE = 4
+    PT_E = 5
+    # the later period type 
+
+    PERIODS = (
+        (PT_1S, "1o. Semestre"), 
+        (PT_1T, "1. Trimestre"),
+        (PT_2S, "2o. Semestre"),  
+        (PT_A,"Anual"),
+        (PT_SE,"Semestral"),
+        (PT_E,"Período Especial (1)"),
+    )
+
+    @staticmethod
+    def str_to_code(name):
+        for pt in PeriodType.PERIODS:
+            if(pt[1] == name):
+                return pt[0]
+        return -1
+
 class AdmissionType:
     AT_DESCONHECIDO = 0
     AT_VESTIBULAR = 1
@@ -25,6 +54,7 @@ class AdmissionType:
         (AT_OUTROS, 'Outro'),
     )
 
+    
 # == Evasion Form == #
 class EvasionForm:
     EF_DESCONHECIDO = 0
@@ -157,7 +187,9 @@ class Situation:
     SITUATION_PASS = (
         SIT_APROVADO,
         SIT_CONHECIMENTO_APROVADO,
-        SIT_DISPENSA_COM_NOTA
+        SIT_DISPENSA_COM_NOTA,
+        SIT_APROV_ADIANTAMENTO,
+        SIT_EQUIVALENCIA,
     )
 
     SITUATION_KNOWLDGE = (

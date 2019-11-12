@@ -198,6 +198,7 @@ python manage.py graph_models -a -o diagrama.png
 * [Django](https://www.djangoproject.com/) - Framework base. Trata a requisição dos clientes e chama as devidas rotinas.
 * [Bootstrap](http://getbootstrap.com/) - Framework css. Usamos os seus componentes para deixar as telas bonitas
 * [Charts.js](http://www.chartjs.org/) - Biblioteca javascript para desenhar gráficos.
+* [chroma.js](https://gka.github.io/chroma.js/#color-scales) - Biblioteca javascript para escala de cores do heatmap.
 * [Pandas](http://pandas.pydata.org/) - usada para importação dos dados
 * [django-extensions](https://django-extensions.readthedocs.io/en/latest/) - Várias extensões para o django. Estamos usando para gerar o diagrama do projeto.
 
