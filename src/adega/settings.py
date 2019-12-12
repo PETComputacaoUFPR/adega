@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'public',
     'degree',
     'educator',
+    'grid',
     'admission',
     'course',
     'student',

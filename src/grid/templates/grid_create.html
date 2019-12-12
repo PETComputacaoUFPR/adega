@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-6">
+        <h3>Adicionar disciplina</h3>
+    </div>
+    <div class="col-6">
+        <h3>Disciplinas adicionadas</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-5">
+        <form action="grid_create_submit" method="get" accept-charset="utf-8">
+            <div class="form-row">
+
+                <div class="form-group col-6">
+                    <label for="course_name">Nome disciplina</label>
+                    <input type="text" class="form-control" id="course_name" aria-describedby="text" placeholder="Nome da disciplina">
+                </div>
+
+                <div class="form-group col-6">
+                    <label for="course_code">Código disciplina</label>
+                    <input type="text" class="form-control" id="course_code" aria-describedby="text" placeholder="Código da disciplina">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="course_period">Periodo</label>
+                    <input type="number" class="form-control" id="course_period" aria-describedby="number" value=1 >
+                </div>
+
+                <div class="form-group col-6">
+                <label for="course_type">Tipo da disciplina</label>
+                <select class="form-control" id="course_type">
+                    <option>Obrigatória</option>
+                    <option>Optativa</option>
+                    <option>Trabalho de conclusão de curso</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="course_code">Pré requisitos</label>
+                    <input type="text" class="form-control"
+                    id="course_prerequisite" aria-describedby="text"
+                    placeholder="código separado por ,">
+                </div>
+                <div class="form-group col-6">
+                    <label for="course_code">Disciplinas equivalentes</label>
+                    <input type="text" class="form-control" id="course_equivalent"
+                    aria-describedby="text" placeholder="código separado por ,">
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="add_course()">Adicionar disciplina</button>
+        </form>
+    </div>
+    <div class="col-7" >
+        <table class="display" style="width:100%" id="courses_table_g" >
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Periodo</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Pre requisito</th>
+                    <th scope="col">Equivalente</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="courses_table">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<br>
+<h2>Informações gerais da grade</h2>
+
+<div class="col-8">
+    <form id="genGrid">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col-lg-8 col-m-12 form-group">
+                <label for="relative_year">Versão da grade</label>
+                <input type="text" class="form-control" name="version" id="version" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
+                <button class="btn btn-success btn-block" type="submit" >Gerar grade</button>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-4">
+                <button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<script>
+var optatives = [];
+var courses = {};
+function grid_table() {
+    var table = document.createElement("TABLE");
+    table.innerHTML = "";
+    //cria o header
+    var thead = document.createElement("THEAD")
+    var tr_head = document.createElement("TR")
+    //var periods = Object.Keys(courses);
+    var periods = Object.keys(courses).sort();
+    for (var  i in periods) {
+        var headerCell = document.createElement("TH");
+        headerCell.innerHTML = periods[i];
+        tr_head.appendChild(headerCell);
+    }
+    thead.appendChild(tr_head);
+    table.appendChild(thead);
+    // Cria o body
+    var tbody = document.createElement("TBODY");
+
+   for (var i in periods) { //itera os periodos
+       var period = periods[i];
+       var tr = document.createElement("TR");
+       //for (var j=0; j<Object.keys(cIourses[period]).length; j++) { //itera as disciplinas do periodo
+       for (var j in courses[period]) { //itera as disciplinas do periodo
+           var course = courses[period][j];
+           var td = document.createElement("TD");
+           td.innerHTML = course["course_code"];
+           tr.appendChild(td);
+       }
+       console.log(period)
+       tbody.appendChild(tr);
+   }
+    table.appendChild(tbody);
+    var dvTable = document.getElementById("grid_table");
+    dvTable.innerHTML = "";
+    dvTable.appendChild(table);
+}
+function add_course() {
+    var course = {};
+    var field = ["course_name","course_code","course_period","course_type","course_prerequisite","course_equivalent"];
+    // carrega os valores do formulario de adicionar disciplina
+    for (var i in field ) {
+        //console.log(field[i]);
+        course[field[i]] = document.getElementById(field[i]).value;
+        //course.push(document.getElementById(field[i]).value)
+        // limpa o formulário, mas mantem o periodo e o tipo da disciplina
+        if (field[i] !== "course_type" && field[i] != "course_period") 
+           document.getElementById(field[i]).value = "";
+    }
+    period = course["course_period"].toString();
+    if(period in courses)
+        courses[period].push(course);
+    else
+        courses[period] = [course];
+    //console.log(courses)
+    //courses.push(course); //insere a disciplina na lista de disciplinas
+    var courses_table = document.getElementById("courses_table").insertRow(0);
+    // mostra a disciplina na lista de disciplinas
+    var j;
+    for(var i in field) {
+        courses_table.insertCell(i).innerHTML = course[field[i]];
+        j = i;
+    }
+        
+    div_action = document.createElement("DIV")
+    icon_delete = document.createElement("I") 
+    icon_delete.className = "fa fa-times"
+
+    icon_edit = document.createElement("I") 
+    icon_edit.className = "fa fa-pencil-square-o"
+
+    div_action.appendChild(icon_edit)
+    div_action.appendChild(icon_delete)
+    courses_table.insertCell(-1).appendChild(div_action);
+
+    // se a disciplina for do tipo optativa então mostra na lista de optativas
+    //console.log(course["course_type"])
+    if(course["course_type"]!="Obrigatória") {
+        var optatives_table = document.getElementById("optatives_table").insertRow(0);
+        optatives.push(course);
+        for(var i in field)
+            optatives_table.insertCell(i).innerHTML = course[field[i]];
+    }
+
+    //grid_table();
+
+}
+function send_grid() {
+    var grid_version = $("#version").val();
+    var grid = {"courses":courses,"version":grid_version}
+    var grid_json = JSON.stringify(grid);
+    $.ajax({
+        type:"POST",
+        url: "{% url 'grid:GridCreateView' degree_code=degree_code %}",
+        data: {
+            grid: grid_json,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(data, status){
+            window.location.href = "/grid/{{degree_code}}";
+        }
+    });
+
+
+
+}
+
+$('#genGrid').on('submit', function(event){
+    event.preventDefault();
+    console.log("form submitted!")  // sanity check
+    send_grid();
+});
+</script>
+
+{% endblock content %}
+{% block js-foot %}
+    <script src="{% static 'datatables/jquery.dataTables.min.js' %}">
+        $('#courses_table_g').dataTable({
+            "bInfo": true,
+            "scrollY":        "200px",
+        "scrollCollapse": true,
+        "paging":         false
+        });
+    </script>
+{% endblock js-foot %}
