@@ -14,7 +14,8 @@ def analyze(submission, debug=True):
         path = submission.path()
         dataframe = load_dataframes(path)
 
-        build_cache(dataframe, path, submission.relative_year, submission.relative_semester)
+        build_cache(dataframe, path, submission.degree.code,
+                    submission.relative_year, submission.relative_semester)
 
         submission.set_done(round(time.clock() - start_time))
 
