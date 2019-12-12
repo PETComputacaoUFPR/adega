@@ -121,10 +121,14 @@
                     <h3>Grade curricular - Versão: {{dg.version}}
                             <a  tabindex="0" class="fa fa-info-circle" data-toggler="popover" data-html="true"
                             data-content="Informações gerais sobres as disciplinas do curso de graduação.<br>
-                                          Passe o mouse sobre os códigos para verificar os nomes completos
+                                          <b>Passe o mouse</b> sobre os códigos para verificar os nomes completos
                                           e os pré-requisitos associados.<br>
                                           Também é possível verificar o desvio padrão das notas médias
-                                          passando o mouse sobre o valor da nota."></a>
+                                          passando o mouse sobre o valor da nota.<br>
+                                          <b>Heatmap:</b>
+                                            Ao lado pode ser ativado o mapa de calor, 
+                                          quanto maior a taxa de aprovação mais verde,
+                                          quanto menor a taxa de aprovação mais vermelho. "></a>
                     </h3>
                 
                 <div class="row" id="grid_{{dg.version}}">
@@ -153,7 +157,10 @@
                                                 <span class="detail-value">{{course.detail.taxa_aprovacao|fix_2digit}}</span>
                                             </div>
                                             <div class="detail"
-                                                data-toggle="tooltip" data-placement="top" title="Desvio Padrão: &#177 {{course.detail.nota.1|fix_2digit}}">
+                                                data-toggle="tooltip" 
+                                                data-placement="top" 
+                                                title="Desvio Padrão: &#177 {{course.detail.nota.1|fix_2digit}}"
+                                                >
                                                 <span class="detail-name">Nota média</span>
                                                 <span class="detail-value">{{course.detail.nota.0|fix_2digit}}
                                                 </span>
@@ -166,6 +173,13 @@
                         {% endfor %}
                     </div>
                     <div class="col-md-2">
+                        <div class="my-4">
+                            <label class="p-0 switch mt-1">
+                                <input type="checkbox" class="toggleheat invisible" onchange="toggleHeatmap_{{dg.version}}(this)">
+                                <span class="slider round"></span>
+                            </label>    
+                            <span id="statusHM">Heatmap off</span>
+                        </div> 
                         <div class="text-center materia_prerequisite">Disciplina Pré-Requisitada</div><br>
                         <div class="text-center materia_posrequisite">Disciplina que possui a matéria como Pré-Requisito</div><br>
                         <div class="text-center materia_selected">Disciplina selecionada</div>
@@ -250,7 +264,6 @@
 {% block js-foot %}
 <script>
     
-    var grid_list = {{grid_list|safe_js}};
     var prerequisites = { 
         {% for dg in dg_list %}
         "{{dg.version}}": {{dg.prerequisites|safe_js}},
@@ -261,6 +274,45 @@
         "{{dg.version}}": {{dg.prerequisites_rev|safe_js}},
         {% endfor %}
     };
+
+    // ------------------------------- CALCULA gradiente do HEATMAP 
+    var taxas = [];
+
+
+    {% for dg in dg_list %}
+    var grid_info = {{dg.grid_info|safe_js}};
+    for (s in grid_info){
+        for (c in grid_info[s]){
+            if (grid_info[s][c].detail)
+                taxas.push( grid_info[s][c].detail.taxa_aprovacao );
+        }
+    }
+    {% endfor %}
+    gradiente = chroma
+                .scale(['#FF6666', '#FFFF99', '#CCFF99']) // red, yellow, green
+                .domain([Math.min(...taxas), Math.max(...taxas)]);
+
+    {% for dg in dg_list %}
+    function toggleHeatmap_{{dg.version}}(fecho) {
+        var grid_info = {{dg.grid_info|safe_js}};
+        for (s in grid_info)
+            for (c in grid_info[s]) {
+                course = grid_info[s][c];
+                if (course.detail) {
+                    if($(fecho).is(":checked")) {
+                        $('#statusHM').text("Heatmap on");
+                        $("#grid_{{dg.version}}_course_course_"+course.code)
+                        .css("backgroundColor", gradiente(course.detail.taxa_aprovacao));
+                    }
+                    else {
+                        $('#statusHM').text("Heatmap off");
+                        $("#grid_{{dg.version}}_course_course_"+course.code).css("backgroundColor", "white");
+                    }
+                } 
+            }
+    }
+    {% endfor %}
+
 
     // Add mouseenter and mouseleave events to grid cells
     // The style are defined in the static styles.css file
@@ -304,6 +356,7 @@
             }
         );
     });
+
 
 
 
@@ -389,6 +442,5 @@
         size: 13
       },
     }); 
-    
   </script>
 {% endblock js-foot %}

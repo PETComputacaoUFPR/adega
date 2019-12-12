@@ -211,7 +211,7 @@ class DegreeGridDescription:
         if(code1 == code2):
             return True
         return False
-
+        
 class DegreeGrid:
     def __init__(self, grid_detail):
         self.grid_detail = grid_detail

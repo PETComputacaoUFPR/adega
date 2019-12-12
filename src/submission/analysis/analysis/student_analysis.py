@@ -1,3 +1,4 @@
+
 import numpy as np
 
 from submission.analysis.utils.situations import *
@@ -125,6 +126,83 @@ class StudentAnalysis:
             list_phases[phase_name]["description_name"] = "Disciplinas restantes"
 
         return list_phases
+    
+
+    def list_students_trainees(self, df=None):
+        df = df if df is not None else self.data_frame
+        iras = self.ira_alunos()
+
+        df = df[df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO]
+        
+        groups = df.groupby("MATR_ALUNO")
+        
+        # Parse phases lists to sets before start the checkage
+ 
+        # Transforme grid matrix into list
+        flatten = lambda l: [item for sublist in l for item in sublist]
+        
+        
+
+        
+        intended_semester = self.periodo_pretendido(df)
+
+        SITUATION_PASS_OR_MATR = (
+            Situation.SIT_APROVADO,
+            Situation.SIT_CONHECIMENTO_APROVADO,
+            Situation.SIT_DISPENSA_COM_NOTA,
+            Situation.SIT_APROV_ADIANTAMENTO,
+            Situation.SIT_EQUIVALENCIA,
+            Situation.SIT_MATRICULA
+        )
+
+        student_list = []
+        for grr,group in groups:
+            num_versao = str(group.iloc[0]["NUM_VERSAO_x"])
+            cod_curso = str(group.iloc[0]["COD_CURSO"])
+            # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
+            degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
+            
+            # If there is none grid to this student, ignore it
+            if degree_grid is None:
+                continue
+            
+            to_do = flatten(degree_grid.grid)
+            # Each row of sub dataframe have the same "NOME_PESSOA" value
+            people_name = group["NOME_PESSOA"].iloc[0]
+
+            group = group[ group['SITUACAO'].isin(SITUATION_PASS_OR_MATR) ]
+            
+            approved_matr_courses = group["COD_ATIV_CURRIC"].values
+
+            # Replace real codes for "fake codes" from grid e.g.: CI204 -> OPT
+            for fake_code in degree_grid.grid_detail.fake_codes:
+                approved_matr_courses = [fake_code if degree_grid.is_equivalence(code,fake_code)
+                                        else code for code in approved_matr_courses ]
+            
+            # Total if courses needed fot a student complete a phase
+            for code1 in approved_matr_courses:
+                # If the student did the course then remove it from to do list
+                if (code1 in to_do):
+                    i = to_do.index(code1)
+                    del to_do[i]
+
+            # Total courses that is left to do to graduate
+            debpt = len(to_do)
+            
+            if (not debpt):
+                student_list.append({
+                    "grr":grr,
+                    "nome": people_name,
+                    "ira": iras[grr],
+                    "description_value":intended_semester[grr]
+                })
+
+
+        return {
+            "student_list": student_list,
+            "description_name": "Semestres de curso"
+        }
+    
         
     
     def ira_alunos(self, df=None):

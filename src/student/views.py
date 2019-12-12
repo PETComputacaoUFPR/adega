@@ -170,6 +170,13 @@ def index(request, submission_id):
         "Outro",
         submission_id
     )
+    formandos = get_list_students(
+        request.session,
+        degree,
+        "Formandos",
+        submission_id
+    )
+
 
     # dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
     dg_list = DegreeGrid.get_degree_grid_list(degree.code)
@@ -189,6 +196,7 @@ def index(request, submission_id):
         'abandono': abandono,
         'desistencia': desistencia,
         'outros': outros,
+        'formandos': formandos,
         "submission": submission,
         "situations_pass": situations_pass,
         "situations_fail": situations_fail,
