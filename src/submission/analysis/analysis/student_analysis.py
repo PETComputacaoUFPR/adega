@@ -175,7 +175,7 @@ class StudentAnalysis:
             approved_matr_courses = group["COD_ATIV_CURRIC"].values
 
             # Replace real codes for "fake codes" from grid e.g.: CI204 -> OPT
-            for fake_code in degree_grid.grid_detail.fake_codes:
+            for fake_code in degree_grid.fake_codes:
                 approved_matr_courses = [fake_code if degree_grid.is_equivalence(code,fake_code)
                                         else code for code in approved_matr_courses ]
             
