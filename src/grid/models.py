@@ -11,7 +11,8 @@ def get_path(instance, filename):
 
 class Grid(models.Model):
     # version = models.IntegerField()
-    version = models.CharField(max_length=40, unique=True)
+    # version = models.CharField(max_length=40, unique=True)
+    version = models.CharField(max_length=40)
     data_as_string = models.TextField()
 
     degree = models.ForeignKey(
