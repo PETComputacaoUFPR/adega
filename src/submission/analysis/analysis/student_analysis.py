@@ -157,11 +157,11 @@ class StudentAnalysis:
 
         student_list = []
         for grr,group in groups:
-            num_versao = str(group.iloc[0]["NUM_VERSAO_x"])
+            num_versao = str(int(group.iloc[0]["NUM_VERSAO_x"]))
             cod_curso = str(group.iloc[0]["COD_CURSO"])
             # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
             degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
-            
+            print(degree_grid, cod_curso, num_versao)
             # If there is none grid to this student, ignore it
             if degree_grid is None:
                 continue
@@ -352,7 +352,7 @@ class StudentAnalysis:
             # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
             # the academic grid is a list of lists from src/student/grid.py
 
-            num_versao = str(dataframe.iloc[0]["NUM_VERSAO_x"])
+            num_versao = str(int(dataframe.iloc[0]["NUM_VERSAO_x"]))
             cod_curso = str(dataframe.iloc[0]["COD_CURSO"])
             # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
             degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
