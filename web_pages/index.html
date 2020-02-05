@@ -11,37 +11,97 @@
 
 	<!-- Navegation Bar -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="#">A.D.E.G.A</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-	  <div class="collapse navbar-collapse" id="navbarNav">
-	    <ul class="navbar-nav">
-	      <li class="nav-item active">
-	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="#">Wiki</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="#">Manual</a>
-	      </li>
+		<div class='container'>
+		 	<a class="navbar-brand" href="#">A.D.E.G.A</a>
+		 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		 	</button>
+		 	<div class="collapse navbar-collapse" id="navbarNav">
+		   		<ul class="navbar-nav">
+		      		<li class="nav-item active">
+		        		<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+		      		</li>
+		      		<li class="nav-item">
+		        		<a class="nav-link" href="#">Contato</a>
+		      		</li>
+		      		<!-- <li class="nav-item">
+		        		<a class="nav-link" href="#">Manual</a>
+		      		</li> -->
+		    	</ul>
+		  	</div>
+		</div>
+	</nav> 
+	<!-- Navegation Bar -->
 
-	    </ul>
-	  </div>
-	</nav> <!-- Navegation Bar -->
+	<!-- Main content -->
+	<section id="principal" class="bg-light">
+		<!-- Description -->
+		<div class="container p-5 bg-white shadow-sm p-3 mb-5 bg-white rounded">
+			<h1>A.D.E.G.A</h1>
+			<hr>
+			<p class="text-justify">
+				O A.D.E.G.A (Ánalise de Dados Estatísticos da Grade Acadêmica) é um sistema web feito, a priori, para auxiliar os coordenadores de cursos a administrarem a graduação. O sistema oferece análises como o IRA médio do curso, listagem de possívei formandos, a taxa de reprovação das disciplinas ou a quantidade de evasão por semestre. Essas análises buscam auxiliar os coordenadores a identificar problemas na grade do curso e monitorar melhor o desempenho de alunos.
+			</p>
+			<p class="text-justify">
+				Lisença GPL***
+			</p>
+		</div>
+		<!-- Install -->
+		<div class="container p-5 bg-white shadow-sm p-3 mb-5 bg-white rounded">
+			<h1>Manual de instalação</h1>
+			<hr>
+			<p class="text-justify">
+				Para instalar o projeto devemos clonar o seu repositório no GitHub. Para isso execute este comando em seu terminal:
+			</p>
+			<div class="p-3 center highlight-command">
+				$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git
+			</div>
+
+			<hr>
+			<h4>Instalando o Docker</h4>
+			<p class="text-justify">
+				O projeto foi desenvolvido usando Docker, um software contêiner que facilita a virtualização, desenvolvimento e manutenção de aplicações. Siga com os comandos a seguir para executar o ADEGA com o docker 
+				(Docker >= 1.13.1 e Docker-compose >=1.21.2)
+			</p>
+			<div class="p-3 center highlight-command">
+				<span class="text-primary">$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git</span> <span class="text-secondary"># Comando já executado</span>
+				<br>$ cd adega/
+				<br>$ sudo make docker-install <span class="text-secondary"># Instala o docker.io e docker-compose</span>
+				<br>$ sudo apt install docker.io
+				<br>$ sudo make docker-up <span class="text-secondary"># Executa os containers postgres e webserver</span>
+			</div>				
+			<p class="text-justify">
+				Pronto. A partir deste momento o projeto esta rodando e pode ser acessado em <span class="highlight-command text-success">localhost:8000</span>
+			</p>
+
+			<hr>
+			<h4>Criando usuário educador</h4>
+			Para acessar a plataforma é necessário um Cadastro, caso seja o primeiro acesso é necessário criar esse usuário manualmente. Os passos a seguir mostram passo a passo como se cria um usuário na classe Educator(educador).
+
+			<h5>PASSO 1:</h5>
+			<h5>PASSO 2:</h5>
+			<h5>PASSO 3:</h5>
+			<h5>PASSO 4:</h5>
+			<h5>PASSO 5:</h5>
+			
+
+			<hr>
+			<h4>Upload de dados</h4>
+
+			<hr>
+			<h4>Uso da plataforma</h4>
 
 
-	<!-- Conteúdo principal -->
-	<div class="container">
-		<p>
-			O A.D.E.G.A (Ánalise de Dados Estatísticos da Grade Acadêmica) é um sistema web feito, a priori, para auxiliar os coordenadores de cursos a administrarem a graduação. O sistema oferece análises como o IRA médio do curso, a taxa de reprovação das disciplinas ou a quantidade de evasão por semestre. Essas análises buscam auxiliar os coordenadores a identificar problemas na grade do curso e monitorar melhor o desempenho de alunos.
-		</p>
-	</div> <!-- Conteúdo principal -->
+		</div>  
+	</section>
+	<!-- Main Content -->
 
-	<!-- Conteúdo principal -->
-	<div class="footer">
-		
-	</div> <!-- Conteúdo principal -->
+	<!-- Footer -->
+	<section>
+		<div class="footer">
+			
+		</div>
+	</section>
+	<!-- Footer -->
 </body>
 </html>
