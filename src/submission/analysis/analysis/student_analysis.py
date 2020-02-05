@@ -79,7 +79,7 @@ class StudentAnalysis:
                 })
             list_situations[sit[0]]["student_list"] = student_list
             list_situations[sit[0]]["description_name"] = "Forma de evasão"
-            
+        
         return list_situations
     
     def list_students_phases(self, df=None, only_actives=False):
@@ -161,7 +161,6 @@ class StudentAnalysis:
             cod_curso = str(group.iloc[0]["COD_CURSO"])
             # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
             degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
-            print(degree_grid, cod_curso, num_versao)
             # If there is none grid to this student, ignore it
             if degree_grid is None:
                 continue
@@ -343,11 +342,15 @@ class StudentAnalysis:
 
                 {"GRR": current period, "GRR": current period, ...}
         """   
+
+        complete_student_set = df.drop_duplicates(subset="MATR_ALUNO", keep="first")["MATR_ALUNO"]
+
         # filter for approved situtations and group df by student
         df = df[df['SITUACAO'].isin(Situation.SITUATION_PASS)]
         students_df = df.groupby("MATR_ALUNO") 
 
         student_period = {}
+        
         for student, dataframe in students_df:     
             # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
             # the academic grid is a list of lists from src/student/grid.py
@@ -367,7 +370,7 @@ class StudentAnalysis:
             
             max_period = len(grid)-1
             p = 0
-            period_completed = 1
+            period_completed = True
             checked = []
             while (p < max_period):
                 c = 0
@@ -396,7 +399,7 @@ class StudentAnalysis:
                     if coursed:
                         c += 1
                     else:
-                        period_completed = 0
+                        period_completed = False
                         break
 
                 if period_completed:
@@ -406,7 +409,16 @@ class StudentAnalysis:
             
             # p actually stands for number of completed periods
             # current period is the first incompleted one
-            student_period[student] = p+1
+            student_period[student] = p+2
+        
+        # Treats the case where the students doenst have at least one line
+        # in dataframe with SITUATION_PASS status. These students will be droped
+        # and not presented in students_df variable and consequently not
+        # considered in the while loop before
+        for student in complete_student_set:
+            if not student in student_period:
+                student_period[student] = 1
+        
         return student_period 
 
 
