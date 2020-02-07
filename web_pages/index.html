@@ -10,31 +10,28 @@
 <body>
 
 	<!-- Navegation Bar -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-adega adega-nav">
 		<div class='container'>
-		 	<a class="navbar-brand" href="#">A.D.E.G.A</a>
-		 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		 	</button>
-		 	<div class="collapse navbar-collapse" id="navbarNav">
-		   		<ul class="navbar-nav">
-		      		<li class="nav-item active">
-		        		<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-		      		</li>
-		      		<li class="nav-item">
-		        		<a class="nav-link" href="#">Contato</a>
-		      		</li>
-		      		<!-- <li class="nav-item">
-		        		<a class="nav-link" href="#">Manual</a>
-		      		</li> -->
-		    	</ul>
-		  	</div>
+			<a class="navbar-brand" href="index.html">A.D.E.G.A</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item active">
+						<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="contact.html">Contato</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav> 
 	<!-- Navegation Bar -->
 
 	<!-- Main content -->
-	<section id="principal" class="bg-light">
+	<section class="bg-light py-5">
 		<!-- Description -->
 		<div class="container p-5 bg-white shadow-sm p-3 mb-5 bg-white rounded">
 			<h1>A.D.E.G.A</h1>
@@ -42,25 +39,74 @@
 			<p class="text-justify">
 				O A.D.E.G.A (Ánalise de Dados Estatísticos da Grade Acadêmica) é um sistema web feito, a priori, para auxiliar os coordenadores de cursos a administrarem a graduação. O sistema oferece análises como o IRA médio do curso, listagem de possívei formandos, a taxa de reprovação das disciplinas ou a quantidade de evasão por semestre. Essas análises buscam auxiliar os coordenadores a identificar problemas na grade do curso e monitorar melhor o desempenho de alunos.
 			</p>
-			<p class="text-justify">
-				Lisença GPL***
-			</p>
 		</div>
+
 		<!-- Install -->
-		<div class="container p-5 bg-white shadow-sm p-3 mb-5 bg-white rounded">
-			<h1>Manual de instalação</h1>
-			<hr>
+
+		<div class="container p-5 bg-white shadow-sm p-3bg-white rounded">
+
+			<!-- Tittle -->
+			<h1 id="instalacao">Manual de instalação</h1>
+
+			<!-- Grid row-->
+			<div id="scrollspy" class="row scrollspy text-center d-flex justify-content-center pt-5 mb-3">
+
+				<!-- Grid column -->
+				<div class="col-md-2 mb-3">
+					<h6 class="text-uppercase font-weight-bold">
+						<a class="nav-link js-scroll-trigger" href="#instalacao">Download do Projeto</a>
+					</h6>
+				</div>
+				<!-- Grid column -->
+
+				<!-- Grid column -->
+				<div class="col-md-2 mb-3">
+					<h6 class="text-uppercase font-weight-bold">
+						<a class="nav-link js-scroll-trigger" href="#docker">Inicialização do Docker</a>
+					</h6>
+				</div>
+				<!-- Grid column -->
+
+				<!-- Grid column -->
+				<div class="col-md-2 mb-3">
+					<h6 class="text-uppercase font-weight-bold">
+						<a class="nav-link js-scroll-trigger" href="#usuario">Primeiro Usuário</a>
+					</h6>
+				</div>
+				<!-- Grid column -->
+
+				<!-- Grid column -->
+				<div class="col-md-2 mb-3">
+					<h6 class="text-uppercase font-weight-bold">
+						<a class="nav-link js-scroll-trigger" href="#upload">Upload de Dados</a>
+					</h6>
+				</div>
+				<!-- Grid column -->
+
+				<!-- Grid column -->
+				<div class="col-md-2 mb-3">
+					<h6 class="text-uppercase font-weight-bold">
+						<a class="nav-link js-scroll-trigger" href="#uso">Uso da plataforma</a>
+					</h6>
+				</div>
+				<!-- Grid column -->
+
+			</div>
+			<!-- Grid row-->
+			<hr class="rgba-white-light mb-5" style="margin: 0 15%;">
+
+			<h2 id="instalacao">Download do projeto</h2>
 			<p class="text-justify">
-				Para instalar o projeto devemos clonar o seu repositório no GitHub. Para isso execute este comando em seu terminal:
+				Para instalar o projeto devemos clonar o seu repositório no GitHub ou GitLab. Para isso execute este comando em seu terminal:
 			</p>
 			<div class="p-3 center highlight-command">
 				$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git
 			</div>
 
 			<hr>
-			<h4>Instalando o Docker</h4>
+			<h2 id="docker">Instalando o docker</h2>
 			<p class="text-justify">
-				O projeto foi desenvolvido usando Docker, um software contêiner que facilita a virtualização, desenvolvimento e manutenção de aplicações. Siga com os comandos a seguir para executar o ADEGA com o docker 
+				O projeto foi desenvolvido usando Docker, um software contêiner que facilita a virtualização, desenvolvimento e manutenção de aplicações. Siga com os comandos a seguir para executar o ADEGA com o docker e instalar todas as dependências. <br>
 				(Docker >= 1.13.1 e Docker-compose >=1.21.2)
 			</p>
 			<div class="p-3 center highlight-command">
@@ -69,13 +115,13 @@
 				<br>$ sudo make docker-install <span class="text-secondary"># Instala o docker.io e docker-compose</span>
 				<br>$ sudo apt install docker.io
 				<br>$ sudo make docker-up <span class="text-secondary"># Executa os containers postgres e webserver</span>
-			</div>				
+			</div>              
 			<p class="text-justify">
 				Pronto. A partir deste momento o projeto esta rodando e pode ser acessado em <span class="highlight-command text-success">localhost:8000</span>
 			</p>
 
 			<hr>
-			<h4>Criando usuário educador</h4>
+			<h2 id="usuario">Criando usuário educador</h2>
 			Para acessar a plataforma é necessário um Cadastro, caso seja o primeiro acesso é necessário criar esse usuário manualmente. Os passos a seguir mostram passo a passo como se cria um usuário na classe Educator(educador).
 
 			<h5>PASSO 1:</h5>
@@ -86,22 +132,73 @@
 			
 
 			<hr>
-			<h4>Upload de dados</h4>
+			<h2 id="upload">Upload de dados</h2>
 
 			<hr>
-			<h4>Uso da plataforma</h4>
-
-
-		</div>  
-	</section>
-	<!-- Main Content -->
-
-	<!-- Footer -->
-	<section>
-		<div class="footer">
-			
+			<h2 id="uso">Uso da plataforma</h2>
 		</div>
 	</section>
-	<!-- Footer -->
+	<!-- Main Content -->
+	
+	<!-- Main content -->
+	<section class="bg-adega p-5">
+		<!-- Footer -->
+		<footer class="adega-footer">
+			<div class="container container-fluid">
+				<div class="row">
+					<div class="col-md-4">
+						<h3>Links</h3>
+						<hr>
+						<ul>
+							<li><a href="http://pet.inf.ufpr.br/doku.php?id=adega">Página oficial do projeto</a></li>
+							<li><a href="https://gitlab.c3sl.ufpr.br/adega/adega">Código fonte GitLab</a></li>
+							<li><a href="https://github.com/PETComputacaoUFPR/adega">Código fonte GitHub</a></li>
+						</ul>
+					</div>
+					<div class="col-md-4 offset-md-4">
+						<h3>Mantido por</h3>
+						<hr>
+						<a href="http://pet.inf.ufpr.br">
+							<img src="images/logo_pet_h_branco.png" width="50%">
+						</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- Footer -->
+	</section>
+	<!-- Main Content -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="jQuery/jquery-3.4.1.js"></script>
+	<script type="text/javascript">
+		$("#scrollspy div h6 a[href^='#']").on('click', function(event) {
+
+		  // Make sure this.hash has a value before overriding default behavior
+		  if (this.hash !== "") {
+
+			// Prevent default anchor click behavior
+			event.preventDefault();
+
+			// Store hash
+			var hash = this.hash;
+
+			// Using jQuery's animate() method to add smooth page scroll
+			// The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+			$('html, body').animate({
+				scrollTop: $(hash).offset().top
+			}, 600, function(){
+
+			// Add hash (#) to URL when done scrolling (default click behavior)
+			window.location.hash = hash;
+		});
+
+		} // End if
+
+	  }); 
+
+	</script>
 </body>
 </html>

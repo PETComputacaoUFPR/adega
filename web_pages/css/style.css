@@ -2,6 +2,7 @@
 .adega-nav ul li{
 	text-decoration: none;
 	display: inline-block;
+	color: white;
 }
 
 /* Content */
@@ -12,4 +13,22 @@
 	border-radius: 3px; 
 }
 
+
 /* Footer */
+.bg-adega{
+	background-color: #132940 !important;
+}
+
+
+.adega-footer{
+	color: white;
+}
+
+.adega-footer hr{
+	border-top: 1px solid white;
+}
+
+.adega-footer a{
+	text-decoration: none;
+	color: white;
+}
