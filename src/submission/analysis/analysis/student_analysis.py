@@ -1,3 +1,4 @@
+
 import numpy as np
 
 from submission.analysis.conversor_de_dados_adega.utils.situations import *
@@ -12,11 +13,11 @@ from student.grid import DegreeGrid
 class StudentAnalysis:
     data_frame = None
 
-    def __init__(self, df, current_year, current_semester, dg):
+    def __init__(self, df, current_year, current_semester, grid_list):
         self.data_frame = df
         self.current_year = current_year
         self.current_semester = current_semester
-        self.dg = dg
+        self.grid_list = grid_list
 
         self._ira_alunos_last_result = None
 
@@ -30,6 +31,7 @@ class StudentAnalysis:
             "ANO_EVASAO",
             "SEMESTRE_EVASAO",
             "FORMA_EVASAO",
+            "NUM_VERSAO",
         ])
 
         students = students.groups.keys()
@@ -47,6 +49,7 @@ class StudentAnalysis:
                 "ano_evasao": str(stnd[4]),
                 "semestre_evasao": str(stnd[5]),
                 "forma_evasao": EvasionForm.code_to_str(stnd[6]),
+                "num_versao": str(stnd[7]),
                 "ira": iras[grr],
             }
         return info
@@ -76,7 +79,6 @@ class StudentAnalysis:
                 })
             list_situations[sit[0]]["student_list"] = student_list
             list_situations[sit[0]]["description_name"] = "Forma de evasão"
-
         return list_situations
 
     def list_students_phases(self, df=None, only_actives=False):
@@ -89,7 +91,12 @@ class StudentAnalysis:
         groups = df.groupby("MATR_ALUNO")
 
         # Parse phases lists to sets before start the checkage
-        phases = self.dg.grid_detail.phases
+        # Obs: Phases of different grids with same name will be overwrited
+        phases = {}
+        for grid in self.grid_list:
+            for phase in grid.phases:
+                 phases[phase] = grid.phases[phase]
+        
         set_phases = {p:set(phases[p]) for p in phases}
 
         list_phases = defaultdict(dict)
@@ -118,8 +125,84 @@ class StudentAnalysis:
             list_phases[phase_name]["description_name"] = "Disciplinas restantes"
 
         return list_phases
+    
+
+    def list_students_trainees(self, df=None):
+        df = df if df is not None else self.data_frame
+        iras = self.ira_alunos()
+
+        df = df[df["FORMA_EVASAO"] == EvasionForm.EF_ATIVO]
+        
+        groups = df.groupby("MATR_ALUNO")
+        
+        # Parse phases lists to sets before start the checkage
+ 
+        # Transforme grid matrix into list
+        flatten = lambda l: [item for sublist in l for item in sublist]
+        
+        
+
+        
+        intended_semester = self.periodo_pretendido(df)
+
+        SITUATION_PASS_OR_MATR = (
+            Situation.SIT_APROVADO,
+            Situation.SIT_CONHECIMENTO_APROVADO,
+            Situation.SIT_DISPENSA_COM_NOTA,
+            Situation.SIT_APROV_ADIANTAMENTO,
+            Situation.SIT_EQUIVALENCIA,
+            Situation.SIT_MATRICULA
+        )
+
+        student_list = []
+        for grr,group in groups:
+            num_versao = str(int(group.iloc[0]["NUM_VERSAO"]))
+            cod_curso = str(group.iloc[0]["COD_CURSO"])
+            # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
+            degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
+            # If there is none grid to this student, ignore it
+            if degree_grid is None:
+                continue
+            
+            to_do = flatten(degree_grid.grid)
+            # Each row of sub dataframe have the same "NOME_PESSOA" value
+            people_name = group["NOME_PESSOA"].iloc[0]
+
+            group = group[ group['SITUACAO_ATIV_CURRIC'].isin(SITUATION_PASS_OR_MATR) ]
+            
+            approved_matr_courses = group["COD_ATIV_CURRIC"].values
+
+            # Replace real codes for "fake codes" from grid e.g.: CI204 -> OPT
+            for fake_code in degree_grid.fake_codes:
+                approved_matr_courses = [fake_code if degree_grid.is_equivalence(code,fake_code)
+                                        else code for code in approved_matr_courses ]
+            
+            # Total if courses needed fot a student complete a phase
+            for code1 in approved_matr_courses:
+                # If the student did the course then remove it from to do list
+                if (code1 in to_do):
+                    i = to_do.index(code1)
+                    del to_do[i]
+
+            # Total courses that is left to do to graduate
+            debpt = len(to_do)
+            
+            if (not debpt):
+                student_list.append({
+                    "grr":grr,
+                    "nome": people_name,
+                    "ira": iras[grr],
+                    "description_value":intended_semester[grr]
+                })
 
 
+        return {
+            "student_list": student_list,
+            "description_name": "Semestres de curso"
+        }
+    
+        
+    
     def ira_alunos(self, df=None):
         """
         Calculates the average IRA per student
@@ -256,26 +339,36 @@ class StudentAnalysis:
             dict of {string: int}
 
                 {"GRR": current period, "GRR": current period, ...}
-        """
+        """   
+
+        complete_student_set = df.drop_duplicates(subset="MATR_ALUNO", keep="first")["MATR_ALUNO"]
+
         # filter for approved situtations and group df by student
         df = df[df['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_PASS)]
         students_df = df.groupby("MATR_ALUNO")
 
         student_period = {}
-        for student, dataframe in students_df:
+        
+        for student, dataframe in students_df:     
             # TO DO: grid recebe a grade que a pessoa segue (curso e ano)
-            if dataframe.iloc[0]["NUM_VERSAO"] == 2011:
-                # the academic grid is a list of lists from src/student/grid.py
-                grid = DegreeGrid.get_degree_grid("21A").grid
-                fake_codes = DegreeGrid.get_degree_grid("21A").fake_codes
-                opts_tgs = list(DegreeGrid.get_degree_grid("21A").equiv_codes)
-            else:
-                # print ('sem grade irmão')
-                continue
+            # the academic grid is a list of lists from src/student/grid.py
 
+            num_versao = str(int(dataframe.iloc[0]["NUM_VERSAO"]))
+            cod_curso = str(dataframe.iloc[0]["COD_CURSO"])
+            # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
+            degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
+            
+            # If there is none grid to this student, ignore it
+            if degree_grid is None:
+                continue
+            
+            grid = degree_grid.grid
+            fake_codes = degree_grid.fake_codes    
+            opts_tgs = list(degree_grid.equiv_codes)
+            
             max_period = len(grid)-1
             p = 0
-            period_completed = 1
+            period_completed = True
             checked = []
             while (p < max_period):
                 c = 0
@@ -304,7 +397,7 @@ class StudentAnalysis:
                     if coursed:
                         c += 1
                     else:
-                        period_completed = 0
+                        period_completed = False
                         break
 
                 if period_completed:
@@ -314,8 +407,17 @@ class StudentAnalysis:
 
             # p actually stands for number of completed periods
             # current period is the first incompleted one
-            student_period[student] = p+1
-        return student_period
+            student_period[student] = p+2
+        
+        # Treats the case where the students doenst have at least one line
+        # in dataframe with SITUATION_PASS status. These students will be droped
+        # and not presented in students_df variable and consequently not
+        # considered in the while loop before
+        for student in complete_student_set:
+            if not student in student_period:
+                student_period[student] = 1
+        
+        return student_period 
 
 
 

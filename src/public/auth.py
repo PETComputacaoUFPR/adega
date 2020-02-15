@@ -7,7 +7,7 @@ class EmailBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
         UserModel = get_user_model()
 
-        print(kwargs)
+        # print(kwargs)
 
         try:
             user = UserModel.objects.get(email=username)

@@ -66,8 +66,16 @@
 
 <br>
 {% for degree in degrees_last_submissions %}
+<div class="row">
+  <div class="col-xl-4">{{degree.name}} ({{degree.code}})</div>
+  <div class="col-xl-4">
+    <a href="{% url 'degree:index' submission_id=degree.last_submission.id %}">Última análise</a><br>
+  </div>
+  <div class="col-xl-4">
+    <a href="{% url 'grid:GridList' degree_code=degree.code %}">Grade Curricular</a><br>
+  </div>
+</div>
 
-<a href="{% url 'degree:index' submission_id=degree.last_submission.id %}">{{degree.name}} ({{degree.code}})</a><br>
 {% endfor %}
 
 {% endblock content %}

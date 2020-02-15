@@ -15,7 +15,6 @@ from submission.analysis.analysis.admission_analysis import evasion_per_semester
 from submission.analysis.analysis.cepe9615_analysis import *
 
 from student.grid import DegreeGrid
-
 from collections import defaultdict
 
 try:
@@ -29,16 +28,17 @@ student_analysis = None
 CURRENT_YEAR = 2016
 CURRENT_SEMESTER = 1
 
-def build_cache(dataframe, path, current_year = CURRENT_YEAR,
+def build_cache(dataframe, path, degree_code, current_year = CURRENT_YEAR,
                 current_semester = CURRENT_SEMESTER):
     #   os.chdir("../src")
 
 
     ensure_path_exists(path)
 
-    dg = DegreeGrid(DegreeGrid.bcc_grid_2011)
+    # dg_list = [DegreeGrid(DegreeGrid.bcc_grid_2011)]
+    grid_list = DegreeGrid.get_degree_grid_list(degree_code)
     student_analysis = StudentAnalysis(dataframe, current_year,
-                                       current_semester, dg)
+                                       current_semester, grid_list)
 
     for cod, df in dataframe.groupby('COD_CURSO'):
         path = path + '/'
@@ -143,6 +143,8 @@ def generate_student_data(path, dataframe, student_analysis):
         save_json(path + "list/" + list_name + ".json", list_content)
 
     # TODO: Check if all students receive analysis
+    list_students_trainees = student_analysis.list_students_trainees()
+    save_json(path + "list/Formandos.json", list_students_trainees)
 
     # All students
     list_phases = student_analysis.list_students_phases()

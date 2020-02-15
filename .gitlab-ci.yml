@@ -33,7 +33,8 @@ django-tests:
         - python3 manage.py makemigrations degree
         - python3 manage.py makemigrations educator
         - python3 manage.py makemigrations submission
-        - python3 manage.py makemigrations student
-        - python3 manage.py makemigrations admission
+        - python3 manage.py makemigrations student 
+        - python3 manage.py makemigrations admission 
+        - python3 manage.py makemigrations grid 
         - python3 manage.py migrate
         - python3 manage.py test

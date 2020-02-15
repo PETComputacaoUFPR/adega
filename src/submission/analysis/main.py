@@ -15,7 +15,8 @@ def analyze(submission, debug=True):
         # dataframe = load_dataframes(path) # OLD VERSION. TODO: Remove this line when support is deprecated
         # dataframe = pd.read_csv(submission.csv_data_file.path)
         dataframe = read_processed_csv(submission.csv_data_file.path)
-        build_cache(dataframe, path, submission.relative_year, submission.relative_semester)
+        build_cache(dataframe, path, submission.degree.code,
+                    submission.relative_year, submission.relative_semester)
 
         submission.set_done(round(time.clock() - start_time))
 
