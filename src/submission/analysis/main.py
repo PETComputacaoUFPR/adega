@@ -1,10 +1,10 @@
 import time
-from submission.analysis.base.dataframe_base import load_dataframes
 from submission.analysis.build_cache import build_cache
-
+from submission.analysis.conversor_de_dados_adega.conversor import read_processed_csv
 from datetime import timedelta
 import traceback
 
+import pandas as pd
 
 def analyze(submission, debug=True):
     start_time = time.clock()
@@ -12,8 +12,9 @@ def analyze(submission, debug=True):
     submission.set_executing()
     try:
         path = submission.path()
-        dataframe = load_dataframes(path)
-
+        # dataframe = load_dataframes(path) # OLD VERSION. TODO: Remove this line when support is deprecated
+        # dataframe = pd.read_csv(submission.csv_data_file.path)
+        dataframe = read_processed_csv(submission.csv_data_file.path)
         build_cache(dataframe, path, submission.degree.code,
                     submission.relative_year, submission.relative_semester)
 

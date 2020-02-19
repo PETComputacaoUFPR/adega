@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
 from collections import namedtuple
 """
 Rate é uma tupla nomeada(deixa mais legivel fazer rate.name do que rate[0]) o
@@ -38,7 +38,7 @@ class Analysis(object):
         Conta a quantidade de linhas de cada dataframe de um groupby.
 
         Conta a quantidade linhas de cada dataframe, se collumn e _filter
-        não forem None então cada dataframe é filtrado antes de contar as 
+        não forem None então cada dataframe é filtrado antes de contar as
         linhas.
         """
         if collumn is None or _filter is None:
@@ -72,10 +72,8 @@ class Analysis(object):
         for rate in rates:
             x = self.count(groups, rate.collumn_name, rate.fields_x)
             X = self.count(groups, rate.collumn_name, rate.fields_X)
-            rate_c = x/X 
+            rate_c = x/X
             rate_c[np.isnan(rate_c)] = 0.0
             rate_c[np.isinf(rate_c)] = 0.0
             rate_dict[rate.name] = [rate_c, x, X]
         return rate_dict
-
-

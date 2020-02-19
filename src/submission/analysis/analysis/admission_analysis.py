@@ -1,8 +1,8 @@
-from submission.analysis.utils.situations import Situation as sit
-from submission.analysis.utils.situations import EvasionForm as ef
-from submission.analysis.utils.situations import *
-from submission.analysis.utils.situations import Situation as sit
-from submission.analysis.utils.situations import EvasionForm as ef
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import EvasionForm as ef
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import EvasionForm as ef
 from submission.analysis.analysis.student_analysis import StudentAnalysis
 from collections import defaultdict
 
@@ -18,9 +18,9 @@ class Admission(object):
     def __init__(self, df):
         self.__dataframes["df_original"] = df
         self.__dataframes["df_filted"] = df.drop_duplicates(["MATR_ALUNO"])
-        self.__groupbys["groupby_original"] = df.groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
-        self.__groupbys["groupby_filted"] = self.__dataframes["df_filted"].groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO'])
-    
+        self.__groupbys["groupby_original"] = df.groupby(['ANO_INGRESSO', 'SEMESTRE_INGRESSO'])
+        self.__groupbys["groupby_filted"] = self.__dataframes["df_filted"].groupby(['ANO_INGRESSO', 'SEMESTRE_INGRESSO'])
+
     def count_evasion_form(self, g, evasion_form):
         return g.apply(lambda x: x.loc[(x.FORMA_EVASAO == evasion_form)].shape[0])
 
@@ -79,14 +79,14 @@ class Admission(object):
         df["SEMESTRE_EVASAO"] = df["SEMESTRE_EVASAO"].map(dict_convert)
 
         # agrupa dados por turma ingresso
-        admission_g = df.groupby(["ANO_INGRESSO_y", "SEMESTRE_INGRESSO"])
+        admission_g = df.groupby(["ANO_INGRESSO", "SEMESTRE_INGRESSO"])
 
         # faz a media do tempo gasto por cada aluno de cada turma ingresso na
         # graduação
         media_formatura = admission_g.apply(lambda x:\
                 ((x.ANO_EVASAO.astype(float)+x.SEMESTRE_EVASAO.astype(float))-\
-                (x.ANO_INGRESSO_y.astype(float)+x.SEMESTRE_INGRESSO.astype(float))).mean())
-        
+                (x.ANO_INGRESSO.astype(float)+x.SEMESTRE_INGRESSO.astype(float))).mean())
+
         self.analysis["media_formatura"] = media_formatura.rename({0.0: '1', 0.5:'2'})
 
     def taxa_reprovacao(self):
@@ -96,25 +96,25 @@ class Admission(object):
         # calcula a taxa de evasão da turma ingresso
         admission_g = self.__groupbys["groupby_original"]
         taxa_reprovacao = admission_g.apply(lambda x:\
-                x[x.SITUACAO.isin(sit.SITUATION_FAIL)].shape[0] /\
-                x[x.SITUACAO.isin(sit.SITUATION_COURSED)].shape[0])
+                x[x.SITUACAO_ATIV_CURRIC.isin(sit.SITUATION_FAIL)].shape[0] /\
+                x[x.SITUACAO_ATIV_CURRIC.isin(sit.SITUATION_COURSED)].shape[0])
         self.analysis["taxa_reprovacao"] = taxa_reprovacao
 
     def ira_medio(self):
         # filtra o dataframe pela situações que afetam o ira
-        dataframe = self.__dataframes["df_original"][self.__dataframes["df_original"]['SITUACAO'].isin(sit.SITUATION_AFFECT_IRA)]
-        submission_groupby = dataframe.groupby(["ANO_INGRESSO_y", "SEMESTRE_INGRESSO"])
+        dataframe = self.__dataframes["df_original"][self.__dataframes["df_original"]['SITUACAO_ATIV_CURRIC'].isin(sit.SITUATION_AFFECT_IRA)]
+        submission_groupby = dataframe.groupby(["ANO_INGRESSO", "SEMESTRE_INGRESSO"])
         """ Para cada turma ingresso, faz o agrupamento por aluno e calcula o
         ira de cada aluno e depois é feito a media dos iras de todos os alunos
         da turma ingresso.
         Sao dois .apply, um dentro do outro, sendo que um intera sobre a turma
         ingresso e ai faz o agrupamento de alunos e o outro intera sobre os
         alunos da turma ingresso para calcular o ira. """
-        
+
         ira_medio = submission_groupby.apply(lambda x:\
             x.groupby(["MATR_ALUNO"]).apply(lambda y:\
-            (y.MEDIA_FINAL * y.TOTAL_CARGA_HORARIA).sum() /\
-            (y.TOTAL_CARGA_HORARIA.sum()*100)).mean())
+            (y.MEDIA_FINAL * y.CH_TOTAL).sum() /\
+            (y.CH_TOTAL.sum()*100)).mean())
 
         self.analysis["ira_medio"] = ira_medio
 
@@ -137,9 +137,9 @@ class Admission(object):
             # This will create an directory when build_cache create the json
             # By instance: The files and directories admission/2010/1.json will
             # be created
-            
+
             # The ira_medio can be undefined for some admissions
-            # Then, we need to verify if it was computed 
+            # Then, we need to verify if it was computed
             ira_medio = 0
             if i in self.analysis["ira_medio"].keys():
                 ira_medio = self.analysis["ira_medio"][i]
@@ -211,25 +211,25 @@ def admission_class_ira_per_semester(df):
                      (2007, '1o. Semestre'): 0.6186531973412296, ...} ...}
     """
 
-    df = df[df['SITUACAO'].isin(Situation.SITUATION_AFFECT_IRA)]
-    df = df[ df['TOTAL_CARGA_HORARIA'] != 0]
-    admission_grouped = df.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO'])
+    df = df[df['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_AFFECT_IRA)]
+    df = df[ df['CH_TOTAL'] != 0]
+    admission_grouped = df.groupby(['ANO_INGRESSO','SEMESTRE_INGRESSO'])
     dict_admission = {}
 
     for admission in admission_grouped:
     #admission_grouped is a tuple of tuples, each tuple contains 0-tuple year/semester & 1-dataframe
         dict_ira_semester = {}
-        semester_grouped = admission[1].groupby(['ANO','PERIODO'])
+        semester_grouped = admission[1].groupby(['ANO_ATIV_CURRIC','PERIODO_ATIV_CURRIC'])
 
         for semester in semester_grouped:
-            student_grouped = semester[1].groupby('ID_ALUNO')
+            student_grouped = semester[1].groupby('MATR_ALUNO')
             ira_class = []
 
             # Compute all individual IRA from an class
             for student in student_grouped:
                 #TODO: Verify if this can be calculated without groupby
                 ira_individual =(
-                    (student[1].MEDIA_FINAL*student[1].TOTAL_CARGA_HORARIA).sum() )/(100*student[1].TOTAL_CARGA_HORARIA.sum()
+                    (student[1].MEDIA_FINAL*student[1].CH_TOTAL).sum() )/(100*student[1].CH_TOTAL.sum()
                 )
                 ira_class.append(ira_individual)
 
@@ -292,43 +292,43 @@ def desvio_padrao_turma_ingresso(df, student_analysis):
 
 def evasion_per_semester(df):
     # filtra a planilha, deixando apenas 1 linha por estudante por periodo que ele passou desde que entrou no curso
-    turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO','PERIODO', 'MATR_ALUNO'], keep='last')
-    
+    turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO','SEMESTRE_INGRESSO', 'ANO_ATIV_CURRIC','PERIODO_ATIV_CURRIC', 'MATR_ALUNO'], keep='last')
+
     # agrupa as linhas do dataframe resultante da filtragem pela tupla (ano de entrada, periodo de entrada, ano, periodo)
-    t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO','PERIODO'])['MATR_ALUNO']
-    
+    t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO','SEMESTRE_INGRESSO', 'ANO_ATIV_CURRIC','PERIODO_ATIV_CURRIC'])['MATR_ALUNO']
+
     # filtra o dataframe, deixando apenas 1 linha por estudante que evadiu
     t_i_evasions = turmas_ingresso.loc[(turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_FORMATURA) & (turmas_ingresso.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)]
-    
+
     # agrupa as linhas do dataframe de evadidos indexados pela tupla (ano de entrada, periodo de entrada, ano, periodo), conta o numero de linhas e transforma isso em um dicionario
-    t_i_evasions_semestral_size = t_i_evasions.groupby(['ANO_INGRESSO_y','SEMESTRE_INGRESSO', 'ANO_EVASAO','SEMESTRE_EVASAO'])['MATR_ALUNO'].nunique().to_dict()
+    t_i_evasions_semestral_size = t_i_evasions.groupby(['ANO_INGRESSO','SEMESTRE_INGRESSO', 'ANO_EVASAO','SEMESTRE_EVASAO'])['MATR_ALUNO'].nunique().to_dict()
     dict_evasion = {}
     aux = {}
-    
+
     # transforma o groupby em um dicionario que contem a evasao dividida pelo numero de linhas de cada grupo do agrupamento, indexado pela tupla de tuplas ((ano de entrada, periodo de entrada), (ano, periodo))
     for t_i_s in t_i_semestral_size:
         # trata os campos 2 e 3 da tupla (ano de entrada, periodo de entrada, ano, periodo) para que fique no mesmo formato que as chaves do dicionario t_i_evasions_semestral_size
         t_i_s_aux = (t_i_s[0][0], t_i_s[0][1], str(t_i_s[0][2]), t_i_s[0][3].split("o")[0])
-        
+
         # pega o numero de evasoes de acordo com a tupla (ano de entrada, periodo de entrada, ano, periodo)
         if t_i_s_aux in t_i_evasions_semestral_size:
             evasions = t_i_evasions_semestral_size[t_i_s_aux]
         else:
             evasions = 0
         aux.update({((t_i_s[0][0], t_i_s[0][1]), (t_i_s[0][2], t_i_s[0][3])):(evasions/t_i_s[1].size)})
-    
+
     # transforma o dicionario anterior em um outro dicionario, indexado pela tupla (ano de entrada, periodo de entrada), tendo como elementos outros dicionarios.
     # cada dicionario contido no dicionario e indexado pela tupla (ano, periodo) e contem a evasao dividida pelo numero de linhas de cada grupo do agrupamento
     for t_i_s, value in aux.items():
         dict_evasion.setdefault(t_i_s[0], {})[t_i_s[1]] = value
-    
+
     return dict_evasion
 
 def students_per_semester(df):
     # filtra a planilha, deixando apenas 1 linha por estudante por periodo que ele passou desde que entrou no curso
-    turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO', 'ANO', 'PERIODO', 'MATR_ALUNO'], keep='last')
+    turmas_ingresso = df.drop_duplicates(['ANO_INGRESSO', 'SEMESTRE_INGRESSO', 'ANO_ATIV_CURRIC', 'PERIODO_ATIV_CURRIC', 'MATR_ALUNO'], keep='last')
     # agrupa as linhas do dataframe resultante da filtragem pela tupla (ano de entrada, periodo de entrada, ano, periodo)
-    t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO_y', 'SEMESTRE_INGRESSO', 'ANO', 'PERIODO'])['MATR_ALUNO']
+    t_i_semestral_size = turmas_ingresso.groupby(['ANO_INGRESSO', 'SEMESTRE_INGRESSO', 'ANO_ATIV_CURRIC', 'PERIODO_ATIV_CURRIC'])['MATR_ALUNO']
     dict_students = {}
     aux = {}
     # transforma o groupby em um dicionario que contem o numero de linhas de cada grupo do agrupamento, indexado pela tupla de tuplas ((ano de entrada, periodo de entrada), (ano, periodo))

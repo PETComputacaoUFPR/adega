@@ -2,11 +2,11 @@ import math
 import json
 import pandas as pd
 import numpy as np
-from submission.analysis.utils.situations import Situation, EvasionForm
-from submission.analysis.utils.utils import IntervalCount, save_json
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation, EvasionForm
+from submission.analysis.conversor_de_dados_adega.utils.utils import IntervalCount, save_json
 from submission.analysis.analysis.student_analysis import *
 
-from submission.analysis.analysis.student_analysis import StudentAnalysis 
+from submission.analysis.analysis.student_analysis import StudentAnalysis
 
 
 def average_graduation(df):
@@ -37,45 +37,21 @@ def general_failure(df):
     Examples
     --------
     """
-    affect_ira = df[df.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
-    failures = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_FAIL)]
+    affect_ira = df[df.SITUACAO_ATIV_CURRIC.isin(Situation.SITUATION_AFFECT_IRA)]
+    failures = affect_ira[affect_ira.SITUACAO_ATIV_CURRIC.isin(Situation.SITUATION_FAIL)]
 
     average = failures.shape[0] / affect_ira.shape[0]
 
     return average
-    # student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
-    #                             .aggregate({'SITUACAO': 'count'})
-    # student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
-    #                            .aggregate({'SITUACAO': 'count'})
-
-    # merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
-    # merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
-    # variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
-    #                                   .pow(2).sum() / merged.shape[0]
-    # standard_deviation = math.sqrt(variance)
-
-    # return (average, standard_deviation)
-
 
 def current_students_failure(df):
     fixed = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
-    affect_ira = fixed[fixed.SITUACAO.isin(Situation.SITUATION_AFFECT_IRA)]
-    failures = affect_ira[affect_ira.SITUACAO.isin(Situation.SITUATION_FAIL)]
+    affect_ira = fixed[fixed.SITUACAO_ATIV_CURRIC.isin(Situation.SITUATION_AFFECT_IRA)]
+    failures = affect_ira[affect_ira.SITUACAO_ATIV_CURRIC.isin(Situation.SITUATION_FAIL)]
 
     average = failures.shape[0] / affect_ira.shape[0]
 
     return average
-    # student_courses = affect_ira.groupby(['MATR_ALUNO'], as_index=False)\
-    #                             .aggregate({'SITUACAO': 'count'})
-    # student_failures = failures.groupby(['MATR_ALUNO'], as_index=False)\
-    #                            .aggregate({'SITUACAO': 'count'})
-
-    # merged = pd.merge(student_courses, student_failures, on=['MATR_ALUNO'])
-    # merged.columns = ['MART_ALUNO', 'FEITAS', 'REPROVADO']
-    # variance = merged['REPROVADO'].div(merged['FEITAS']).sub(average)\
-    #                                   .pow(2).sum() / merged.shape[0]
-    # standard_deviation = math.sqrt(variance)
-    # return (average, standard_deviation)
 
 def general_ira(student_analysis):
     iras = np.array(list(student_analysis.ira_alunos().values()))
@@ -86,7 +62,7 @@ def current_ira(df, student_analysis):
     ano_grade = int(df.loc[df['NUM_VERSAO'].idxmax()]['NUM_VERSAO'])
     fixed = df.loc[(df['NUM_VERSAO'] == ano_grade)]
     iras = np.array(list(student_analysis.ira_alunos(df = fixed).values()))
- 
+
     return (iras.mean(), iras.std())
 
 def current_students_ira(df, student_analysis):
@@ -113,8 +89,8 @@ def current_evasion_rate(df):
 
 def average_graduation_time(df):
     """
-   
-   
+
+
     Returns
     -------
     float
@@ -127,12 +103,12 @@ def average_graduation_time(df):
     graduates = students.loc[(df.FORMA_EVASAO == EvasionForm.EF_FORMATURA)]
     total_graduate = graduates.shape[0]
     average_time = 0
-    year_end = int(df['ANO'].max())
+    year_end = int(df['ANO_ATIV_CURRIC'].max())
     for index, row in graduates.iterrows():
         if pd.notnull(row['ANO_EVASAO']):
             year_end = int(row['ANO_EVASAO'])
             try:
-                evasion_dt = int(row["DT_EVASAO"].split("/")[1])
+                evasion_dt = int(row["DATA_EVASAO"].split("/")[1])
                 if(evasion_dt > 7):
                     semester_end = 2
                 else:
@@ -168,13 +144,13 @@ def taxa_abandono(df):
 
 
 
-#The following 3 functions are auxiliar to make the 3 dicts the function merge_dicts receives 
+#The following 3 functions are auxiliar to make the 3 dicts the function merge_dicts receives
 def average_ira_graph(student_analysis):
     dic = build_dict_ira_medio(student_analysis.ira_alunos())
     return dic
 
 def current_students_average_ira_graph(df, student_analysis):
-    alunos_se = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]    
+    alunos_se = df.loc[(df.FORMA_EVASAO == EvasionForm.EF_ATIVO)]
     dic_se = build_dict_ira_medio(student_analysis.ira_alunos(df = alunos_se))
     return dic_se
 
@@ -188,28 +164,28 @@ def graduates_average_ira_graph(df, student_analysis):
 
 
 def period_evasion_graph(df):
- 
+
     di_qtd = {}
     dic = {}
     evasions_total = 0
 
     # Discover the minimum and maximum values for year
-    year_start = int(df['ANO'].min())
-    year_end = int(df['ANO'].max()) + 1
+    year_start = int(df['ANO_ATIV_CURRIC'].min())
+    year_end = int(df['ANO_ATIV_CURRIC'].max()) + 1
 
     students = df.drop_duplicates()
-
 
     # Iterate between all semester/year possible
     for year in range(year_start, year_end):
         for semester in range(1, 3):
-            
+
             # Filter the rows and mantain only the registers
             # that match with year and semester of this iteration
+
             evasions = students.loc[
-                (df['ANO_EVASAO'] == str(year)) &
+                (df['ANO_EVASAO'] == year) &
                 (df['SEMESTRE_EVASAO'] == str(semester))
-            ]
+                ]
 
             # Count only one row per student by removing
             # all duplicate rows with same MATR_ALUNO
@@ -235,17 +211,17 @@ def period_evasion_graph(df):
         for di in di_qtd:
             qtd = di_qtd[di]
             dic[di] = {'qtd': qtd, 'taxa': (float(qtd)/evasions_total)*100}
-    
+
     return dic
 
 def evasion_per_period_graph(df):
     """
     Build the dict for the graph that displays how many people evaded in each period of the grid
-    
-    Filter df for evaded people and the needed columns
-    apply current_period() and counts how many times each period is returned 
 
-    Returns 
+    Filter df for evaded people and the needed columns
+    apply current_period() and counts how many times each period is returned
+
+    Returns
     -------
     dict of {int: int}
 
@@ -260,8 +236,8 @@ def evasion_per_period_graph(df):
 
     """
     rows = (df.FORMA_EVASAO != EvasionForm.EF_ATIVO) & (df.FORMA_EVASAO != EvasionForm.EF_FORMATURA)  & (df.FORMA_EVASAO != EvasionForm.EF_REINTEGRACAO)
-    cols = ["MATR_ALUNO", "NUM_VERSAO_x", "COD_ATIV_CURRIC", "SITUACAO", "COD_CURSO"]
-    evaded_students = df.loc[rows, cols] 
+    cols = ["MATR_ALUNO", "NUM_VERSAO", "COD_ATIV_CURRIC", "SITUACAO_ATIV_CURRIC", "COD_CURSO"]
+    evaded_students = df.loc[rows, cols]
     periods = StudentAnalysis.current_period(evaded_students).values()
     evasions_period = defaultdict(int)
     for number in periods:
@@ -292,26 +268,26 @@ def build_dict_ira_medio(alunos):
 def build_dict_ira_medio(iras):
     """
     Uses numpy.histogram to create the intervals of iras (dict's keys)
-    and counts how many iras on each interval (dict's values)     
+    and counts how many iras on each interval (dict's values)
 
     Parameters
     -------
-    iras = {grr: ira, 
+    iras = {grr: ira,
             grr: ira,
             ...}
 
     Returns
     -------
-    dict = {'0.50-0.55': 91, 
-            '0.55-0.60': 98,   
-            '0.05-0.10': 38, 
-            '0.65-0.70': 90, 
+    dict = {'0.50-0.55': 91,
+            '0.55-0.60': 98,
+            '0.05-0.10': 38,
+            '0.65-0.70': 90,
             ... }
     """
     iras_values = list(iras.values())
 
     # keys = ira intervals borders
-    # values = quantity of students in the interval 
+    # values = quantity of students in the interval
     values, keys = np.histogram(iras_values, bins=20, range=(0,1))
     dict = {}
     for i, count in enumerate(values):
@@ -334,7 +310,7 @@ def merge_dicts(dict1, dict2, dict3):
 
     Parameters
     ----------
-    3 x dicts = {'0.50-0.55': 91, 
+    3 x dicts = {'0.50-0.55': 91,
                  '0.55-0.60': 98,
                  ...}
 
@@ -366,7 +342,7 @@ def build_degree_json(path,df,student_analysis):
         current_students_average_ira_graph(df, student_analysis),
         graduates_average_ira_graph(df, student_analysis)
     )
-      
+
     degree_json = {
         "ira_medio_grafico": sorted(dic.items()),
         "evasao_grafico": json.dumps(sorted(period_evasion_graph(df).items())),
