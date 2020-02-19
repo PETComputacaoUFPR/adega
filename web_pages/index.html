@@ -122,17 +122,27 @@
 
 			<hr>
 			<h2 id="usuario">Criando usuário educador</h2>
-			Para acessar a plataforma é necessário um Cadastro, caso seja o primeiro acesso é necessário criar esse usuário manualmente. Os passos a seguir mostram passo a passo como se cria um usuário na classe Educator(educador).
+			<p>Para acessar a plataforma é necessário um Cadastro, caso seja o primeiro acesso é necessário criar esse usuário manualmente. Os passos a seguir mostram passo a passo como se cria um usuário na classe Educator(educador).</p>
 
-			<h5>PASSO 1:</h5>
-			<h5>PASSO 2:</h5>
-			<h5>PASSO 3:</h5>
-			<h5>PASSO 4:</h5>
-			<h5>PASSO 5:</h5>
-			
+			<h5>PASSO 1: Criar um super usuário</h5>
+			<p>Em seu terminal prosiga com o comando</p>
+			<div class="p-3 mb-3 center highlight-command">
+				$ sudo make docker-manage createsuperuser
+			</div>  
+
+			<h5>PASSO 2: Acessar a Administração do Django </h5>
+			<p>Com o super-usuário criado é permitido acessar a Administração do Django em localhost:8000/adega/admin. Nela gerencia-se grupos de usuários, cursos, educadores e submissões. A que nos interessa é a sessão "Educator".</p>
+			<img class="img-fluid rounded" alt="Login"src="images/django-manager.png">
+			<h5>PASSO 3: Cadastrar o usuário como educador</h5>
+			<p>Siga as imagens para cadastrar um usuário novo como educador.</p>
+			<p>Selecione a sessão EDUCATOR</p>
+			<img class="img-fluid rounded" alt="Login"src="images/add-educator.png">
+			<p>Escolha o usuário e o curso que ela será responsável (caso não exista, adicione um curso na sessão DEGREE)</p>
+			<img class="img-fluid rounded" alt="Login"src="images/add-educator2.png">
 
 			<hr>
 			<h2 id="upload">Upload de dados</h2>
+
 
 			<hr>
 			<h2 id="uso">Uso da plataforma</h2>
