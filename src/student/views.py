@@ -13,7 +13,7 @@ from guardian.decorators import permission_required_or_403
 
 from student.grid import DegreeGrid
 
-from submission.analysis.utils.situations import Situation, EvasionForm
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation, EvasionForm
 
 situations_pass = Situation.SITUATION_PASS
 situations_pass = [Situation.code_to_str(c) for c in situations_pass]
@@ -106,7 +106,6 @@ def detail(request, submission_id, grr):
         # grid_phases = dg.grid_detail.phases # Dictionary
         # Parse to list of tuples   
     grid_list = list(zip(grid_info_list, grid_info_extra_list, grid_version_list))
-    print(grid_list)
 
     analysis_result = {
         'indice_aprovacao' : cache_j['taxa_aprovacao'],
@@ -202,4 +201,3 @@ def index(request, submission_id):
         "situations_fail": situations_fail,
         "grid_phases": grid_phases_list, 
     })
-

@@ -19,7 +19,7 @@ from student.grid import DegreeGrid
 def create_course_from_json(json_data, degree_code):
     grid_version = json_data["version"]
     courses = {}
-    print(json_data)
+    # print(json_data)
 
     periods = json_data["courses"].keys()
     periods = [int(x) for x in periods]
@@ -46,9 +46,9 @@ def create_course_from_json(json_data, degree_code):
         req = [x for x in req if x != '']
 
         if len(set(req) - courses_codes_set) > 0:
-            print(req)
-            print(set(req) - courses_codes_set)
-            print(len(set(req) - courses_codes_set))
+            # print(req)
+            # print(set(req) - courses_codes_set)
+            # print(len(set(req) - courses_codes_set))
             return None
         courses[code]["course_prerequisite"] = req
     
@@ -78,7 +78,7 @@ def create_course_from_json(json_data, degree_code):
         if course["course_type"] != "Obrigatória":
             grid_desc_dict["fake_codes"].append(code)
 
-    print(grid_desc_dict)
+    # print(grid_desc_dict)
         
     new_grid = Grid(degree=dg, version=grid_version,
                     data_as_string=json.dumps(grid_desc_dict))
@@ -195,5 +195,5 @@ class GridCreate(View):
         #context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
         #context["degree"] = Degree.objects.get(code=self.kwargs["degree_code"])
-        print(self.kwargs)
+        # print(self.kwargs)
         return context

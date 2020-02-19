@@ -9,7 +9,7 @@ from student.grid import DegreeGrid
 
 from guardian.decorators import permission_required_or_403
 
-from submission.analysis.utils.situations import Situation
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation
 situations_pass = Situation.SITUATION_PASS
 situations_pass = [Situation.code_to_str(c) for c in situations_pass]
 
@@ -59,4 +59,3 @@ def index(request, submission_id):
         "situations_fail": situations_fail,
         "dg_list": dg_list_context
     })
-

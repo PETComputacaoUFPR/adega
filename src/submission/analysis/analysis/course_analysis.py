@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from submission.analysis.utils.situations import Situation as sit
+from submission.analysis.conversor_de_dados_adega.utils.situations import Situation as sit
 from submission.analysis.analysis.analysis import Analysis, rate, mean
 import numpy as np
 
@@ -26,35 +26,35 @@ class Course(Analysis):
     __rates = [
         rate(
             "taxa_reprovacao_absoluta",
-            "SITUACAO",
+            "SITUACAO_ATIV_CURRIC",
             list(sit.SITUATION_FAIL),
             list(sit.SITUATION_COURSED),
             1
         ),
         rate(
             "taxa_aprovacao",
-            "SITUACAO",
+            "SITUACAO_ATIV_CURRIC",
             list(sit.SITUATION_PASS),
             list(sit.SITUATION_FAIL) + list(sit.SITUATION_PASS),
             2
         ),
         rate(
             "taxa_trancamento",
-            "SITUACAO",
+            "SITUACAO_ATIV_CURRIC",
             list(sit.SITUATION_CANCELLED),
             list(sit.SITUATION_COURSED),
             1
         ),
         rate(
             "taxa_conhecimento",
-            "SITUACAO",
+            "SITUACAO_ATIV_CURRIC",
             [sit.SIT_CONHECIMENTO_APROVADO],
             list(sit.SITUATION_KNOWLDGE),
             2
         ),
         rate(
             "taxa_reprovacao_frequencia",
-            "SITUACAO",
+            "SITUACAO_ATIV_CURRIC",
             [sit.SIT_REPROVADO_FREQ],
             list(sit.SITUATION_COURSED),
             1
@@ -62,7 +62,7 @@ class Course(Analysis):
     ]
     __mean_set = [
         mean("nota",
-             "SITUACAO",
+             "SITUACAO_ATIV_CURRIC",
              list(sit.SITUATION_AFFECT_IRA),
              "MEDIA_FINAL")
     ]
@@ -71,7 +71,7 @@ class Course(Analysis):
 
     def __init__(self, current_year, df):
         self.current_year = current_year
-        df_filted = df[df['SITUACAO'].isin(sit.SITUATION_COURSED)]
+        df_filted = df[df['SITUACAO_ATIV_CURRIC'].isin(sit.SITUATION_COURSED)]
         dict_df = {
             "normal_dataframe": df,
             "filted_dataframe": df_filted
@@ -80,7 +80,7 @@ class Course(Analysis):
             type_df = df.split("_")[0] + "_"
             general_tmp = dict_df[df].groupby(["COD_ATIV_CURRIC"])
             semestral_tmp = dict_df[df].groupby(
-                ["COD_ATIV_CURRIC", "ANO", "PERIODO"])
+                ["COD_ATIV_CURRIC", "ANO_ATIV_CURRIC", "PERIODO_ATIV_CURRIC"])
             self.__data[type_df + "general_groupby"] = general_tmp
             self.__data[type_df + "semestral_groupby"] = semestral_tmp
             self.__data[df] = dict_df[df]
@@ -139,7 +139,7 @@ class Course(Analysis):
         last_rates = self.last_rate
 
         def f(x, rate):
-            x1 = x.loc[x.ANO == x.ANO.max() - 1]
+            x1 = x.loc[x.ANO_ATIV_CURRIC == x.ANO_ATIV_CURRIC.max() - 1]
             x_num = x1[x1[rate.collumn_name].isin(rate.fields_x)].shape[0]
             x_deno = x1[x1[rate.collumn_name].isin(rate.fields_X)].shape[0]
             return x_num / x_deno if x_deno > 0 else 0
@@ -200,9 +200,11 @@ class Course(Analysis):
         serie_mean = group.apply(lambda x: x["MEDIA_FINAL"].mean())
         serie_std = group.apply(lambda x: x["MEDIA_FINAL"].std())
         last_year_mean = group.apply(
-            lambda x: x.loc[x.ANO == x.ANO.max() - 1].MEDIA_FINAL.mean())
+            lambda x: x.loc[x.ANO_ATIV_CURRIC == x.ANO_ATIV_CURRIC.max() -
+            1].MEDIA_FINAL.mean())
         last_year_std = group.apply(
-            lambda x: x.loc[x.ANO == x.ANO.max() - 1].MEDIA_FINAL.std())
+            lambda x: x.loc[x.ANO_ATIV_CURRIC == x.ANO_ATIV_CURRIC.max() -
+            1].MEDIA_FINAL.std())
         # caso tenha algum nan, troque por 0.0
         serie_mean[np.isnan(serie_mean)] = 0.0
         serie_std[np.isnan(serie_std)] = 0.0
@@ -288,7 +290,7 @@ class Course(Analysis):
         # ratio coursed count
 
         def f(x):
-            coursed_succes = x[x['SITUACAO'].isin(sit.SITUATION_PASS)].shape[0]
+            coursed_succes = x[x['SITUACAO_ATIV_CURRIC'].isin(sit.SITUATION_PASS)].shape[0]
             return (x.shape[0] / coursed_succes) if coursed_succes > 0 else -1
 
         groups = self.__data["filted_dataframe"].groupby(["COD_ATIV_CURRIC"])
@@ -344,7 +346,7 @@ class Course(Analysis):
             for i in rate_data[0].index:
                 if i[0] not in aprovacao_d:
                     aprovacao_d[i[0]] = {}
-                
+
                 periodo = str(i[1]) + "/" + str(i[2])
                 aprovacao_d[i[0]][periodo] = [
                     float(rate_data[0][i]),

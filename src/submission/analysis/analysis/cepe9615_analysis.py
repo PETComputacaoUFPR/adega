@@ -3,7 +3,7 @@ their academic record canceled."""
 import numpy as np
 import pandas as pd
 import pprint
-from submission.analysis.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
 
 
 n_fails_by_course = [10] # used at: student_fails_course
@@ -55,7 +55,7 @@ def student_fails_course(df):
     """
     # Filters based on the students that have failed at least once
     # and are still registered on the University
-    df = df[df['SITUACAO'].isin(Situation.SITUATION_FAIL)]
+    df = df[df['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_FAIL)]
     df = df[(df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO)]
     # Creates a tuple with (specified informations, dataframe)
     students = df.groupby(["NOME_PESSOA", "MATR_ALUNO"])
@@ -116,7 +116,7 @@ def student_fails_2_courses(df):
     second_most_failures = 0
     # Filters based on the students that have failed at least once
     # and are still registered on the University
-    df = df[df['SITUACAO'].isin(Situation.SITUATION_FAIL)]
+    df = df[df['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_FAIL)]
     df = df[(df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO)]
     # Creates a tuple with (specified informations, dataframe)
     students = df.groupby(["NOME_PESSOA", "MATR_ALUNO"])
@@ -187,8 +187,8 @@ def fails_semester (df):
                                                      'GRR20075297')],
     """
     people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
-    failed_people_df = people_studying_df[people_studying_df['SITUACAO'].isin(Situation.SITUATION_FAIL)]
-    failed_people_per_semester_grouped = failed_people_df.groupby(['ANO','PERIODO'])
+    failed_people_df = people_studying_df[people_studying_df['SITUACAO_ATIV_CURRIC'].isin(Situation.SITUATION_FAIL)]
+    failed_people_per_semester_grouped = failed_people_df.groupby(['ANO_ATIV_CURRIC','PERIODO_ATIV_CURRIC'])
     # semester_dict = { (2017/1): names_dict1, (2017/2): names_dict2, ...}
     # names_dict    = { (nome, grr): df, (nome. grr): df, ...)
     semester_dict = {}
@@ -254,8 +254,8 @@ def fails_by_freq_semester (df):
                                                  'GRR20075297')],
     """
     people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
-    failed_people_df = people_studying_df.loc[people_studying_df['SITUACAO'] == Situation.SITUATION_FAIL[1]]
-    failed_people_per_semester_grouped = failed_people_df.groupby(['ANO','PERIODO'])
+    failed_people_df = people_studying_df.loc[people_studying_df['SITUACAO_ATIV_CURRIC'] == Situation.SITUATION_FAIL[1]]
+    failed_people_per_semester_grouped = failed_people_df.groupby(['ANO_ATIV_CURRIC','PERIODO_ATIV_CURRIC'])
     # semester_dict = { (2017/1): names_dict1, (2017/2): names_dict2, ...}
     # names_dict    = { (nome, grr): df, (nome. grr): df, ...)
     semester_dict = {}
@@ -272,7 +272,7 @@ def fails_by_freq_semester (df):
     for semester in semester_dict:
         name_list = []
         for student in semester_dict[semester]:
-            student_courses_semester = psdf.loc[(psdf['MATR_ALUNO'] == student[1]) & (psdf['ANO'] == semester[0]) & (psdf['PERIODO'] == semester[1])]
+            student_courses_semester = psdf.loc[(psdf['MATR_ALUNO'] == student[1]) & (psdf['ANO_ATIV_CURRIC'] == semester[0]) & (psdf['PERIODO_ATIV_CURRIC'] == semester[1])]
             if semester_dict[semester][student].shape[0] == student_courses_semester.shape[0]:
                 name_list.append(student)
         semester_finaldict[semester] = name_list
@@ -322,10 +322,10 @@ def fails_by_freq(df):
            ('Pietra Martins Moreira', 'CI210')]}
     """
     people_studying_df = df[df['FORMA_EVASAO'] == EvasionForm.EF_ATIVO]
-    
+
     # workaround: SIT_REPROVADO_FREQ é o item 1 na tupla SITUATION_FAIL
-    failedbyfreq = people_studying_df.loc[people_studying_df['SITUACAO'] == Situation.SITUATION_FAIL[1]]
-    
+    failedbyfreq = people_studying_df.loc[people_studying_df['SITUACAO_ATIV_CURRIC'] == Situation.SITUATION_FAIL[1]]
+
     coursefailed_bystudent = failedbyfreq.groupby(["NOME_PESSOA", "MATR_ALUNO", "COD_ATIV_CURRIC"])
     final_dict = {}
     for n in n_fails_by_freq:

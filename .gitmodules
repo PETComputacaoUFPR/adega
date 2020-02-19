@@ -1,0 +1,3 @@
+[submodule "src/submission/analysis/conversor_de_dados_adega"]
+	path = src/submission/analysis/conversor_de_dados_adega
+	url = https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega.git

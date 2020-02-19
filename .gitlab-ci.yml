@@ -7,21 +7,23 @@ variables:
     POSTGRES_HOST: "postgres"
     POSTGRES_PORT: "5432"
     VERSION: "DEVELOPMENT"
-
+    GIT_SUBMODULE_STRATEGY: recursive
 
 services:
     - postgres:9.6
 before_script:
+  
   - export LC_ALL=C.UTF-8
   - export LANG=C.UTF-8
 # apt-get --quiet=2 não é efetivo, com >> /dev/null só mostra erros da saída
 # stderr
-  - apt-get update --assume-yes >> /dev/null 
+  - apt-get update --assume-yes >> /dev/null
   - apt-get install --assume-yes  python3-pip libpq-dev postgresql-client >> /dev/null
 
   - pip3 install --quiet -r requirements.txt
   - pip3 show django | grep Version
-
+  
+  
 django-tests:
       tags:
         - ubuntu
@@ -36,4 +38,3 @@ django-tests:
         - python3 manage.py makemigrations grid 
         - python3 manage.py migrate
         - python3 manage.py test
-

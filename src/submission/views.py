@@ -36,15 +36,8 @@ class SubmissionCreate(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         # muda nomes dos arquivos
-        if ".csv" in form.instance.historico.name:
-            form.instance.historico.name = "historico.csv"
-        else:
-            form.instance.historico.name = "historico.xls"
-
-        if ".csv" in form.instance.matricula.name:
-            form.instance.matricula.name = "matricula.csv"
-        else:
-            form.instance.matricula.name = "matricula.xls"
+        if ".csv" in form.instance.csv_data_file.name:
+            form.instance.csv_data_file.name = "csv_data_file.csv"
 
         # adiciona a form.instance.usuario e curso
         form.instance.author = self.request.user.educator
@@ -84,8 +77,7 @@ class SubmissionUpdate(UpdateView):
     context_object_name = 'submission'
     success_url = reverse_lazy('dashboard')
     fields = [
-        'historico',
-        'matricula',
+        'csv_data_file',
         'relative_year',
         'relative_semester',
         'semester_status']

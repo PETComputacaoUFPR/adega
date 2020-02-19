@@ -1,5 +1,5 @@
-from submission.analysis.utils.utils import save_json, ensure_path_exists
-from submission.analysis.utils.situations import *
+from submission.analysis.conversor_de_dados_adega.utils.utils import save_json, ensure_path_exists
+from submission.analysis.conversor_de_dados_adega.utils.situations import *
 from submission.analysis.analysis.degree_analysis import *
 from submission.analysis.analysis.student_analysis import *
 from submission.analysis.analysis.course_analysis import Course
@@ -31,6 +31,8 @@ CURRENT_SEMESTER = 1
 def build_cache(dataframe, path, degree_code, current_year = CURRENT_YEAR,
                 current_semester = CURRENT_SEMESTER):
     #   os.chdir("../src")
+
+
     ensure_path_exists(path)
 
     # dg_list = [DegreeGrid(DegreeGrid.bcc_grid_2011)]
@@ -61,17 +63,6 @@ def generate_degree_data(path, dataframe, student_analysis):
     ensure_path_exists(path)
 
     build_degree_json(path, dataframe, student_analysis)
-
-
-def historico(dataframe):
-    res = []
-
-    for _, row in dataframe.iterrows():
-        res.append(dict(row[['ANO', 'MEDIA_FINAL', 'PERIODO', 'SITUACAO',
-                             'COD_ATIV_CURRIC', 'NOME_ATIV_CURRIC',
-                             'CREDITOS', 'CH_TOTAL', 'DESCR_ESTRUTURA', 'FREQUENCIA']]))
-
-    return res
 
 
 def process_semestre(per, df):
@@ -179,7 +170,7 @@ def generate_admission_data(path, df, student_analysis):
     admissions = a.build_cache()
 
     for i in admissions:
-        save_json(path + i["ano"] + "/" + i["semestre"] + ".json", i)
+        save_json(path + str(i["ano"]) + "/" + str(i["semestre"]) + ".json", i)
 
     evasion_count = a.build_cache_evasion_count()
     analises = [
