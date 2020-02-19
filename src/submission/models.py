@@ -34,8 +34,7 @@ class Submission(models.Model):
     )
     author = models.ForeignKey(Educator)
 
-    historico = models.FileField(upload_to=get_path)
-    matricula = models.FileField(upload_to=get_path)
+    csv_data_file = models.FileField(upload_to=get_path)
 
     degree = models.ForeignKey(Degree, related_name='submissions')
     timestamp = models.DateTimeField(default=timezone.now)
@@ -70,13 +69,10 @@ class Submission(models.Model):
 
         """
         if self.id is None:
-            historico = self.historico
-            matricula = self.matricula
-            self.historico = None
-            self.matricula = None
+            csv_data_file = self.csv_data_file
+            self.csv_data_file = None
             super(Submission, self).save(*args, **kwargs)
-            self.historico = historico
-            self.matricula = matricula
+            self.csv_data_file = csv_data_file
             # kwargs.pop('force_insert')
         super(Submission, self).save(*args, **kwargs)
 

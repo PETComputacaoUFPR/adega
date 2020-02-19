@@ -22,7 +22,7 @@ class DegreeTest(TestCase, SubmissionMixin):
         # create a degree
         cls.degree = Degree.objects.create(name="Curso ficticio", code="00A", manager_id=cls.user.id)
         cls.degree.save()
-        
+
         # create an educator
         cls.educator = Educator.objects.create(user_id=cls.user.id)
         cls.educator.save()
@@ -31,11 +31,11 @@ class DegreeTest(TestCase, SubmissionMixin):
 
         # login data
         cls.login_data = {
-                'email': 'testuser@user.com', 
+                'email': 'testuser@user.com',
                 'password': 'secret'
                }
-        
-    def testDegreeRoutes(self): 
+
+    def testDegreeRoutes(self):
         # logging in
         response = self.client.post('/public/', self.login_data, follow=True)
 
@@ -44,10 +44,10 @@ class DegreeTest(TestCase, SubmissionMixin):
 
         # checks if submission was properly analyzed and gets its id
         a_id = self.getSubmissionId()
-        
+
         # trying to access /degree/id/
         response = self.client.get('/degree/' + a_id + '/')
         self.assertEqual(response.status_code, 200) # if ne, failed to access /degree/id/
-        
+
         # deletes submission
         self.deleteSubmission(a_id)

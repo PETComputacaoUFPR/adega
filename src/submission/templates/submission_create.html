@@ -14,7 +14,7 @@
 
 	Caso o processamento dos dados execute em pouco tempo, você receberá uma mensagem de confirmação.<br><br>
 
-	É possível, caso o processamento demore muito tempo, que a página perca o 
+	É possível, caso o processamento demore muito tempo, que a página perca o
 	status de ociosa, perdendo a indicação de que o processamento está sendo realizado.
 	Caso isso aconteça, verifique a página de <a href="{% url 'submission:SubmissionListView' %}">Gerenciamento de relatórios</a>
 	e visualize o status do processamento do upload dos relatórios (planilhas do SIE),
@@ -38,9 +38,9 @@
             Relatório histórico
             <ul>
                <li>
-                   Descrição: Contém as informações referentes às matrículas dos alunos em 
-                   disciplinas e seus resultados. 
-               </li> 
+                   Descrição: Contém as informações referentes às matrículas dos alunos em
+                   disciplinas e seus resultados.
+               </li>
                <li>
                    Colunas: ID_PESSOA; NOME_PESSOA; ID_ALUNO; MATR_ALUNO;
                    NUM_VERSAO; NOME_CURSO;COD_CURSO; ID_VERSAO_CURSO; ANO;
@@ -73,30 +73,24 @@
             </ul>
         </li>
 	</ul>
-	
-	
+
+
 </div>
 
 
 <div class="formBox form-group ">
     <form id="form_sub" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 		{% csrf_token %}
-        
+
         <!-- Uploads files -->
         <div class="form-row">
             <div class="col-lg-5 col-md-5 col-sm-4">
-                <input type="file" name="historico"
-                class="custom-file-input" id="historico"/>
-                <label for="historico" type="file"
-                    class="custom-file-label">Histórico</label>
+                <input type="file" name="csv_data_file"
+                class="custom-file-input" id="csv_data_file"/>
+                <label for="csv_data_file" type="file"
+                    class="custom-file-label">Dados (formato adega)</label>
             </div>
 
-            <div class="col-lg-5 col-md-5 col-sm-4 offset-lg-1 offset-md-1">
-                <input type="file" name="matricula" id="matricula"
-                class="custom-file-input"/>
-                <label for="matricula" class="custom-file-label">Matrícula</label>
-            </div>
-            
         </div>
 
         <!-- Integer field -->
@@ -106,7 +100,7 @@
                 <input type="number" class="form-control" name="relative_year" id="relative_year"
                                                         value="{{form.relative_year.field.initial}}" />
             </div>
-            
+
             <div class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
                 <label for="relative_semester">Semestre do relatório</label>
                 <input type="number" class="form-control" name="relative_semester" id="relative_semester"
@@ -122,7 +116,7 @@
                    {% for choice in form.semester_status.field.choices %}
                    <option value="{{choice.0}}">{{choice.1}}</option>
                    {% endfor %}
-               </select> 
+               </select>
             </div>
 
 
@@ -132,7 +126,7 @@
                     {% for degree in degree_options %}
                     <option value="{{degree.id}}">{{degree.name}}</option>
                     {% endfor %}
-               </select> 
+               </select>
             </div>
 
         </div>
@@ -171,7 +165,7 @@
               </tbody>
             </table>
         </div>
-        
+
 		<div class="row">
 			<div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
 				<button class="btn btn-success btn-block" type="submit">Enviar relatório</button>
@@ -181,7 +175,7 @@
 			</div>
 		</div>
     </form>
-    
+
 </div>
 {% endblock content %}
 
@@ -205,6 +199,5 @@
             $(this).next('.custom-file-label').html(fileName);
         })
     </script>
-    
-{% endblock js-foot %}
 
+{% endblock js-foot %}
