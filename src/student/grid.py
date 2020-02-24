@@ -241,8 +241,8 @@ class DegreeGrid:
         return cgc
 
     def get_prerequisites(self, code):
-        if code in self.grid_detail.self.prerequisites.keys():
-            return [x for x in self.grid_detail.self.prerequisites[code]]
+        if code in self.grid_detail.prerequisites.keys():
+            return [x for x in self.grid_detail.prerequisites[code]]
         else:
             return ['none']
 
@@ -282,6 +282,10 @@ class DegreeGrid:
 
                 new_grid[i][j] = cgc[course_code].get_info()
                 #new_grid[i, j] = cgc[course_code].get_info()
+        
+        new_grid = self.get_blocked_courses(new_grid)
+
+
         return new_grid
 
     def get_repeated_course_info(self, cgc):
