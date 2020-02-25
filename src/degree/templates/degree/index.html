@@ -178,7 +178,7 @@
                                 <input type="checkbox" class="toggleheat invisible" onchange="toggleHeatmap_{{dg.version}}(this)">
                                 <span class="slider round"></span>
                             </label>    
-                            <span id="statusHM">Heatmap off</span>
+                            <span id="statusHM_{{dg.version}}">Heatmap off</span>
                         </div> 
                         <div class="text-center materia_prerequisite">Disciplina Pré-Requisitada</div><br>
                         <div class="text-center materia_posrequisite">Disciplina que possui a matéria como Pré-Requisito</div><br>
@@ -300,12 +300,12 @@
                 course = grid_info[s][c];
                 if (course.detail) {
                     if($(fecho).is(":checked")) {
-                        $('#statusHM').text("Heatmap on");
+                        $('#statusHM_{{dg.version}}').text("Heatmap on");
                         $("#grid_{{dg.version}}_course_course_"+course.code)
                         .css("backgroundColor", gradiente(course.detail.taxa_aprovacao));
                     }
                     else {
-                        $('#statusHM').text("Heatmap off");
+                        $('#statusHM_{{dg.version}}').text("Heatmap off");
                         $("#grid_{{dg.version}}_course_course_"+course.code).css("backgroundColor", "white");
                     }
                 } 
