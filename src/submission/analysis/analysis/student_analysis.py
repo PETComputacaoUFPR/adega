@@ -407,7 +407,7 @@ class StudentAnalysis:
 
             # p actually stands for number of completed periods
             # current period is the first incompleted one
-            student_period[student] = p+2
+            student_period[student] = p+1
         
         # Treats the case where the students doenst have at least one line
         # in dataframe with SITUATION_PASS status. These students will be droped
