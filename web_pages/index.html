@@ -4,7 +4,8 @@
 	<title>A.D.E.G.A.</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+	<link rel="stylesheet" href="/static/fontawesome5/css/fa-regular.min.css">
 	<meta charset="utf-8">
 </head>
 <body>
@@ -31,7 +32,7 @@
 	<!-- Navegation Bar -->
 
 	<!-- Main content -->
-	<section class="bg-light py-5">
+	<section id="main" class="bg-light py-5">
 		<!-- Description -->
 		<div class="container p-5 bg-white shadow-sm p-3 mb-5 bg-white rounded">
 			<h1>A.D.E.G.A</h1>
@@ -103,14 +104,14 @@
 				$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git
 			</div>
 
-			<hr>
+			<hr class="mt-lg-5">
 			<h2 id="docker">Instalando o docker</h2>
 			<p class="text-justify">
 				O projeto foi desenvolvido usando Docker, um software contêiner que facilita a virtualização, desenvolvimento e manutenção de aplicações. Siga com os comandos a seguir para executar o ADEGA com o docker e instalar todas as dependências. <br>
 				(Docker >= 1.13.1 e Docker-compose >=1.21.2)
 			</p>
 			<div class="p-3 center highlight-command">
-				<span class="text-primary">$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git</span> <span class="text-secondary"># Comando já executado</span>
+				<span class="text-primary">$ git clone https://gitlab.c3sl.ufpr.br/adega/adega.git</span> <span class="text-secondary"># Comando já executado</span>
 				<br>$ cd adega/
 				<br>$ sudo make docker-install <span class="text-secondary"># Instala o docker.io e docker-compose</span>
 				<br>$ sudo apt install docker.io
@@ -120,7 +121,7 @@
 				Pronto. A partir deste momento o projeto esta rodando e pode ser acessado em <span class="highlight-command text-success">localhost:8000</span>
 			</p>
 
-			<hr>
+			<hr class="mt-lg-5">
 			<h2 id="usuario">Criando usuário educador</h2>
 			<p>Para acessar a plataforma é necessário um Cadastro, caso seja o primeiro acesso é necessário criar esse usuário manualmente. Os passos a seguir mostram passo a passo como se cria um usuário na classe Educator(educador).</p>
 
@@ -139,13 +140,31 @@
 			<img class="img-fluid rounded" alt="Login"src="images/add-educator.png">
 			<p>Escolha o usuário e o curso que ela será responsável (caso não exista, adicione um curso na sessão DEGREE)</p>
 			<img class="img-fluid rounded" alt="Login"src="images/add-educator2.png">
-
-			<hr>
+			<p>Pronto, o sistema esta pronto para receber a entrada de dados</p>
+			
+			<hr class="mt-lg-5">
 			<h2 id="upload">Upload de dados</h2>
-
-
-			<hr>
+			<p>Antes de enviar a primeira planilha, precisamos converter-la para o formato correto. Por isso temos um conversor de dados.</p>
+			<h3>Conversor de dados</h3>
+			<p>Disponível em: https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega</p>
+			<p>Ele aceita as planilhas no formato SIE. Basta criar um diretório com os arquivos <span class="text-warning">histórico.csv</span> e <span class="text-warning">matricula.csv</span>. Em seguida execute os comandos a seguir:</p>
+			<p></p>
+			<div class="p-3 center highlight-command">
+				<span class="text-primary">$ git clone https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega.git</span>
+				<br>$ python3 conversor.py --input <span class="text-secondary">diretorio-das-planilhas</span> --output <span class="text-secondary">onde-salvar</span> 
+			</div>  
+			<h3 class="mt-lg-3">Submissão</h3>
+			<p>Acesse a paǵina de Upload de dados pela Dashboard</p>
+			<img class="img-fluid rounded" alt="Login"src="images/dashboard.png">
+			<p><br>Selecione sua planilha, ano, semestre. Também é possível selecionar o que será disponibilizado pra o público. Clique em Enviar relatório e pronto, a analise ja está sendo feita. Logo ela poderá ser acessada pela dashboard.<br></p>
+			<img class="img-fluid rounded" alt="Login"src="images/submit.png">
+			
+			<hr class="mt-lg-5">
 			<h2 id="uso">Uso da plataforma</h2>
+			<p>Para acessar as informassões das analises basta acessar pela dashboard. A plataforma apresenta Informações gerais do curso, alunos, Cepe 96/15, Disciplinas e Turma ingresso. Cada sessão possui tabelas e gráficos que ajudam a visualização das informações pelo usuário.</p>
+			<p>Para ajudar a compreender o que cada informação significa, o icone <i class="fas fa-info-circle" style="color:#20c997"></i> pode lhe dar mais especificações e formulas.</p>
+			<img class="img-fluid rounded" alt="Login"src="images/analise.png">
+
 		</div>
 	</section>
 	<!-- Main Content -->

@@ -1,3 +1,6 @@
+.body-font{
+	font-color: rgba(255,255,255,0.8);
+}
 /* Navegation Bar */
 .adega-nav ul li{
 	text-decoration: none;
@@ -6,6 +9,10 @@
 }
 
 /* Content */
+
+#main p {
+	color: rgba(0,0,0,0.74);
+}
 
 .highlight-command{
 	margin: 0;
