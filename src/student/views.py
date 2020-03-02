@@ -31,7 +31,7 @@ def get_phases_list_from_dg_list(request, degree, dg_list, submission_id):
         # Parse to list of tuples
         
         grid_phases_names = list(grid_phases.keys())
-        active_name = EvasionForm.code_to_str(EvasionForm.EF_ATIVO)
+        active_name = "Alunos ativos"
         # Collect the phases list only for active students (see student analysis)
         grid_phases_names+=[p+" - "+active_name for p in grid_phases_names]
         # grid_phases_values = []
@@ -71,7 +71,19 @@ def detail(request, submission_id, grr):
     grid_phases_list = get_phases_list_from_dg_list(request, degree, dg_list, submission_id)
     
     grid_phases_values = []
+    grid_phases_names = []
     for phase_name in grid_phases_list:
+        # Only list the one phase of the same type
+        # There is a redundant information relative to the evasion
+        # (active or not active student) 
+        if(cache_j['student']["forma_evasao"] != "Sem evasão"
+           and "Alunos ativos" in phase_name):
+            continue
+        if(cache_j['student']["forma_evasao"] == "Sem evasão"
+           and not "Alunos ativos" in phase_name):
+            continue
+        
+
         list_phase_val = get_list_students(
             request.session,
             degree,
@@ -84,7 +96,8 @@ def detail(request, submission_id, grr):
             if student["grr"] == grr:
                 grid_phase_desc_value = student["description_value"]
                 break
-
+        
+        grid_phases_names.append(phase_name)
         grid_phases_values.append({
             "description_value": grid_phase_desc_value,
             "description_name": list_phase_val["description_name"],
