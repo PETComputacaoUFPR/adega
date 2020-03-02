@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .body-font{
 	font-color: rgba(255,255,255,0.8);
 }
@@ -38,4 +42,18 @@
 .adega-footer a{
 	text-decoration: none;
 	color: white;
+}
+
+.scrollBack {
+	display: none;
+	width: 55px;	
+	height: 55px;	
+	position: fixed;
+	z-index: 98;
+	bottom: 20px;
+	right: 40px;
+}
+
+.scrollBack i{
+	z-index: 99;
 }

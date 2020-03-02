@@ -9,6 +9,10 @@
 	<meta charset="utf-8">
 </head>
 <body>
+	<!-- ScrollBack -->
+	<button id="scrollBack" onclick="topFunction()" class="btn btn-primary scrollBack" name="scrollBack" title="Go back up"><i class="fa fa-angle-up"></i></button>
+
+	<!-- ScrollBack -->
 
 	<!-- Navegation Bar -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-adega adega-nav">
@@ -101,14 +105,17 @@
 				Para instalar o projeto devemos clonar o seu repositório no GitHub ou GitLab. Para isso execute este comando em seu terminal:
 			</p>
 			<div class="p-3 center highlight-command">
-				$ git clone git@gitlab.c3sl.ufpr.br:adega/adega.git
+				$ git clone https://github.com/PETComputacaoUFPR/adega.git <span class="text-secondary"># Github</span>
+			</div>
+			<p>ou</p>
+			<div class="p-3 center highlight-command">
+				$ git clone https://gitlab.c3sl.ufpr.br/adega/adega.git <span class="text-secondary"># Gitlab</span>
 			</div>
 
 			<hr class="mt-lg-5">
 			<h2 id="docker">Instalando o docker</h2>
 			<p class="text-justify">
-				O projeto foi desenvolvido usando Docker, um software contêiner que facilita a virtualização, desenvolvimento e manutenção de aplicações. Siga com os comandos a seguir para executar o ADEGA com o docker e instalar todas as dependências. <br>
-				(Docker >= 1.13.1 e Docker-compose >=1.21.2)
+				O projeto foi desenvolvido usando Docker, um software contêiner que facilita a virtualização, desenvolvimento e manutenção de aplicações. Siga com os comandos a seguir para executar o ADEGA com o docker e instalar todas as dependências.
 			</p>
 			<div class="p-3 center highlight-command">
 				<span class="text-primary">$ git clone https://gitlab.c3sl.ufpr.br/adega/adega.git</span> <span class="text-secondary"># Comando já executado</span>
@@ -118,53 +125,57 @@
 				<br>$ sudo make docker-up <span class="text-secondary"># Executa os containers postgres e webserver</span>
 			</div>              
 			<p class="text-justify">
-				Pronto. A partir deste momento o projeto esta rodando e pode ser acessado em <span class="highlight-command text-success">localhost:8000</span>
+				Pronto. A partir deste momento o projeto esta rodando.
 			</p>
 
 			<hr class="mt-lg-5">
 			<h2 id="usuario">Criando usuário educador</h2>
-			<p>Para acessar a plataforma é necessário um Cadastro, caso seja o primeiro acesso é necessário criar esse usuário manualmente. Os passos a seguir mostram passo a passo como se cria um usuário na classe Educator(educador).</p>
+			<p>Para acessar a plataforma é necessário um cadastro, caso seja o primeiro acesso é preciso criar esse usuário manualmente. Os passos a seguir mostram como se cria um usuário na classe Educator(educador).</p>
 
 			<h5>PASSO 1: Criar um super usuário</h5>
-			<p>Em seu terminal prosiga com o comando</p>
+			<p>Em seu terminal prosiga com o comando e crie o usuário.</p>
 			<div class="p-3 mb-3 center highlight-command">
 				$ sudo make docker-manage createsuperuser
 			</div>  
 
 			<h5>PASSO 2: Acessar a Administração do Django </h5>
-			<p>Com o super-usuário criado é permitido acessar a Administração do Django em localhost:8000/adega/admin. Nela gerencia-se grupos de usuários, cursos, educadores e submissões. A que nos interessa é a sessão "Educator".</p>
+			<p>Com o super-usuário criado é permitido acessar a Administração do Django em /adega/admin. Nela gerencia-se grupos de usuários, cursos, educadores e submissões.
+			<br> Usuário: email@email.com
+			<br> Senha: sua senha 
+			</p>
 			<img class="img-fluid rounded" alt="Login"src="images/django-manager.png">
-			<h5>PASSO 3: Cadastrar o usuário como educador</h5>
-			<p>Siga as imagens para cadastrar um usuário novo como educador.</p>
+			<h5 class="mt-3">PASSO 3: Cadastrar o usuário como educador</h5>
 			<p>Selecione a sessão EDUCATOR</p>
 			<img class="img-fluid rounded" alt="Login"src="images/add-educator.png">
-			<p>Escolha o usuário e o curso que ela será responsável (caso não exista, adicione um curso na sessão DEGREE)</p>
+			<p>Escolha o usuário e o curso que ela será responsável (caso não exista um curso, adicione um na sessão DEGREE)</p>
 			<img class="img-fluid rounded" alt="Login"src="images/add-educator2.png">
-			<p>Pronto, o sistema esta pronto para receber a entrada de dados</p>
+			<p>Pronto, o sistema esta preparado para receber a entrada de dados.</p>
 			
 			<hr class="mt-lg-5">
 			<h2 id="upload">Upload de dados</h2>
-			<p>Antes de enviar a primeira planilha, precisamos converter-la para o formato correto. Por isso temos um conversor de dados.</p>
-			<h3>Conversor de dados</h3>
+			<p>Antes de enviar a primeira planilha precisamos converter-la para o formato correto. Para isso precisamos de nosso conversor.</p>
+			<h5>Conversor de dados</h5>
 			<p>Disponível em: https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega</p>
-			<p>Ele aceita as planilhas no formato SIE. Basta criar um diretório com os arquivos <span class="text-warning">histórico.csv</span> e <span class="text-warning">matricula.csv</span>. Em seguida execute os comandos a seguir:</p>
-			<p></p>
+			<p>Ele recebe de entrada as planilhas no formato SIE. Basta criar um diretório com os arquivos <span class="text-warning">histórico.xls</span> e <span class="text-warning">matricula.xls</span> e indicar o nome do arquivo de saída. Em seguida execute os comandos a seguir:</p>
 			<div class="p-3 center highlight-command">
-				<span class="text-primary">$ git clone https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega.git</span>
-				<br>$ python3 conversor.py --input <span class="text-secondary">diretorio-das-planilhas</span> --output <span class="text-secondary">onde-salvar</span> 
+				<span class="text-primary">$ git clone https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega.git</span><span class="text-secondary"> # repositório do Conversor de dados</span>
+				<br>$ python3 conversor.py --input <span class="text-secondary">diretorio-das-planilhas/</span> --output <span class="text-secondary">nome-saida.csv</span> 
 			</div>  
-			<h3 class="mt-lg-3">Submissão</h3>
-			<p>Acesse a paǵina de Upload de dados pela Dashboard</p>
+			<h5 class="mt-lg-3">Submissão</h5>
+			<p>Acesse a paǵina de Upload de dados pela Dashboard.</p>
 			<img class="img-fluid rounded" alt="Login"src="images/dashboard.png">
-			<p><br>Selecione sua planilha, ano, semestre. Também é possível selecionar o que será disponibilizado pra o público. Clique em Enviar relatório e pronto, a analise ja está sendo feita. Logo ela poderá ser acessada pela dashboard.<br></p>
+			<p><br>Selecione sua planilha, ano e semestre. Também é possível marcar o que será disponibilizado pra o público e outros coordenadores. Clique em Enviar relatório e pronto, a analise ja está sendo feita. Em pouo tempo ela poderá ser acessada pela dashboard.<br></p>
 			<img class="img-fluid rounded" alt="Login"src="images/submit.png">
 			
 			<hr class="mt-lg-5">
 			<h2 id="uso">Uso da plataforma</h2>
-			<p>Para acessar as informassões das analises basta acessar pela dashboard. A plataforma apresenta Informações gerais do curso, alunos, Cepe 96/15, Disciplinas e Turma ingresso. Cada sessão possui tabelas e gráficos que ajudam a visualização das informações pelo usuário.</p>
+			<p>Para acessar as informassões das analises basta acessar pela dashboard as Últimas análises feitas. A plataforma apresenta Informações gerais do curso, alunos, Cepe 96/15, Disciplinas e Turma ingresso. Cada sessão possui tabelas e gráficos que ajudam a visualização das informações gerais do curso, bem como a listagem e descrição individual de cada aluno.</p>
 			<p>Para ajudar a compreender o que cada informação significa, o icone <i class="fas fa-info-circle" style="color:#20c997"></i> pode lhe dar mais especificações e formulas.</p>
 			<img class="img-fluid rounded" alt="Login"src="images/analise.png">
+			<p class="mt-5">Obigado por utilizar o sistema A.D.E.G.A</p>
 
+			<h3>Ajude-nos respondendo nosso questionário <i class="fas fa-smile"></i></h3>
+			<a href="#">Feedback</a>
 		</div>
 	</section>
 	<!-- Main Content -->
@@ -197,6 +208,7 @@
 		<!-- Footer -->
 	</section>
 	<!-- Main Content -->
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -222,11 +234,30 @@
 
 			// Add hash (#) to URL when done scrolling (default click behavior)
 			window.location.hash = hash;
-		});
+			});
 
-		} // End if
+			} // End if
 
-	  }); 
+		}); 
+
+		// Scroll top button
+		sbButton = document.getElementById("scrollBack");
+		sbButton.style.display = "none";
+
+		window.onscroll = function() {scroll()};
+
+		function scroll() {
+			if (document.body.scrollTop > 650 || document.documentElement.scrollTop > 650) {
+				sbButton.style.display = "block";
+			} else {
+				sbButton.style.display = "none";
+			}
+		}
+
+		function topFunction() {
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		}
 
 	</script>
 </body>
