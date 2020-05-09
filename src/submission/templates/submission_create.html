@@ -18,63 +18,13 @@
 	status de ociosa, perdendo a indicação de que o processamento está sendo realizado.
 	Caso isso aconteça, verifique a página de <a href="{% url 'submission:SubmissionListView' %}">Gerenciamento de relatórios</a>
 	e visualize o status do processamento do upload dos relatórios (planilhas do SIE),
-	que pode ser "Terminado", "Executando" ou "Falha".<br>
-	Em caso de falha, verifique se as planilhas de Matrícula e Histórico
-	são válidas e estão em ordem correta. <br>
-    Pode ser que o SIE altere o código de algum relatório, mas caso isso
-    aconteça não tem problema,
-    pois o que importa são as colunas com os nomes que especificamos.  Caso o
-    código tenha mudado por favor
-    envie um email para a lista de desenvolvimento <a
-                                                       href="mailto:adega_dev@googlegroups.com"
-                                                       >adega_dev@googlegroups.com</a>
-    com o novo código para podemos atualizar esta página<br>
-    Nos adotamos o formato xls para os relatório por causa de problemas com o
-    csv e colunas de notas média.  Portanto todos relatórios devem ser enviados
-    como xls.<br><br>
-    Convencionamos os seguintes nomes para os relatórios:
-	<ul>
-        <li>
-            Relatório histórico
-            <ul>
-               <li>
-                   Descrição: Contém as informações referentes às matrículas dos alunos em
-                   disciplinas e seus resultados.
-               </li>
-               <li>
-                   Colunas: ID_PESSOA; NOME_PESSOA; ID_ALUNO; MATR_ALUNO;
-                   NUM_VERSAO; NOME_CURSO;COD_CURSO; ID_VERSAO_CURSO; ANO;
-                   COD_ATIV_CURRIC; NOME_ATIV_CURRIC; CREDITOS; MEDIA_FINAL;
-                   DESCR_SITUACAO; PERIODO; ID_CURSO_ALUNO; SITUACAO_ITEM;
-                   CH_TEORICA; CH_PRATICA; TOTAL_CARGA_HORA; FORMA_INGRESSO;
-                   ANO_INGRESSO; FORMA_EVASÃO; ANO_EVASÃO; SEXO.
-               </li>
-               <li>Observação: Nesse relatório talvez seja possível selecionar
-               alunos pela forma de evasão, por exemplo só gerar relatório dos
-               alunos com forma de evasão formado, para o sistema ADEGA quanto
-               mais seleção de forma de evasão melhor é, pois aumenta a
-               quantidade de alunos e as analises ficam mais precisas.</li>
-               <li> Possível código SIE: 11.02.05.99.18 </li>
-            </ul>
-        </li>
-        <li>
-            Relatório Matrícula
-            <ul>
-                <li>
-                    Descrição: Contém informações das matrículas de cada aluno no curso
+	que pode ser "Terminado", "Executando" ou "Falha".<br><br>
+    
+    Para entender o fluxo completo dos dados, recomendamos acessar o <a href="https://petcomputacaoufpr.github.io/adega/web_pages/index.html#upload">guia de uso geral do ADEGA</a>.
+    <br><br>
 
-                </li>
-                <li> Colunas: ID_PESSOA; NOME_PESSOA; SEXO; DT_NASCIMENTO;
-                    FORMA_INGRESSO; FORMA_EVASAO; COD_CURSO; NOME_UNIDADE;
-                    MATR_ALUNO; NUM_VERSAO; PERIODO_INGRESSO; DT_EVASAO;
-                    PERIODO_EVASAO.
-                </li>
-                <li>Possível código SIE: 11.02.04.99.43</li>
-            </ul>
-        </li>
-	</ul>
-
-
+    Certifique-se que os dados enviados estão em uma planilha de formato <i>.csv</i>.<br>
+    Essa planilha deve seguir o modelo gerado pelo nosso <a href="https://gitlab.c3sl.ufpr.br/adega/conversor-de-dados-adega/tree/master">conversor de dados</a>, disponível em um repositório aberto.
 </div>
 
 
@@ -85,10 +35,10 @@
         <!-- Uploads files -->
         <div class="form-row">
             <div class="col-lg-5 col-md-5 col-sm-4">
+                <label for="csv_data_file" type="file"
+                    class="custom-file-label">Dados (formato .csv)</label>
                 <input type="file" name="csv_data_file"
                 class="custom-file-input" id="csv_data_file"/>
-                <label for="csv_data_file" type="file"
-                    class="custom-file-label">Dados (formato adega)</label>
             </div>
 
         </div>
