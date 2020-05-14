@@ -103,7 +103,7 @@ class StudentAnalysis:
         for s in set_phases:
             phase_name = s
             if only_actives:
-                phase_name+=" - "+EvasionForm.code_to_str(EvasionForm.EF_ATIVO)
+                phase_name+=" - Alunos ativos"
 
             student_list = []
             for grr,group in groups:
@@ -114,12 +114,13 @@ class StudentAnalysis:
                 approved_courses = set(group["COD_ATIV_CURRIC"].values)
                 # Total if courses needed fot a student complete a phase
                 debpt = len(set_phases[s] - approved_courses)
-                student_list.append({
-                    "grr":grr,
-                    "nome": people_name,
-                    "ira": iras[grr],
-                    "description_value":debpt,
-                })
+                if debpt > 0:
+                    student_list.append({
+                        "grr":grr,
+                        "nome": people_name,
+                        "ira": iras[grr],
+                        "description_value":debpt,
+                    })
 
             list_phases[phase_name]["student_list"] = student_list
             list_phases[phase_name]["description_name"] = "Disciplinas restantes"
@@ -424,11 +425,23 @@ class StudentAnalysis:
     def periodo_pretendido(self, df=None):
         df = df if df is not None else self.data_frame
 
-        aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO"])
+        aux = df.groupby(["MATR_ALUNO", "ANO_INGRESSO", "SEMESTRE_INGRESSO",
+                          "NUM_VERSAO", "COD_CURSO"])
         students = {}
         for x in aux:
-            students[x[0][0]] = ((self.current_year - int(x[0][1])) * 2 +
+            intended_semester = ((self.current_year - int(x[0][1])) * 2 +
                                   self.current_semester - int(x[0][2]) + 1)
+        
+            num_versao = str(int(x[0][3]))
+            cod_curso = str(x[0][4])
+            # TODO: Receive cod_curso as Analysis class parameter (from build_cache)
+            degree_grid = DegreeGrid.get_degree_grid(cod_curso, num_versao)
+            # If there is a valid grid to this student
+            if not degree_grid is None and intended_semester > len(degree_grid.grid):
+                    intended_semester = "Formatura"
+
+            students[x[0][0]] = intended_semester
+        
         return students
 
 
