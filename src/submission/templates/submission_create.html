@@ -36,7 +36,7 @@
         <div class="form-row">
             <div class="col-lg-5 col-md-5 col-sm-4">
                 <label for="csv_data_file" type="file"
-                    class="custom-file-label">Dados (formato .csv)</label>
+                    class="custom-file-label" id="csv_data_file_label">Dados (formato .csv)</label>
                 <input type="file" name="csv_data_file"
                 class="custom-file-input" id="csv_data_file"/>
             </div>
@@ -118,14 +118,21 @@
 
 		<div class="row">
 			<div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
-				<button class="btn btn-success btn-block" type="submit">Enviar relatório</button>
+				<button id="submit_button" class="btn btn-success btn-block" type="submit">Enviar relatório</button>
 			</div>
 			<div class="col-lg-3 col-md-4 col-sm-4">
         <a class="btn btn-danger btn-block" style="text-decoration: none!important;" href="{% url 'submission:SubmissionListView' %}">Cancelar</a>
 			</div>
-		</div>
+    </div>
+    <br>
+    <div id="submit_progress" style="display:none">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div><br>
+      Processando dados, por favor aguarde...<br>
+      Ao final do processamento você será redirecionado para a página inicial.
+    </div>
     </form>
-
 </div>
 {% endblock content %}
 
@@ -140,14 +147,22 @@
     </script>
 
     <script>
+        $( document ).ready(function() {
+          $("#submit_progress").hide();
+        });
         // Change the file input to add its name
         $('.custom-file-input').on('change',function(e){
             //get the file name
             // var fileName = $(this).val();
             var fileName = e.target.files[0].name;
             //replace the "Choose a file" label
-            $(this).next('.custom-file-label').html(fileName);
+            var newText = "<b>"+fileName+"</b>";
+            $("#csv_data_file_label").html(newText);
         })
+
+        $("#submit_button").click(function(e){
+          $("#submit_progress").show();
+        });
     </script>
 
 {% endblock js-foot %}

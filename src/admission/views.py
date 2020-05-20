@@ -44,7 +44,7 @@ def detail(request, submission_id, ano, semestre):
     if(admission_info["formatura_media"] == -1):
         admission_info["formatura_media"] = "Não há alunos formados nesta turma"
     else:
-        admission_info["formatura_media"] = str(admission_info["formatura_media"]) + " anos"
+        admission_info["formatura_media"] = "{:.2f}".format(admission_info["formatura_media"]) + " anos"
 
     return render(request, 'admission/detail.html',{
         "degree": degree,
