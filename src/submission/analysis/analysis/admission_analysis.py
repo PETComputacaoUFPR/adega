@@ -70,17 +70,17 @@ class Admission(object):
         """
             Calcula o tempo medio levado para cada turma ingresso se formar.
         """
-        df = self.__dataframes["df_filted"]
+        df = self.__dataframes["df_filted"].copy()
         df = df.loc[df.FORMA_EVASAO == ef.EF_FORMATURA]
-
+        
         # muda semestre 1 para 0.0 e semestre 2 para 0.5
         dict_convert = {"1":0.0, "2":0.5, "Anual":0.0}
-        df["SEMESTRE_INGRESSO"] = df["SEMESTRE_INGRESSO"].map(dict_convert)
-        df["SEMESTRE_EVASAO"] = df["SEMESTRE_EVASAO"].map(dict_convert)
-
+        df.loc[:,"SEMESTRE_INGRESSO"] = df["SEMESTRE_INGRESSO"].map(dict_convert)
+        df.loc[:,"SEMESTRE_EVASAO"] = df["SEMESTRE_EVASAO"].map(dict_convert)
         # agrupa dados por turma ingresso
-        admission_g = df.groupby(["ANO_INGRESSO", "SEMESTRE_INGRESSO"])
 
+        admission_g = df.groupby(["ANO_INGRESSO", "SEMESTRE_INGRESSO"])
+        
         # faz a media do tempo gasto por cada aluno de cada turma ingresso na
         # graduação
         media_formatura = admission_g.apply(lambda x:\
@@ -88,6 +88,7 @@ class Admission(object):
                 (x.ANO_INGRESSO.astype(float)+x.SEMESTRE_INGRESSO.astype(float))).mean())
 
         self.analysis["media_formatura"] = media_formatura.rename({0.0: '1', 0.5:'2'})
+
 
     def taxa_reprovacao(self):
         if(not self.__counts):
