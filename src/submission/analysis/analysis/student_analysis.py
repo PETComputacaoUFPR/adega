@@ -199,7 +199,7 @@ class StudentAnalysis:
 
         return {
             "student_list": student_list,
-            "description_name": "Semestres de curso"
+            "description_name": "Período pretendido"
         }
     
         
