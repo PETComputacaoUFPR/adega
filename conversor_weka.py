@@ -1,5 +1,7 @@
 from pathlib import Path
 import json
+import csv
+
 
 def list_json(caminho, lista):
 
@@ -44,4 +46,27 @@ def cria_cabecalho(caminho):
             if (not (nome in nomes_colunas_students)):
                 nomes_colunas_students.append(nome)
 
-    # Feito o cabeçalho da planilha csv students
+    # Feito o cabeçalho da planilha csv studentsimport csv
+
+
+def create_csv(name_spreadsheet,name_columns,number_row):
+    with open(name_spreadsheet, 'w') as f:
+        thewriter = csv.writer(f)
+        thewriter.writerow(name_columns)
+        
+        content = []
+
+        for i in name_columns:
+            content.append(-1)
+
+        for i in range(number_row):
+            thewriter.writerow(content)
+
+    #   name_spreadsheet = string com nome da planilha a ser criada
+    #   name_columns = lista com nomes das colunas
+    #   number_lines = qtd de linhas do csv
+    
+if __name__ == '__main__':
+    #teste da funcao create_csv
+    #lista = ['coluna1','coluna70','coluna22','coluna42']
+    #create_csv('testeDaFuncao.csv', lista, 7)
