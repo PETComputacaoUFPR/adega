@@ -360,6 +360,10 @@
                 <td><input type="number" class="form-control" value="8" name="periodNumber" id="periodNumberInput" min=1 max=20></td>
             </tr>
             <tr>
+                <td><label for="fakeCode" id="fakeCodeLabel">Código Inválido:</label></td>
+                <td><input type="text" class="form-control" name="fakeCode" id="fakeCodeInput"></td>
+            </tr>
+            <tr>
                 <td><label for="phase" id="phase">Número de Fases:</label></td>
                 <td><input type="number" class="form-control" name="phaseInput" id="phaseInput"></td>
                 <td><input type="button" class="btn btn-primary" name="phaseBtn" id="phaseBtn" value="Confirmar"></td>
@@ -439,8 +443,8 @@
             "grid": [
 
             ],
-            "repeated_codes": ["OPT"],
-            "fake_codes": ["OPT"],
+            "repeated_codes": '',
+            "fake_codes": '',
             "code_to_name": {
 
             },
@@ -469,7 +473,7 @@
                 let isOptative = document.getElementById(`optative${i}${j}`);
 
                 if (isOptative.checked) {
-                    gridObject.grid[i].push('OPT');
+                    gridObject.grid[i].push(gridObject.fake_codes);
                 } else {
                     // Monta o gridObject.grid
                     gridObject.grid[i].push(disciplineCodePivot.value);
@@ -970,6 +974,7 @@
     }
 
     const startGrid = (numberOfPeriods) => {
+        let fakeCode = document.getElementById("fakeCodeInput").value;
 
         for (i = 1; i <= numberOfPeriods.value; i++) {
 
@@ -1003,6 +1008,8 @@
         
             // Coloca a Versão da Grade no Objeto.
             gridObject.version = gridVersion.value;
+            gridObject.repeated_codes = fakeCode;
+            gridObject.fake_codes = fakeCode;
         
             gridCreated = true;
 
@@ -1102,7 +1109,7 @@
             cell.innerHTML = optName;
 
             gridObject.code_to_name[optName] = optCode;
-            gridObject.equiv_codes[optCode] = 'OPT';
+            gridObject.equiv_codes[optCode] = gridObject.fake_codes;
 
         } else if (element.className == "deleteButtonSettings") {
             let row = element.parentElement.parentElement.rowIndex;
