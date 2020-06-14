@@ -7,6 +7,9 @@
     margin: 0;
     padding: 0;
     }
+    .form-control, .btn-primary{
+        margin:2px;
+    }
     #logo {
         font-size: 40px;
         color: #132940;
@@ -369,11 +372,7 @@
                 <td><input type="button" class="btn btn-primary" name="phaseBtn" id="phaseBtn" value="Confirmar"></td>
             </tr>
             <tr>
-                <td></td>
                 <td><input type="button" class="btn btn-primary" name="initGrid" id="initGrid" value="Iniciar Grade" disabled></td>
-                <td></td>
-            </tr>
-            <tr>
                 <td></td>
                 <td><input type="button" class="btn btn-primary" name="saveGrid" id="saveGrid" value="Salvar Grade" disabled></td>
                 <td></td>
@@ -417,47 +416,47 @@
 <script>
         // Pega o elemento GRID e o child.
     var grid = document.getElementById("grid");
-        gridBody = document.querySelector("#grid > tbody");
+    gridBody = document.querySelector("#grid > tbody");
 
-        // Variável para verificar se a grade inicial foi criada.
-        gridCreated = false;
-        // Variável para verificar se a quantidade de fases já foi estabelecida.
-        phaseStarted = false;
-        // Verifica se os inputs das fases estão vazios.
-        empty = false;
-        // Array das possíveis fases.
-        allPhasesArray = [];
-        // Períodos Input
-        periodNumber = document.getElementById("periodNumberInput");
-        // Versão da Grade Input
-        gridVersion = document.getElementById("gridVersionInput");
-        // Phase Input
-        phaseInput = document.getElementById("phaseInput");
-        displayVersion = document.getElementById("displayGridVersion");
-        // Plus Button
-        plusBtn = document.getElementsByClassName("plusBtn");
-        gridSaved = false;
+    // Variável para verificar se a grade inicial foi criada.
+    gridCreated = false;
+    // Variável para verificar se a quantidade de fases já foi estabelecida.
+    phaseStarted = false;
+    // Verifica se os inputs das fases estão vazios.
+    empty = false;
+    // Array das possíveis fases.
+    allPhasesArray = [];
+    // Períodos Input
+    periodNumber = document.getElementById("periodNumberInput");
+    // Versão da Grade Input
+    gridVersion = document.getElementById("gridVersionInput");
+    // Phase Input
+    phaseInput = document.getElementById("phaseInput");
+    displayVersion = document.getElementById("displayGridVersion");
+    // Plus Button
+    plusBtn = document.getElementsByClassName("plusBtn");
+    gridSaved = false;
 
-        gridObject = {
-            "version": "",
-            "grid": [
+    gridObject = {
+        "version": "",
+        "grid": [
 
-            ],
-            "repeated_codes": '',
-            "fake_codes": '',
-            "code_to_name": {
+        ],
+        "repeated_codes": '',
+        "fake_codes": '',
+        "code_to_name": {
 
-            },
-            "equiv_codes": {
+        },
+        "equiv_codes": {
 
-            },
-            "prerequisites":{
+        },
+        "prerequisites":{
 
-            },
-            "phases":{
+        },
+        "phases":{
 
-            }
         }
+    }
 
     const storeAllInputsInObject = () => {
         // Inicia em zero pois as rows iniciam em zero.
@@ -825,7 +824,6 @@
         // Guarda o valor da próxima célula
         let actualCell = parseInt(cell);
         actualCell++;
-        console.log(actualCell)
 
         // Atualiza os valores das ids
         for (let i = actualCell; i < grid.rows[row].cells.length; i++) {
@@ -1026,10 +1024,12 @@
         table = document.getElementById("preconfigTable");
 
         for (let i = 0; i <= phaseInput.value - 1; i++) {
-            let row = table.insertRow(3 + i)
-            row.insertCell(0);
+            let row = table.insertRow(4 + i)
+            let cell1 = row.insertCell(0);
             let cell2 = row.insertCell(1);
-            cell2.innerHTML = `<input type="text" class="form-control" placeholder="Nome" name="phaseNameInput${i}" id="phaseNameInput${i}" class="phaseConfig">`;
+            let cell3 = row.insertCell(2);
+            cell2.innerHTML  = `<label for="phase" id="phase">Nome da fase ${i}:</label>`;
+            cell3.innerHTML += `<input type="text" class="form-control" placeholder="Nome" name="phaseNameInput${i}" id="phaseNameInput${i}" class="phaseConfig">`;
         }
         // Verifica se a grade já foi salva / criada.
         } else if (element.id == "initGrid" && gridCreated || element.id == "saveGrid" && gridSaved) {
@@ -1130,7 +1130,6 @@
         document.addEventListener("click", targetElement => {
             let selectedElement = targetElement.target;
             if (selectedElement.tagName == "BUTTON" || selectedElement.tagName == "INPUT" || selectedElement.tagName == "H1") {
-                console.log("initButtonEvents: ", selectedElement);
                 execBtnAction(selectedElement);
             }
         });
