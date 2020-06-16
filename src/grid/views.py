@@ -159,8 +159,28 @@ class GridCreate(View):
     success_url = reverse_lazy('dashboard')
 
     def post(self, request, *args, **kwargs):
-        grid_json = request.POST.copy()["grid"]
         degree_code = kwargs["degree_code"]
+
+        grid_as_json_string = request.POST.copy()["grid"]
+
+        grid_as_dict = json.loads(grid_as_json_string)
+        # TODO: Checar validade do grid
+
+        grid_as_json_string = json.dumps(grid_as_dict, indent=4, sort_keys=True)
+
+
+        grid_version = grid_as_dict["version"]
+        dg = Degree.objects.get(code=degree_code)
+        new_grid = Grid(degree=dg, version=grid_version,
+                        data_as_string=grid_as_json_string)
+        new_grid.save()
+
+        
+
+        return redirect('/grid/{}'.format(degree_code))
+
+
+        '''
         grid = json.loads(grid_json)
         new_grid = create_course_from_json(grid,degree_code)
         if new_grid is None:
@@ -169,7 +189,7 @@ class GridCreate(View):
         # return HttpResponseRedirect(self.success_url)
         return redirect('/grid/{}'.format(degree_code))
         # return HttpResponseRedirect(reverse('grids', args=[degree_code]))
-
+        '''
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, kwargs)
@@ -194,6 +214,6 @@ class GridCreate(View):
         user = self.request.user
         #context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
-        #context["degree"] = Degree.objects.get(code=self.kwargs["degree_code"])
+        context["degree_code"] = Degree.objects.get(code=self.kwargs["degree_code"])
         # print(self.kwargs)
         return context

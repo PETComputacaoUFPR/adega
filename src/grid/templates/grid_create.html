@@ -1122,6 +1122,7 @@
             storeAllInputsInObject();
             console.log(gridObject);
             gridSaved = true;
+            send_grid(gridObject);
         }
     }
 
@@ -1135,6 +1136,24 @@
         });
     }
 
+    const send_grid = (json_data) => {
+        var json_data = JSON.stringify(json_data);
+        $.ajax({
+            type:"POST",
+            url: "{% url 'grid:GridCreateView' degree_code=degree_code %}",
+            data: {
+                grid: json_data,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data, status){
+                window.location.href = "/grid/{{degree_code}}";
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+            }
+        });
+    }
+    
     initButtonEvents();
 </script>
 
