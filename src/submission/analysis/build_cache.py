@@ -137,7 +137,7 @@ def generate_student_data(path, dataframe, student_analysis):
     list_situations = student_analysis.list_students_situation()
     for fl in files_list:
         list_name = EvasionForm.code_to_str(int(fl))
-        list_content = {"description_name":"", "description_value":""}
+        list_content = {"student_list":[], "description_name":"Forma de evasão"}
         if(fl in list_situations):
             list_content = list_situations[fl]
         save_json(path + "list/" + list_name + ".json", list_content)

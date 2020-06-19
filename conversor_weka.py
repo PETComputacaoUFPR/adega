@@ -9,6 +9,7 @@ import pandas as pd
 
 from conversor_admissions import AdmissionConversor
 from conversor_courses import CourseConversor
+from conversor_students import StudentConversor
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -41,6 +42,7 @@ def main():
     print(df)
     '''
 
+    '''
     course = CourseConversor(submission_path)
     data_course,header_course = course.get_course_as_matrix()
     df = pd.DataFrame(data_course)
@@ -49,7 +51,17 @@ def main():
     print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_1"]])
     print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_2"]])
     print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_MaisQue4"]])
-    # print(df)
+    '''
+
+    student = StudentConversor(submission_path)
+    data_student,header_student = student.get_student_as_matrix()
+    df = pd.DataFrame(data_student)
+    df.columns = header_student
+    # print(df[["Código","Nome","aprovacao_semestral_QuantidadeAprovacao_2015_1o. Semestre"]])
+    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_1"]])
+    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_2"]])
+    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_MaisQue4"]])
+    print(df)
 
 if __name__ == '__main__':
     main()
