@@ -1,5 +1,5 @@
 import numpy as np
-from common_conversor import get_all_subjson, PeriodType
+from submission.analysis.json_submission_to_csv.common_conversor import get_all_subjson, PeriodType
 import os
 import pandas as pd
 import json

@@ -1,5 +1,5 @@
 import os
-from src.submission.analysis.conversor_de_dados_adega.utils.situations import PeriodType
+from submission.analysis.conversor_de_dados_adega.utils.situations import PeriodType
 
 def get_all_subjson(path, only_subdir=True, ignore_files=None):
     ignore_files = [] if ignore_files is None else ignore_files
