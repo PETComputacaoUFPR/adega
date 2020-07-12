@@ -16,12 +16,6 @@ def get_args():
     parser.add_argument('--zip_path', type=str,
                         help="name of zip created with csv data",
                         required=false, default="test")
-    # parser.add_argument('--output', type=str,help="path to sheet",
-    #                     required=True)
-    # parser.add_argument('--type_input', type=str,help="input type",
-    #                     required=False, default="SIE")
-    # parser.add_argument('--output_fname', type=str,help="output file name",
-    #                     required=False, default="adega_input.csv")
     args = parser.parse_args()
 
     return args
@@ -63,39 +57,18 @@ def main(submission_path, zip_path):
     df_admission = pd.DataFrame(data_admission)
     df_admission.columns = header_admission
     df_admission.to_csv(admission_csv_path, index=False)
-    # print(df[["Ano","Período","students_per_semester_StudentsCount_2015_1o. Semestre"]])
-    # print(df[["Ano","Período","ira_per_semester_std_2013_1o. Semestre"]])
 
     course = CourseConversor(submission_path)
     data_course,header_course = course.get_course_as_matrix()
     df_course = pd.DataFrame(data_course)
     df_course.columns = header_course
     df_course.to_csv(course_csv_path, index=False)
-    # print(df[["Código","Nome","aprovacao_semestral_QuantidadeAprovacao_2015_1o. Semestre"]])
-    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_1"]])
-    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_2"]])
-    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_MaisQue4"]])
 
     student = StudentConversor(submission_path)
     data_student,header_student = student.get_student_as_matrix()
     df_student = pd.DataFrame(data_student)
     df_student.columns = header_student
     df_student.to_csv(student_csv_path, index=False)
-    
-    # print(df[["Código","Nome","aprovacao_semestral_QuantidadeAprovacao_2015_1o. Semestre"]])
-    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_1"]])
-    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_2"]])
-    # print(df[["Código","Nome","grafico_qtd_cursada_aprov_QuantidadeDeVezesCursadaAteAprovacao_MaisQue4"]])
-    
-    # zipObj = ZipFile(zip_path, 'w')
-    # zipObj.write(admission_csv_path, os.path.basename(admission_csv_path))
-    # zipObj.write(course_csv_path, os.path.basename(course_csv_path))
-    # zipObj.write(student_csv_path, os.path.basename(student_csv_path))
-
-    # zipObj.write(submission_path, os.path.basename(submission_path))
-    
-    # close the Zip File
-    # zipObj.close()
     
     
     ZipUtilities().toZip(submission_path,zip_path)
@@ -108,6 +81,3 @@ if __name__ == '__main__':
     submission_path = args.zip_path
 
     main(submission_path)
-    #teste da funcao create_csv
-    #lista = ['coluna1','coluna70','coluna22','coluna42']
-    #create_csv('testeDaFuncao.csv', lista, 7)
