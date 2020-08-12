@@ -127,8 +127,9 @@ class CourseConversor:
             else:
                 return vector_data
             
-        raise Exception("A graph data cannot be converted: {}".format(
-        graph_name))
+        raise Exception(
+            "A graph data cannot be converted: {}".format(graph_name))
+        
     def get_header(self, keys_from_instances=True, keys_from_list=True):
         # Get only the first level of course path (subdirectories)
         keys_set = set()
