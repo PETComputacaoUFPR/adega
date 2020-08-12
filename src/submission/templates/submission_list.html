@@ -56,13 +56,9 @@
 								<!-- <a href="{% url 'submission:SubmissionUpdateView' sub.pk %}">Editar </a><br> -->
 								{% if sub.get_analysis_status_display != 'Executando' %}
 									<a href="{% url 'submission:SubmissionDeleteView' sub.pk %}">Remover </a><br>
-									<hr class="col-xs-12">
 								{% endif %}
 								{% if sub.get_analysis_status_display == 'Terminado' %}
 									<a href="{% url 'degree:index' submission_id=sub.id %}"> Visualizar relatório (gráficos e taxas) </a>
-									<br>
-									<hr class="col-xs-12">
-									<a href="{% url 'submission:download' submission_id=sub.id%}"> Baixar resultados </a>
 								{% endif %}
 							</td>
 
