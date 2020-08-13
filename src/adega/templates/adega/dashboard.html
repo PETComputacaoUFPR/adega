@@ -67,18 +67,13 @@
 <br>
 {% for degree in degrees_last_submissions %}
 <div class="row">
-  <div class="col-xl-3">{{degree.name}} ({{degree.code}})</div>
-  <div class="col-xl-3">
+  <div class="col-xl-4">{{degree.name}} ({{degree.code}})</div>
+  <div class="col-xl-4">
     <a href="{% url 'degree:index' submission_id=degree.last_submission.id %}">Última análise</a><br>
   </div>
-  <div class="col-xl-3">
+  <div class="col-xl-4">
     <a href="{% url 'grid:GridList' degree_code=degree.code %}">Grade Curricular</a><br>
   </div>
-  {% if degree.download_allowed %}
-  <div class="col-xl-3">
-    <a href="{% url 'submission:download' submission_id=degree.last_submission.id %}">Baixar resultados</a><br>
-  </div>
-  {% endif %}
 </div>
 
 {% endfor %}

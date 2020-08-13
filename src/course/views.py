@@ -51,7 +51,9 @@ def index(request, submission_id):
 
 @permission_required_or_403('view_course', (Submission, 'id', 'submission_id'))
 def compare(request, submission_id):
+    print(request,submission_id)
     submission_id = int(submission_id)
+    print(submission_id)
 
     submission = Submission.objects.get(id=submission_id)
     degree = submission.degree

@@ -53,7 +53,6 @@ def index(request, submission_id):
     
     return render(request, "degree/index.html", {
         "submission": submission,
-        "download_allowed": submission.download_allowed(request.user),
         "degree": degree,
         "degree_data": degree_data,
         "situations_pass": situations_pass,
