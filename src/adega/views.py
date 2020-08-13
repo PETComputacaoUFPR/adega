@@ -18,12 +18,17 @@ def dashboard(request):
             degrees_last_submissions.append({
                 "name": degree.name,
                 "code": degree.code,
-                "last_submission": last_submission
+                "last_submission": last_submission,
+                "download_allowed": last_submission.download_allowed(request.user)
             })
-    return render(request, 'adega/dashboard.html', {"title": "Dashboard",
-                                                    "degrees_last_submissions":degrees_last_submissions,
-                                                    "hide_navbar": True
-                                                    })
+    return render(request,
+                  'adega/dashboard.html',
+                  {
+                    "title": "Dashboard",
+                    "degrees_last_submissions":degrees_last_submissions,
+                    "hide_navbar": True
+                  }
+    )
 
 
 @login_required
