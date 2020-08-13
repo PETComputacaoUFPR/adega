@@ -359,6 +359,12 @@ class Course(Analysis):
             course_dict = {}
             course_dict["disciplina_codigo"] = course
             course_dict["disciplina_nome"] = self.analysis["courses"][course]
+            
+            # If the course code is related to more than one name,
+            # concatenate these names into an unique string
+            if type(course_dict["disciplina_nome"]) != str:
+                new_course_name = " | ".join(list(course_dict["disciplina_nome"]))
+                course_dict["disciplina_nome"] = new_course_name
             # quantidade de matriculas
             count = self.analysis["general_count_submission"][course]
             course_dict["qtd_alunos"] = count
