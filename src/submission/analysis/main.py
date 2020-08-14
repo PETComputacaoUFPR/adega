@@ -23,7 +23,9 @@ def analyze(submission, debug=True, create_csv_data=True):
                     submission.relative_year, submission.relative_semester)
         
         if create_csv_data:
-            parse_to_csv(path, submission.zip_path())
+            parse_to_csv(path,
+                         submission.csv_data_file.path,
+                         submission.zip_path())
         
         submission.set_done(round(time.clock() - start_time))
 
