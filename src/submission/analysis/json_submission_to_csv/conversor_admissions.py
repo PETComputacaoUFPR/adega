@@ -8,11 +8,12 @@ from pathlib import Path
 
 class AdmissionConversor:
     def __init__(self, submission_path, not_allowed_keys=None,
-                 min_year=None, max_year=None):
+                 min_year=None, max_year=None,
+                 submission_raw_data_fname="csv_data_file.csv"):
         admission_dir = os.path.join(submission_path, "admissions")
         self.submission_path = submission_path
         self.admission_dir = admission_dir
-
+        self.submission_raw_data_fname = submission_raw_data_fname
 
         if not_allowed_keys is None:
             self.not_allowed_keys = ["evasion_per_semester"]
@@ -24,7 +25,8 @@ class AdmissionConversor:
             self.max_year = max_year
     
     def init_min_max_year(self):
-        df = pd.read_csv(os.path.join(self.submission_path,"csv_data_file.csv"))
+        df = pd.read_csv(os.path.join(self.submission_path,
+                         self.submission_raw_data_fname))
         self.min_year = int(df["ANO_ATIV_CURRIC"].min())
         self.max_year = int(df["ANO_ATIV_CURRIC"].max())
 
