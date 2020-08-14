@@ -44,7 +44,7 @@ class ZipUtilities:
             elif os.path.isdir(full_path):
                 self.addFolderToZip(zip_file, full_path)
 
-def main(submission_path, zip_path):
+def main(submission_path, submission_raw_data_fname, zip_path):
     '''
     Create a zip file with the summary of json analysis
     '''

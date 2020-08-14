@@ -17,26 +17,32 @@ from guardian.decorators import permission_required_or_403
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, Http404
+from django.utils.text import slugify
 import os
+import urllib.parse
 
 def download(request, submission_id):
     submission_id = int(submission_id)
     submission = Submission.objects.get(id=submission_id)
 
-    # if (request.user != submission.author.user) and not request.user.is_superuser:
-    # if (request.user != submission.author.user):
     if not submission.download_allowed(request.user):
         raise PermissionDenied
 
     file_path = submission.zip_path()
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/zip")
-            # response = HttpResponse(fh.read())
-            print(os.path.basename(file_path))
-            response['Content-Disposition'] = 'inline; filename="{}"'.format(
-                os.path.basename(file_path))
-            # response['Content-Disposition'] = "inline; filename=a\ b.zip"
+            response = HttpResponse(
+                fh.read(),
+                content_type='application/zip charset=utf-8')
+            
+            content_disposition =  \
+                "attachment; " \
+                "filename={ascii_filename};" \
+                "filename*=UTF-8''{utf_filename}".format(
+                    ascii_filename=slugify(os.path.basename(file_path)),
+                    utf_filename=urllib.parse.quote(
+                        os.path.basename(file_path).encode("utf-8")))
+            response['Content-Disposition'] = content_disposition
             return response
     raise Http404
 
