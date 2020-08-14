@@ -29,5 +29,5 @@ urlpatterns = [
 
     url(r'^logout/$', views.logout, name='logout'),
 
-    url(r'^adega/admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
 ]
