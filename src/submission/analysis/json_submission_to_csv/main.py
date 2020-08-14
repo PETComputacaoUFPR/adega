@@ -52,19 +52,24 @@ def main(submission_path, submission_raw_data_fname, zip_path):
     course_csv_path = os.path.join(submission_path,"course.csv")
     student_csv_path = os.path.join(submission_path,"student.csv")
 
-    admission = AdmissionConversor(submission_path)
+    admission = AdmissionConversor(
+        submission_path,
+        submission_raw_data_fname=submission_raw_data_fname)
     data_admission,header_admission = admission.get_admission_as_matrix()
     df_admission = pd.DataFrame(data_admission)
     df_admission.columns = header_admission
     df_admission.to_csv(admission_csv_path, index=False)
 
-    course = CourseConversor(submission_path)
+    course = CourseConversor(
+        submission_path,
+        submission_raw_data_fname=submission_raw_data_fname)
     data_course,header_course = course.get_course_as_matrix()
     df_course = pd.DataFrame(data_course)
     df_course.columns = header_course
     df_course.to_csv(course_csv_path, index=False)
 
-    student = StudentConversor(submission_path)
+    student = StudentConversor(submission_path,
+        submission_raw_data_fname=submission_raw_data_fname)
     data_student,header_student = student.get_student_as_matrix()
     df_student = pd.DataFrame(data_student)
     df_student.columns = header_student
