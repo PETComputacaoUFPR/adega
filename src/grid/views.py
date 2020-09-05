@@ -43,10 +43,10 @@ def check_version(grid_as_dict):
     # Checa se a versão da grade está no json
     is_empty = not bool(grid_as_dict['version'])
 
-    version_error = []
+    version_error = ""
 
     if is_empty:
-        version_error.append("Por favor, cheque se a versão da grade foi colocada.\n")
+        version_error = "Por favor, cheque se a versão da grade foi colocada. "
 
     return version_error
 
@@ -79,11 +79,14 @@ def check_phase_code(grid_as_dict, all_codes):
             phase_errors.append(phase_codes)
     
     if len(phase_errors) > 0:
-        phase_errors.insert(0,"Por favor, verifique se se os seguintes códigos estão em 'grid': ")
+        msg_error = "Por favor, cheque se os seguintes códigos são válidos: "
+        phase_error_str = ",".join(phase_errors)
     
-    return phase_errors
+    return msg_error + phase_error_str
 
 def check_course_from_json(grid_as_dict):
+
+    check_repeated(grid_as_dict)
 
     errors = []
 
