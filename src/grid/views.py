@@ -17,6 +17,7 @@ from django.shortcuts import redirect
 from student.grid import DegreeGrid
 
 from django.contrib.admin.utils import flatten
+from django.http import HttpResponse
 
 def check_keys(grid_as_dict):
 
@@ -24,17 +25,38 @@ def check_keys(grid_as_dict):
     # e retorna as chaves inválidas, se houver
     keys_error = []
     
-    keys = ["version", "grid", "repeated_codes", "fake_codes", "code_to_name", "eqiv_codes", "prerequisites", "phases"]
-        
+    keys = ["version",
+            "grid",
+            "repeated_codes",
+            "fake_codes",
+            "code_to_name",
+            "equiv_codes",
+            "prerequisites",
+            "phases"]
+    
+    keys_to_displayname = {
+        "version": "Versão",
+        "grid": "Grade",
+        "repeated_codes": "Lista de códigos repetidos",
+        "fake_codes": "Códigos falsos",
+        "code_to_name": "Nomes de disciplinas",
+        "equiv_codes": "Lista de códigos equivalentes",
+        "prerequisites": "Lista de pré-requisitos",
+        "phases": "Fases do curso"
+    }
     for item in keys:
         if item not in grid_as_dict:
             keys_error.append(item)
     
     if len(keys_error) > 0:
-        msg_error = "Por favor, cheque se os seguintes códigos são válidos: "
-        keys_error_str = ",".join(keys_error)
-
-    return msg_error + keys_error_str
+        msg_error = ("Houve algum erro na hora de construir a grade. "
+                     "Verifique se os seguintes itens estão corretos: ")
+        
+        keys_error_displayname = [keys_to_displayname[x] for x in keys_error]
+        keys_error_str = ";".join(keys_error_displayname)
+        return msg_error + keys_error_str
+    else:
+        return None
     
 
 def check_version(grid_as_dict):
@@ -47,8 +69,9 @@ def check_version(grid_as_dict):
 
     if is_empty:
         version_error = "Por favor, cheque se a versão da grade foi colocada. "
-
-    return version_error
+        return version_error
+    else:
+        return None
 
 def check_repeated(grid_as_dict):
 
@@ -57,7 +80,7 @@ def check_repeated(grid_as_dict):
     list_repeated_codes = []
 
     for code in flatten(grid_as_dict['grid']):
-        if not in all_codes:
+        if not code in all_codes:
             all_codes.append(code)
         else:
             list_repeated_codes.append(code)
@@ -68,6 +91,7 @@ def check_repeated(grid_as_dict):
         if repeated_item not in grid_as_dict['repeated_codes']:
             grid_as_dict['repeated_codes'].append(repeated_item)
 
+    return all_codes
 
 def check_phase_code(grid_as_dict, all_codes):
 
@@ -81,25 +105,26 @@ def check_phase_code(grid_as_dict, all_codes):
     if len(phase_errors) > 0:
         msg_error = "Por favor, cheque se os seguintes códigos são válidos: "
         phase_error_str = ",".join(phase_errors)
-    
-    return msg_error + phase_error_str
+        return msg_error + phase_error_str
+    else:
+        return None
 
 def check_course_from_json(grid_as_dict):
 
-    check_repeated(grid_as_dict)
+    all_codes = check_repeated(grid_as_dict)
 
     errors = []
 
     keys_error_list = check_keys(grid_as_dict)
-    if len(keys_error_list) > 0:
+    if not keys_error_list is None:
         errors.append(keys_error_list)
     
     version_error_list = check_version(grid_as_dict)
-    if len(version_error_list) > 0:
+    if not version_error_list is None:
         errors.append(version_error_list)
     
     phase_code_error_list = check_phase_code(grid_as_dict, all_codes)
-    if len(phase_code_error_list) > 0:
+    if not phase_code_error_list is None:
         errors.append(phase_code_error_list)
 
     return errors
@@ -164,28 +189,27 @@ class GridCreate(View):
 
         grid_as_dict = json.loads(grid_as_json_string)
 
-        # TODO: Checar validade do grid
-        check_course_from_json(grid_as_dict)
-
         grid_as_json_string = json.dumps(grid_as_dict, indent=4, sort_keys=True)
 
+        # print(grid_as_dict)
 
+        error_list = check_course_from_json(grid_as_dict)
+        if len(error_list) > 0:
+            context = {
+                'status': '400', 'reason': error_list
+            }
+            response = HttpResponse(json.dumps(context,ensure_ascii=False).encode("utf8"),
+                                    content_type='application/json')
+            response.status_code = 400
+            return response
+        
         grid_version = grid_as_dict["version"]
         dg = Degree.objects.get(code=degree_code)
         new_grid = Grid(degree=dg, version=grid_version,
                         data_as_string=grid_as_json_string)
         new_grid.save()
 
-        error_list = check_course_from_json(grid_as_dict)
-
-        context = {
-            'status': '400', 'reason': error_list
-        }
-        response = HttpResponse(json.dumps(context), content_type='application/json')
-        response.status_code = 400
-        return response
-
-        # return redirect('/grid/{}'.format(degree_code))
+        return redirect('/grid/{}'.format(degree_code))
 
 
         '''
@@ -219,8 +243,8 @@ class GridCreate(View):
     #    return response
 
     def get_context_data(self, **kwargs):
-        user = self.request.user
-        #context = super().get_context_data(**kwargs)
+        # user = self.request.user
+        context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
         context["degree_code"] = Degree.objects.get(code=self.kwargs["degree_code"])
         # print(self.kwargs)

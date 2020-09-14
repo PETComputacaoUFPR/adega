@@ -442,8 +442,8 @@
         "grid": [
 
         ],
-        "repeated_codes": '',
-        "fake_codes": '',
+        "repeated_codes": [],
+        "fake_codes": [],
         "code_to_name": {
 
         },
@@ -903,14 +903,16 @@
 
         (async () => {
             
-            // Colocar o local do arquivo json com a grade
+            // TODO: Colocar o local do arquivo json com a grade
+            /*
             const resp = await fetch('../grids_bcc2011.json');
             const disciplinesAux = await resp.json();
 
             // Guarda as disciplinas e códigos em seus arrays
             disciplines = Object.values(disciplinesAux.code_to_name);
             code = Object.keys(disciplinesAux.code_to_name);
-
+            */
+           
             // Filtra as sugestões conforme o que for escrito
             const search = (searchText) => {
                 if (inputId == "suggestions") {    
@@ -1006,7 +1008,7 @@
         
             // Coloca a Versão da Grade no Objeto.
             gridObject.version = gridVersion.value;
-            gridObject.repeated_codes = fakeCode;
+            gridObject.repeated_codes = [];
             gridObject.fake_codes = fakeCode;
         
             gridCreated = true;
@@ -1121,7 +1123,7 @@
         } else if (element.id == "saveGrid") {
             storeAllInputsInObject();
             console.log(gridObject);
-            gridSaved = true;
+            // gridSaved = true;
             send_grid(gridObject);
         }
     }
@@ -1149,7 +1151,11 @@
                 window.location.href = "/grid/{{degree_code}}";
             },
             error: function (request, status, error) {
-                alert(request.responseText);
+                response_as_json = JSON.parse(request.responseText);
+                console.log(response_as_json);
+                reason = response_as_json.reason;
+                reason_txt = reason.join("\n");
+                alert(reason_txt);
             }
         });
     }
