@@ -2,234 +2,1526 @@
 {% load static %}
 {% block content %}
 
-<div class="row">
-    <div class="col-6">
-        <h3>Adicionar disciplina</h3>
-    </div>
-    <div class="col-6">
-        <h3>Disciplinas adicionadas</h3>
-    </div>
-</div>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    }
+    .form-control, .btn-primary{
+        margin:2px;
+    }
+    #logo {
+        font-size: 40px;
+        color: #132940;
+    }
+    #preconfigTable {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    #preconfigContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+    #optativeConfig {
+        padding: 10px;
+        margin-left: 10px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    #containerOptative {
+        margin-left: 10px;
+        width: 200px;
+        height: 200px;
+        overflow-y: scroll;
+    }
+    #titleOpt {
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    #preconfigTable input[type=text],
+    #preconfigTable input[type=number] {
+        width: 100px;
+        height: 30px;
+        border-radius: 10px;
+        padding: 2px 10px 2px 10px;
+    }
+    #optativeName, 
+    #optativeCode {
+        width: 100px;
+        height: 30px;
+        border-radius: 10px;
+        padding: 2px 10px 2px 10px;   
+    }
+    #grid td {
+        color: white;
+        padding: 10px;
+        width: 220px;
+        height: 260px;
+        animation: opacityAnimation .7s ease-in;
+    }
+    #grid tr:nth-child(odd) {
+        background-color: #132940;
+    }
+    #grid tr:nth-child(even) {
+        background-color: rgb(50, 201, 125);
+    }
+    .tdPeriods {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .plusBtn {
+        font-size: 100px;
+        border: none;
+        color: white;
+        background-color: inherit;
+        border-radius: 50%;
+        transition: .3s ease;
+    }
+    .plusBtn:hover {
+        transition: .3s ease;
+        cursor: pointer;
+        transform: scale(1.3);
+    }
+    .tdPlusBtn {
+        text-align: center;
+    }
+    @keyframes opacityAnimation {
+        0% {
+            opacity: 0;
+        }
+        50%{
+            opacity: .5;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+    .suggestions, .suggestionsCode {
+        z-index: 100;
+        position: absolute;
+        height: 100px;
+        max-width: 190px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .suggestions > div {
+        padding: 15px;
+        font-size: 15px;
+        color: #252323;
+        background-color:rgb(198, 202, 206);
+        border-top: 1px solid rgb(32, 0, 117);
+        cursor: pointer;
+        vertical-align: top;
+    }
+    .suggestions > div:hover {
+        background-color: #1e4dd4;
+    }
+    .suggestionsCode > div {
+        padding: 15px;
+        font-size: 15px;
+        color: #252323;
+        background-color:rgb(198, 202, 206);
+        border-top: 1px solid rgb(32, 0, 117);
+        cursor: pointer;
+        vertical-align: top;
+    }
+    .disciplineInput,
+    .buttonSettings,
+    .deleteButtonSettings {
+        width: 200px;
+        margin-top: 4px;
+        animation: inputAnimation .5s ease;
+    }
+    .deleteButtonSettings:hover {
+        transition: .3s;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+    .deleteButtonSettings {
+        font-weight: bold;
+        width: 200px;
+        border: none;
+        border-radius: 10px;
+        padding: 4px 0 4px 0;
+        background-color: rgb(214, 77, 77);
+        color: white;
+        transition: .3s;
+        cursor: pointer;
+    }
+    .disciplineInput,
+    .buttonSettings {
+        width: 200px;
+        margin-top: 4px;
+        animation: inputAnimation .5s ease;
+    }
+    .checkmark,
+    .phaseSelectorInputs {
+        animation: inputAnimation .5s ease;
+    }
+    .phaseSelectorInputs {
+        width: 130px;
+    }
+    .disciplineInput {
+        border: none;
+        border-radius: 10px;
+        padding: 5px 10px 5px;
+    }
+    .buttonSettings {
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        padding: 4px 0 4px 0;
+        background-color: rgb(86, 165, 255);
+        transition: .3s;
+        cursor: pointer;
+    }
+    .buttonSettings:hover {
+        background-color: rgb(102, 173, 255);
+        transition: .3s;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+    #displayGridVersion {
+        font-size: 24px;
+        margin-top: 10px;
+        color: #212529;
+        margin-bottom: 10px;
+    }
+    /* MODAL POPUP */
+    .modalBackground {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
 
-<div class="row">
-    <div class="col-5">
-        <form action="grid_create_submit" method="get" accept-charset="utf-8">
-            <div class="form-row">
+    .modalLayout {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 420px;
+        width: 800px;
+        min-width: 400px;
+        background-color: rgb(84, 141, 194);
+        border: 6px solid rgba(0, 0, 0, 0.664);
+        border-radius: 10px;
+        animation: modalAnimation .6s ease;
+    }
+    .modalLayout input, 
+    .modalLayout h2{
+        margin-top: 10px;
+    }
 
-                <div class="form-group col-6">
-                    <label for="course_name">Nome disciplina</label>
-                    <input type="text" class="form-control" id="course_name" aria-describedby="text" placeholder="Nome da disciplina">
-                </div>
+    .modalLayout h2{
+        text-decoration: 2px underline;
+    }
 
-                <div class="form-group col-6">
-                    <label for="course_code">Código disciplina</label>
-                    <input type="text" class="form-control" id="course_code" aria-describedby="text" placeholder="Código da disciplina">
-                </div>
-            </div>
+    .modalRequisites,
+    .modalEquivalents {
+        color: black;
+        padding: 2px 0 0 12px;
+        margin-top: 25px;
+        border-radius: 10px;
+        width: 350px;
+        height: 350px;
+        background-color: white;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.575);
+        overflow-y: scroll;
+    }
 
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="course_period">Periodo</label>
-                    <input type="number" class="form-control" id="course_period" aria-describedby="number" value=1 >
-                </div>
+    .modalRequisites {
+        margin-left: 25px;
+    }
 
-                <div class="form-group col-6">
-                <label for="course_type">Tipo da disciplina</label>
-                <select class="form-control" id="course_type">
-                    <option>Obrigatória</option>
-                    <option>Optativa</option>
-                    <option>Trabalho de conclusão de curso</option>
-                </select>
-                </div>
-            </div>
+    .modalEquivalents {
+        margin-right: 25px;
+    }
 
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="course_code">Pré requisitos</label>
-                    <input type="text" class="form-control"
-                    id="course_prerequisite" aria-describedby="text"
-                    placeholder="código separado por ,">
-                </div>
-                <div class="form-group col-6">
-                    <label for="course_code">Disciplinas equivalentes</label>
-                    <input type="text" class="form-control" id="course_equivalent"
-                    aria-describedby="text" placeholder="código separado por ,">
-                </div>
-            </div>
+    .close {
+        position: absolute;
+        top: -5%;
+        left: 98.5%;
+        background-color: rgb(223, 47, 47);
+        color: white;
+        border-radius: 50%;
+        padding: 4px 9px 4px 9px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.699);
+        cursor: pointer;
+        transition: .1s;
+    }
 
-            <button type="button" class="btn btn-primary" onclick="add_course()">Adicionar disciplina</button>
-        </form>
-    </div>
-    <div class="col-7" >
-        <table class="display" style="width:100%" id="courses_table_g" >
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Código</th>
-                    <th scope="col">Periodo</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Pre requisito</th>
-                    <th scope="col">Equivalente</th>
-                    <th scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="courses_table">
+    .close:hover {
+        background-color: rgb(189, 30, 30);
+    }
 
-            </tbody>
-        </table>
+    .saveButton {
+        position: absolute;
+        top: 95%;
+        left: 32%;
+        width: 300px;
+        height: 50px;
+        background-color: rgb(81, 236, 101);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.664);
+        font-size: 24px;
+    }
+
+    .saveButton:hover {
+        background-color: rgb(54, 196, 73);
+        transition: .2s;
+        
+    }
+
+    .modalPlusBtn {
+        background-color: rgb(35, 199, 131);
+        border: none;
+        border-radius: 50%;
+        font-size: 30px;
+        padding: 0px 12px 0px 12px;
+        cursor: pointer;
+        transition: .3s;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .modalPlusBtn:hover {
+        transition: .3s;
+        background-color: rgb(84, 187, 144);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.279);
+    }
+
+    @keyframes modalAnimation {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -90%);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .requisitesInput,
+    .equivalentsInput {
+        margin-top: 8px;
+        width: 250px;
+        border: 2px solid rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        padding: 6px;
+        animation: inputAnimation .5s ease;
+    }
+
+    .removeModalInput {
+        background-color: rgb(230, 103, 103);
+        color: white;
+        margin-left: 8px;
+        border: none;
+        border-radius: 50%;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 3px 8px 1px 8px;
+        cursor: pointer;
+        transition: .3s;
+        margin-top: 20px;
+        animation: inputAnimation .5s ease;
+    }
+
+    @keyframes inputAnimation {
+        from {
+            opacity: 0;
+            transform: translate(-60px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+    }
+</style>
+
+<div>
+    <p>
+        Atualment existem duas opções para inserir uma versão da grade no sistema:
+    </p>
+    <!-- Nav tabs -->
+    <div class="nav nav-tabs" role="tablist">
+        <a class="nav-item nav-link active" href="#create_with_json" aria-controls="create_with_json" data-toggle="tab">Enviar a grade no formato JSON</a>
+        <a class="nav-item nav-link" href="#create_with_interface" aria-controls="create_with_interface" data-toggle="tab">Gerador de grade (<i>em fase de teste</i>)</a>
     </div>
 </div>
 
 <br>
-<h2>Informações gerais da grade</h2>
 
-<div class="col-8">
-    <form id="genGrid">
-        {% csrf_token %}
-        <div class="form-row">
-            <div class="col-lg-8 col-m-12 form-group">
-                <label for="relative_year">Versão da grade</label>
-                <input type="text" class="form-control" name="version" id="version" />
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="create_with_json">
+        <div class="md-form container-fluid h-100">
+            <label for="json_textarea">Preencha abaixo a descrição da grade do curso no formato JSON.<br>
+            Em caso de dúvidas, consulte a <a href="#create_with_json_helper">seção de especificações do formato JSON</a></label>
+            <textarea id="json_textarea" name="json_textarea" class="md-textarea form-control" placeholder="{&#x0a;    Conteúdo do JSON&#x0a;}" style="height:200px"></textarea>
+            <button class="btn btn-primary col-md-12" onClick="create_with_json();">Enviar</button>
+        </div>
+        <br><br>
+        <p id="create_with_json_helper">
+            O conteúdo do json deve seguir um formato com as seguintes especificações:
+        </p>
+        <div class="row">
+            <div class="col-md-5">
+                <p class="text-center"><b>Descrição das chaves e valores</b></p>
+                <br>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <b class="text-danger">"version"</b>:
+                        Nome da versão da grade (até 40 caracteres).
+                        Recomenda-se inserir o ano relativo da grade no curso.  
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"grid"</b>:
+                        Matriz com os códigos de cada disciplina para montar a grade.
+                        Cada linha representa um novo período da grade.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"repeated_codes"</b>:
+                        Lista de códigos que se repetem na grade.<br>
+                        Caso este campo esteja vazio, o servidor tentará automaticamente preencher com os valores corretos, mas recomenda-se que o usuário já informe os códigos repetidos. 
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"fake_codes"</b>:
+                        Lista de códigos que são falsos. Alguns códigos da grade pode representar um conjunto de disciplinas, por exemplo uma disciplina optativa.<br>
+                        Dessa forma, é necessário indicar que essas disciplinas não irão ser presentes nas planilhas submetidas no sistema e evitar links inválidos nas páginas de visualização dos relatórios gerados pelo sistema.  
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"code_to_name"</b>:
+                        Mapeamento do código de cada disciplina para o seu nome completo.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"equiv_codes"</b>:
+                        Mapeamento do código de cada disciplina para uma lista que contém todas os códigos de disciplinas que são suas equivalentes na grade.
+                        Isso pode ser necessário para visualizar as regras de migração de grade aceitas em colegiado.<br>
+                        Além disso, caso o usuário adicione uma disciplina com "código falso" na grade, é provável que ele queira adicionar as equivalências aqui (por exemplo todas as disciplinas que se relacionam com o código relativo às disciplinas optativas).<br>
+                        Esses dados serão utilizados nas análises para identificar algumas informações, por exemplo o período de cada aluno em relação à grade.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"prerequisites"</b>:
+                        Mapeamento do código de cada disciplina para uma lista de códigos de disciplinas que representam seus pré-requisitos.<br>
+                        Essa informação será utilizada no processamento dos dados para identificar por exemplo quais disciplinas o aluno está apto a se matricular no próximo semestre.<br>
+                        No caso de situações como a "Barreira", onde todas as disciplinas após o terceiro período são requisitos das disciplinas anteriores ao quarto, é necessário informar todas as dependências como mostrado no exemplo ao lado.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"phases"</b>:
+                        Mapeamento de nome de fases (pode ser qualquer nome) para uma lista de códigos pertecentes à grade descrita no outro campo.<br>
+                        Esses valores são utilizados para processar os dados e por exemplo gerar listagens dos alunos que já cursaram essas fases da grade. Isso pode ser útil para identificar por exemplo os alunos que já cursaram a "Barreira" ou os alunos que já cursaram todas disciplinas de matemática.
+                    </li>
+                </ul> 
+            </div>
+
+            <div class="col-md-7">
+                <p class="text-center"><b>Exemplo do JSON esperado</b></p>
+                <br>
+                <pre>
+{
+    <b class="text-danger">"version"</b>: "2011",
+    <b class="text-danger">"grid"</b>: [
+        ["CI241", "CI055", "CM201", "CM045", "BA040"],
+        ["CI243", "CI056", "CI067", "CM005", "BQ005"],
+        ["CI244", "CI057", "CI166", "BQ054", "BC056"],
+        ["CI215", "CI062", "CE003", "BG054", "BF075", "CI164"],
+        ["CI162", "CI065", "CI394", "CI316", "MN127"],
+        ["CI167", "CI209", "CI218", "CI171", "MN128", "CI220"],
+        ["CI221", "CI169", "CI172", "OPT", "MN129"],
+        ["CI262", "OPT", "OPT", "OPT"]
+    ],
+    <b class="text-danger">"repeated_codes</b>": ["OPT"],
+    <b class="text-danger">"fake_codes"</b>: ["OPT"],
+    <b class="text-danger">"code_to_name"</b>: {
+        "BA040": "Anatomia Humana Sistêmica",
+        "BC056": "Fundamentos de Biologia Celular e Tecidual",
+        "BF075": "Fisiologia para Informática Biomédica",
+        "BG054": "Genética e Evolução para o Curso de Informática Biomédica",
+        "BQ005": "Introdução à Bioquímica",
+        "BQ054": "Biologia Molecular e Bioinformática",
+        "CE003": "Estatística II",
+        "CI055": "Algoritmos e Estruturas de Dados I",
+        "CI056": "Algoritmos e Estruturas de Dados II",
+        "CI057": "Algoritmos e Estruturas de Dados III",
+        "CI062": "Técnicas Alternativas de Programação",
+        "CI065": "Algoritmo e Teoria dos Grafos",
+        "CI067": "Oficina de Computação",
+        "CI162": "Engenharia de Requisitos",
+        "CI164": "Introdução à Computação Científica",
+        "CI166": "Metodologia Científica",
+        "CI167": "Sistemas de Informação em Saúde",
+        "CI169": "Bioinformática",
+        "CI171": "Aprendizado de Máquina",
+        "CI172": "Processamento de Imagens Biomédicas",
+        "CI209": "Inteligência Artificial",
+        "CI215": "Sistemas Operacionais",
+        "CI218": "Sistemas de Banco de Dados",
+        "CI220": "Teoria de Sistemas",
+        "CI221": "Engenharia de Software",
+        "CI241": "Introdução a Sistemas Computacionais",
+        "CI243": "Fundamentos de Projeto e Arquitetura de Computadores",
+        "CI244": "Fundamentos de Redes de Sistemas Distribuídos",
+        "CI262": "Trabalho de Conclusão de Curso em Informática Biomédica",
+        "CI316": "Programação Paralela",
+        "CI394": "Processamento de Imagens",
+        "CM005": "Álgebra Linear",
+        "CM045": "Geometria Analítica",
+        "CM201": "Cálculo Diferencial e Integral I",
+        "MN127": "Saúde, Meio Ambiente e Sociedade",
+        "MN128": "Organização do Sistema de Saúde Brasileiro",
+        "MN129": "Metodologia da Pesquisa e Bioética em Saúde",
+        "MN130": "Gestão Hospitalar",
+        "CE073": "Análise de Dados Categóricos",
+        "CE075": "Análise de Dados Longitudinais",
+        "CE077": "Análise de Sobrevivência",
+        "CI059": "Introdução à Teoria da Computação",
+        "CI084": "Tópicos em Teoria dos Grafos",
+        "CI069": "Administração de Empresas de Informática",
+        "CI085": "Tópicos em Computação Gráfica",
+        "CI086": "Tópicos em Arquitetura de Computadores",
+        "CI087": "Tópicos em Banco de Dados",
+        "CI088": "Tópicos Em Sistemas Distribuídos",
+        "CI089": "Tópicos em Teoria da Computação",
+        "CI090": "Tópicos em Engenharia de Software",
+        "CI091": "Tópicos em Avaliação de Desempenho",
+        "CI092": "Tópicos em Tecnologias e Aplicações",
+        "CI093": "Tópicos em Análise Numérica",
+        "CI094": "Tópicos em Processamento de Imagens",
+        "CI095": "Tópicos em Compiladores",
+        "CI097": "Tópicos em Sistemas Digitais",
+        "CI163": "Projeto de Software",
+        "CI168": "Tópicos em Sistemas de Informação em Saúde",
+        "CI170": "Tópicos em Bioinformática",
+        "CI173": "Computação Gráfica",
+        "CI174": "Tópicos em Engenharia da Computação",
+        "CI204": "Administração de Informática",
+        "CI205": "Administração de Produção para Informática",
+        "CI211": "Construção de Compiladores",
+        "CI214": "Estrutura de Linguagens de Programação",
+        "CI301": "Tópicos em Ciência da Computação I",
+        "CI302": "Tópicos em Ciência da Computação II",
+        "CI303": "Tópicos em Ciência da Computação III",
+        "CI304": "Tópicos em Ciência da Computação IV",
+        "CI305": "Tópicos em Ciência da Computação V",
+        "CI306": "Tópicos em Ciência da Computação VI",
+        "CI309": "Tópicos em Inteligência Artificial",
+        "CI310": "Tópicos em Aprendizado de Máquina",
+        "CI311": "Fundamentos Lógicos da Inteligência Artificial",
+        "CI312": "Arquiteturas Avançadas de Computadores",
+        "CI313": "Arquitetura de Computadores Paralelos",
+        "CI314": "Introdução à Computação Paralela",
+        "CI315": "Projeto de Sistemas Operacionais",
+        "CI317": "Tópicos em Sistemas Operacionais",
+        "CI318": "Tópicos em Computação Paralela",
+        "CI320": "Tópicos em Programação de Computadores",
+        "CI321": "Tópicos em Sistemas Embutidos",
+        "CI338": "Tópicos em Geometria Computacional",
+        "CI339": "Complexidade Computacional",
+        "CI340": "Tópicos em Métodos Formais",
+        "CI350": "Interação Humano-Computador",
+        "CI351": "Tópicos em Interação Humano-Computador",
+        "CI355": "Tópicos em Algoritmos",
+        "CI358": "Administração e Gerência de Redes de Computadores",
+        "CI359": "Laboratório de Redes de Computadores",
+        "CI360": "Redes Móveis",
+        "CI361": "Sistemas Distribuídos",
+        "CI362": "Sistemas Operacionais Distribuídos",
+        "CI363": "Tópicos de Multimídia em Redes de Computadores",
+        "CI364": "Tópicos em Computação em Rede",
+        "CI365": "Tópicos em Redes de Computadores",
+        "CI366": "Tópicos em Redes Móveis",
+        "CI367": "Tópicos em Simulação de Sistemas Computacionais",
+        "CI395": "Oficina de Visão Computacional e Processamento de Imagens",
+        "CI396": "Tópicos em Visão Computacional",
+        "OPT": "Optativa"
+    },
+    <b class="text-danger">"equiv_codes"</b>: {
+        "MN130": ["OPT"],
+        "CE073": ["OPT"],
+        "CE075": ["OPT"],
+        "CE077": ["OPT"],
+        "CI059": ["OPT"],
+        "CI069": ["OPT"],
+        "CI084": ["OPT"],
+        "CI085": ["OPT"],
+        "CI086": ["OPT"],
+        "CI087": ["OPT"],
+        "CI088": ["OPT"],
+        "CI089": ["OPT"],
+        "CI090": ["OPT"],
+        "CI091": ["OPT"],
+        "CI092": ["OPT"],
+        "CI093": ["OPT"],
+        "CI094": ["OPT"],
+        "CI095": ["OPT"],
+        "CI097": ["OPT"],
+        "CI163": ["OPT"],
+        "CI168": ["OPT"],
+        "CI170": ["OPT"],
+        "CI173": ["OPT"],
+        "CI174": ["OPT"],
+        "CI204": ["OPT"],
+        "CI205": ["OPT"],
+        "CI211": ["OPT"],
+        "CI214": ["OPT"],
+        "CI301": ["OPT"],
+        "CI302": ["OPT"],
+        "CI303": ["OPT"],
+        "CI304": ["OPT"],
+        "CI305": ["OPT"],
+        "CI306": ["OPT"],
+        "CI309": ["OPT"],
+        "CI310": ["OPT"],
+        "CI311": ["OPT"],
+        "CI312": ["OPT"],
+        "CI313": ["OPT"],
+        "CI314": ["OPT"],
+        "CI315": ["OPT"],
+        "CI317": ["OPT"],
+        "CI318": ["OPT"],
+        "CI320": ["OPT"],
+        "CI321": ["OPT"],
+        "CI338": ["OPT"],
+        "CI339": ["OPT"],
+        "CI340": ["OPT"],
+        "CI350": ["OPT"],
+        "CI351": ["OPT"],
+        "CI355": ["OPT"],
+        "CI358": ["OPT"],
+        "CI359": ["OPT"],
+        "CI360": ["OPT"],
+        "CI361": ["OPT"],
+        "CI362": ["OPT"],
+        "CI363": ["OPT"],
+        "CI364": ["OPT"],
+        "CI365": ["OPT"],
+        "CI366": ["OPT"],
+        "CI367": ["OPT"],
+        "CI395": ["OPT"],
+        "CI396": ["OPT"]
+    },
+    <b class="text-danger">"prerequisites"</b>:{
+            "BF075": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                    "CI243", "CI056", "CI067", "CM005", "BQ005",
+                    "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "BG054": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                    "CI243", "CI056", "CI067", "CM005", "BQ005",
+                    "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "BQ054": ["BQ005"],
+            "CE003": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                    "CI243", "CI056", "CI067", "CM005", "BQ005",
+                    "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI056": ["CI055"],
+            "CI057": ["CI055","CI056"],
+            "CI062": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI065": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI067": ["CI055"],
+            "CI162": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI164": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI171": ["CE003"],
+            "CI172": ["CI394"],
+            "CI209": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI215": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI218": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI220": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI221": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI244": ["CI243"],
+            "CM005": ["CM045"]
+    },
+    <b class="text-danger">"phases"</b>:{
+        "Barreira IBM": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"]
+    }
+}
+                </pre>
             </div>
         </div>
-        <div class="form-row">
-            <div class="col-lg-3 col-md-4 col-sm-4 offset-lg-2">
-                <button class="btn btn-success btn-block" type="submit" >Gerar grade</button>
-            </div>
+    </div>
 
-            <div class="col-lg-3 col-md-4 col-sm-4">
-                <button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+
+    <div role="tabpanel" class="tab-pane" id="create_with_interface">
+        <form action="/" method="GET">
+        <div id="logoContainer">
+            <h2 id="logo">Criação de Grade</h2>
+            <p>
+                Esta funcionalidade se encontra ainda em fase de desenvolvimento.
+                É possível que a grade final seja gerada com erros.
+                <br>
+                Se possível, informe a grade no formato JSON usando a opção padrão.
+                <br><br>
+            </p>
+        </div>
+        <div id="preconfigContainer">
+            <table id="preconfigTable">
+                <tr>
+                    <td><label for="gridVersion" id="gridVersionLabel">Versão da Grade:</label></td>
+                    <td><input type="text" class="form-control" name="gridVersion" id="gridVersionInput"></td>
+                </tr>
+                <tr>
+                    <td><label for="periodNumber" id="periodNumberLabel">Qtd. de Períodos:</label></td>
+                    <td><input type="number" class="form-control" value="8" name="periodNumber" id="periodNumberInput" min=1 max=20></td>
+                </tr>
+                <tr>
+                    <td><label for="fakeCode" id="fakeCodeLabel">Código Inválido:</label></td>
+                    <td><input type="text" class="form-control" name="fakeCode" id="fakeCodeInput"></td>
+                </tr>
+                <tr>
+                    <td><label for="phase" id="phase">Número de Fases:</label></td>
+                    <td><input type="number" class="form-control" name="phaseInput" id="phaseInput"></td>
+                    <td><input type="button" class="btn btn-primary" name="phaseBtn" id="phaseBtn" value="Confirmar"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="btn btn-primary" name="initGrid" id="initGrid" value="Iniciar Grade" disabled></td>
+                    <td></td>
+                    <td><input type="button" class="btn btn-primary" name="saveGrid" id="saveGrid" value="Salvar Grade" disabled></td>
+                    <td></td>
+                </tr>
+            </table>
+            <table id="optativeConfig">
+                <tr>
+                    <td>Nome da Optativa:</td>
+                    <td><input type="text" class="form-control" name="optativeName" id="optativeName"></td>
+                </tr>
+                <tr>
+                    <td>Código da Optativa:</td>
+                    <td><input type="text" class="form-control" name="optativeCode" id="optativeCode"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="btn btn-primary" name="saveOptative" id="saveOptative" value="Adicionar"></td>
+                </tr>
+            </table>
+            <div id="containerOptative">
+                <table id="optativeList">
+                    <tr>
+                        <td id="titleOpt">Disciplinas Optativas</td>
+                    </tr>
+                </table>
             </div>
         </div>
-    </form>
+        <div id="gridContainer">
+            <table>
+                <tr>
+                    <td><h3 id="displayGridVersion">Versão da Grade:</h3></td>
+                    <td><div id="messageDisplay2"></div></td>
+                </tr>
+            </table>
+
+            <table id="grid" cellspacing=0>
+
+            </table>
+        </div>
+        </form>
+    </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    
+    
 
 <script>
-var optatives = [];
-var courses = {};
-function grid_table() {
-    var table = document.createElement("TABLE");
-    table.innerHTML = "";
-    //cria o header
-    var thead = document.createElement("THEAD")
-    var tr_head = document.createElement("TR")
-    //var periods = Object.Keys(courses);
-    var periods = Object.keys(courses).sort();
-    for (var  i in periods) {
-        var headerCell = document.createElement("TH");
-        headerCell.innerHTML = periods[i];
-        tr_head.appendChild(headerCell);
-    }
-    thead.appendChild(tr_head);
-    table.appendChild(thead);
-    // Cria o body
-    var tbody = document.createElement("TBODY");
+    // Pega o elemento GRID e o child.
+    var grid = document.getElementById("grid");
 
-   for (var i in periods) { //itera os periodos
-       var period = periods[i];
-       var tr = document.createElement("TR");
-       //for (var j=0; j<Object.keys(cIourses[period]).length; j++) { //itera as disciplinas do periodo
-       for (var j in courses[period]) { //itera as disciplinas do periodo
-           var course = courses[period][j];
-           var td = document.createElement("TD");
-           td.innerHTML = course["course_code"];
-           tr.appendChild(td);
-       }
-       console.log(period)
-       tbody.appendChild(tr);
-   }
-    table.appendChild(tbody);
-    var dvTable = document.getElementById("grid_table");
-    dvTable.innerHTML = "";
-    dvTable.appendChild(table);
-}
-function add_course() {
-    var course = {};
-    var field = ["course_name","course_code","course_period","course_type","course_prerequisite","course_equivalent"];
-    // carrega os valores do formulario de adicionar disciplina
-    for (var i in field ) {
-        //console.log(field[i]);
-        course[field[i]] = document.getElementById(field[i]).value;
-        //course.push(document.getElementById(field[i]).value)
-        // limpa o formulário, mas mantem o periodo e o tipo da disciplina
-        if (field[i] !== "course_type" && field[i] != "course_period") 
-           document.getElementById(field[i]).value = "";
-    }
-    period = course["course_period"].toString();
-    if(period in courses)
-        courses[period].push(course);
-    else
-        courses[period] = [course];
-    //console.log(courses)
-    //courses.push(course); //insere a disciplina na lista de disciplinas
-    var courses_table = document.getElementById("courses_table").insertRow(0);
-    // mostra a disciplina na lista de disciplinas
-    var j;
-    for(var i in field) {
-        courses_table.insertCell(i).innerHTML = course[field[i]];
-        j = i;
-    }
-        
-    div_action = document.createElement("DIV")
-    icon_delete = document.createElement("I") 
-    icon_delete.className = "fa fa-times"
+    gridBody = document.querySelector("#grid > tbody");
 
-    icon_edit = document.createElement("I") 
-    icon_edit.className = "fa fa-pencil-square-o"
+    // Variável para verificar se a grade inicial foi criada.
+    gridCreated = false;
+    // Variável para verificar se a quantidade de fases já foi estabelecida.
+    phaseStarted = false;
+    // Verifica se os inputs das fases estão vazios.
+    empty = false;
+    // Array das possíveis fases.
+    allPhasesArray = [];
+    // Períodos Input
+    periodNumber = document.getElementById("periodNumberInput");
+    // Versão da Grade Input
+    gridVersion = document.getElementById("gridVersionInput");
+    // Phase Input
+    phaseInput = document.getElementById("phaseInput");
+    displayVersion = document.getElementById("displayGridVersion");
+    // Plus Button
+    plusBtn = document.getElementsByClassName("plusBtn");
+    fakeCode = document.getElementById("fakeCodeInput");
 
-    div_action.appendChild(icon_edit)
-    div_action.appendChild(icon_delete)
-    courses_table.insertCell(-1).appendChild(div_action);
+    gridSaved = false;
 
-    // se a disciplina for do tipo optativa então mostra na lista de optativas
-    //console.log(course["course_type"])
-    if(course["course_type"]!="Obrigatória") {
-        var optatives_table = document.getElementById("optatives_table").insertRow(0);
-        optatives.push(course);
-        for(var i in field)
-            optatives_table.insertCell(i).innerHTML = course[field[i]];
-    }
+    gridObject = {
+        "version": "",
+        "grid": [
 
-    //grid_table();
+        ],
+        "repeated_codes": [],
+        "fake_codes": [],
+        "code_to_name": {
 
-}
-function send_grid() {
-    var grid_version = $("#version").val();
-    var grid = {"courses":courses,"version":grid_version}
-    var grid_json = JSON.stringify(grid);
-    $.ajax({
-        type:"POST",
-        url: "{% url 'grid:GridCreateView' degree_code=degree_code %}",
-        data: {
-            grid: grid_json,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
         },
-        success: function(data, status){
-            window.location.href = "/grid/{{degree_code}}";
+        "equiv_codes": {
+
+        },
+        "prerequisites":{
+
+        },
+        "phases":{
+
         }
-    });
+    }
+
+    const storeAllInputsInObject = () => {
+        // Inicia em zero pois as rows iniciam em zero.
+        for (let i = 0; i <= periodNumber.value - 1; i++) {
+            // i = ROW
+            // Inicia em 1 pois a first cell se refere aos períodos. Vai até lenght - 1 pois a last cell é o PlusBtn.
+            for (let j = 1; j < grid.rows[i].cells.length - 1; j++) {
+                // j = CELL
+
+                let disciplineNamePivot = document.getElementById(`discipline${i}${j}`);
+                let disciplineCodePivot = document.getElementById(`code${i}${j}`);
+                let disciplinePhasePivot = document.getElementById(`phaseSelector${i}${j}`);
+                let isOptative = document.getElementById(`optative${i}${j}`);
+
+                if (isOptative.checked) {
+                    gridObject.grid[i].push(gridObject.fake_codes);
+                } else {
+                    // Monta o gridObject.grid
+                    gridObject.grid[i].push(disciplineCodePivot.value);
+                }
+                // Monta o gridObject.code_to_name
+                gridObject.code_to_name[disciplineCodePivot.value] = disciplineNamePivot.value;
+                // Monta o gridObject.phases
+                allPhasesArray.forEach(phase => {
+                    if (disciplinePhasePivot.value === phase) {
+                        gridObject.phases[phase].push(disciplineCodePivot.value);
+                    }
+                });
+
+                // Monta o gridObject.prerequisites
+                let inputsRequisistes = document.querySelectorAll(`#modalRequisites${i}${j} > .requisitesInput`);
+
+                if (inputsRequisistes.length !== 0) {
+                    gridObject.prerequisites[disciplineCodePivot.value] = [];
+                    inputsRequisistes.forEach(input => {
+                        gridObject.prerequisites[disciplineCodePivot.value].push(input.value);
+                    });
+                }
+
+                // Monta o gridObject.equiv_codes
+                let inputsEquivalents = document.querySelectorAll(`#modalEquivalents${i}${j} > .equivalentsInput`);
+
+                if (inputsEquivalents.length !== 0) {
+                    gridObject.equiv_codes[disciplineCodePivot.value] = [];
+                    inputsEquivalents.forEach(input => {
+                        gridObject.equiv_codes[disciplineCodePivot.value].push(input.value);
+                    });
+                }
+            }
+        }
+    }
+
+    // Função que cria os inputs da modal quando o botão de "+" é clicado.
+    const createModalInput = (row, cell, element) => {
+
+        let divModal = element.parentElement;
+
+        let inputNode = document.createElement("input");
+        inputNode.setAttribute("type", "text");
+
+        let removeInputNode = document.createElement("button");
+        removeInputNode.setAttribute("class", "removeModalInput");
+        removeInputNode.setAttribute("type", "button");
+        removeInputNode.innerHTML = "X"
+
+        let breakline = document.createElement("br");
+
+        // Insere o Input.
+        divModal.insertBefore(inputNode, divModal[-1]);
+        // Insere o botão de X;
+        divModal.insertBefore(removeInputNode, divModal[-1]);
+        // Insere o Breakline.
+        divModal.insertBefore(breakline, divModal[-1]);
+        
+        if (divModal.className == "modalRequisites") {
+            
+            let requsitesPlusBtn = document.createElement("button");
+
+            inputNode.setAttribute("class", "requisitesInput");
+            inputNode.placeholder = "Código do pré-requisito."
+
+            plusBtnModal(requsitesPlusBtn, "requisitesPlusBtn", "modalPlusBtn", row, cell);
+            
+            divModal.insertBefore(requsitesPlusBtn, divModal[-1]);
+
+        }
+
+        if (divModal.className == "modalEquivalents") {
+            let equivalentsPlusBtn = document.createElement("button");
+
+            inputNode.setAttribute("class", "equivalentsInput");
+            inputNode.placeholder = "Código da disciplina equivalente."
+
+            plusBtnModal(equivalentsPlusBtn, "equivalentsPlusBtn", "modalPlusBtn", row, cell);
+            divModal.insertBefore(equivalentsPlusBtn, divModal[-1]);
+        }
+        element.remove();
+    }
+
+    // Botão de "+" da modal, o qual adiciona inputs
+    const plusBtnModal = (button, buttonID, buttonCLASS, row, cell) => {
+        button.setAttribute("id", `${buttonID}${row}${cell}`);
+        button.setAttribute("class", buttonCLASS);
+        button.setAttribute("type", "button");
+        button.innerHTML = "+";
+    }
+
+    // Executa as ações dentro da modal.
+    const initModalEvents = (currentModal, row, cell) => {
+
+        currentModal.style.display = "flex";
+
+        let closeBtn = document.getElementById(`close${row}${cell}`);
+        closeBtn.addEventListener("click", () => {
+            if (closeBtn.click) {
+                currentModal.style.display = "none";
+            }
+        });
+
+        let saveBtn = document.getElementById(`saveModal${row}${cell}`);
+        saveBtn.addEventListener("click", () => {
+            if (saveBtn.click) {
+                currentModal.style.display = "none";
+            }
+        });
+    }
+
+    // Cria a modal e os elementos.
+    const createModal = (row, cell) => {
+
+        // Cria a div ModalBackground.
+        let divModalBackground = document.createElement("div");
+
+        let modalContainer = document.getElementById(`cell${row}${cell}`)
+
+        divModalBackground.setAttribute("id", `modalBackground${row}${cell}`);
+        divModalBackground.setAttribute("class", "modalBackground");
+
+            // Cria a div ModalLayout.
+            let divModalLaoyout = document.createElement("div");
+
+            divModalLaoyout.setAttribute("class", "modalLayout");
+
+            // Insere a div ModalLayout na div ModalBackground
+            divModalBackground.insertBefore(divModalLaoyout, divModalBackground[-1]);
+
+                let closeBtn = document.createElement("h1");
+                closeBtn.setAttribute("class", "close");
+                closeBtn.setAttribute("id", `close${row}${cell}`);
+                closeBtn.innerHTML = "X";
+
+                let requsitesPlusBtn = document.createElement("button");
+                let equivalentsPlusBtn = document.createElement("button");
+
+                plusBtnModal(requsitesPlusBtn, "requisitesPlusBtn", "modalPlusBtn", row, cell);
+                plusBtnModal(equivalentsPlusBtn, "equivalentsPlusBtn", "modalPlusBtn", row, cell);
+
+                let divModalRequisites = document.createElement("div");
+                divModalRequisites.setAttribute("id", `modalRequisites${row}${cell}`);
+                divModalRequisites.setAttribute("class", "modalRequisites");
+                
+                let requisitesTitle = document.createElement("h2");
+                requisitesTitle.innerHTML = "Pré-Requisitos";
+
+                // Insere o título PRÉ-REQUISITOS na modal.
+                divModalRequisites.insertBefore(requisitesTitle, divModalRequisites[-1]);
+
+                let divModalEquivalents = document.createElement("div");
+                divModalEquivalents.setAttribute("id", `modalEquivalents${row}${cell}`);
+                divModalEquivalents.setAttribute("class", "modalEquivalents");
+                
+                let equivalentsTitle = document.createElement("h2");
+                equivalentsTitle.innerHTML = "Equivalentes";
+
+                // Insere o título EQUIVALENTES na modal.
+                divModalEquivalents.insertBefore(equivalentsTitle, divModalEquivalents[-1]);
+
+                let saveBtn = document.createElement("button");
+
+                saveBtn.setAttribute("id", `saveModal${row}${cell}`);
+                saveBtn.setAttribute("type", "button");
+                saveBtn.setAttribute("class", "saveButton");
+                saveBtn.innerHTML = "Salvar";
+
+                divModalRequisites.insertBefore(requsitesPlusBtn, divModalRequisites[-1]);
+                divModalEquivalents.insertBefore(equivalentsPlusBtn, divModalRequisites[-1])
+
+            // Insere o botão X, a aba de requisitos, a aba de equivalentes e o botão salvar na ModalLayout
+            divModalLaoyout.insertBefore(closeBtn, divModalLaoyout[-1]);
+            divModalLaoyout.insertBefore(divModalRequisites, divModalLaoyout[-1]);
+            divModalLaoyout.insertBefore(divModalEquivalents, divModalLaoyout[-1]);
+            divModalLaoyout.insertBefore(saveBtn, divModalLaoyout[-1]);
+
+            // Insere a ModalLayout na ModalContainer.
+            modalContainer.insertBefore(divModalBackground, modalContainer[-1]);
+
+    }
+
+    // Insere a checkbox e o texto ao lado da checkbox dentro da div
+    const insertCheckboxAndTxt = (div, checkbox, txt) => {
+        div.insertBefore(checkbox, div[-1])
+        div.insertBefore(txt, div[-1]);
+    }    
+
+    // RadioButton.
+    const radio = (element, elementID, row, cell) => {
+        element.setAttribute("type", "radio");
+        element.setAttribute("name", `disciplineType${row}${cell}`); 
+        element.setAttribute("id", `${elementID}${row}${cell}`); 
+        element.setAttribute("class", "checkmark"); 
+    }
+
+    // Texto ao lado da checkbox.
+    const checkboxText = (txtElement, txt) => {
+        txtElement.style.paddingLeft = "4px";
+        txtElement.style.marginBottom = "0";
+        txtElement.innerHTML = txt;
+        txtElement.setAttribute("class", "checkmark"); 
+    }
+
+    // Cria a div da checkbox. 
+    const createCheckBoxDiv = (div, divID, row, cell) => {
+        div.setAttribute("id", `${divID}${row}${cell}`);
+        div.style.display = "flex";
+        div.style.marginTop = "4px";
+    }
+
+    // Cria o input de texto do formulário da cell
+    const createInput = (elementName, type, elementClass, elementID, row, cell, placeholder) => {
+
+        elementName.setAttribute("type", type);
+        elementName.setAttribute("class", elementClass);
+        elementName.setAttribute("id", `${elementID}${row}${cell}`);
+        elementName.setAttribute("name", `${elementID}${row}${cell}`);
+        elementName.placeholder = placeholder;
+
+    }
+
+    // Cria e insere o formulário na cell
+    const insertForm = (formDiv, row, cell) => {
+        
+        // Cria o INPUT da Disciplina.
+        let input = document.createElement("input");
+        createInput(input, "text", "disciplineInput", "discipline", row, cell, "Nome da Disciplina");
+        
+        // Cria o INPUT do código da Disciplina.
+        let input2 = document.createElement("input");
+        createInput(input2, "text", "disciplineInput", "code", row, cell, "Código da Disciplina");
+
+        // Cria o botão dos Requisitos/Equivalentes.
+        let input3 = document.createElement("button")
+        createInput(input3, "button", "buttonSettings", "settings", row, cell, "");
+        input3.innerHTML = "Requisitos/Equivalentes"
+
+        // Cria botão de Deletar
+        let input4 = document.createElement("button");
+        createInput(input4, "button", "deleteButtonSettings", "delete", row, cell, "");
+        input4.innerHTML = "Deletar Disciplina";
+
+        // Cria div para opções no autocomplete
+        let suggestionsDiv = document.createElement("div");
+        suggestionsDiv.setAttribute("class","suggestions");
+        suggestionsDiv.setAttribute("id",`suggestions${row}${cell}`);
+
+        // AQUI
+        let suggestionsCodeDiv = document.createElement("div");
+        suggestionsCodeDiv.setAttribute("class","suggestionsCode");
+        suggestionsCodeDiv.setAttribute("id",`suggestionsCode${row}${cell}`);
+
+        // Div para o checkbox da Obrigatória.
+        let validDiv = document.createElement("div");
+        createCheckBoxDiv(validDiv, "validDiv", row, cell);
+
+            // RadioBtn da Obrigatória.
+            let radioValid = document.createElement("input");
+            let validTXT = document.createElement("p");
+
+            // Função que cria o radio e o texto ao lado dele.
+            checkboxText(validTXT, "Código Válido");
+            radio(radioValid, "compulsory", row, cell);
+
+            // Insere a RadioBtn Obrigatória e o TXT na DIV.
+            insertCheckboxAndTxt(validDiv, radioValid, validTXT);
+
+        // Div para o checkbox Optativa.
+        let invalidDiv = document.createElement("div");
+        createCheckBoxDiv(invalidDiv, "optativeDiv", row, cell);
+
+            // RadioBtn da Optativa.
+            let radioInvalid = document.createElement("input");
+            let invalidTXT = document.createElement("p");
+
+            // Função que cria o radio e o texto ao lado dele.
+            checkboxText(invalidTXT, "Código Inválido");
+            radio(radioInvalid, "optative", row, cell);
+
+            // Insere a RadioBtn Optativa e o TXT na DIV.
+            insertCheckboxAndTxt(invalidDiv, radioInvalid, invalidTXT);
+
+        // Cria o seletor de fases. 
+        let phaseSelector = document.createElement("select");
+
+        phaseSelector.setAttribute("class", "phaseSelectorInputs");
+        phaseSelector.setAttribute("id", `phaseSelector${row}${cell}`);
+
+        let emptyOption = document.createElement("option");
+        emptyOption.innerHTML = ""
+        
+        phaseSelector.insertBefore(emptyOption, phaseSelector[-1]);
+
+        for (let i = 0; i <= phaseInput.value - 1; i++) {
+            
+            // Cria o elemento option.
+            let option = document.createElement("option");
+            // Poe o ID em lowercase referente ao nome da fase.
+            option.setAttribute("id", allPhasesArray[i]);
+            //Poe o nome da Option
+            option.innerHTML = `${allPhasesArray[i]}`;
+            //Insere ele no seletor de opções.
+            phaseSelector.insertBefore(option, phaseSelector[-1]);
+
+        }
+
+        // Inserção de todos os elementos.
+        formDiv.insertBefore(input, formDiv[-1]); // Nome da Disciplina
+        formDiv.appendChild(suggestionsDiv); // Sugestões de Disciplina
+        formDiv.insertBefore(input2, formDiv[-1]); // Código
+        formDiv.appendChild(suggestionsCodeDiv); // Sugestões de Códigos
+        formDiv.insertBefore(input3, formDiv[-1]) // Botão de Req/Eq
+        formDiv.insertBefore(validDiv, formDiv[-1]); // RadioBtn código válido
+        formDiv.insertBefore(invalidDiv, formDiv[-1]); // RadioBtn do código inválido
+        formDiv.insertBefore(phaseSelector, formDiv[-1]); // Checkbox da Phase 
+        formDiv.insertBefore(input4,formDiv[-1]); // Botão de Deletar
+
+        createModal(row, cell); // Cria uma modal referente a essa Cell
+    }
+
+    const addDiscipline = (clickedPlusButton) => {
+
+        // Pega o index da cell próxima ao botão de + que foi clicado.
+        let cellIndex = clickedPlusButton.parentElement.cellIndex;
+
+        // Pega o index da row próxima ao botão de + que foi clicado.
+        let rowIndex = clickedPlusButton.parentElement.parentElement.rowIndex;
+
+        // Deleta a plus button atual.
+        grid.rows[rowIndex].deleteCell(cellIndex);
+
+        // Dá um replace no plus button deletado com um formulário.
+        let replacePlus = grid.rows[rowIndex].insertCell(cellIndex);
+        replacePlus.setAttribute("id", `cell${rowIndex}${cellIndex}`);
+        
+        insertForm(grid.rows[rowIndex].cells[cellIndex], rowIndex, cellIndex);
+
+        // Cria uma nova cell e adiciona um novo plus button na cell criada.
+        let newPlusBtnCell = grid.rows[rowIndex].insertCell(cellIndex + 1);
+        newPlusBtnCell.setAttribute("class", "tdPlusBtn");
+        grid.rows[rowIndex].cells[cellIndex + 1].innerHTML = "<button type=\"button\" name=\"plusBtn\" class=\"plusBtn\">+</button>";
+
+    }
+
+    // Conserta as ids depois de uma disciplina ter sido deletada
+    var organizeRow = (row, cell) => {
+
+        // Guarda o valor da próxima célula
+        let actualCell = parseInt(cell);
+        actualCell++;
+
+        // Atualiza os valores das ids
+        for (let i = actualCell; i < grid.rows[row].cells.length; i++) {
+
+            let newIdCell = document.getElementById(`cell${row}${i}`);
+            newIdCell.id = `cell${row}${i-1}`;
+
+            let newIdCode = document.getElementById(`code${row}${i}`);
+            newIdCode.id = `code${row}${i-1}`;
+
+            let newIdSuggest = document.getElementById(`suggestions${row}${i}`);
+            newIdSuggest.id = `suggestions${row}${i-1}`;
+            
+            let newIdSuggest2 = document.getElementById(`suggestionsCode${row}${i}`);
+            newIdSuggest2.id = `suggestionsCode${row}${i-1}`;
+
+            let newIdSettings = document.getElementById(`settings${row}${i}`);
+            newIdSettings.id = `settings${row}${i-1}`;
+
+            let newIdDiscipline = document.getElementById(`discipline${row}${i}`);
+            newIdDiscipline.id = `discipline${row}${i-1}`;
+
+            let newIdPhaseSelector = document.getElementById(`phaseSelector${row}${i}`);
+            newIdPhaseSelector.id = `phaseSelector${row}${i-1}`;
+
+            let newIdModalRequisites = document.getElementById(`modalRequisites${row}${i}`);
+            newIdModalRequisites.id = `modalRequisites${row}${i-1}`;
+
+            let newIdModalEquivalents = document.getElementById(`modalEquivalents${row}${i}`);
+            newIdModalEquivalents.id = `modalEquivalents${row}${i-1}`;
+            
+            let newIdDelete = document.getElementById(`delete${row}${i}`);
+            newIdDelete.id = `delete${row}${i-1}`;
+
+            let newIdValidDiv = document.getElementById(`validDiv${row}${i}`);
+            newIdValidDiv.id = `validDiv${row}${i-1}`;
+
+            let newIdValidDiv1 = document.getElementById(`compulsory${row}${i}`);
+            newIdValidDiv1.id = `compulsory${row}${i-1}`;
+
+            let newIdOptativeDiv = document.getElementById(`optativeDiv${row}${i}`);
+            newIdOptativeDiv.id = `optativeDiv${row}${i-1}`;
+
+            let newIdOptativeDiv1 = document.getElementById(`optative${row}${i}`);
+            newIdOptativeDiv1.id = `optative${row}${i-1}`;
+
+            let newIdModalBG = document.getElementById(`modalBackground${row}${i}`);
+            newIdModalBG.id = `modalBackground${row}${i-1}`
+
+            let newIdCloseModal = document.getElementById(`close${row}${i}`);
+            newIdCloseModal.id = `close${row}${i-1}`;
+
+            let newIdModalRequisitesPB = document.getElementById(`requisitesPlusBtn${row}${i}`);
+            newIdModalRequisitesPB.id = `requisitesPlusBtn${row}${i-1}`;
+
+            let newIdEquivalentsPB = document.getElementById(`equivalentsPlusBtn${row}${i}`);
+            newIdEquivalentsPB.id = `equivalentsPlusBtn${row}${i-1}`;
+
+            let newIdSaveModal = document.getElementById(`saveModal${row}${i}`);
+            newIdSaveModal.id = `saveModal${row}${i-1}`
+        }
+    }
+
+    const autocomplete = (clickedInput, row, cell, inputId) => {
+        
+        // Seleciona qual input autocompletar  
+        const searchInput = document.querySelector('#'+ clickedInput.id);
+
+        // Seleciona a div para as sugestões
+        const suggestionsPanel = document.querySelector('#' + `${inputId}${row}${cell}`);
+        
+        // Array com as sugestões de disciplinas
+        let disciplines = [];
+
+        // Array com as sugestões de códigos
+        let code = [];
+
+        (async () => {
+            
+            // TODO: Colocar o local do arquivo json com a grade
+            /*
+            const resp = await fetch('../grids_bcc2011.json');
+            const disciplinesAux = await resp.json();
+
+            // Guarda as disciplinas e códigos em seus arrays
+            disciplines = Object.values(disciplinesAux.code_to_name);
+            code = Object.keys(disciplinesAux.code_to_name);
+            */
+           
+            // Filtra as sugestões conforme o que for escrito
+            const search = (searchText) => {
+                if (inputId == "suggestions") {    
+                    var matches = disciplines.filter(discTeste => {
+                        const regex = new RegExp(`^${searchText}`,'gi');
+                        return discTeste.match(regex);
+                    });
+                } else {
+                    var matches = code.filter(discTeste => {
+                        const regex = new RegExp(`^${searchText}`,'gi');
+                        return discTeste.match(regex);
+                    });
+                }
+
+                // Verificar se o input está vazio
+                const valid = clickedInput.value.trim();
+
+                closeAllLists();
+                
+                // Verifica se há sugestões e se o input é válido
+                if (matches.length > 0 && valid) {
+                                    
+                    for (var i in matches) {
+                        
+                        // Cria uma div para cada sugestão
+                        var newElement = document.createElement('div');
+                        newElement.className = "autocomplete";
+                        newElement.innerHTML = matches[i];
+                        suggestionsPanel.appendChild(newElement);
+                        
+                        // Permite que o valor clicado seja colocado no input
+                        let selected = document.getElementById(`${matches[i]}`);
+                        selected.addEventListener("click", function() {
+                            clickedInput.value = selected.innerHTML;
+                        });
+
+                    }
+                } else {
+                    suggestionsPanel.innerHTML = '';
+                }
+            }
+
+            searchInput.addEventListener('input', () => search(searchInput.value));
+            
+            // Função para fechar a lista com as sugestões
+            function closeAllLists() {
+                document.querySelectorAll('.autocomplete').forEach(function(a){
+                    a.remove()
+                })
+            }
+
+            // Permitir que ela seja fechada com clique na tela
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+
+        })();
+
+    }
+
+    const startGrid = (numberOfPeriods) => {
+        for (i = 1; i <= numberOfPeriods.value; i++) {
+
+            // Coloca uma linha na table.
+            let gridRow = grid.insertRow(i - 1);
+
+            // Coloca a primeira td.
+            let gridCell0 = gridRow.insertCell(0);
+            gridCell0.setAttribute("class", "tdPeriods")
+
+            // Coloca a segunda td.
+            let gridCell1 = gridRow.insertCell(1);
+
+            // Escreve o período.
+            gridCell0.innerHTML = `${i}° Período`;
+
+            // Classe para a cell do Plus Btn deixar ele centralizado.
+            gridCell1.setAttribute("class", "tdPlusBtn");
+            // Plus button.
+            gridCell1.innerHTML = "<button type=\"button\" name=\"plusBtn\" class=\"plusBtn\">+</button>";
+            
+            gridObject.grid.push([]);
+        }
+
+            // De todas as fases, cada fase é adicionada ao objeto com um formato de array de disciplinas.
+            allPhasesArray.forEach(phase => {
+
+                gridObject.phases[phase] = [];
+                
+            });
+        
+            gridCreated = true;
+            
+            // $(periodNumber).addClass("readonly");
+            $(periodNumber).prop("disabled", true);
+            $(phaseInput).prop("disabled", true);
+    }
 
 
+    const execBtnAction = (element) => {
+        // Cria os inputs para adicionar as fases do curso.
+        if (element.id == "phaseBtn" && !phaseStarted) {
+        // Desbloqueia o botão de iniciar a grade.
+        document.getElementById("initGrid").disabled = false;
+        phaseStarted = true;
 
-}
+        table = document.getElementById("preconfigTable");
 
-$('#genGrid').on('submit', function(event){
-    event.preventDefault();
-    console.log("form submitted!")  // sanity check
-    send_grid();
-});
+        for (let i = 0; i <= phaseInput.value - 1; i++) {
+            let row = table.insertRow(4 + i)
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            cell2.innerHTML  = `<label for="phase" id="phase">Nome da fase ${i}:</label>`;
+            cell3.innerHTML += `<input type="text" class="form-control" placeholder="Nome" name="phaseNameInput${i}" id="phaseNameInput${i}" class="phaseConfig">`;
+        }
+        // Verifica se a grade já foi salva / criada.
+        } else if (element.id == "initGrid" && gridCreated || element.id == "saveGrid" && gridSaved) {
+            return;
+        // Se for os inputs das pré configurações da grade.
+        } else if (element.id == "initGrid") {
+            // Desbloqueia o botão salvar grade
+            document.getElementById("saveGrid").disabled = false;
+            // Verifica se, ao criar os inputs para as fases, um ou mais inputs foram deixados em branco.
+            for (let i = 0; i < phaseInput.value; i++) {
+                let phaseInputs = document.getElementById(`phaseNameInput${i}`);
+                if (phaseInputs.value.length === 0) {
+                    empty = true;
+                    // Se estiver algum campo vazio reseta oa array de fases. 
+                    allPhasesArray = [];
+                } else {
+                    // Se não estiver vazio coloca o nome da fase no array.
+                    allPhasesArray.push(phaseInputs.value);
+                    empty = false;
+                }
+            }
+
+            if (periodNumber.value.length !== 0 && gridVersion.value.length !== 0 && phaseInput.value.length !== 0 && !empty) {
+                startGrid(periodNumber);
+                displayVersion.innerHTML = `Versão da Grade: ${gridVersion.value}`;
+            }
+        
+        } else if (element.className == "plusBtn") {
+            let clickedPlus = element;
+            addDiscipline(clickedPlus);
+        // Se for o botão de Requisitos/Equivalentes abre uma modal popup.
+        } else if (element.className == "disciplineInput") {
+            let row = element.parentElement.parentElement.rowIndex;
+            let cell = element.parentElement.cellIndex;
+            let clickedInput = element;
+            if (clickedInput.id == `discipline${row}${cell}`) {
+                autocomplete(clickedInput, row, cell, "suggestions");
+            } else if (clickedInput.id == `code${row}${cell}`) {
+                autocomplete(clickedInput, row, cell, "suggestionsCode");
+            }
+
+        // Se for o botão de Requisitos/Equivalentes abre uma modal popup.
+        } else if (element.className == "buttonSettings") {
+
+            let row = element.parentElement.parentElement.rowIndex;
+            let cell = element.parentElement.cellIndex;
+
+            let currentModal = document.getElementById(`modalBackground${row}${cell}`);
+
+            currentModal.style.display = "flex";
+            initModalEvents(currentModal, row, cell);
+
+        // Se a classe do input for um botão de adicionar input dentro da modal    
+        } else if (element.className == "modalPlusBtn") {
+
+            let row = element.parentElement.parentElement.parentElement.parentElement.parentElement.rowIndex;
+            let cell = element.parentElement.parentElement.parentElement.parentElement.cellIndex;
+
+            createModalInput(row, cell, element);
+
+        // Se a classe do input for um botão de remover input dentro da modal  
+        } else if (element.className == "removeModalInput") {
+            // Remove o INPUT ao lado do botão de X
+            element.previousSibling.remove();
+            // Remove o BREAKLINE ao lado do botão X
+            element.nextSibling.remove();
+            // Remove o botão X
+            element.remove();
+        } else if (element.id === 'saveOptative') {
+            let optName = document.getElementById('optativeName').value;
+            let optCode = document.getElementById('optativeCode').value;
+
+            let table = document.getElementById('optativeList');
+            let row = table.insertRow(-1);
+            let cell = row.insertCell(0);
+
+            cell.innerHTML = optName;
+
+            gridObject.code_to_name[optName] = optCode;
+            gridObject.equiv_codes[optCode] = gridObject.fake_codes;
+
+        } else if (element.className == "deleteButtonSettings") {
+            let row = element.parentElement.parentElement.rowIndex;
+            let cell = element.parentElement.cellIndex;
+            // Deleta a célula da disciplina escolhida
+            grid.rows[row].deleteCell(cell);
+            // Organiza as ids da linha atual
+            organizeRow(row,cell);
+        } else if (element.id == "saveGrid") {
+            storeAllInputsInObject();
+            gridSaved = true;
+            
+            // Coloca a Versão da Grade no Objeto.
+            gridObject.version = gridVersion.value;
+            gridObject.repeated_codes = [];
+            gridObject.fake_codes = fakeCode.value;
+            send_grid(gridObject);
+        }
+    }
+
+    // Função principal que pega o ID do elemento clicado.
+    const initButtonEvents = () => {
+        document.addEventListener("click", targetElement => {
+            let selectedElement = targetElement.target;
+            if (selectedElement.tagName == "BUTTON" || selectedElement.tagName == "INPUT" || selectedElement.tagName == "H1") {
+                execBtnAction(selectedElement);
+            }
+        });
+    }
+
+    const send_grid = (json_data) => {
+        var json_data = JSON.stringify(json_data);
+        $.ajax({
+            type:"POST",
+            url: "{% url 'grid:GridCreateView' degree_code=degree_code %}",
+            data: {
+                grid: json_data,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data, status){
+                window.location.href = "/grid/{{degree_code}}";
+            },
+            error: function (request, status, error) {
+                if(request.status == 400){
+                    response_as_json = JSON.parse(request.responseText);
+                    reason = response_as_json.reason;
+                    reason_txt = reason.join("\n\n");
+                    alert(reason_txt);
+                }
+                else{
+                    alert(status.toString()+"\n"+error.toString());
+                }
+                gridSaved = false;
+                location.reload();
+            }
+        });
+    }
+    
+    initButtonEvents();
+
+    function create_with_json(){
+        var json_text = $("#json_textarea").val();
+        try {
+            // Ensure that it is possible to convert the string into an JSON object
+            // It will be converted back to string in send_grid
+            var json_as_jsobj = JSON.parse(json_text);
+            send_grid(json_as_jsobj);
+        } catch(e) {
+            alert("O JSON enviado possuí um formato inválido. Por favor, certifique-se o texto está de fato no formato JSON. Motivo do erro:\n\n"+e.toString());
+        }
+    }
 </script>
 
 {% endblock content %}
+
 {% block js-foot %}
-    <script src="{% static 'datatables/jquery.dataTables.min.js' %}">
-        $('#courses_table_g').dataTable({
-            "bInfo": true,
-            "scrollY":        "200px",
-        "scrollCollapse": true,
-        "paging":         false
-        });
-    </script>
+<script>
+    $(function() {
+	  $("#json_textarea").linedtextarea();
+	});
+</script>
 {% endblock js-foot %}

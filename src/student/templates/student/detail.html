@@ -29,7 +29,7 @@
              <a class="nav-item nav-link active" href="#resumo" aria-controls="resumo" data-toggle="tab">Resumo</a>
              <a class="nav-item nav-link" href="#disciplinas" aria-controls="disciplinas" data-toggle="tab">Lista de Disciplinas</a>
              {% for grid_info, grid_extra, version in analysis_result.grid_list %}
-             <a class="nav-item nav-link" href="#grid_{{version}}" aria-controls="grid" data-toggle="tab">Grade - Versão: {{version}}</a>
+             <a class="nav-item nav-link" href="#grid_{{forloop.counter0}}" aria-controls="grid" data-toggle="tab">Grade - Versão: {{version}}</a>
              {% endfor %}
             </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="tab-content">
             <!-- TODO: Add dynamic grid for each degree -->
             {% for grid_info, grid_extra, version in analysis_result.grid_list %}
-            <div role="tabpanel" class="tab-pane" id="grid_{{version}}">
+            <div role="tabpanel" class="tab-pane" id="grid_{{forloop.counter0}}">
                 <br>
                 <div class="grade">
                     {% for semester in grid_info%}
