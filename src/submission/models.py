@@ -2,7 +2,8 @@ from django.db import models
 from educator.models import Educator
 from django.utils import timezone
 
-from os import path
+import os
+
 from django.conf import settings
 
 from degree.models import Degree
@@ -78,13 +79,19 @@ class Submission(models.Model):
 
 
     def path(self):
-        return path.join(settings.MEDIA_ROOT, self.degree.code, str(self.id))
+        return os.path.join(settings.MEDIA_ROOT, self.degree.code, str(self.id))
+
+    def zip_path(self):
+        return os.path.join(self.path(), "{}_data.zip".format(self.degree.name))
 
     def __str__(self):
         return 'Submission (from: {}, to: {}, on: {})'.format(self.author.user.first_name,
                                                               self.degree.name,
                                                               self.timestamp)
-
+    
+    def download_allowed(self, user):
+        return (user == self.author.user) or user.is_superuser
+    
     def set_executing(self):
         self.processed = False
         self.process_time = None

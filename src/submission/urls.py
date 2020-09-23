@@ -6,6 +6,7 @@ from . import views
 
 
 urlpatterns = [
+    url(r'^download/(?P<submission_id>[0-9]+)$', views.download, name='download'),
     url(r'^create/', views.SubmissionCreate.as_view(), name='SubmissionCreateView'),
     url(r'^update/(?P<pk>[0-9]+)/$', views.SubmissionUpdate.as_view(), name='SubmissionUpdateView'),
     url(r'^delete/(?P<pk>[0-9]+)$', views.SubmissionDelete.as_view(), name='SubmissionDeleteView'),

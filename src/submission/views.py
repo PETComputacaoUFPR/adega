@@ -13,7 +13,38 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db.models import Q
 
+from guardian.decorators import permission_required_or_403
 
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse, Http404
+from django.utils.text import slugify
+import os
+import urllib.parse
+
+def download(request, submission_id):
+    submission_id = int(submission_id)
+    submission = Submission.objects.get(id=submission_id)
+
+    if not submission.download_allowed(request.user):
+        raise PermissionDenied
+
+    file_path = submission.zip_path()
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(
+                fh.read(),
+                content_type='application/zip charset=utf-8')
+            
+            content_disposition =  \
+                "attachment; " \
+                "filename={ascii_filename};" \
+                "filename*=UTF-8''{utf_filename}".format(
+                    ascii_filename=slugify(os.path.basename(file_path)),
+                    utf_filename=urllib.parse.quote(
+                        os.path.basename(file_path).encode("utf-8")))
+            response['Content-Disposition'] = content_disposition
+            return response
+    raise Http404
 
 @method_decorator(login_required, name='dispatch')
 class SubmissionCreate(SuccessMessageMixin, CreateView):
@@ -107,7 +138,6 @@ class SubmissionList(ListView):
     context_object_name = 'submission'
 
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
@@ -116,6 +146,7 @@ class SubmissionList(ListView):
 
     def get_queryset(self):
         educator = self.request.user.educator
+        # If this filter is changed, the download permission must be verified
         return self.model.objects.filter(author=educator)
 
 
