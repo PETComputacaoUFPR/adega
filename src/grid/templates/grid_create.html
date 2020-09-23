@@ -348,74 +348,407 @@
     }
 </style>
 
-<form action="/" method="GET">
-    <div id="logoContainer">
-        <h2 id="logo">Criação de Grade</h2>
+<div>
+    <p>
+        Atualment existem duas opções para inserir uma versão da grade no sistema:
+    </p>
+    <!-- Nav tabs -->
+    <div class="nav nav-tabs" role="tablist">
+        <a class="nav-item nav-link active" href="#create_with_json" aria-controls="create_with_json" data-toggle="tab">Enviar a grade no formato JSON</a>
+        <a class="nav-item nav-link" href="#create_with_interface" aria-controls="create_with_interface" data-toggle="tab">Gerador de grade (<i>em fase de teste</i>)</a>
     </div>
-    <div id="preconfigContainer">
-        <table id="preconfigTable">
-            <tr>
-                <td><label for="gridVersion" id="gridVersionLabel">Versão da Grade:</label></td>
-                <td><input type="text" class="form-control" name="gridVersion" id="gridVersionInput"></td>
-            </tr>
-            <tr>
-                <td><label for="periodNumber" id="periodNumberLabel">Qtd. de Períodos:</label></td>
-                <td><input type="number" class="form-control" value="8" name="periodNumber" id="periodNumberInput" min=1 max=20></td>
-            </tr>
-            <tr>
-                <td><label for="fakeCode" id="fakeCodeLabel">Código Inválido:</label></td>
-                <td><input type="text" class="form-control" name="fakeCode" id="fakeCodeInput"></td>
-            </tr>
-            <tr>
-                <td><label for="phase" id="phase">Número de Fases:</label></td>
-                <td><input type="number" class="form-control" name="phaseInput" id="phaseInput"></td>
-                <td><input type="button" class="btn btn-primary" name="phaseBtn" id="phaseBtn" value="Confirmar"></td>
-            </tr>
-            <tr>
-                <td><input type="button" class="btn btn-primary" name="initGrid" id="initGrid" value="Iniciar Grade" disabled></td>
-                <td></td>
-                <td><input type="button" class="btn btn-primary" name="saveGrid" id="saveGrid" value="Salvar Grade" disabled></td>
-                <td></td>
-            </tr>
-        </table>
-        <table id="optativeConfig">
-            <tr>
-                <td>Nome da Optativa:</td>
-                <td><input type="text" class="form-control" name="optativeName" id="optativeName"></td>
-            </tr>
-            <tr>
-                <td>Código da Optativa:</td>
-                <td><input type="text" class="form-control" name="optativeCode" id="optativeCode"></td>
-            </tr>
-            <tr>
-                <td><input type="button" class="btn btn-primary" name="saveOptative" id="saveOptative" value="Adicionar"></td>
-            </tr>
-        </table>
-        <div id="containerOptative">
-            <table id="optativeList">
-                <tr>
-                    <td id="titleOpt">Disciplinas Optativas</td>
-                </tr>
-            </table>
+</div>
+
+<br>
+
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="create_with_json">
+        <div class="md-form container-fluid h-100">
+            <label for="json_textarea">Preencha abaixo a descrição da grade do curso no formato JSON.<br>
+            Em caso de dúvidas, consulte a <a href="#create_with_json_helper">seção de especificações do formato JSON</a></label>
+            <textarea id="json_textarea" name="json_textarea" class="md-textarea form-control" placeholder="{&#x0a;    Conteúdo do JSON&#x0a;}" style="height:200px"></textarea>
+            <button class="btn btn-primary col-md-12" onClick="create_with_json();">Enviar</button>
+        </div>
+        <br><br>
+        <p id="create_with_json_helper">
+            O conteúdo do json deve seguir um formato com as seguintes especificações:
+        </p>
+        <div class="row">
+            <div class="col-md-5">
+                <p class="text-center"><b>Descrição das chaves e valores</b></p>
+                <br>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <b class="text-danger">"version"</b>:
+                        Nome da versão da grade (até 40 caracteres).
+                        Recomenda-se inserir o ano relativo da grade no curso.  
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"grid"</b>:
+                        Matriz com os códigos de cada disciplina para montar a grade.
+                        Cada linha representa um novo período da grade.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"repeated_codes"</b>:
+                        Lista de códigos que se repetem na grade.<br>
+                        Caso este campo esteja vazio, o servidor tentará automaticamente preencher com os valores corretos, mas recomenda-se que o usuário já informe os códigos repetidos. 
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"fake_codes"</b>:
+                        Lista de códigos que são falsos. Alguns códigos da grade pode representar um conjunto de disciplinas, por exemplo uma disciplina optativa.<br>
+                        Dessa forma, é necessário indicar que essas disciplinas não irão ser presentes nas planilhas submetidas no sistema e evitar links inválidos nas páginas de visualização dos relatórios gerados pelo sistema.  
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"code_to_name"</b>:
+                        Mapeamento do código de cada disciplina para o seu nome completo.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"equiv_codes"</b>:
+                        Mapeamento do código de cada disciplina para uma lista que contém todas os códigos de disciplinas que são suas equivalentes na grade.
+                        Isso pode ser necessário para visualizar as regras de migração de grade aceitas em colegiado.<br>
+                        Além disso, caso o usuário adicione uma disciplina com "código falso" na grade, é provável que ele queira adicionar as equivalências aqui (por exemplo todas as disciplinas que se relacionam com o código relativo às disciplinas optativas).<br>
+                        Esses dados serão utilizados nas análises para identificar algumas informações, por exemplo o período de cada aluno em relação à grade.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"prerequisites"</b>:
+                        Mapeamento do código de cada disciplina para uma lista de códigos de disciplinas que representam seus pré-requisitos.<br>
+                        Essa informação será utilizada no processamento dos dados para identificar por exemplo quais disciplinas o aluno está apto a se matricular no próximo semestre.<br>
+                        No caso de situações como a "Barreira", onde todas as disciplinas após o terceiro período são requisitos das disciplinas anteriores ao quarto, é necessário informar todas as dependências como mostrado no exemplo ao lado.
+                    </li>
+                    <li class="list-group-item">
+                        <b class="text-danger">"phases"</b>:
+                        Mapeamento de nome de fases (pode ser qualquer nome) para uma lista de códigos pertecentes à grade descrita no outro campo.<br>
+                        Esses valores são utilizados para processar os dados e por exemplo gerar listagens dos alunos que já cursaram essas fases da grade. Isso pode ser útil para identificar por exemplo os alunos que já cursaram a "Barreira" ou os alunos que já cursaram todas disciplinas de matemática.
+                    </li>
+                </ul> 
+            </div>
+
+            <div class="col-md-7">
+                <p class="text-center"><b>Exemplo do JSON esperado</b></p>
+                <br>
+                <pre>
+{
+    <b class="text-danger">"version"</b>: "2011",
+    <b class="text-danger">"grid"</b>: [
+        ["CI241", "CI055", "CM201", "CM045", "BA040"],
+        ["CI243", "CI056", "CI067", "CM005", "BQ005"],
+        ["CI244", "CI057", "CI166", "BQ054", "BC056"],
+        ["CI215", "CI062", "CE003", "BG054", "BF075", "CI164"],
+        ["CI162", "CI065", "CI394", "CI316", "MN127"],
+        ["CI167", "CI209", "CI218", "CI171", "MN128", "CI220"],
+        ["CI221", "CI169", "CI172", "OPT", "MN129"],
+        ["CI262", "OPT", "OPT", "OPT"]
+    ],
+    <b class="text-danger">"repeated_codes</b>": ["OPT"],
+    <b class="text-danger">"fake_codes"</b>: ["OPT"],
+    <b class="text-danger">"code_to_name"</b>: {
+        "BA040": "Anatomia Humana Sistêmica",
+        "BC056": "Fundamentos de Biologia Celular e Tecidual",
+        "BF075": "Fisiologia para Informática Biomédica",
+        "BG054": "Genética e Evolução para o Curso de Informática Biomédica",
+        "BQ005": "Introdução à Bioquímica",
+        "BQ054": "Biologia Molecular e Bioinformática",
+        "CE003": "Estatística II",
+        "CI055": "Algoritmos e Estruturas de Dados I",
+        "CI056": "Algoritmos e Estruturas de Dados II",
+        "CI057": "Algoritmos e Estruturas de Dados III",
+        "CI062": "Técnicas Alternativas de Programação",
+        "CI065": "Algoritmo e Teoria dos Grafos",
+        "CI067": "Oficina de Computação",
+        "CI162": "Engenharia de Requisitos",
+        "CI164": "Introdução à Computação Científica",
+        "CI166": "Metodologia Científica",
+        "CI167": "Sistemas de Informação em Saúde",
+        "CI169": "Bioinformática",
+        "CI171": "Aprendizado de Máquina",
+        "CI172": "Processamento de Imagens Biomédicas",
+        "CI209": "Inteligência Artificial",
+        "CI215": "Sistemas Operacionais",
+        "CI218": "Sistemas de Banco de Dados",
+        "CI220": "Teoria de Sistemas",
+        "CI221": "Engenharia de Software",
+        "CI241": "Introdução a Sistemas Computacionais",
+        "CI243": "Fundamentos de Projeto e Arquitetura de Computadores",
+        "CI244": "Fundamentos de Redes de Sistemas Distribuídos",
+        "CI262": "Trabalho de Conclusão de Curso em Informática Biomédica",
+        "CI316": "Programação Paralela",
+        "CI394": "Processamento de Imagens",
+        "CM005": "Álgebra Linear",
+        "CM045": "Geometria Analítica",
+        "CM201": "Cálculo Diferencial e Integral I",
+        "MN127": "Saúde, Meio Ambiente e Sociedade",
+        "MN128": "Organização do Sistema de Saúde Brasileiro",
+        "MN129": "Metodologia da Pesquisa e Bioética em Saúde",
+        "MN130": "Gestão Hospitalar",
+        "CE073": "Análise de Dados Categóricos",
+        "CE075": "Análise de Dados Longitudinais",
+        "CE077": "Análise de Sobrevivência",
+        "CI059": "Introdução à Teoria da Computação",
+        "CI084": "Tópicos em Teoria dos Grafos",
+        "CI069": "Administração de Empresas de Informática",
+        "CI085": "Tópicos em Computação Gráfica",
+        "CI086": "Tópicos em Arquitetura de Computadores",
+        "CI087": "Tópicos em Banco de Dados",
+        "CI088": "Tópicos Em Sistemas Distribuídos",
+        "CI089": "Tópicos em Teoria da Computação",
+        "CI090": "Tópicos em Engenharia de Software",
+        "CI091": "Tópicos em Avaliação de Desempenho",
+        "CI092": "Tópicos em Tecnologias e Aplicações",
+        "CI093": "Tópicos em Análise Numérica",
+        "CI094": "Tópicos em Processamento de Imagens",
+        "CI095": "Tópicos em Compiladores",
+        "CI097": "Tópicos em Sistemas Digitais",
+        "CI163": "Projeto de Software",
+        "CI168": "Tópicos em Sistemas de Informação em Saúde",
+        "CI170": "Tópicos em Bioinformática",
+        "CI173": "Computação Gráfica",
+        "CI174": "Tópicos em Engenharia da Computação",
+        "CI204": "Administração de Informática",
+        "CI205": "Administração de Produção para Informática",
+        "CI211": "Construção de Compiladores",
+        "CI214": "Estrutura de Linguagens de Programação",
+        "CI301": "Tópicos em Ciência da Computação I",
+        "CI302": "Tópicos em Ciência da Computação II",
+        "CI303": "Tópicos em Ciência da Computação III",
+        "CI304": "Tópicos em Ciência da Computação IV",
+        "CI305": "Tópicos em Ciência da Computação V",
+        "CI306": "Tópicos em Ciência da Computação VI",
+        "CI309": "Tópicos em Inteligência Artificial",
+        "CI310": "Tópicos em Aprendizado de Máquina",
+        "CI311": "Fundamentos Lógicos da Inteligência Artificial",
+        "CI312": "Arquiteturas Avançadas de Computadores",
+        "CI313": "Arquitetura de Computadores Paralelos",
+        "CI314": "Introdução à Computação Paralela",
+        "CI315": "Projeto de Sistemas Operacionais",
+        "CI317": "Tópicos em Sistemas Operacionais",
+        "CI318": "Tópicos em Computação Paralela",
+        "CI320": "Tópicos em Programação de Computadores",
+        "CI321": "Tópicos em Sistemas Embutidos",
+        "CI338": "Tópicos em Geometria Computacional",
+        "CI339": "Complexidade Computacional",
+        "CI340": "Tópicos em Métodos Formais",
+        "CI350": "Interação Humano-Computador",
+        "CI351": "Tópicos em Interação Humano-Computador",
+        "CI355": "Tópicos em Algoritmos",
+        "CI358": "Administração e Gerência de Redes de Computadores",
+        "CI359": "Laboratório de Redes de Computadores",
+        "CI360": "Redes Móveis",
+        "CI361": "Sistemas Distribuídos",
+        "CI362": "Sistemas Operacionais Distribuídos",
+        "CI363": "Tópicos de Multimídia em Redes de Computadores",
+        "CI364": "Tópicos em Computação em Rede",
+        "CI365": "Tópicos em Redes de Computadores",
+        "CI366": "Tópicos em Redes Móveis",
+        "CI367": "Tópicos em Simulação de Sistemas Computacionais",
+        "CI395": "Oficina de Visão Computacional e Processamento de Imagens",
+        "CI396": "Tópicos em Visão Computacional",
+        "OPT": "Optativa"
+    },
+    <b class="text-danger">"equiv_codes"</b>: {
+        "MN130": ["OPT"],
+        "CE073": ["OPT"],
+        "CE075": ["OPT"],
+        "CE077": ["OPT"],
+        "CI059": ["OPT"],
+        "CI069": ["OPT"],
+        "CI084": ["OPT"],
+        "CI085": ["OPT"],
+        "CI086": ["OPT"],
+        "CI087": ["OPT"],
+        "CI088": ["OPT"],
+        "CI089": ["OPT"],
+        "CI090": ["OPT"],
+        "CI091": ["OPT"],
+        "CI092": ["OPT"],
+        "CI093": ["OPT"],
+        "CI094": ["OPT"],
+        "CI095": ["OPT"],
+        "CI097": ["OPT"],
+        "CI163": ["OPT"],
+        "CI168": ["OPT"],
+        "CI170": ["OPT"],
+        "CI173": ["OPT"],
+        "CI174": ["OPT"],
+        "CI204": ["OPT"],
+        "CI205": ["OPT"],
+        "CI211": ["OPT"],
+        "CI214": ["OPT"],
+        "CI301": ["OPT"],
+        "CI302": ["OPT"],
+        "CI303": ["OPT"],
+        "CI304": ["OPT"],
+        "CI305": ["OPT"],
+        "CI306": ["OPT"],
+        "CI309": ["OPT"],
+        "CI310": ["OPT"],
+        "CI311": ["OPT"],
+        "CI312": ["OPT"],
+        "CI313": ["OPT"],
+        "CI314": ["OPT"],
+        "CI315": ["OPT"],
+        "CI317": ["OPT"],
+        "CI318": ["OPT"],
+        "CI320": ["OPT"],
+        "CI321": ["OPT"],
+        "CI338": ["OPT"],
+        "CI339": ["OPT"],
+        "CI340": ["OPT"],
+        "CI350": ["OPT"],
+        "CI351": ["OPT"],
+        "CI355": ["OPT"],
+        "CI358": ["OPT"],
+        "CI359": ["OPT"],
+        "CI360": ["OPT"],
+        "CI361": ["OPT"],
+        "CI362": ["OPT"],
+        "CI363": ["OPT"],
+        "CI364": ["OPT"],
+        "CI365": ["OPT"],
+        "CI366": ["OPT"],
+        "CI367": ["OPT"],
+        "CI395": ["OPT"],
+        "CI396": ["OPT"]
+    },
+    <b class="text-danger">"prerequisites"</b>:{
+            "BF075": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                    "CI243", "CI056", "CI067", "CM005", "BQ005",
+                    "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "BG054": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                    "CI243", "CI056", "CI067", "CM005", "BQ005",
+                    "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "BQ054": ["BQ005"],
+            "CE003": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                    "CI243", "CI056", "CI067", "CM005", "BQ005",
+                    "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI056": ["CI055"],
+            "CI057": ["CI055","CI056"],
+            "CI062": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI065": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI067": ["CI055"],
+            "CI162": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI164": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI171": ["CE003"],
+            "CI172": ["CI394"],
+            "CI209": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI215": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI218": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI220": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI221": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"],
+            "CI244": ["CI243"],
+            "CM005": ["CM045"]
+    },
+    <b class="text-danger">"phases"</b>:{
+        "Barreira IBM": ["CI241", "CI055", "CM201", "CM045", "BA040",
+                "CI243", "CI056", "CI067", "CM005", "BQ005",
+                "CI244", "CI057", "CI166", "BQ054","BC056"]
+    }
+}
+                </pre>
+            </div>
         </div>
     </div>
-    <div id="gridContainer">
-        <table>
-            <tr>
-                <td><h3 id="displayGridVersion">Versão da Grade:</h3></td>
-                <td><div id="messageDisplay2"></div></td>
-            </tr>
-        </table>
 
-        <table id="grid" cellspacing=0>
 
-        </table>
+    <div role="tabpanel" class="tab-pane" id="create_with_interface">
+        <form action="/" method="GET">
+        <div id="logoContainer">
+            <h2 id="logo">Criação de Grade</h2>
+            <p>
+                Esta funcionalidade se encontra ainda em fase de desenvolvimento.
+                É possível que a grade final seja gerada com erros.
+                <br>
+                Se possível, informe a grade no formato JSON usando a opção padrão.
+                <br><br>
+            </p>
+        </div>
+        <div id="preconfigContainer">
+            <table id="preconfigTable">
+                <tr>
+                    <td><label for="gridVersion" id="gridVersionLabel">Versão da Grade:</label></td>
+                    <td><input type="text" class="form-control" name="gridVersion" id="gridVersionInput"></td>
+                </tr>
+                <tr>
+                    <td><label for="periodNumber" id="periodNumberLabel">Qtd. de Períodos:</label></td>
+                    <td><input type="number" class="form-control" value="8" name="periodNumber" id="periodNumberInput" min=1 max=20></td>
+                </tr>
+                <tr>
+                    <td><label for="fakeCode" id="fakeCodeLabel">Código Inválido:</label></td>
+                    <td><input type="text" class="form-control" name="fakeCode" id="fakeCodeInput"></td>
+                </tr>
+                <tr>
+                    <td><label for="phase" id="phase">Número de Fases:</label></td>
+                    <td><input type="number" class="form-control" name="phaseInput" id="phaseInput"></td>
+                    <td><input type="button" class="btn btn-primary" name="phaseBtn" id="phaseBtn" value="Confirmar"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="btn btn-primary" name="initGrid" id="initGrid" value="Iniciar Grade" disabled></td>
+                    <td></td>
+                    <td><input type="button" class="btn btn-primary" name="saveGrid" id="saveGrid" value="Salvar Grade" disabled></td>
+                    <td></td>
+                </tr>
+            </table>
+            <table id="optativeConfig">
+                <tr>
+                    <td>Nome da Optativa:</td>
+                    <td><input type="text" class="form-control" name="optativeName" id="optativeName"></td>
+                </tr>
+                <tr>
+                    <td>Código da Optativa:</td>
+                    <td><input type="text" class="form-control" name="optativeCode" id="optativeCode"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="btn btn-primary" name="saveOptative" id="saveOptative" value="Adicionar"></td>
+                </tr>
+            </table>
+            <div id="containerOptative">
+                <table id="optativeList">
+                    <tr>
+                        <td id="titleOpt">Disciplinas Optativas</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="gridContainer">
+            <table>
+                <tr>
+                    <td><h3 id="displayGridVersion">Versão da Grade:</h3></td>
+                    <td><div id="messageDisplay2"></div></td>
+                </tr>
+            </table>
+
+            <table id="grid" cellspacing=0>
+
+            </table>
+        </div>
+        </form>
     </div>
-</form>
+</div>
+
+    
+    
 
 <script>
-        // Pega o elemento GRID e o child.
+    // Pega o elemento GRID e o child.
     var grid = document.getElementById("grid");
+
     gridBody = document.querySelector("#grid > tbody");
 
     // Variável para verificar se a grade inicial foi criada.
@@ -435,6 +768,8 @@
     displayVersion = document.getElementById("displayGridVersion");
     // Plus Button
     plusBtn = document.getElementsByClassName("plusBtn");
+    fakeCode = document.getElementById("fakeCodeInput");
+
     gridSaved = false;
 
     gridObject = {
@@ -974,8 +1309,6 @@
     }
 
     const startGrid = (numberOfPeriods) => {
-        let fakeCode = document.getElementById("fakeCodeInput").value;
-
         for (i = 1; i <= numberOfPeriods.value; i++) {
 
             // Coloca uma linha na table.
@@ -1006,13 +1339,11 @@
                 
             });
         
-            // Coloca a Versão da Grade no Objeto.
-            gridObject.version = gridVersion.value;
-            gridObject.repeated_codes = [];
-            gridObject.fake_codes = fakeCode;
-        
             gridCreated = true;
-
+            
+            // $(periodNumber).addClass("readonly");
+            $(periodNumber).prop("disabled", true);
+            $(phaseInput).prop("disabled", true);
     }
 
 
@@ -1122,8 +1453,12 @@
             organizeRow(row,cell);
         } else if (element.id == "saveGrid") {
             storeAllInputsInObject();
-            console.log(gridObject);
-            // gridSaved = true;
+            gridSaved = true;
+            
+            // Coloca a Versão da Grade no Objeto.
+            gridObject.version = gridVersion.value;
+            gridObject.repeated_codes = [];
+            gridObject.fake_codes = fakeCode.value;
             send_grid(gridObject);
         }
     }
@@ -1151,18 +1486,42 @@
                 window.location.href = "/grid/{{degree_code}}";
             },
             error: function (request, status, error) {
-                response_as_json = JSON.parse(request.responseText);
-                console.log(response_as_json);
-                reason = response_as_json.reason;
-                reason_txt = reason.join("\n");
-                alert(reason_txt);
+                if(request.status == 400){
+                    response_as_json = JSON.parse(request.responseText);
+                    reason = response_as_json.reason;
+                    reason_txt = reason.join("\n\n");
+                    alert(reason_txt);
+                }
+                else{
+                    alert(status.toString()+"\n"+error.toString());
+                }
+                gridSaved = false;
+                location.reload();
             }
         });
     }
     
     initButtonEvents();
+
+    function create_with_json(){
+        var json_text = $("#json_textarea").val();
+        try {
+            // Ensure that it is possible to convert the string into an JSON object
+            // It will be converted back to string in send_grid
+            var json_as_jsobj = JSON.parse(json_text);
+            send_grid(json_as_jsobj);
+        } catch(e) {
+            alert("O JSON enviado possuí um formato inválido. Por favor, certifique-se o texto está de fato no formato JSON. Motivo do erro:\n\n"+e.toString());
+        }
+    }
 </script>
 
 {% endblock content %}
+
 {% block js-foot %}
+<script>
+    $(function() {
+	  $("#json_textarea").linedtextarea();
+	});
+</script>
 {% endblock js-foot %}

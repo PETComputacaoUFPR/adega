@@ -49,11 +49,11 @@ def check_keys(grid_as_dict):
             keys_error.append(item)
     
     if len(keys_error) > 0:
-        msg_error = ("Houve algum erro na hora de construir a grade. "
+        msg_error = ("Houve algum erro durante a construção da grade. "
                      "Verifique se os seguintes itens estão corretos: ")
         
         keys_error_displayname = [keys_to_displayname[x] for x in keys_error]
-        keys_error_str = ";".join(keys_error_displayname)
+        keys_error_str = "; ".join(keys_error_displayname)
         return msg_error + keys_error_str
     else:
         return None
@@ -68,7 +68,7 @@ def check_version(grid_as_dict):
     version_error = ""
 
     if is_empty:
-        version_error = "Por favor, cheque se a versão da grade foi colocada. "
+        version_error = "Por favor, cheque se o campo do nome da versão foi preenchido. "
         return version_error
     else:
         return None
@@ -110,22 +110,35 @@ def check_phase_code(grid_as_dict, all_codes):
         return None
 
 def check_course_from_json(grid_as_dict):
-
-    all_codes = check_repeated(grid_as_dict)
-
     errors = []
 
-    keys_error_list = check_keys(grid_as_dict)
-    if not keys_error_list is None:
-        errors.append(keys_error_list)
+    try:
+        all_codes = check_repeated(grid_as_dict)
+    except:
+        errors.append("Um erro inesperado aconteceu durante a verificação da grade e dos códigos repetidos")
+        all_codes = None
+
+    try:
+        keys_error_list = check_keys(grid_as_dict)
+        if not keys_error_list is None:
+            errors.append(keys_error_list)
+    except:
+        errors.append("Um erro inesperado aconteceu durante a verificação dos campos")
     
-    version_error_list = check_version(grid_as_dict)
-    if not version_error_list is None:
-        errors.append(version_error_list)
-    
-    phase_code_error_list = check_phase_code(grid_as_dict, all_codes)
-    if not phase_code_error_list is None:
-        errors.append(phase_code_error_list)
+    try:
+        version_error_list = check_version(grid_as_dict)
+        if not version_error_list is None:
+            errors.append(version_error_list)
+    except:
+        errors.append("Um erro inesperado aconteceu durante a verificação do nome da versão")
+
+    if not all_codes is None:
+        try:
+            phase_code_error_list = check_phase_code(grid_as_dict, all_codes)
+            if not phase_code_error_list is None:
+                errors.append(phase_code_error_list)
+        except:
+            errors.append("Um erro inesperado aconteceu durante a verificação das fases da grade")
 
     return errors
 
@@ -191,9 +204,17 @@ class GridCreate(View):
 
         grid_as_json_string = json.dumps(grid_as_dict, indent=4, sort_keys=True)
 
-        # print(grid_as_dict)
-
         error_list = check_course_from_json(grid_as_dict)
+
+        grid_version = grid_as_dict["version"]
+        dg = Degree.objects.get(code=degree_code)
+
+        if Grid.objects.filter(degree=dg, version=grid_version).exists():
+            error_list.append("Já existe uma versão com esse nome associada no banco de dados")
+        
+        if len(grid_version) > 40:
+            error_list.append("O nome da versão deve conter 40 caracteres ou menos")
+
         if len(error_list) > 0:
             context = {
                 'status': '400', 'reason': error_list
@@ -203,8 +224,8 @@ class GridCreate(View):
             response.status_code = 400
             return response
         
-        grid_version = grid_as_dict["version"]
-        dg = Degree.objects.get(code=degree_code)
+
+        
         new_grid = Grid(degree=dg, version=grid_version,
                         data_as_string=grid_as_json_string)
         new_grid.save()

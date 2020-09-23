@@ -11,7 +11,6 @@ def get_path(instance, filename):
 
 class Grid(models.Model):
     # version = models.IntegerField()
-    # version = models.CharField(max_length=40, unique=True)
     version = models.CharField(max_length=40)
     data_as_string = models.TextField()
 
@@ -22,7 +21,9 @@ class Grid(models.Model):
             related_query_name="grids",
             )
 
-    
+    class Meta:
+        unique_together = ('version', 'degree',)
+
     def __str__(self):
         return "Curso: {} Versão: {}".format(self.degree, self.version)
 
