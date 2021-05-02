@@ -16,95 +16,132 @@ from django.shortcuts import redirect
 
 from student.grid import DegreeGrid
 
-def create_course_from_json(json_data, degree_code):
-    grid_version = json_data["version"]
-    courses = {}
-    # print(json_data)
+from django.contrib.admin.utils import flatten
+from django.http import HttpResponse
 
-    periods = json_data["courses"].keys()
-    periods = [int(x) for x in periods]
+def check_keys(grid_as_dict):
 
-    for period in json_data["courses"].keys():
-        for course in json_data["courses"][period]:
-            course["course_period"] = int(course["course_period"])
-            courses[course["course_code"]] = course
-            
-    courses_codes = list(courses.keys())
-    courses_codes_set = set(courses_codes)
+    # Checa se todos os códigos estão presentes
+    # e retorna as chaves inválidas, se houver
+    keys_error = []
     
-    __import__('pprint').pprint(courses)
+    keys = ["version",
+            "grid",
+            "repeated_codes",
+            "fake_codes",
+            "code_to_name",
+            "equiv_codes",
+            "prerequisites",
+            "phases"]
     
-    # Validation
-    for code in courses:
-        eq = courses[code]["course_equivalent"].split(",")
-        eq = [x for x in eq if x != '']
-        # if len(set(eq) - courses_codes_set) > 0:
-        #     return None
-        courses[code]["course_equivalent"] = eq
-        
-        req = courses[code]["course_prerequisite"].split(",")
-        req = [x for x in req if x != '']
-
-        if len(set(req) - courses_codes_set) > 0:
-            # print(req)
-            # print(set(req) - courses_codes_set)
-            # print(len(set(req) - courses_codes_set))
-            return None
-        courses[code]["course_prerequisite"] = req
-    
-    dg = Degree.objects.get(code=degree_code)
-    grid_desc_dict = {
-        "version": grid_version,
-        "grid": [[] for i in range(len(periods))],
-        "repeated_codes": [],
-        "fake_codes": [],
-        "code_to_name": {},
-        "equiv_codes": {},
-        "prerequisites": {},
-        "phases": {}
+    keys_to_displayname = {
+        "version": "Versão",
+        "grid": "Grade",
+        "repeated_codes": "Lista de códigos repetidos",
+        "fake_codes": "Códigos falsos",
+        "code_to_name": "Nomes de disciplinas",
+        "equiv_codes": "Lista de códigos equivalentes",
+        "prerequisites": "Lista de pré-requisitos",
+        "phases": "Fases do curso"
     }
+    for item in keys:
+        if item not in grid_as_dict:
+            keys_error.append(item)
     
-    for code in courses:
-        course = courses[code]
-        period = course["course_period"]
-
-        grid_desc_dict["grid"][period-1].append(code)
-        grid_desc_dict["code_to_name"][code] = course["course_name"]
-        grid_desc_dict["equiv_codes"][code] = course["course_equivalent"]
-        grid_desc_dict["prerequisites"][code] = course["course_prerequisite"]
-
-        if courses_codes.count(code) > 1:
-            grid_desc_dict["repeated_codes"].append(code)
-        if course["course_type"] != "Obrigatória":
-            grid_desc_dict["fake_codes"].append(code)
-
-    # print(grid_desc_dict)
+    if len(keys_error) > 0:
+        msg_error = ("Houve algum erro durante a construção da grade. "
+                     "Verifique se os seguintes itens estão corretos: ")
         
-    new_grid = Grid(degree=dg, version=grid_version,
-                    data_as_string=json.dumps(grid_desc_dict))
-
-    # periods = list(set)
-    # Prevent loop dependencies
-    # i = 0
-    # prior_queue = list(courses_codes)
-    # courses_instances = {}
-    # while(len(prior_queue) > 0):
-    #     course = prior_queue[i]
-    #     eq = course["course_equivalent"]
-    #     req = course["course_prerequisite"]
-    #     # Check if all equivalences and pre requisites was already instanced
-    #     courses_instances_set = set(courses_instances.keys())
-    #     remain_eq = len(set(eq) - courses_instances_set)
-    #     remain_req = len(set(req) - courses_instances_set)
-    #     if remain_eq == 0 and  remain_req == 0:
-    #         new_course = GridCourse(
-    #             # name=course["course_name"],
-    #             # _type=course["course_type"],
-    #             # code=course["course_code"]
-    #         )
+        keys_error_displayname = [keys_to_displayname[x] for x in keys_error]
+        keys_error_str = "; ".join(keys_error_displayname)
+        return msg_error + keys_error_str
+    else:
+        return None
     
-    new_grid.save()
-    return new_grid
+
+def check_version(grid_as_dict):
+
+    # Se for enviado como json, seria necessário checar a versão
+    # Checa se a versão da grade está no json
+    is_empty = not bool(grid_as_dict['version'])
+
+    version_error = ""
+
+    if is_empty:
+        version_error = "Por favor, cheque se o campo do nome da versão foi preenchido. "
+        return version_error
+    else:
+        return None
+
+def check_repeated(grid_as_dict):
+
+    # Identifica os repetidos em grid
+    all_codes = []
+    list_repeated_codes = []
+
+    for code in flatten(grid_as_dict['grid']):
+        if not code in all_codes:
+            all_codes.append(code)
+        else:
+            list_repeated_codes.append(code)
+    
+    # Checa se todos os códigos repetidos estão no repeated_codes
+    # Se não estiver, será adicionado
+    for repeated_item in set(list_repeated_codes):
+        if repeated_item not in grid_as_dict['repeated_codes']:
+            grid_as_dict['repeated_codes'].append(repeated_item)
+
+    return all_codes
+
+def check_phase_code(grid_as_dict, all_codes):
+
+    phase_errors = []
+
+    # Checa se as disciplinas das fases estão na grid
+    for phase_codes in flatten(grid_as_dict['phases'].values()):
+        if phase_codes not in all_codes:
+            phase_errors.append(phase_codes)
+    
+    if len(phase_errors) > 0:
+        msg_error = "Por favor, cheque se os seguintes códigos são válidos: "
+        phase_error_str = ",".join(phase_errors)
+        return msg_error + phase_error_str
+    else:
+        return None
+
+def check_course_from_json(grid_as_dict):
+    errors = []
+
+    try:
+        all_codes = check_repeated(grid_as_dict)
+    except:
+        errors.append("Um erro inesperado aconteceu durante a verificação da grade e dos códigos repetidos")
+        all_codes = None
+
+    try:
+        keys_error_list = check_keys(grid_as_dict)
+        if not keys_error_list is None:
+            errors.append(keys_error_list)
+    except:
+        errors.append("Um erro inesperado aconteceu durante a verificação dos campos")
+    
+    try:
+        version_error_list = check_version(grid_as_dict)
+        if not version_error_list is None:
+            errors.append(version_error_list)
+    except:
+        errors.append("Um erro inesperado aconteceu durante a verificação do nome da versão")
+
+    if not all_codes is None:
+        try:
+            phase_code_error_list = check_phase_code(grid_as_dict, all_codes)
+            if not phase_code_error_list is None:
+                errors.append(phase_code_error_list)
+        except:
+            errors.append("Um erro inesperado aconteceu durante a verificação das fases da grade")
+
+    return errors
+
 
 class GridList(ListView):
     model = Grid
@@ -159,8 +196,44 @@ class GridCreate(View):
     success_url = reverse_lazy('dashboard')
 
     def post(self, request, *args, **kwargs):
-        grid_json = request.POST.copy()["grid"]
         degree_code = kwargs["degree_code"]
+
+        grid_as_json_string = request.POST.copy()["grid"]
+
+        grid_as_dict = json.loads(grid_as_json_string)
+
+        grid_as_json_string = json.dumps(grid_as_dict, indent=4, sort_keys=True)
+
+        error_list = check_course_from_json(grid_as_dict)
+
+        grid_version = grid_as_dict["version"]
+        dg = Degree.objects.get(code=degree_code)
+
+        if Grid.objects.filter(degree=dg, version=grid_version).exists():
+            error_list.append("Já existe uma versão com esse nome associada no banco de dados")
+        
+        if len(grid_version) > 40:
+            error_list.append("O nome da versão deve conter 40 caracteres ou menos")
+
+        if len(error_list) > 0:
+            context = {
+                'status': '400', 'reason': error_list
+            }
+            response = HttpResponse(json.dumps(context,ensure_ascii=False).encode("utf8"),
+                                    content_type='application/json')
+            response.status_code = 400
+            return response
+        
+
+        
+        new_grid = Grid(degree=dg, version=grid_version,
+                        data_as_string=grid_as_json_string)
+        new_grid.save()
+
+        return redirect('/grid/{}'.format(degree_code))
+
+
+        '''
         grid = json.loads(grid_json)
         new_grid = create_course_from_json(grid,degree_code)
         if new_grid is None:
@@ -169,7 +242,7 @@ class GridCreate(View):
         # return HttpResponseRedirect(self.success_url)
         return redirect('/grid/{}'.format(degree_code))
         # return HttpResponseRedirect(reverse('grids', args=[degree_code]))
-
+        '''
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, kwargs)
@@ -191,9 +264,9 @@ class GridCreate(View):
     #    return response
 
     def get_context_data(self, **kwargs):
-        user = self.request.user
-        #context = super().get_context_data(**kwargs)
+        # user = self.request.user
+        context = super().get_context_data(**kwargs)
         context["hide_navbar"] = True
-        #context["degree"] = Degree.objects.get(code=self.kwargs["degree_code"])
+        context["degree_code"] = Degree.objects.get(code=self.kwargs["degree_code"])
         # print(self.kwargs)
         return context
